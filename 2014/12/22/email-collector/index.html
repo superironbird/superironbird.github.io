@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="web渗透第一步之信息搜集  [ 搜集目标邮箱 ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>web渗透第一步之信息搜集  [ 搜集目标邮箱 ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2014/12/22/email-collector/">
+                web渗透第一步之信息搜集  [ 搜集目标邮箱 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/email-collect/">email collect</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h5 id="theharvester-本身主要是用来从各种搜索引擎上抓取目标的邮箱-子域以及ip反查-虚拟主机-可自行更换其各种搜索api"><a href="#theharvester-本身主要是用来从各种搜索引擎上抓取目标的邮箱-子域以及ip反查-虚拟主机-可自行更换其各种搜索api" class="headerlink" title="theharvester [本身主要是用来从各种搜索引擎上抓取目标的邮箱,子域以及ip反查(虚拟主机),可自行更换其各种搜索api]"></a>theharvester [本身主要是用来从各种搜索引擎上抓取目标的邮箱,子域以及ip反查(虚拟主机),可自行更换其各种搜索api]</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">theharvester</span> <span class="selector-tag">-d</span> <span class="selector-tag">polyu</span><span class="selector-class">.edu</span><span class="selector-class">.hk</span> <span class="selector-tag">-l</span> 1000 <span class="selector-tag">-b</span> <span class="selector-tag">all</span> &gt;&gt; <span class="selector-tag">res</span><span class="selector-class">.txt</span>   <span class="selector-tag">-f</span> 选项貌似不太好使,只能重定向了</div></pre></td></tr></table></figure>
+<p><img src="/img/theharvester email.png" alt=""><br></p>
+<h5 id="Maltego-纯图形化信息搜集工具-里面也提供了邮箱搜集功能-把结果导出为csv即可-使用非常简单-就不多啰嗦了-当然-作为一款老牌的专业信息搜集工具-它的功能远远不止于此-后续有时间我们再仔细说"><a href="#Maltego-纯图形化信息搜集工具-里面也提供了邮箱搜集功能-把结果导出为csv即可-使用非常简单-就不多啰嗦了-当然-作为一款老牌的专业信息搜集工具-它的功能远远不止于此-后续有时间我们再仔细说" class="headerlink" title="Maltego [纯图形化信息搜集工具,里面也提供了邮箱搜集功能,把结果导出为csv即可,使用非常简单,就不多啰嗦了,当然,作为一款老牌的专业信息搜集工具,它的功能远远不止于此,后续有时间我们再仔细说]"></a>Maltego [纯图形化信息搜集工具,里面也提供了邮箱搜集功能,把结果导出为csv即可,使用非常简单,就不多啰嗦了,当然,作为一款老牌的专业信息搜集工具,它的功能远远不止于此,后续有时间我们再仔细说]</h5><p><img src="/img/ltego email.png" alt=""><br></p>
+<h5 id="在msf中同样也提供了一个比较粗糙的邮件搜集模块-search-email-collector-搜集范围确实很有限-暂时只能从谷歌-可能还不太好使-雅虎-bing上去爬"><a href="#在msf中同样也提供了一个比较粗糙的邮件搜集模块-search-email-collector-搜集范围确实很有限-暂时只能从谷歌-可能还不太好使-雅虎-bing上去爬" class="headerlink" title="在msf中同样也提供了一个比较粗糙的邮件搜集模块[search_email_collector][搜集范围确实很有限,暂时只能从谷歌(可能还不太好使),雅虎,bing上去爬]"></a>在msf中同样也提供了一个比较粗糙的邮件搜集模块[search_email_collector][搜集范围确实很有限,暂时只能从谷歌(可能还不太好使),雅虎,bing上去爬]</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">msf &gt; use auxiliary/gather/search_email_collector </div><div class="line">msf auxiliary(search_email_collector) &gt; show options </div><div class="line">Module options (auxiliary/gather/search_email_collector):</div><div class="line">   Name           Current Setting  Required  Description</div><div class="line">   ----           ---------------  --------  -----------</div><div class="line">   DOMAIN                          <span class="literal">yes</span>       The domain name <span class="keyword">to</span> locate email addresses <span class="keyword">for</span></div><div class="line">   OUTFILE                         <span class="literal">no</span>        A filename <span class="keyword">to</span> store the generated email list</div><div class="line">   SEARCH_BING    <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Bing as a backend search engine</div><div class="line">   SEARCH_GOOGLE  <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Google as a backend search engine</div><div class="line">   SEARCH_YAHOO   <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Yahoo! as a backend search engine</div><div class="line"></div><div class="line">msf auxiliary(search_email_collector) &gt; <span class="builtin-name">set</span> domain polyu.edu.hk</div><div class="line">msf auxiliary(search_email_collector) &gt; run</div></pre></td></tr></table></figure>
+<p><img src="/img/msf collector email.png" alt=""><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/信息搜集/">#信息搜集</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

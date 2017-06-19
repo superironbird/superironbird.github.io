@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/09/21/ssh-portforward/">
+                通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-21</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ssh-portforwd/">ssh portforwd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h5 id="ssh端口转发-可以连续转发多个端口-这里只以转单个端口为例"><a href="#ssh端口转发-可以连续转发多个端口-这里只以转单个端口为例" class="headerlink" title="ssh端口转发(可以连续转发多个端口,这里只以转单个端口为例):"></a>ssh端口转发(可以连续转发多个端口,这里只以转单个端口为例):</h5><p><br></p>
+<h5 id="ssh-命令选项作用简介-更多选项详情-请自行man-ssh-那里面确实说的非常详细"><a href="#ssh-命令选项作用简介-更多选项详情-请自行man-ssh-那里面确实说的非常详细" class="headerlink" title="ssh 命令选项作用简介[更多选项详情,请自行man ssh,那里面确实说的非常详细]:"></a>ssh 命令选项作用简介[更多选项详情,请自行man ssh,那里面确实说的非常详细]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">-C  压缩数据传输,加快传输速度</div><div class="line">-f  后台登录用户名密码</div><div class="line">-n  后台运行</div><div class="line">-q  安静模式,不要显示警告等信息</div><div class="line">-l  指定登录名</div><div class="line">-N  不执行shell通,主要用在转发中</div><div class="line">-g  允许远程主机连接到本地转发的端口     </div><div class="line">-L  本地端口转发</div><div class="line">-R  远程端口转发</div><div class="line">-D  socks代理</div><div class="line">-T  禁止分配伪终端</div><div class="line">-p  指定远程ssh 端口</div></pre></td></tr></table></figure>
+<h4 id="在建立转发之前-我们需要先到中间人这台机器上去对ssh做些简单配置-记得配置完以后顺手重启服务-如下"><a href="#在建立转发之前-我们需要先到中间人这台机器上去对ssh做些简单配置-记得配置完以后顺手重启服务-如下" class="headerlink" title="在建立转发之前,我们需要先到中间人这台机器上去对ssh做些简单配置,记得配置完以后顺手重启服务,如下"></a>在建立转发之前,我们需要先到中间人这台机器上去对ssh做些简单配置,记得配置完以后顺手重启服务,如下</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/ssh/sshd_config</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">PermitRootLogin yes  </div><div class="line">GatewayPorts yes</div><div class="line">TCPKeepAlive yes  保持心跳包,防止断开</div><div class="line">PasswordAuthentication yes</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># /etc/init.d/sshd restart</span></div></pre></td></tr></table></figure>
+<h5 id="测试环境如下"><a href="#测试环境如下" class="headerlink" title="测试环境如下:"></a>测试环境如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2008</span>R2(远程机器) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.23</span>(假设为公网ip)</div><div class="line">ubuntu <span class="number">14.04</span> LTS server(本地机器) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">32.142</span>(假设为内网ip)</div><div class="line">centos <span class="number">6.8</span>(负责中间人的角色,实际测试中通常都是你的vps) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.40</span>(假设为公网ip)</div><div class="line">win7(用来访问的的机器) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">32.144</span>(假设为内网ip)</div></pre></td></tr></table></figure>
+<p>1,事先在中间人的那台服务器(192.168.3.40)新建个伪用户 klion,等会ssh连接的时候要用,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># useradd -s /sbin/nologin klion</span></div><div class="line"><span class="comment"># echo "admin110" | passwd --stdin klion</span></div></pre></td></tr></table></figure></p>
+<p>2,首先,我们来说本地转发,下面这句话的意思就是将本地机器的某个端口转发到指定的远程机器上的某个端口,既然是转发肯定少不了有个中间人,但这中间到底是通过谁转发呢,其实就是@后面的机器<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -C -f -N -g -L [本地机器:]本地机器指定的端口:远程主机:远程主机指定的端口 tmpuser@中间人ssh服务器 -p 中间人ssh服务器端口</span></div></pre></td></tr></table></figure></p>
+<p>为了更真实的模拟出环境,上面我是故意搞成这样的,假设本地机器和远程机器不能直接通信,但中间人那台机器可以和远程机器正常通信,我想做的事情也很简单,通过ssh在本地做转发,当有人访问我本地的1080端口时就转到远程机器的3389端口上,那语句就应该就是下面这么个样子:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -C -f -N -g -L 1080:192.168.3.23:3389 klion@192.168.3.40 -p 22</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ssh local.png" alt=""><br></p>
+<p>这时,当你从别的机器去访问192.168.32.142这台机器的1080端口其实就相当于去访问192.168.3.23的3389端口,而帮你和远程机器建立这层联系的正是192.168.3.40这台机器,也就是所谓的ssh通道(隧道),既是ssh也就意味着在这个通道内的所有数据都应该是加密的,有时,你可以利用这种的方式来bypass掉目标的一些防火墙<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">在 <span class="number">192.168</span>.<span class="number">32.144</span> 这台机器上执行  mstsc <span class="number">192.168</span>.<span class="number">32.142</span><span class="symbol">:</span><span class="number">1080</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ssh local res.png" alt=""><br><br><br></p>
+<p>3,下面再来说远程转发(最好以root权限登录,因为直接在远程机器上侦听端口可能需要提供特权),如果你理解了本地转发,其实远程转发就更好理解了,本地转发有点儿类似我们的正向代理,而远程转发,则是完全相反的方向,类似我们的反向代理,正常情况下,公网是不能直接访问内网特定机器的(比如,被nat的原因),但你现在偏偏就有这样的需求,就想通过公网的某台机器作为中转来访问某个内网中的某台特定的机器,如果真是这样,你就可以像我接下来这样做<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -C -f -N -g -R [本地机器:]本地机器指定端口:内网指定机器:内网指定机器的指定端口 root@中间人机器 -p 22</span></div></pre></td></tr></table></figure></p>
+<p><br><br>现在就来简单模拟这一简单转发过程,首先,在我本地(192.168.32.142)已经事先起好了tomcat服务,我现在希望通过192.168.3.23(假设为公网ip)这台机器能直接访问到我内网的那台机器(192.168.32.142)的tomcat服务,怎么做呢,其实很简单,同样是通过192.168.3.40这台中转机器,直接把远程端口的流量转发到你本地机器上即可,语句如下:<br><br><br>通过访问192.168.3.40这台机器的1080端口就可以直接访问到我本机的8080端口了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -C -f -N -g -R 0.0.0.0:1080:127.0.0.1:8080 root@192.168.3.40(一般是你自己的vps,肉鸡更佳) -p 22</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ssh remote protfoward.png" alt=""><br><br><img src="/img/ssh remote protfoward res.png" alt=""><br></p>
+<p><br></p>
+<p>4,单纯(点对点)的端口转发搞定以后,我们再来看看如何利用ssh简单实现动态端口转发(socks代理),本地只需配合各种socks代理工具即可访问我不能直接访问到的一些资源(内网渗透可能已经用烂了),在前面的相关文章中就socks代理的代理基本细节已经重复说明过多次,这里就不再细说了,用ssh建立的socks 实际测试中4/5都可以<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">socks代理环境,如下:</div><div class="line">centos <span class="number">6.8</span>en(本地机器) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为公网ip)</div><div class="line">ubuntu <span class="number">14.04</span>en(中转机器) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.41</span>(假设为公网ip)  <span class="number">192.168</span>.<span class="number">32.142</span>(假设为内网ip) </div><div class="line">win <span class="number">2008</span>R2cn(内网机器) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> (假设为内网ip)</div><div class="line">win <span class="number">7</span>cn(另外一台用来测试转发是否的成功的机器,用proxifier做socks代理连接测试) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
+<p>目的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器和中转机器能正常通信,但无法和内网机器直接通信,通过在本地机器动态转发直接访问内网机器</div></pre></td></tr></table></figure></p>
+<p>下面的意思就是只要是本机666端口走的数据,全部都走和192.168.3.40建立好的ssh通道,再说的简单一点就是,我管127.0.0.1的666端口要东西,然后192.168.3.40去帮我把东西取回来,然后再丢到我这一头的666端口上我去拿,就这么简单,我自己不能直接访问的资源,我可以找个能访问那个资源的人来帮我拿回来,通俗点儿的理解就是这样<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -qTfnN -D 0.0.0.0:1080 root@192.168.3.41 -p 22  这里我用的0.0.0.0 也就是说,我想让任意地址都能连进来,因为我等会儿要从192.168.3.251这台机器上用proxifier做代理连进去,实际中你可用proxychains代理进去也是一样</span></div><div class="line"><span class="comment"># plink.exe -C -N -D 127.0.0.1:666 root@192.168.3.40  在win平台中的putty自带的也有这么一个小功能</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ssh socks loca.png" alt=""><br><br><img src="/img/ssh socks test rules.png" alt=""><br><br><img src="/img/ssh socks test.png" alt=""><br><br><img src="/img/ssh socks test_res.png" alt=""><br></p>
+<p>5,另外,在实际转发过程中,可能会经常断线卡死,为了尽量避免这些问题,我们可以在ssh的时候加上下面的几个选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh -o ServerAliveInterval=20  -o ServerAliveCountMax=8 -o TCPKeepAlive=yes</span></div></pre></td></tr></table></figure></p>
+<p>关于 ssh 正反向隧道在实际渗透中的简单用法:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">正向ssh隧道[本地访问目标边界服务器]:</div><div class="line"><span class="comment"># ssh -qTfnN -L 本地的端口:目标机器的ip:目标机器的指定端口 -l vps的系统用户名 vps的ip</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">反向ssh隧道[直接访问目标内网指定机器]:</div><div class="line"><span class="comment"># ssh -qTfnN -R 本地的端口:内网目标机器的ip:内网目标机器的指定端口 -l  vps的系统用户名 vps的ip</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;不光是在实际的渗透中我们可以利用ssh做类似的转发,平时也一样可以通过这种方式进行简单的传输数据加密,比如大家都知道ftp默认是明文传输的,账户密码很容易被抓到,但如果我们通过ssh转发让它走到ssh的通道内,岂不就可以起到一定的加密作用,有人比较纠结,说ssh转发并不是隧道,其实,大可不用太过纠结某些技术名词,真的不太重要,严格意义上来说,利用ssh转发,本质上就是把指定端口的流量封装在ssh里面再进行传输,这其实就是一种准隧道,唉,最关键的是你自己一定要能很理解问题的本质,这极度重要(别人跟你说一万遍,不如你自己完整做一遍,东西不过自己的心,始终都不会是你自己的,更不要说灵活应用了,多想多实现,切莫眼高手低),然后能把想干的事情干成就行,还是那句话,我们不是做学术研究,完全没要咬文嚼字,有些犯不着死扣的地方,非常死扣纯粹就是浪费时间,其实,这样对提高自己的实战能力,并没什么卵用,还是坚守自己一直以来的原则,一切从实际出发,说的天花乱坠,但很难把它应用到实战中,还不如不说,不是吗</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/ssh-portforwd/">#ssh portforwd</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

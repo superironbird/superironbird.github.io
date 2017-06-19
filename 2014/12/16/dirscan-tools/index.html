@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="熟练使用各类敏感目录文件枚举工具"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>熟练使用各类敏感目录文件枚举工具 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2014/12/16/dirscan-tools/">
+                熟练使用各类敏感目录文件枚举工具
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dirscan-tools/">dirscan tools</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h5 id="wwwscan-常用选项-实际测试速度还可以-编码貌似还有些问题-另外还有些误报-后期最好人为分析下"><a href="#wwwscan-常用选项-实际测试速度还可以-编码貌似还有些问题-另外还有些误报-后期最好人为分析下" class="headerlink" title="wwwscan 常用选项,实际测试速度还可以,编码貌似还有些问题,另外还有些误报,后期最好人为分析下:"></a>wwwscan 常用选项,实际测试速度还可以,编码貌似还有些问题,另外还有些误报,后期最好人为分析下:</h5><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">p 	指定目标web端口,因为有些web服务并非工作在默认的<span class="number">80</span>或者<span class="number">8080</span>上,需要手工指定目标的web服务端口</span></div><div class="line">-<span class="ruby">m 	指定扫描的最大线程,不要太大,实际中<span class="number">15</span>到<span class="number">20</span>就差不多了</span></div><div class="line">-<span class="ruby">t 	指定请求的超时时间</span></div><div class="line">-<span class="ruby">-ssl 	扫描https站点务必加上此选项</span></div><div class="line">-<span class="ruby">r 	设置网站根目录,比如从哪个目录下开始扫,因为有些目标网站首页可能是<span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/tuoal</span><span class="regexp">/这种形式的[并非在根目录下,而是在某个子目录下],那么在实际扫描中就要加上-r /tuoal</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">wwwscan</span><span class="selector-class">.exe</span> <span class="selector-tag">cems09</span><span class="selector-class">.ce</span><span class="selector-class">.ust</span><span class="selector-class">.hk</span> <span class="selector-tag">-m</span> 10 <span class="selector-tag">-t</span> 20 <span class="selector-tag">-p</span> 80  扫<span class="selector-tag">iis</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wwwscan iis.png" alt=""><br></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">wwwscan</span><span class="selector-class">.exe</span> <span class="selector-tag">www</span><span class="selector-class">.rainbowsystem</span><span class="selector-class">.com</span><span class="selector-class">.hk</span> <span class="selector-tag">-m</span> 10 <span class="selector-tag">-t</span> 20 <span class="selector-tag">-p</span> 80  扫<span class="selector-tag">apache</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wwwscan apache.png" alt=""><br></p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># wwwscan.exe <span class="number">203.72</span><span class="number">.29</span><span class="number">.166</span> -m <span class="number">10</span> -t <span class="number">20</span> -p <span class="number">80</span>  直接指定目标ip扫也是可以的</div></pre></td></tr></table></figure>
+<p><img src="/img/wwwscan iis7.png" alt=""><br></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">wwwscan</span><span class="selector-class">.exe</span> <span class="selector-tag">www</span><span class="selector-class">.iis</span><span class="selector-class">.sinica</span><span class="selector-class">.edu</span><span class="selector-class">.tw</span>  <span class="selector-tag">-m</span> 20 <span class="selector-tag">-t</span> 10 <span class="selector-tag">--ssl</span> 	扫描<span class="selector-tag">https</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wwwscan ssl.png" alt=""><br></p>
+<h5 id="DirBuster-基于java编写的爬行及目录扫描工具-既是java-jre是必须的-纯图形化界面-极易上手"><a href="#DirBuster-基于java编写的爬行及目录扫描工具-既是java-jre是必须的-纯图形化界面-极易上手" class="headerlink" title="DirBuster 基于java编写的爬行及目录扫描工具,既是java,jre是必须的,纯图形化界面,极易上手:"></a>DirBuster 基于java编写的爬行及目录扫描工具,既是java,jre是必须的,纯图形化界面,极易上手:</h5><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">不过,在使用之前,我们还需要先稍微设置下,改下默认的user-agent和扫描请求的超时时间,把软件的自动更新也关掉,任何工具都是如此,把更新关掉,对你肯定是有好处的</div><div class="line">打开程序主界面,贴上目标域名,扫描时的请求方法让它自动即可,设置好线程推荐<span class="number">20</span>-<span class="number">25</span>之间太大了容易把网站扫死,选好字典文件,使用url fuzzing方式进行扫描</div><div class="line">进行fuzzing设置的时候,需要注意下,比如你扫的目标是 http://www.xxx.com/la/ 这种形式的, 那你在url <span class="keyword">to</span>  fuzz里面就要写成/la/&#123;dir&#125;,意思也就是说&#123;dir&#125;是一个变量,用它来替换字典中的每一行,在&#123;dir&#125;的前后可以随意拼接你想要的后缀或者目录,比如:/admin/&#123;dir&#125;.php就表示扫描admin目录下的所有php文件</div></pre></td></tr></table></figure>
+<p><img src="/img/dirbuster.png" alt=""><br><img src="/img/dirbuster res.png" alt=""><br></p>
+<h5 id="dirb-另一款简易目录扫描工具-后面可以连续跟上多个目录字典-它会先扫目录-目录扫完以后-才挨个遍历已扫到的目录下的文件和目录-根据执行过程看-应该是一层层递归的-速度一般"><a href="#dirb-另一款简易目录扫描工具-后面可以连续跟上多个目录字典-它会先扫目录-目录扫完以后-才挨个遍历已扫到的目录下的文件和目录-根据执行过程看-应该是一层层递归的-速度一般" class="headerlink" title="dirb 另一款简易目录扫描工具,后面可以连续跟上多个目录字典,它会先扫目录,目录扫完以后,才挨个遍历已扫到的目录下的文件和目录,根据执行过程看,应该是一层层递归的,速度一般:"></a>dirb 另一款简易目录扫描工具,后面可以连续跟上多个目录字典,它会先扫目录,目录扫完以后,才挨个遍历已扫到的目录下的文件和目录,根据执行过程看,应该是一层层递归的,速度一般:</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># dirb http:<span class="comment">//eng.nptu.edu.tw wordlists\common.txt</span></span></div></pre></td></tr></table></figure>
+<p><img src="/img/dirb.png" alt=""><br></p>
+<h5 id="iis-shortname-scanner-基于java-1-7编译-最好也用jdk1-7版本运行-短文件漏洞扫描-漏洞存在的情况下-扫描速度还是非常快的-对于windows的服务器扫目录推荐优先使用它"><a href="#iis-shortname-scanner-基于java-1-7编译-最好也用jdk1-7版本运行-短文件漏洞扫描-漏洞存在的情况下-扫描速度还是非常快的-对于windows的服务器扫目录推荐优先使用它" class="headerlink" title="iis_shortname_scanner 基于java 1.7编译,最好也用jdk1.7版本运行,短文件漏洞扫描,漏洞存在的情况下,扫描速度还是非常快的,对于windows的服务器扫目录推荐优先使用它:"></a>iis_shortname_scanner 基于java 1.7编译,最好也用jdk1.7版本运行,短文件漏洞扫描,漏洞存在的情况下,扫描速度还是非常快的,对于windows的服务器扫目录推荐优先使用它:</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># java -jar iis_shortname_scanner.jar 2 10 http:<span class="comment">//www.target.hk/   前面的数字表示显示扫描过程中的信息的详细程度,后面的数字表示线程,还是那句话不宜太高</span></span></div></pre></td></tr></table></figure>
+<p><img src="/img/iis short.png" alt=""><br></p>
+<h5 id="burpsuite"><a href="#burpsuite" class="headerlink" title="burpsuite:"></a>burpsuite:</h5><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">同是基于java的工具,用它跑目录其实也是可以的,只不过字典不能太大,<span class="number">1</span>w就非常吃力了,建议直接跑一些命中率比较高的精简目录,纯图形化工具,使用也比较简单就不多说了,关于此工具的更多用途,在之前已经详细说明过,这里就不再啰嗦了,把状态码和数据长度排序下就可以看到扫描结果了</div></pre></td></tr></table></figure>
+<h5 id="其它的各种py目录扫描工具-这里就不一一介绍了-github上-这种东西多如牛毛-后期遇到好的-再补充-这里只说一些相对比较实用的"><a href="#其它的各种py目录扫描工具-这里就不一一介绍了-github上-这种东西多如牛毛-后期遇到好的-再补充-这里只说一些相对比较实用的" class="headerlink" title="其它的各种py目录扫描工具,这里就不一一介绍了,github上,这种东西多如牛毛,后期遇到好的,再补充,这里只说一些相对比较实用的"></a>其它的各种py目录扫描工具,这里就不一一介绍了,github上,这种东西多如牛毛,后期遇到好的,再补充,这里只说一些相对比较实用的</h5><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">cscan</span> 谷歌小插件</div><div class="line">各类py脚本,非常多,这里就不一一说了</div></pre></td></tr></table></figure>
+<h5 id="另外还有一些在线的工具站-不妨也可以利用下-虽然不报太大希望-但惊喜总是在不经意间出现"><a href="#另外还有一些在线的工具站-不妨也可以利用下-虽然不报太大希望-但惊喜总是在不经意间出现" class="headerlink" title="另外还有一些在线的工具站,不妨也可以利用下,虽然不报太大希望,但惊喜总是在不经意间出现:"></a>另外还有一些在线的工具站,不妨也可以利用下,虽然不报太大希望,但惊喜总是在不经意间出现:</h5><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">https://pentest-tools.com</div><div class="line">https://hackertarget.com/</div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;对于这类工具的实现过程基本都是大同小异,在目标域名后面拼接字典中的路径,然后逐个请求(多线程),观察响应状态码和返回的数据长度变化,head方法因为不返回详细主体,响应速度会相对比较快,不过,对于head这种敏感方法,稍微有点儿经验的管理员都会把它禁用掉,另外还需要注意的是,这样的扫描会在对方的web日志中留下大量的请求记录,如果你的字典过大,可能会直接导致对方web日志文件大小短时间内剧增而触发报警……所以,适量即可,还有最重要的一点,网站目录字典一定要自己精心制作,搜集各种特征目录文件确实是个体力活,这里的特征目录其实就是各种敏感目录文件,关于敏感文件有哪些,在前面的章节中已经详细汇总过,不清楚的地方请直接查看相关说明……,没啥技术含量,总之,非常期待能和大家一起交流学习进步……<br><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/信息搜集/">#信息搜集</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

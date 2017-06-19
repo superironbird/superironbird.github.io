@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="通向彼岸 之内网代理转发 [ http隧道篇 Reduh ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>通向彼岸 之内网代理转发 [ http隧道篇 Reduh ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/09/12/rehuh-http-tunnel/">
+                通向彼岸 之内网代理转发 [ http隧道篇 Reduh ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-12</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http-tunnel/">http tunnel</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h4 id="一点简介"><a href="#一点简介" class="headerlink" title="一点简介:"></a>一点简介:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,所谓的http隧道[更专业的叫法 “80端口复用”],你暂时可以把它简单形象的理解成基于web端脚本实现的一个socks代理功能,只不过这个代理不用在目标端再新开一个端口而是直接复用在已有的端口(通常是web服务端口,由相应的webshell实现)上:<br><br></p>
+<h4 id="reduh-老牌的http隧道工具-基于java-所以你需要事先装下jre"><a href="#reduh-老牌的http隧道工具-基于java-所以你需要事先装下jre" class="headerlink" title="reduh[老牌的http隧道工具,基于java,所以你需要事先装下jre]:"></a>reduh[老牌的http隧道工具,基于java,所以你需要事先装下jre]:</h4><p>1,首先,把代理端(webshell)上传到目标的网站目录中,并尝试访问,返回正常后,在本地执行:<br><img src="/img/reduh_php.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># java -jar reduhclient.jar http://目标域名/reduh.php</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/reduh_php_clinet.png" alt=""><br></p>
+<p>2,开始绑定端口,建立隧道<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># telnet 127.0.0.1 1010</span></div><div class="line">[createTunnel]要绑定到本地哪个端口上[<span class="number">8088</span>]<span class="symbol">:</span><span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span>要绑定远程机器上的哪个端口[<span class="number">3389</span>,<span class="number">22</span>] </div><div class="line">[createTunnel]<span class="number">8088</span><span class="symbol">:</span><span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">3389</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/reduh_php_create_tunnel.png" alt=""><br></p>
+<p>3,隧道建立成功后,即可使用 mstsc,putty 等工具连接到本地绑定的端口(此处是绑定到本地的8088),当你访问本地的8088就相当于访问目标机器的3389(你也可以换成22,以及你想代理的任何端口,前提是目标的这个端口必须先开了才行)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mstsc <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">8088</span></div><div class="line">putty <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">8088</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/reduh_php_create_tunnel_success.png" alt=""><br><br><br></p>
+<h4 id="关于reduh"><a href="#关于reduh" class="headerlink" title="关于reduh:"></a>关于reduh:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;工具已经非常老了,应该是在很早之前,reduh的官网就已经发过相关声明,称reduh项目已经不再维护,现在已经被更好用的regerog所替代,不过,你要是实在没办法,还是可以尝试用下这个的,实际测试中,个人感觉reduh要比tunna还要好用一点,其实,所谓的好不好,跟目标实际环境和代码本身都有很大关系,这个也没必要非要分个好赖,适合自己的就是最好的,有兴趣可以仔细去详读一下工具代码<br><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/http-tunnel/">#http tunnel</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

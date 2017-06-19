@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/05/19/wevtutil/">
+                针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wevtutil/">wevtutil</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<p>1,作为后渗透中的重要组成部分,可能很多朋友在实际渗透中,貌似对它都不怎么上心[但确实又很重要],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘太方便了’]的帮我们处理一些敏感的系统安全类日志,既然涉及到系统安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="comment"># wevtutil cl "windows powershell" 		清除powershell日志</span></div><div class="line"><span class="comment"># wevtutil cl "security" 	 		清除系统安全日志</span></div><div class="line"><span class="comment"># wevtutil cl "system"     			清除系统日志</span></div><div class="line"><span class="comment"># wevtutil cl "application"  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p><img src="/img/wevtutil more.png" alt=""><br></p>
+<p>2,常规循环一句话清除所有系统日志:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># for /F "tokens=*" %a in ('wevtutil.exe el') DO wevtutil.exe cl "%a"</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wevtutil for.png" alt=""><br></p>
+<p>3,如果你弹回来的是一个ps的shell,也可以直接用ps来批量删日志:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PS <span class="symbol">C:</span>\&gt; wevtutil el <span class="params">| Foreach-Object &#123;Write-Host "Clearing $_"; wevtutil cl "$_"&#125;</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wevtutil ps.png" alt=""><br></p>
+<p>4,删完之后你会发现整个世界都瞬间安静了,是的,没错,直接整个全部清空,简单粗暴,尼玛……可能wevtutil里面还有一些可以筛选日志的选项我暂时还没看到吧,后期看到了再陆续补充上来,实在不行就只能自己写脚本了[也许powershell会是个不错的选择]<br><img src="/img/wevtutil res.png" alt=""><br></p>
+<p>这几天比较累,待续吧……</p>
+<p><br></p>
+<h5 id="后话"><a href="#后话" class="headerlink" title="后话:"></a>后话:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;需要说明的是,删日志肯定不是个好习惯[傻x也知道,你的系统刚刚经历了什么,’极易’,’非常’,’很快’被发现],直接强行停止系统的各种日志或者审计服务也不太好[还是容易被发现],相比之下,直接替换伪造成正常的操作日志似乎暂时更靠谱一些[就这一点来说,linux就’做’的很不错,’sed’ &amp; ‘grep’ 绝逼是个好东西,你值得拥有],但苦于自己又没有琢磨出win下非常好的日志替换方案[也许是自己比较笨,powershell这么牛逼,它也许可以帮我们做到,正在学习中……后期如果好的方案再更新上来吧],不要问我为什么不用别人写好的脚本,嘿嘿……’那可能是个美丽的错误’,如果表哥们有其它的更好的方法,希望也能告诉小弟一声,小弟感激不尽<br><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/wevtutil/">#wevtutil</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

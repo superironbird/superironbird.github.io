@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="通向彼岸 之内网代理转发 [ 利用端口重定向bypass各类应用层防火墙 fpipe ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>通向彼岸 之内网代理转发 [ 利用端口重定向bypass各类应用层防火墙 fpipe ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2016/09/20/fpipe-redirect-port/">
+                通向彼岸 之内网代理转发 [ 利用端口重定向bypass各类应用层防火墙 fpipe ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/fpipe/">fpipe</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上(转发),再通过转到的这个本地端口去连远程机器的某个端口(管道),而不是像netsh只是单纯的把端口转过去,简易的通信流程如下</p>
+<p>外部端口访问 &lt;-&gt; 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) &lt;-&gt; 通过本地的另一个端口和远程机器的某个端口通信 </p>
+<p>工具选项如下,非常简单,看选项说明就懂了:<br><img src="/img/fpipe help.png" alt=""><br></p>
+<p>1,我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
+<p>2,实验环境如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">边界机器(win2008en,防火墙已开启,且只允许<span class="number">80</span>进) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.34</span>(假设为公网ip)   <span class="number">192.168</span>.<span class="number">32.143</span>(目标内网ip)</div><div class="line">目标内网的一台win机器(win2008r2cn) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">目标内网的一台linux机器(centos <span class="number">6.8</span>en) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">32.129</span> </div><div class="line">攻击者机器(win7cn) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/firewall_win.png" alt=""><br><img src="/img/firewall_rules.png" alt=""><br></p>
+<p>3,最终目的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">已确认所有内网ip之间的通信没有任何问题</div><div class="line">攻击者通过边界机器的<span class="number">80</span>端口直接访问内网那台windows机器的远程桌面和另一台linux机器的ssh</div></pre></td></tr></table></figure></p>
+<p>在边界的那台机器上执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># FPipe.exe -l 80 -s 1080 -r 3389 192.168.32.134 把来自外部的80端口的流量通过本地的1080端口转到内网192.168.32.134这台机器的3389端口上</span></div><div class="line"><span class="comment"># FPipe.exe -l 80 -s 1080 -r 22 192.168.32.129   把来自外部的80端口的流量通过本地的1080端口转到内网192.168.32.129这台机器的22端口上</span></div></pre></td></tr></table></figure></p>
+<p>此时,回到入侵者的机器上执行,这样就可以直接连到内网的那两台机器了,虽然边界机器确实是开了防火墙,但只要你有一个可以通过的端口,足矣:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mstsc 192.168.3.34:80   在实际连rdp的时候,经常会断,不知为何,后期找到原因再来补充吧</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/fpipe_80_rdp.png" alt=""><br><img src="/img/fpipe_80_rdp_question.png" alt=""><br><img src="/img/fpipe_80_rdp_result.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># putty 192.168.3.34:80  相反,ssh就非常稳定,我在想拿到是图形界面的原因</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/fpipe_80_ssh.png" alt=""><br><br><img src="/img/fpipe_80_ssh_res.png" alt=""><br><br><img src="/img/fpipe_80_ssh_connect.png" alt=""><br><br><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透中,你可以在提权以后自己手工加一条允许某个端口的规则,注意建立管道绑的端口不要和系统中现有的端口冲突,用这个的主要原因还是希望能把内网中的一些出不来(不能连外网)的机器,通过这种方式一起给带出来,实际渗透中不一定非要用,实在没办法的时候可以尝试下,如果真是遇到那种什么都出不来的内网,好吧,算你走运,像类似的疑难杂症我们后续还会用大量的篇幅来说明,因为有很多我自己也没搞明白,正在学习中</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/fpipe/">#fpipe</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

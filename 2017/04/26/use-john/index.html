@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="快速破解各种散列hash [ john入门篇 ]"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>快速破解各种散列hash [ john入门篇 ] - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    主页
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    所有文章
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    关于自己
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    标签
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    分类
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    一起交流
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/04/26/use-john/">
+                快速破解各种散列hash [ john入门篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/john/">john</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br></p>
+<h5 id="尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢"><a href="#尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢" class="headerlink" title="尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢:"></a>尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢:</h5><p>1,至于编译安装的过程就非常简单了,为了快速进行这一过程,语句我已经事先都放到脚本里了,执行即可,脚本很粗糙,你可以自己在完善下,起码加个命令执行结果检查还是非常有必要的:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">#/bin/bash</div><div class="line">yum -y install wget gpgme</div><div class="line">yum -y group install "Development Tools"</div><div class="line">cd</div><div class="line">wget http://www.openwall.com/john/j/john-1.8.0.tar.xz</div><div class="line">wget http://www.openwall.com/john/j/john-1.8.0.tar.xz.sign</div><div class="line">wget http://www.openwall.com/signatures/openwall-signatures.asc</div><div class="line">gpg --import openwall-signatures.asc</div><div class="line">gpg --verify john-1.8.0.tar.xz.sign</div><div class="line">tar xvfJ john-1.8.0.tar.xz</div><div class="line">cd john-1.8.0/src</div><div class="line">make clean linux-x86-64</div><div class="line">cd ../run/</div><div class="line">./john --test # 主要用来测试当前系统的破解速度</div><div class="line"></div><div class="line"># chmod +x johninstall.sh 别忘了给下执行权限</div></pre></td></tr></table></figure></p>
+<a id="more"></a>    
+<p>2,这里为了方便截图,就直接全部丢在win上演示了,john 破解规则设置文件如下(可设置每种模式下的具体的破解规则,务必仔细阅读该文件,由C格式编写):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cd C:\john180j1w\run</span></div><div class="line"><span class="comment"># type john.conf</span></div></pre></td></tr></table></figure></p>
+<p>3,john运行以后会在当前目录产生一个john.pot文件,用来缓存破解时的数据,如果想重新破解,直接把这个文件删除即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rm -fr john.pot</span></div></pre></td></tr></table></figure></p>
+<p>4,常用的一些选项:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">--single  		简单破解模式,也是默认的运行模式,根据用户名进行一些简单的变形猜解</div><div class="line">--incremental 		逐个遍历模式,尝试所有可能</div><div class="line">--wordlist		指定用来破解hash的字典,即字典模式</div><div class="line">--external		扩展[自定义]破解规则模式</div><div class="line">--restore		从上次的破解进度接着执行,它会把破解的过程存到john.pot文件中,下次破解会继续读取该文件,如果不想让它从这儿读取,直接把它删掉就好了</div><div class="line">--show 			显示已经破解出来的hash及对应的明文密码</div><div class="line">--users			只破解指定用户的hash</div><div class="line">--groups		只破解指定用户组的hash</div><div class="line">--shells		只破解指定shell的hash</div><div class="line">--format		指定要破解的hash的类型</div><div class="line">--stdout		从别处重定向到指定的hash</div></pre></td></tr></table></figure></p>
+<p>5,关于Incremental模式的一些默认破解规则,最大跑8位,为了节省时间,建议挨个的尝试,不建议一上来就给个范围特别大的,机器性能不是太好的话,可能要跑很久:</p>
+<table>
+<thead>
+<tr>
+<th>破解模式的具体方法</th>
+<th style="text-align:center">破解的密码长度</th>
+<th style="text-align:center">所包含的字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incremental:all</td>
+<td style="text-align:center">0-8</td>
+<td style="text-align:center">All 95 printable ASCII characters</td>
+</tr>
+<tr>
+<td>Incremental:all15</td>
+<td style="text-align:center">0-5</td>
+<td style="text-align:center">All 95 printable ASCII characters</td>
+</tr>
+<tr>
+<td>Incremental:all6</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">All 95 printable ASCII characters</td>
+</tr>
+<tr>
+<td>Incremental:all7</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">All 95 printable ASCII characters</td>
+</tr>
+<tr>
+<td>Incremental:all8</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">All 95 printable ASCII characters</td>
+</tr>
+<tr>
+<td>Incremental:alpha</td>
+<td style="text-align:center">1-8</td>
+<td style="text-align:center">A-Z     纯大写字母</td>
+</tr>
+<tr>
+<td>Incremental:digits</td>
+<td style="text-align:center">1-8</td>
+<td style="text-align:center">0-9     纯数字</td>
+</tr>
+<tr>
+<td>Incremental:lanman</td>
+<td style="text-align:center">0-7</td>
+<td style="text-align:center">A-Z, 0-9, and some special characters   大写字母,数字家特殊字符</td>
+</tr>
+</tbody>
+</table>
+<p>6,合并linux系统中的用户/组和密码及hash配置文件(你可以直接把目标的账户hash文件先down下来,然后再在本地合并,如果实在不知道具体的散列类型,直接john跟上hash文件即可,当识别类型以后,如果简单模式破不出来,会再用incremental):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># unshadow.exe passwd shadow &gt; johnhash.txt</span></div><div class="line"><span class="comment"># unshadow.exe group gshadow &gt; johnhashgroup.txt</span></div></pre></td></tr></table></figure></p>
+<p><br><br>7,下面是一些具体的破解实例:</p>
+<p>破解linux系统用户的密码hash[sha512crypt],实际破解中,最好指定用户名,shell类型,节省时间,接下来的演示,为了能尽快演示给大家看,会全部选择字典模式,实际破解中,按照下面的爆破顺序来即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">默认的爆模式,会先尝试single模式,然后再尝试incremental模式,直到把所有的规则都跑完,很显然,如果用户比较多,这样耗时必然会很长:</div><div class="line"><span class="comment"># john.exe --users=user1,user2,user3,webadmin,hello,root johnhash.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/john default.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">粗暴简单的爆破模式,只爆破指定用户的hash(如果不手工指定hash类型,john会自动帮你识别,并提示你):</div><div class="line"><span class="comment"># john --users=user1,user2,user3,webadmin,hello,root --single johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/single crack.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">基于纯字典的爆破模式[你需要有一个棒棒的字典,字典不宜过大]:</div><div class="line"><span class="comment"># john --wordlist=password.txt --users=user1,user2,user3,webadmin,hello,root johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john wordlist.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">稍微智能一点的爆破模式[速度会比较的慢,默认规则较多]:</div><div class="line"><span class="comment"># john --shells=/bin/bash johnhash.txt --incremental</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john incremental.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">只破解特定类型的shell用户密码hash,用户比较多的情况,我们只需要破解可以登录到系统中的一些用户密码就好了:</div><div class="line"><span class="comment"># john --shells=/bin/bash johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/shells johns crack.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">显示已经破解的<span class="symbol">hash:</span></div><div class="line"><span class="comment"># john --shells=/bin/bash johnhash.txt --show</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">推荐的爆破顺序,尽量节省自己的爆破时间:</div><div class="line">single模式 -&gt; wordlist模式 -&gt; incremental模式 -&gt; 默认模式</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解 ntlm(<span class="number">2008</span>r2):</div><div class="line"><span class="comment"># john --wordlist=password.txt --format=NT2 johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john ntlm.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">破解mssql系列数据库用户<span class="symbol">hash:</span></div><div class="line"><span class="comment"># john --wordlist=password.txt  --format=mssql05 johnhash.txt   mssql 2005</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=mssql05 johnhash.txt  	mssql 2008</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=mssql12 johnhash.txt  	mssql 2012</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john mssql2005.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解mysql系列数据库用户<span class="symbol">hash:</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=mysql-sha1 johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john mysql sha1.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解oracle <span class="number">11</span>g 用户<span class="symbol">hash:</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=oracle11 johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john oracle11g.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解postgresql 用户hash[直接指定散列类型可能不太好使,让它自动识别就好了]:</div><div class="line"><span class="comment"># john --wordlist=password.txt  johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john postgresq.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">破解office 系列加密后的hash(<span class="number">2016</span>):</div><div class="line"><span class="comment"># ./office2john.py /root/Desktop/test.docx &gt; /root/Desktop/officehash.txt</span></div><div class="line"><span class="comment"># john --wordlist=password.txt  --format=office johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john office.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解drupal7用户密码<span class="symbol">hash:</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=drupal7 johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john drupal.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">破解rar系列密码hash(rar,rar5):</div><div class="line"><span class="comment"># rar2john.exe readme.rar &gt; rarhash.txt</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=rar rarhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/rarhash crack res.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rar2john.exe readme.rar &gt; rar5hash.txt</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=rar5 rar5hash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/rar5hash res.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">破解zip密码<span class="symbol">hash:</span></div><div class="line"><span class="comment"># zip2john.exe readme.zip &gt;&gt; ziphash.txt</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=PKZIP ziphash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/ziphash res.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解<span class="number">7</span>z密码hash[暂时还有些问题]:</div><div class="line"><span class="comment"># john --wordlist=password.txt --format=7z ziphash.txt</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">破解pdf密码hash[<span class="number">1.8</span>版本还有些问题,如果实在识别不出来,就别过于纠结了,直接丢给hashcat就好了,对应的散列类型id为<span class="string">'10400'</span>]:</div><div class="line"><span class="comment"># python C:\john180j1w\run\pdf2john.py C:\john180j1w\run\pdfcrack.pdf &gt;&gt; pdfhash.txt</span></div><div class="line"><span class="comment"># type pdfhash.txt</span></div><div class="line"><span class="comment"># john.exe pdfhash.txt 这里不用特意指定类型</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解普通的<span class="symbol">md5:</span></div><div class="line"><span class="comment"># john --wordlist=password.txt --format=Raw-MD5 johnhash.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/john md5.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">破解wpa/wpa2hash[直接从标准输出中读取密码挨个尝试]:</div><div class="line"><span class="comment"># john --stdout --incremental:all | aircrack-ng -b 目标ap的mac -w - wpa2*.cap</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;作为john的入门使用,到这里就差不多了,里面的散列类型这里就不一一演示了,破解方式几乎是一样的,关键是知道各种爆破模式的工作方式[自定义规则后续会再单独说明],搞清楚目标的各种加密类型就好了,它比hashcat好一些的是,如果你不指定目标的hash类型它会自动匹配,但它跟hashcat的破解速度还是有着比较大差距的[就免费版来说],估计专业版会好很多吧<br><br></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/john/">#john</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
