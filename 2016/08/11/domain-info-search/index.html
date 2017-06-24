@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -172,7 +160,7 @@
 
         <!-- Post Content -->
         <p><br></p>
-<h4 id="一-搜集本机信息"><a href="#一-搜集本机信息" class="headerlink" title="一, 搜集本机信息:"></a>一, 搜集本机信息:</h4><p>这儿就以拥有一个域内网中的普通用户[注意,这里并不是域用户哦]权限的机器的webshell作为我们整个域内渗透的开始,首先,没别的,先搜集下各种信息,主要是搜集各类账号密码,自然是翻到的越多越好(多一个有用的密码或hash就多一条生路),废话不多说,我们开始正题,从搜集本机信息开始,理论上来讲,拿到webshell的第一反应,没别的,先看下当前用户的系统权限再说,直接是system权限的这种情况咱们找时间另说,就先以一个很普通的网站用户权限,来继续我们下面的内容,whoami加上all参数可以把当前用户的sid也顺带查出来,只是告诉大家可以用这种方式查用户sid,虽然这个用户的sid没什么卵用,但如果是域管的就不一样了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># whoami  /all</span></div></pre></td></tr></table></figure></p>
+<h4 id="一-搜集本机信息"><a href="#一-搜集本机信息" class="headerlink" title="一, 搜集本机信息:"></a>一, 搜集本机信息:</h4><p>这里就以拥有一个域内网中的普通用户[注意,这里并不是域用户哦]权限的机器的webshell作为我们整个域内渗透的开始,首先,没别的,先搜集下各种信息,主要是搜集各类账号密码,自然是翻到的越多越好(多一个有用的密码或hash就多一条生路),废话不多说,我们开始正题,从搜集本机信息开始,理论上来讲,拿到webshell的第一反应,没别的,先看下当前用户的系统权限再说,直接是system权限的这种情况咱们找时间另说,就先以一个很普通的网站用户权限,来继续我们下面的内容,whoami加上all参数可以把当前用户的sid也顺带查出来,只是告诉大家可以用这种方式查用户sid,虽然这个用户的sid没什么卵用,但如果是域管的就不一样了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># whoami  /all</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/whoami all.jpg" alt="&#39;&#39;"><br></p>
 <p>接着再来看看本机的网络配置,主要是想看看当前机器是否处在内网,有几个内网,内网段分别是多少,是否是在域内网,网关是多少,dns指向的ip是哪里,当然,你也可以用wmic来查,但那个显示的并不是很完整,个人早已习惯了ipconfig /all,所以就用这个了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ipconfig /all</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/ipconfig all.jpg" alt="&#39;&#39;"><br></p>

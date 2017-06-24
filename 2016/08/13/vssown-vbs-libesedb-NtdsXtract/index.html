@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,9 +159,8 @@
         
 
         <!-- Post Content -->
-        <p><br></p>
-<h4 id="本地测试环境"><a href="#本地测试环境" class="headerlink" title="本地测试环境:"></a>本地测试环境:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
-<h4 id="离线利用linux提取域内所有用户hash-实际测试可行-不过文件确实有点儿大-用于测试的系统域内用户只有十个左右-却已经打了12M-按这样算的话-一千个用户也就将近1G-如果用户量特别大的话-可想而知-不过好在信息非常全"><a href="#离线利用linux提取域内所有用户hash-实际测试可行-不过文件确实有点儿大-用于测试的系统域内用户只有十个左右-却已经打了12M-按这样算的话-一千个用户也就将近1G-如果用户量特别大的话-可想而知-不过好在信息非常全" class="headerlink" title="离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:"></a>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure>
+        <p><br><br>本地测试环境:<br>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
+<p>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure></p>
 <p>查看vssown.vbs帮助:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs</div></pre></td></tr></table></figure></p>
 <p><img src="/img/vssown help.png" alt=""><br></p>
 <p>第一步,启动服务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /start</div><div class="line">cscript vssown.vbs /status</div></pre></td></tr></table></figure></p>

@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -172,7 +160,7 @@
 
         <!-- Post Content -->
         <p><br></p>
-<h4 id="由LLMNR引发的一系列中间人"><a href="#由LLMNR引发的一系列中间人" class="headerlink" title="由LLMNR引发的一系列中间人"></a>由LLMNR引发的一系列中间人</h4><p><br></p>
+<h5 id="由LLMNR引发的一系列中间人"><a href="#由LLMNR引发的一系列中间人" class="headerlink" title="由LLMNR引发的一系列中间人"></a>由LLMNR引发的一系列中间人</h5><p><br></p>
 <h5 id="1-在开始真正的内容之前-我们需要先来了解下-在同一内网环境中的windows机器相互之间的一些通信细节-当一台win机器向另一台win机器以域名-机器名-的形式请求相应的资源时-正常的流程如下"><a href="#1-在开始真正的内容之前-我们需要先来了解下-在同一内网环境中的windows机器相互之间的一些通信细节-当一台win机器向另一台win机器以域名-机器名-的形式请求相应的资源时-正常的流程如下" class="headerlink" title="1,在开始真正的内容之前,我们需要先来了解下,在同一内网环境中的windows机器相互之间的一些通信细节,当一台win机器向另一台win机器以域名(机器名)的形式请求相应的资源时,正常的流程如下"></a>1,在开始真正的内容之前,我们需要先来了解下,在同一内网环境中的windows机器相互之间的一些通信细节,当一台win机器向另一台win机器以域名(机器名)的形式请求相应的资源时,正常的流程如下</h5><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">首先,windows会先去检查自己的主机配置文件,然后按照此文件中的配置进行解析,通常在C:<span class="symbol">\W</span>indows<span class="symbol">\S</span>ystem32<span class="symbol">\d</span>rivers<span class="symbol">\e</span>tc下</div><div class="line">当上面的步骤无法正确解析时,这时系统会自动去检查本地的dns缓存,按照缓存中的指向再进行解析,执行 ipconfig /displaydns 即可看到缓存内容</div><div class="line">如果本地缓存也不能正确解析,它会向本地网络中的dns服务器去请求</div><div class="line">如果连dns也解析失败,它就会被交给LLMNR(链路本地多播名称解析)和netbios-ns(netbios[名称服务]专门用于同一内网中windows机器之间通过机器名相互访问,工作在会话层)去处理解析</div></pre></td></tr></table></figure>
 <h5 id="2-而基于LLMNR的中间人攻击-也就发生在这里"><a href="#2-而基于LLMNR的中间人攻击-也就发生在这里" class="headerlink" title="2,而基于LLMNR的中间人攻击,也就发生在这里:"></a>2,而基于LLMNR的中间人攻击,也就发生在这里:</h5><p>假设现在有三台机器,A(正常的客户机),B(攻击者的机器),C(要访问的服务器),当A向C发起共享资源请求的时候,由于dns解析失败,正常情况下该请求会被交给LLMNR然后执行netbios查询,但不巧的是攻击者此时正在监听网络中的所有netbios查询请求,自然也就会捕捉到这条查询,当攻击者捕捉到该查询之后,它会告请求者也就是A,我(B)就是你要请求的那台服务器,接着A会把自己的账号密码提供给B认证,也就是说,此时B已经截获到了A的账号密码,一次简易基于LLMNR的中间人攻击就这样完成了,下面的流程图已经很好的说明了这一攻击过程<br><img src="/img/LLMNR.png" alt="LLMNR"><br></p>
 <h5 id="此时-我们可以利用responder-尝试获取目标的smb-hash-虽然不是明文-但我们可以配合类似hashcat的hash破解工具尝试破解该hash-当然-如果你有自己的GPU矩阵就再好不过了-或许很快就可以拿到对应的明文"><a href="#此时-我们可以利用responder-尝试获取目标的smb-hash-虽然不是明文-但我们可以配合类似hashcat的hash破解工具尝试破解该hash-当然-如果你有自己的GPU矩阵就再好不过了-或许很快就可以拿到对应的明文" class="headerlink" title="此时,我们可以利用responder 尝试获取目标的smb hash,虽然不是明文,但我们可以配合类似hashcat的hash破解工具尝试破解该hash[当然,如果你有自己的GPU矩阵就再好不过了],或许很快就可以拿到对应的明文"></a>此时,我们可以利用responder 尝试获取目标的smb hash,虽然不是明文,但我们可以配合类似hashcat的hash破解工具尝试破解该hash[当然,如果你有自己的GPU矩阵就再好不过了],或许很快就可以拿到对应的明文</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># responder -I eth0</span></div></pre></td></tr></table></figure>

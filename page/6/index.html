@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -294,9 +282,8 @@
 
     
         <div class="content">
-            <p><br></p>
-<h4 id="本地测试环境"><a href="#本地测试环境" class="headerlink" title="本地测试环境:"></a>本地测试环境:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
-<h4 id="离线利用linux提取域内所有用户hash-实际测试可行-不过文件确实有点儿大-用于测试的系统域内用户只有十个左右-却已经打了12M-按这样算的话-一千个用户也就将近1G-如果用户量特别大的话-可想而知-不过好在信息非常全"><a href="#离线利用linux提取域内所有用户hash-实际测试可行-不过文件确实有点儿大-用于测试的系统域内用户只有十个左右-却已经打了12M-按这样算的话-一千个用户也就将近1G-如果用户量特别大的话-可想而知-不过好在信息非常全" class="headerlink" title="离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:"></a>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure>
+            <p><br><br>本地测试环境:<br>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
+<p>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure></p>
 <p>查看vssown.vbs帮助:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs</div></pre></td></tr></table></figure></p>
 <p><img src="/img/vssown help.png" alt=""><br></p>
 <p>第一步,启动服务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /start</div><div class="line">cscript vssown.vbs /status</div></pre></td></tr></table></figure></p>
@@ -344,7 +331,7 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="一-搜集本机信息"><a href="#一-搜集本机信息" class="headerlink" title="一, 搜集本机信息:"></a>一, 搜集本机信息:</h4><p>这儿就以拥有一个域内网中的普通用户[注意,这里并不是域用户哦]权限的机器的webshell作为我们整个域内渗透的开始,首先,没别的,先搜集下各种信息,主要是搜集各类账号密码,自然是翻到的越多越好(多一个有用的密码或hash就多一条生路),废话不多说,我们开始正题,从搜集本机信息开始,理论上来讲,拿到webshell的第一反应,没别的,先看下当前用户的系统权限再说,直接是system权限的这种情况咱们找时间另说,就先以一个很普通的网站用户权限,来继续我们下面的内容,whoami加上all参数可以把当前用户的sid也顺带查出来,只是告诉大家可以用这种方式查用户sid,虽然这个用户的sid没什么卵用,但如果是域管的就不一样了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># whoami  /all</span></div></pre></td></tr></table></figure></p>
+<h4 id="一-搜集本机信息"><a href="#一-搜集本机信息" class="headerlink" title="一, 搜集本机信息:"></a>一, 搜集本机信息:</h4><p>这里就以拥有一个域内网中的普通用户[注意,这里并不是域用户哦]权限的机器的webshell作为我们整个域内渗透的开始,首先,没别的,先搜集下各种信息,主要是搜集各类账号密码,自然是翻到的越多越好(多一个有用的密码或hash就多一条生路),废话不多说,我们开始正题,从搜集本机信息开始,理论上来讲,拿到webshell的第一反应,没别的,先看下当前用户的系统权限再说,直接是system权限的这种情况咱们找时间另说,就先以一个很普通的网站用户权限,来继续我们下面的内容,whoami加上all参数可以把当前用户的sid也顺带查出来,只是告诉大家可以用这种方式查用户sid,虽然这个用户的sid没什么卵用,但如果是域管的就不一样了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># whoami  /all</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/whoami all.jpg" alt="&#39;&#39;"><br></p>
 <p>接着再来看看本机的网络配置,主要是想看看当前机器是否处在内网,有几个内网,内网段分别是多少,是否是在域内网,网关是多少,dns指向的ip是哪里,当然,你也可以用wmic来查,但那个显示的并不是很完整,个人早已习惯了ipconfig /all,所以就用这个了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ipconfig /all</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/ipconfig all.jpg" alt="&#39;&#39;"><br></p>
@@ -437,22 +424,24 @@
     
         <div class="content">
             <p><br></p>
-<h3 id="为什么要理解windows-安全认证机制"><a href="#为什么要理解windows-安全认证机制" class="headerlink" title="为什么要理解windows 安全认证机制:"></a>为什么要理解windows 安全认证机制:</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">加深对后续的各种利用理解深度,还是那句话,不仅要知其然,也要知其所以然嘛</div></pre></td></tr></table></figure>
-<h3 id="windows认证协议主要有以下两种"><a href="#windows认证协议主要有以下两种" class="headerlink" title="windows认证协议主要有以下两种:"></a>windows认证协议主要有以下两种:</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;基于ntlm的认证方式,主要用在早期的windows工作组环境中,认证的过程也相对比较简单,另一种是基于Kerberos的认证方式,主要用在域环境中,下面就这两种不同的认证方式做些简要的通信流程说明</p>
-<h3 id="关于ntlm认证流程简要说明-如下"><a href="#关于ntlm认证流程简要说明-如下" class="headerlink" title="关于ntlm认证流程简要说明,如下:"></a>关于ntlm认证流程简要说明,如下:</h3><p><img src="/img/ntlm.png" alt="&#39;&#39;"><br></p>
-<h3 id="根据上图所示-ntlm在域中的认证过程主要分为以下几步"><a href="#根据上图所示-ntlm在域中的认证过程主要分为以下几步" class="headerlink" title="根据上图所示,ntlm在域中的认证过程主要分为以下几步:"></a>根据上图所示,ntlm在域中的认证过程主要分为以下几步:</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>)第一步,首先在client输入username,password和domain,然后client会把password hash后的值先缓存到本地</div><div class="line"><span class="number">2</span>)第二步,client把username的明文发送给server(DC)</div><div class="line"><span class="number">3</span>)第三步,DC会生成一个<span class="number">16</span>字节的随机数,即challenge(挑战码),再传回给client</div><div class="line"><span class="number">4</span>)第四步,当client收到challenge以后,会先复制一份出来,然后和缓存中的密码hash再一同混合hash一次,混合后的值称为response,之后client再将challenge,response及username一并都传给server</div><div class="line"><span class="number">5</span>)第五步,server端在收到client传过来的这三个值以后会把它们都转发给DC</div><div class="line"><span class="number">6</span>)第六步,当DC接到过来的这三个值的以后,会根据username到域控的账号数据库(ntds.dit)里面找到该username对应的hash,然后把这个hash拿出来和传过来的challenge值再混合hash</div><div class="line"><span class="number">7</span>)第七步,将(<span class="number">6</span>)中混合后的hash值跟传来的response进行比较,相同则认证成功,反之,则失败,当然,如果是本地登录,所有验证肯定也全部都直接在本地进行了</div></pre></td></tr></table></figure>
-<h3 id="关于ntlm的一点小结"><a href="#关于ntlm的一点小结" class="headerlink" title="关于ntlm的一点小结:"></a>关于ntlm的一点小结:</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它是一种基于挑战（challenge）/响应（response）消息交互模式的认证过程,从整个认证过程来看,安全确实不怎么到位,也就是说入侵者只需要拿到一个系统管理员的hash,直接给dc认证就好了,反正账户名和域名都知道,早期的pass the hash (psexec)不正是通过这种方式来进行的吗,如果本地管理员的账号密码相同,其实不用密码一样可以被认证,我们所要做的就是不断通过这种方式来尝试拓展内网的其他机器,直到控制整个域,但后来的kb2871997,似乎改变了一些现状,但也可能只是似乎<br><br><br></p>
-<h3 id="关于kerberos的一些概述"><a href="#关于kerberos的一些概述" class="headerlink" title="关于kerberos的一些概述:"></a>关于kerberos的一些概述:</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;相对于ntlm而言,kerberos的认证方式就要复杂很多,因为它提供了一个集中式的认证方式,在整个认证过程中总共要涉及到三方:客户端,服务端和KDC(Key Distribution Center[密钥分发中心]), 在Windows域环境中,KDC的角色由DC(Domain Controller[域控])来担任,Kerberos是一种基于”票据”的认证方式,票据(Ticket)用来安全的在认证服务器和用户请求的服务之间传递用户的身份,同时也会传递一些附加信息,用来保证使用Ticket的用户必须是Ticket中指定的用户,Ticket一旦生成,在生存时间内可以被Client多次使用来申请同一个Server的服务(票据窃取),</p>
-<h3 id="kerberos的大致工作流程"><a href="#kerberos的大致工作流程" class="headerlink" title="kerberos的大致工作流程:"></a>kerberos的大致工作流程:</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;说到这里,我们大概也能明白,域中的客户端要想访问同域中的某个服务器资源时,需要首先购买该服务端认可的票据,也就是说,客户端在访问服务器之前需要预先买好票,等待服务验票之后才能入场,但是这张票不能直接购买,还需要一张认购权证,也就是说客户端在买票之前需要预先获得一张认购权证,这张认购权证和进入服务器的入场券均有KDC发售,下面就以下图来做简要说明:<br><img src="/img/kerbos.png" alt="&#39;&#39;"><br></p>
+<h5 id="为什么要理解windows-安全认证机制"><a href="#为什么要理解windows-安全认证机制" class="headerlink" title="为什么要理解windows 安全认证机制:"></a>为什么要理解windows 安全认证机制:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">加深对后续的各种利用理解深度,还是那句话,不仅要知其然,也要知其所以然嘛</div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="windows认证协议主要有以下两种"><a href="#windows认证协议主要有以下两种" class="headerlink" title="windows认证协议主要有以下两种:"></a>windows认证协议主要有以下两种:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;基于ntlm的认证方式,主要用在早期的windows工作组环境中,认证的过程也相对比较简单,另一种是基于Kerberos的认证方式,主要用在域环境中,下面就这两种不同的认证方式做些简要的通信流程说明<br><br></p>
+<h5 id="关于ntlm认证流程简要说明-如下"><a href="#关于ntlm认证流程简要说明-如下" class="headerlink" title="关于ntlm认证流程简要说明,如下:"></a>关于ntlm认证流程简要说明,如下:</h5><p><img src="/img/ntlm.png" alt="&#39;&#39;"><br></p>
+<h5 id="根据上图所示-ntlm在域中的认证过程主要分为以下几步"><a href="#根据上图所示-ntlm在域中的认证过程主要分为以下几步" class="headerlink" title="根据上图所示,ntlm在域中的认证过程主要分为以下几步:"></a>根据上图所示,ntlm在域中的认证过程主要分为以下几步:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>)第一步,首先在client输入username,password和domain,然后client会把password hash后的值先缓存到本地</div><div class="line"><span class="number">2</span>)第二步,client把username的明文发送给server(DC)</div><div class="line"><span class="number">3</span>)第三步,DC会生成一个<span class="number">16</span>字节的随机数,即challenge(挑战码),再传回给client</div><div class="line"><span class="number">4</span>)第四步,当client收到challenge以后,会先复制一份出来,然后和缓存中的密码hash再一同混合hash一次,混合后的值称为response,之后client再将challenge,response及username一并都传给server</div><div class="line"><span class="number">5</span>)第五步,server端在收到client传过来的这三个值以后会把它们都转发给DC</div><div class="line"><span class="number">6</span>)第六步,当DC接到过来的这三个值的以后,会根据username到域控的账号数据库(ntds.dit)里面找到该username对应的hash,然后把这个hash拿出来和传过来的challenge值再混合hash</div><div class="line"><span class="number">7</span>)第七步,将(<span class="number">6</span>)中混合后的hash值跟传来的response进行比较,相同则认证成功,反之,则失败,当然,如果是本地登录,所有验证肯定也全部都直接在本地进行了</div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="关于ntlm的一点小结"><a href="#关于ntlm的一点小结" class="headerlink" title="关于ntlm的一点小结:"></a>关于ntlm的一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;它是一种基于挑战（challenge）/响应（response）消息交互模式的认证过程,从整个认证过程来看,安全确实不怎么到位,也就是说入侵者只需要拿到一个系统管理员的hash,直接给dc认证就好了,反正账户名和域名都知道,早期的pass the hash (psexec)不正是通过这种方式来进行的吗,如果本地管理员的账号密码相同,其实不用密码一样可以被认证,我们所要做的就是不断通过这种方式来尝试拓展内网的其他机器,直到控制整个域,但后来的kb2871997,似乎改变了一些现状,但也可能只是似乎<br><br><br></p>
+<h5 id="关于kerberos的一些概述"><a href="#关于kerberos的一些概述" class="headerlink" title="关于kerberos的一些概述:"></a>关于kerberos的一些概述:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;相对于ntlm而言,kerberos的认证方式就要复杂很多,因为它提供了一个集中式的认证方式,在整个认证过程中总共要涉及到三方:客户端,服务端和KDC(Key Distribution Center[密钥分发中心]), 在Windows域环境中,KDC的角色由DC(Domain Controller[域控])来担任,Kerberos是一种基于”票据”的认证方式,票据(Ticket)用来安全的在认证服务器和用户请求的服务之间传递用户的身份,同时也会传递一些附加信息,用来保证使用Ticket的用户必须是Ticket中指定的用户,Ticket一旦生成,在生存时间内可以被Client多次使用来申请同一个Server的服务(票据窃取),<br><br></p>
+<h5 id="kerberos的大致工作流程"><a href="#kerberos的大致工作流程" class="headerlink" title="kerberos的大致工作流程:"></a>kerberos的大致工作流程:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;说到这里,我们大概也能明白,域中的客户端要想访问同域中的某个服务器资源时,需要首先购买该服务端认可的票据,也就是说,客户端在访问服务器之前需要预先买好票,等待服务验票之后才能入场,但是这张票不能直接购买,还需要一张认购权证,也就是说客户端在买票之前需要预先获得一张认购权证,这张认购权证和进入服务器的入场券均有KDC发售,下面就以下图来做简要说明:<br><img src="/img/kerbos.png" alt="&#39;&#39;"><br></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>)首先,客户端(client)将域用户的密码hash一次并保存,然后,以此hash来作为客户端和KDC之间的长期共享密钥[kc](当然,在DC上也保存着同样的一条hash)</div><div class="line"><span class="number">2</span>)之后,客户端(client)开始利用(<span class="number">1</span>)中的域用户密码hash再把时间戳,clientid,TGS id等信息混合hash一次,然后向as(认证服务器 [Authentication Server])服务器进行请求</div><div class="line"><span class="number">3</span>)as接到该请求后,利用长期共享密钥(kc)进行解密,解密成功后,会返回给客户端两个票据</div><div class="line">  (<span class="number">1</span>)加密的K(c,tgs)(用于客户端后续向KDC发起请求),TGS Name/ID,时间戳等,该票据由Kc加密</div><div class="line">  (<span class="number">2</span>)票据授予票据(Ticket Granting Ticket,简称TGT),该票据是给TGS的,票据的内容包括K(c,tgs),Client身份信息,域名,时间戳等,该票据由TGS的秘钥加密,只有TGS能够解密</div><div class="line"><span class="number">4</span>)然后,客户端会利用长期共享密钥解密k(c,tgs),并利用该秘钥加密生成一个Authenticator,内容包括<span class="symbol">:lifetime</span>,时间戳,Client身份信息等,连同从AS获取的TGT一并发送给TGS</div><div class="line"><span class="number">5</span>)TGS利用自身的秘钥解密TGT,获取K(c,tgs),并用K(c,tgs)解密客户端发送的Authenticator,对Client进行认证,如果Client通过了认证,TGS随机生成一个Session Key K(c,s),并产生两个票据</div><div class="line">  (<span class="number">1</span>)服务票据(Ts)<span class="symbol">:</span>这是给服务器的服务票据,由Server秘钥Ks加密,内容包括：K(c,s),Client身份信息,Service ID,时间戳,lifetime等</div><div class="line">  (<span class="number">2</span>)客户端票据(Tc)：该票据由K(c,tgs)加密,内容包括：K(c,s),Server身份信息等</div><div class="line"><span class="number">6</span>)客户端收到tgs的回应后,利用K(c,tgs)解密Tc,获取K(c,s),Server身份信息等,并利用K(c,s)加密生成一个Authenticator发送给Server,内容包括<span class="symbol">:</span>时间戳,Client ID等信息,连同Ts一并发送给Server</div><div class="line"><span class="number">7</span>)Server端在收到Client的请求后,利用自身秘钥Ks解密Ts,得到K(c,s),再利用K(c,s)解密Authenticator,对Client进行认证,如果认证通过,则表示KDC已经允许了此次通信,此时Sever无需与KDC通信,因为Ks为KDC和Sever之间的长期共享秘钥,如果在有效时间内,则此次请求有效</div></pre></td></tr></table></figure>
 <p><br></p>
-<h3 id="关于kerberos利用方法"><a href="#关于kerberos利用方法" class="headerlink" title="关于kerberos利用方法:"></a>关于kerberos利用方法:</h3><h4 id="1-黄金票据-Golden-Ticket"><a href="#1-黄金票据-Golden-Ticket" class="headerlink" title="1,黄金票据(Golden Ticket)"></a>1,黄金票据(Golden Ticket)</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;先假设这么一种情况,原先已拿到的域内所有的账户hash,包括krbtgt这个账户,由于有些原因导致域管权限丢失,但好在你还有一个普通域用户权限,碰巧管理员在域内加固时忘记重置krbtgt密码,基于此条件,我们还能利用该票据重新获得域管理员权限,利用krbtgt的HASH值可以伪造生成任意的TGT(mimikatz),能够绕过对任意用户的账号策略,让用户成为任意组的成员,可用于Kerberos认证的任何服务</p>
-<h4 id="2-白银票据-Silver-Ticket"><a href="#2-白银票据-Silver-Ticket" class="headerlink" title="2,白银票据(Silver Ticket)"></a>2,白银票据(Silver Ticket)</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;通过观察Kerberos协议的认证过程不难发现,如果我们获取了Server秘钥Ks(服务器口令散列值),就可以跳过KDC的认证，直接伪造票据和目标Server通信<br><br></p>
-<h3 id="关于黄金票据和白银票据的一些区别"><a href="#关于黄金票据和白银票据的一些区别" class="headerlink" title="关于黄金票据和白银票据的一些区别:"></a>关于黄金票据和白银票据的一些区别:</h3><h4 id="1-访问权限不同"><a href="#1-访问权限不同" class="headerlink" title="(1)访问权限不同"></a>(1)访问权限不同</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden <span class="symbol">Ticket:</span>伪造TGT,可以获取任何Kerberos服务权限</div><div class="line">Silver <span class="symbol">Ticket:</span>伪造TGS,只能访问指定的服务</div></pre></td></tr></table></figure>
-<h4 id="2-加密方式不同"><a href="#2-加密方式不同" class="headerlink" title="(2)加密方式不同"></a>(2)加密方式不同</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden Ticket由Kerberos的Hash加密</div><div class="line">Silver Ticket由服务账号(通常为计算机账户)Hash加密</div></pre></td></tr></table></figure>
-<h4 id="3-认证流程不同"><a href="#3-认证流程不同" class="headerlink" title="(3)认证流程不同"></a>(3)认证流程不同</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Golden Ticket的利用过程需要访问域控,而Silver Ticket不需要</div></pre></td></tr></table></figure>
+<h5 id="关于kerberos利用方法"><a href="#关于kerberos利用方法" class="headerlink" title="关于kerberos利用方法:"></a>关于kerberos利用方法:</h5><p>1,黄金票据(Golden Ticket)<br>&nbsp;&nbsp;&nbsp;&nbsp;先假设这么一种情况,原先已拿到的域内所有的账户hash,包括krbtgt这个账户,由于有些原因导致域管权限丢失,但好在你还有一个普通域用户权限,碰巧管理员在域内加固时忘记重置krbtgt密码,基于此条件,我们还能利用该票据重新获得域管理员权限,利用krbtgt的HASH值可以伪造生成任意的TGT(mimikatz),能够绕过对任意用户的账号策略,让用户成为任意组的成员,可用于Kerberos认证的任何服务</p>
+<p>2,白银票据(Silver Ticket)<br>&nbsp;&nbsp;&nbsp;&nbsp;通过观察Kerberos协议的认证过程不难发现,如果我们获取了Server秘钥Ks(服务器口令散列值),就可以跳过KDC的认证，直接伪造票据和目标Server通信<br><br></p>
+<h5 id="关于黄金票据和白银票据的一些区别"><a href="#关于黄金票据和白银票据的一些区别" class="headerlink" title="关于黄金票据和白银票据的一些区别:"></a>关于黄金票据和白银票据的一些区别:</h5><p>(1)访问权限不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden <span class="symbol">Ticket:</span>伪造TGT,可以获取任何Kerberos服务权限</div><div class="line">Silver <span class="symbol">Ticket:</span>伪造TGS,只能访问指定的服务</div></pre></td></tr></table></figure></p>
+<p>(2)加密方式不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden Ticket由Kerberos的Hash加密</div><div class="line">Silver Ticket由服务账号(通常为计算机账户)Hash加密</div></pre></td></tr></table></figure></p>
+<p>(3)认证流程不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Golden Ticket的利用过程需要访问域控,而Silver Ticket不需要</div></pre></td></tr></table></figure></p>
 <p><br></p>
-<h3 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;微软给我们的建议是,尽量们不要直接使用NTLM,而使用negotiate,如果使用的是negotiate,windows则会先判断kerberos是否可用,如果可用就优先使用kerberos,否则才会使用NTLM,kerberos的安全性确实要比NTLM要高很多</p>
+<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;微软给我们的建议是,尽量们不要直接使用NTLM,而使用negotiate,如果使用的是negotiate,windows则会先判断kerberos是否可用,如果可用就优先使用kerberos,否则才会使用NTLM,kerberos的安全性确实要比NTLM要高很多</p>
 
         </div>
     
@@ -536,7 +525,7 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="由LLMNR引发的一系列中间人"><a href="#由LLMNR引发的一系列中间人" class="headerlink" title="由LLMNR引发的一系列中间人"></a>由LLMNR引发的一系列中间人</h4><p><br></p>
+<h5 id="由LLMNR引发的一系列中间人"><a href="#由LLMNR引发的一系列中间人" class="headerlink" title="由LLMNR引发的一系列中间人"></a>由LLMNR引发的一系列中间人</h5><p><br></p>
 <h5 id="1-在开始真正的内容之前-我们需要先来了解下-在同一内网环境中的windows机器相互之间的一些通信细节-当一台win机器向另一台win机器以域名-机器名-的形式请求相应的资源时-正常的流程如下"><a href="#1-在开始真正的内容之前-我们需要先来了解下-在同一内网环境中的windows机器相互之间的一些通信细节-当一台win机器向另一台win机器以域名-机器名-的形式请求相应的资源时-正常的流程如下" class="headerlink" title="1,在开始真正的内容之前,我们需要先来了解下,在同一内网环境中的windows机器相互之间的一些通信细节,当一台win机器向另一台win机器以域名(机器名)的形式请求相应的资源时,正常的流程如下"></a>1,在开始真正的内容之前,我们需要先来了解下,在同一内网环境中的windows机器相互之间的一些通信细节,当一台win机器向另一台win机器以域名(机器名)的形式请求相应的资源时,正常的流程如下</h5><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">首先,windows会先去检查自己的主机配置文件,然后按照此文件中的配置进行解析,通常在C:<span class="symbol">\W</span>indows<span class="symbol">\S</span>ystem32<span class="symbol">\d</span>rivers<span class="symbol">\e</span>tc下</div><div class="line">当上面的步骤无法正确解析时,这时系统会自动去检查本地的dns缓存,按照缓存中的指向再进行解析,执行 ipconfig /displaydns 即可看到缓存内容</div><div class="line">如果本地缓存也不能正确解析,它会向本地网络中的dns服务器去请求</div><div class="line">如果连dns也解析失败,它就会被交给LLMNR(链路本地多播名称解析)和netbios-ns(netbios[名称服务]专门用于同一内网中windows机器之间通过机器名相互访问,工作在会话层)去处理解析</div></pre></td></tr></table></figure>
 <h5 id="2-而基于LLMNR的中间人攻击-也就发生在这里"><a href="#2-而基于LLMNR的中间人攻击-也就发生在这里" class="headerlink" title="2,而基于LLMNR的中间人攻击,也就发生在这里:"></a>2,而基于LLMNR的中间人攻击,也就发生在这里:</h5><p>假设现在有三台机器,A(正常的客户机),B(攻击者的机器),C(要访问的服务器),当A向C发起共享资源请求的时候,由于dns解析失败,正常情况下该请求会被交给LLMNR然后执行netbios查询,但不巧的是攻击者此时正在监听网络中的所有netbios查询请求,自然也就会捕捉到这条查询,当攻击者捕捉到该查询之后,它会告请求者也就是A,我(B)就是你要请求的那台服务器,接着A会把自己的账号密码提供给B认证,也就是说,此时B已经截获到了A的账号密码,一次简易基于LLMNR的中间人攻击就这样完成了,下面的流程图已经很好的说明了这一攻击过程<br><img src="/img/LLMNR.png" alt="LLMNR"><br></p>
 <h5 id="此时-我们可以利用responder-尝试获取目标的smb-hash-虽然不是明文-但我们可以配合类似hashcat的hash破解工具尝试破解该hash-当然-如果你有自己的GPU矩阵就再好不过了-或许很快就可以拿到对应的明文"><a href="#此时-我们可以利用responder-尝试获取目标的smb-hash-虽然不是明文-但我们可以配合类似hashcat的hash破解工具尝试破解该hash-当然-如果你有自己的GPU矩阵就再好不过了-或许很快就可以拿到对应的明文" class="headerlink" title="此时,我们可以利用responder 尝试获取目标的smb hash,虽然不是明文,但我们可以配合类似hashcat的hash破解工具尝试破解该hash[当然,如果你有自己的GPU矩阵就再好不过了],或许很快就可以拿到对应的明文"></a>此时,我们可以利用responder 尝试获取目标的smb hash,虽然不是明文,但我们可以配合类似hashcat的hash破解工具尝试破解该hash[当然,如果你有自己的GPU矩阵就再好不过了],或许很快就可以拿到对应的明文</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># responder -I eth0</span></div></pre></td></tr></table></figure>

@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>1,本次的 mssql显错型 实例注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span></div></pre></td></tr></table></figure></p>
+        <p><br><br>1,mssql常规显错型,实例注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mssql_error_injection1.png" alt="&#39;&#39;"><br></p>
 <p>2,依旧先尝试经典的单引号,数据库如期报错,报错原因的很清楚,参数后面多了单引号,不过这也恰好说明我们的单引号已被带入正常查询,其实,到此为止,根据以往的经验我们也可以判断这里百分之九十是个mssql注入点,因为这很显然不是其他数据库的报错信息嘛<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mssql_error_injection2.png" alt="&#39;&#39;"><br></p>

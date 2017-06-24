@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -306,7 +294,7 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器"><a href="#作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器" class="headerlink" title="作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器"></a>作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</h4><p><br></p>
+<h5 id="作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器"><a href="#作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器" class="headerlink" title="作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器"></a>作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</h5><p><br></p>
 <p>1,环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn): <span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
 <p>2,最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的服务</div></pre></td></tr></table></figure></p>
 <p>3,具体过程如下,首先,编辑边界linux系统的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
@@ -341,7 +329,7 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;除了前面提到的用一些端口转发工具来进行端口转发,其实windows系统自己也给我们提供了类似的功能,比如,其自带的防火墙管理工具’netsh’套件(确实非常实用),尤其碰到一些稍微畸形点的内网环境:<br><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;除了前面提到的用一些端口转发工具来进行端口转发,其实windows系统自己也给我们提供了类似的功能,比如,其自带的防火墙管理工具’netsh’套件(确实非常实用),尤其碰到一些稍微畸形点的内网环境:<br><br></p>
 <p>1,先来假设这么一种情况<br>&nbsp;&nbsp;&nbsp;&nbsp;当你搞定边界的一台windows机器以后,上去一看发现,机器上有两块网卡,一块外网卡,一块内网卡(先以正常的DMZ来讲),这时又你通过别的方式搞定了同内网的另一台windows机器,本来以为简单的种上马就可以走人了,但你发现马执行以后似乎什么都没发生,搞了半天,你才发现,原来这台内网机器根本不能连外网,说到这里,相必你也应该知道我要干啥了,没错,虽然内网的那台机器不能连外网,但它起码能跟边界的这台机器正常通信,这就够了,我们可以直接从外部通过边界这台机器来访问内网的那台不能连外网的机器<br><br><br>2,演示简单环境如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">目标的边界机器(win7en) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.212</span>(假设为目标公网ip,这台机器没有任何服务,就是台个人机,rdp和telnet当然也不会开了) <span class="number">192.168</span>.<span class="number">32.132</span>(目标内网ip)</div><div class="line">目标内网的那台不能连外网的机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span>(目标内网ip)</div><div class="line">外部的攻击者的机器(win7cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
 <p>3,要实现的目的很简单:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,可以确认的是,边界机器和攻击者机器通信正常,边界机器和目标内网的那台不能连外网的机器通信正常</div><div class="line">现在,我想通过边界机器的某个端口去访问目标内网的那台不能上外网的机器的<span class="number">3389</span>,下面是具体的操作步骤</div></pre></td></tr></table></figure></p>
         </div>
@@ -375,7 +363,7 @@
     
         <div class="content">
             <p><br></p>
-<h5 id="关于使用http隧道代理脚本时-容易出现的一些错误及解决办法"><a href="#关于使用http隧道代理脚本时-容易出现的一些错误及解决办法" class="headerlink" title="关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:"></a>关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:</h5><p>1,如果是php程序,你可能需要先确保php.ini中的socket模块已正常开启并且可用,因为php中的socket函数要基于此模块,不过,reGeorg早已经提供了不再需要开启socket的代理脚本<br>2,有时候你在绑定某些端口会遇到socket无法建立连接的问题,不妨尝试换一下端口,比如:53,8080,443,只要不跟目标系统中的现有端口冲突即可,尽量用一些穿透性比较好的端口<br>3,有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,里面肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本(webshell)的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<h5 id="关于使用http隧道代理脚本时-容易出现的一些错误及解决办法"><a href="#关于使用http隧道代理脚本时-容易出现的一些错误及解决办法" class="headerlink" title="关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:"></a>关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:</h5><p><br><br>1,如果是php程序,你可能需要先确保php.ini中的socket模块已正常开启并且可用,因为php中的socket函数要基于此模块,不过,reGeorg早已经提供了不再需要开启socket的代理脚本<br><br><br>2,有时候你在绑定某些端口会遇到socket无法建立连接的问题,不妨尝试换一下端口,比如:53,8080,443,只要不跟目标系统中的现有端口冲突即可,尽量用一些穿透性比较好的端口<br><br><br>3,有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,里面肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本(webshell)的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/16/http-tunnel-question/" class="read-more">Read More</a>
     

@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>1,此次用于演示的实例 mysql 注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.vuln.com/md</span>_materia_profile_view.php?viewid=<span class="number">2</span></div></pre></td></tr></table></figure></p>
+        <p><br><br>1,常规数字型 mysql 实例注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.vuln.com/md</span>_materia_profile_view.php?viewid=<span class="number">2</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mysql_comm1.png" alt="&#39;&#39;"><br></p>
 <p>2,依旧先尝试下经典的单引号,如下,虽然没暴露出明显的数据库报错信息,但我们发现,此时返回的页面已经异常了,经验判断,十有八九是个注入点,先不管那么多,我们继续<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.vuln.com/md</span>_materia_profile_view.php?viewid=<span class="number">2</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mysql_comm2.png" alt="&#39;&#39;"><br></p>

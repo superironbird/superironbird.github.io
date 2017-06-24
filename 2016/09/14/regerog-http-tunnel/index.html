@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -172,7 +160,7 @@
 
         <!-- Post Content -->
         <p><br></p>
-<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
+<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p><br><br>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/regeorg_weshell_proxy.png" alt=""><br></p>
 <p>2,连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><br><img src="/img/regeorg_weshell_res.png" alt=""><br></p>
 <p>3,实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>

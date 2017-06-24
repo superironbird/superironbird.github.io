@@ -85,37 +85,25 @@
             
             <li class="menu-item">
                 <a href="/">
-                    主页
+                    home
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/archives">
-                    所有文章
+                    archives
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/about">
-                    关于自己
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/tags">
-                    标签
-                </a>
-            </li>
-            
-            <li class="menu-item">
-                <a href="/categories">
-                    分类
+                    about me
                 </a>
             </li>
             
             <li class="menu-item">
                 <a href="/contact">
-                    一起交流
+                    blogs
                 </a>
             </li>
             
@@ -171,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>1,本次的实例 mysql 盲注点,如下,虽然这并不是个标标准准的盲注点,但并不影响我们用盲注的方式来获取数据,以后遇到纯正的盲注点,我们再补充:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/wexpage</span>.php?id=<span class="number">21</span></div></pre></td></tr></table></figure></p>
+        <p><br><br>1,实例 mysql 盲注点,如下,虽然这并不是个标标准准的盲注点,但并不影响我们用盲注的方式来获取数据,以后遇到纯正的盲注点,我们再补充:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/wexpage</span>.php?id=<span class="number">21</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mysql_bind_bool1.png" alt="&#39;&#39;"><br></p>
 <p>2,一阵单引号过后,目标数据库如期报错,对于mysql来讲,一般出现这情况,百分之九十九可以确定这就是个正儿八经的注入点<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/wexpage</span>.php?id=<span class="number">21</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/mysql_bind_bool2.png" alt="&#39;&#39;"><br></p>
