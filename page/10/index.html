@@ -139,6 +139,45 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2014/12/16/dirscan/">
+                快速搜集目标的各类web管理入口,敏感目录,文件及错误配置
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dirscan/">dirscan</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="1-自己找网站后台的一些办法-这里所指的找后台主要都是针对一些非开源的web程序-对于开源程序-直接把代码down下来看看目录结构-不就什么都有了-何苦要找呢"><a href="#1-自己找网站后台的一些办法-这里所指的找后台主要都是针对一些非开源的web程序-对于开源程序-直接把代码down下来看看目录结构-不就什么都有了-何苦要找呢" class="headerlink" title="1,自己找网站后台的一些办法[这里所指的找后台主要都是针对一些非开源的web程序,对于开源程序,直接把代码down下来看看目录结构,不就什么都有了,何苦要找呢]:"></a>1,自己找网站后台的一些办法[这里所指的找后台主要都是针对一些非开源的web程序,对于开源程序,直接把代码down下来看看目录结构,不就什么都有了,何苦要找呢]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">首先,看看目标网站页面中,有没有给我们提供后台入口,很多脑残的政府和学校站一般都会这么干,直接把后台入口留在前端页面上</div><div class="line">尝试访问目标的robots.txt文件,如果有的话,看看里面有没有后台或者上传点之类的敏感目录,至于robots.txt文件本身的作用,大家自行谷歌,这里就不多做解释了</div><div class="line">习惯性的盲打一些常见的后台目录名,例如<span class="symbol">:/admin/</span> /manage/ <span class="regexp">/cms/</span> /system/ <span class="regexp">/administrator/</span> /wp-login.php /control/等,试着大小写变换下……</div><div class="line">使用各类基于字典的目录爆破及爬行工具,例如<span class="symbol">:dirb</span>,wwwscan,cansina,uniscan,破壳以及其它的各种py脚本,非常多,现在也有很多在线的目录爆破工具站,其实,这类的工具没什么太多的技术含量,实际效果还得取决于你的字典质量和目标的防护程度,抛开防护先不说,起码网站敏感目录文件字典要精心准备是必须的</div><div class="line"><span class="string">"cscan"</span>谷歌浏览器小插件,速度快,误报极高,具体原理,本人暂时还没弄明白,不过可以尝试下,自己用的比较少,记得有一次实在没办法就尝试了一下,结果真的就跑出来了,可能是运气吧</div><div class="line">对于大型站点,可利用之前提到的google hacking,这里就不细说了,请仔细看前面的说明</div><div class="line">用各种wvs爬,也许也能爬出来一些,关于这类web漏洞扫描器的具体使用,后面会有详细说明,这里就先不细说了,例如: awvs,appscan,netsparker……</div><div class="line">如果是windows的话,不妨尝试下短文件漏洞扫描工具,鸡肋的是,它只能扫出前<span class="number">6</span>个字节(<span class="number">6</span>个英文字符),也就是说你只能看一部分猜一部分,好处在于前<span class="number">6</span>个字节起码是绝对正确的</div><div class="line">配合网站的域名或者业务社工,比如<span class="symbol">:</span>商城站一般我们会想到什么呢,shop?,有的后台目录也可能是依据域名的各种变形,多尝试……</div><div class="line">尝试各种万能密码,虽然很low,但很直接,存在万能密码问题的程序毕竟也不在少数,如<span class="symbol">:phpmyadmin</span> <span class="number">2.11</span>.<span class="number">3</span>-<span class="number">2.11</span>.<span class="number">4</span> 等……</div><div class="line">如果实在找不到,就想想办法直接问管理员吧,至于套不套的出来,就要看你自己的本事了,嘿嘿……</div></pre></td></tr></table></figure>
+<h5 id="2-除了一些常规的网站后台入口-我们也可以尝试各种java-web入口-尤其是针对各种java控制台的-当然-前提是目标要有-基本一旦进去-shell权限都非常大"><a href="#2-除了一些常规的网站后台入口-我们也可以尝试各种java-web入口-尤其是针对各种java控制台的-当然-前提是目标要有-基本一旦进去-shell权限都非常大" class="headerlink" title="2,除了一些常规的网站后台入口,我们也可以尝试各种java web入口,尤其是针对各种java控制台的,当然,前提是目标要有,基本一旦进去,shell权限都非常大:"></a>2,除了一些常规的网站后台入口,我们也可以尝试各种java web入口,尤其是针对各种java控制台的,当然,前提是目标要有,基本一旦进去,shell权限都非常大:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tomcat[默认端口<span class="number">8080</span> 需要用户名密码,还是那句话多尝试些弱口令,进去以后上传war马]</div><div class="line">jboss [默认端口<span class="number">8080</span>无需任何验证,进去以后上传war马]</div><div class="line">weblogic [默认端口<span class="number">7001</span>,实际很多是在<span class="number">8080</span>上,进去以后上传war马]</div><div class="line">Websphere[默认端口<span class="number">9043</span>,实际很多是在<span class="number">8080</span>上,进去以后上传war马]</div><div class="line">webmin[web版的服务器管理工具,默认端口<span class="number">10000</span>,可以把它当做图形版的ssh管理工具]</div><div class="line">……</div></pre></td></tr></table></figure>
+<h5 id="3-查找各种敏感文件目录-这里所说的网站敏感文件及目录一般包括如下"><a href="#3-查找各种敏感文件目录-这里所说的网站敏感文件及目录一般包括如下" class="headerlink" title="3,查找各种敏感文件目录,这里所说的网站敏感文件及目录一般包括如下:"></a>3,查找各种敏感文件目录,这里所说的网站敏感文件及目录一般包括如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">网站源码备份文件,数据库备份文件,一般命名都是wwwroot.zip,wwwroot.sql什么的以及其它的各种网站备份文件,建议直接用自己的字典跑</div><div class="line">目标服务器的各种探针类文件,例如<span class="symbol">:phpinfo</span>.php,test.asp,info.aspx……</div><div class="line">目标网站的物理路径,注意物理路径和网站路径的区别,网站路径都是以www为根目录,而物理路径则是指系统某个分区下的具体路径 例如<span class="symbol">:c</span><span class="symbol">:</span>\windows\system32  /usr/local/lib</div><div class="line">管理后台目录,上传目录,如: 各类上传点,各类编辑器的上传点</div><div class="line">网站数据库连接配置类文件</div><div class="line">各类数据库的web管理入口,例如<span class="symbol">:phpmyadmin</span>,adminer……之流</div><div class="line">目标网站后台脚本源码泄露及各种各样的网站报错信息</div><div class="line">svn 文件泄露</div><div class="line">各种第三方程序的核心配置文件,里面可能会有用户密码……例如<span class="symbol">:cisco</span> vpn,ser-u……</div><div class="line">目标内部的各种账号密码信息,并不仅限于邮箱,vpn,ftp……</div><div class="line">web服务器配置错误所导致的目录遍历</div><div class="line">别人的webshell,目录扫描工具对这个的扫描似乎不太靠谱,因为有些shell隐藏的比较深,所以建议直接用google爬各种webshell特征</div><div class="line">……</div></pre></td></tr></table></figure>
+<h5 id="4-还有一些内部的OA系统入口也并不在一些常规的web端口-又该怎么办呢-其实-很多情况下-你可以习惯性的尝试访问以下目标的81-82-83-86-88-8081-8082-8088这样的web端口-说不定会有惊喜呢"><a href="#4-还有一些内部的OA系统入口也并不在一些常规的web端口-又该怎么办呢-其实-很多情况下-你可以习惯性的尝试访问以下目标的81-82-83-86-88-8081-8082-8088这样的web端口-说不定会有惊喜呢" class="headerlink" title="4,还有一些内部的OA系统入口也并不在一些常规的web端口,又该怎么办呢,其实,很多情况下,你可以习惯性的尝试访问以下目标的81,82,83,86,88,8081,8082,8088这样的web端口,说不定会有惊喜呢:"></a>4,还有一些内部的OA系统入口也并不在一些常规的web端口,又该怎么办呢,其实,很多情况下,你可以习惯性的尝试访问以下目标的81,82,83,86,88,8081,8082,8088这样的web端口,说不定会有惊喜呢:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在目标防火墙没有开启的情况下,可以用一些之前介绍过的公网端口扫描工具,进行全端口扫描,然后根据扫到的结果,看着可能是web端口的,尝试在浏览器中逐个访问</div><div class="line">如果目标开起了防火墙[waf],除了谷歌,或者直接在目标网站上找找,基本也就没谁了,扫可能是不太现实的,嘿嘿……这些问题就留给大家一起讨论吧</div><div class="line">……</div></pre></td></tr></table></figure>
+<h5 id="5-搜集目标的各种元数据"><a href="#5-搜集目标的各种元数据" class="headerlink" title="5,搜集目标的各种元数据"></a>5,搜集目标的各种元数据</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">foca [工具除了挖据各种元数据之外,包括目标子域识别,服务器错误配置,web高危扫描……功能还是非常好用的,尤其是针对大中型站点]</div></pre></td></tr></table></figure>
+<p><br></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;对于后台的查找,基本也就这么多了,如果实在找不到,不妨换换别的思路,web只是我们渗透过程中的其中一个入手点,却不是唯一的入手点,别太死板就行,更多姿势,也期待跟大家一起交流学习</p>
+<p><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2014/12/15/shodan-hacking/">
                 熟练利用shodan hacking 辅助我们快速渗透 [ 通常针对大中型目标 ]
             </a>
@@ -590,57 +629,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">13</span>) 这时,我们在服务器端已经看到有一个vpn客户端在线,pptp的默认端口是<span class="number">1723</span></div></pre></td></tr></table></figure>
 <p><img src="/img/pptp connect sockest.png" alt=""><br><br><br></p>
 <h5 id="一些小结"><a href="#一些小结" class="headerlink" title="一些小结:"></a>一些小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;至此,在windows 2008上的pptp vpn配置基本就全部完成了,可以看到,整个过程并没什么实际的技术含量,在这儿也就不多做说明了,当然vpn对我们的作用也并非仅限于于此,后面在实际的渗透过程中,还有更详细的说明,虽然这次是在2008上配置的,但和在2003,2012上配置pptp几乎没什么区别,基本流程都差不多,最多可能安装的地方不太一样,希望大家能举一反三,多尝试,熟了就好了<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/08/ubuntu-pptp/">
-                web渗透第一步 之 信息搜集 [ ubuntu 14.04LTS 快速安装配置pptp ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-08</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/vpn-config/">vpn config</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h4 id="一点安装配置前的准备工作"><a href="#一点安装配置前的准备工作" class="headerlink" title="一点安装配置前的准备工作:"></a>一点安装配置前的准备工作:</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">先最小化安装好ubuntu server <span class="number">14.04</span> LTS,除了ssh,尽量不要再勾选其它的服务,顺手做些简单的系统安全优化,尽量保证系统的纯净</div></pre></td></tr></table></figure>
-<h4 id="关于vpn的具体用途-在前面已有详细说明-这里就不再赘述-下面会专门说明如何在linux-这里以ubuntu14-04为例-中快速搭建配置pptp"><a href="#关于vpn的具体用途-在前面已有详细说明-这里就不再赘述-下面会专门说明如何在linux-这里以ubuntu14-04为例-中快速搭建配置pptp" class="headerlink" title="关于vpn的具体用途,在前面已有详细说明,这里就不再赘述,下面会专门说明如何在linux(这里以ubuntu14.04为例)中快速搭建配置pptp"></a>关于vpn的具体用途,在前面已有详细说明,这里就不再赘述,下面会专门说明如何在linux(这里以ubuntu14.04为例)中快速搭建配置pptp</h4><p>1)首先,在Ubuntu中安装pptp服务端<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install pptpd -y</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
-<p>2)服务端安装完成后,我们就可以开始配置pptpd了,先看下本机ip,等会儿要写到配置文件中<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ifconfig -a</span></div></pre></td></tr></table></figure></p>
-<p>3)编辑pptpd的主配置文件,设置好本机ip和vpn 的内网iP地址池(分配vpn内网ip要用)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/pptpd.conf</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">localip <span class="number">192.168</span>.<span class="number">3.185</span>        本机ip,如果用的是vps,那这里就写vps的公网ip</div><div class="line">remoteip <span class="number">172.16</span>.<span class="number">110.1</span>-<span class="number">20</span>     设置vpn的内网ip地址池</div></pre></td></tr></table></figure>
-<p>4)编辑pptpd的dns配置文件,设置好用于解析的dns服务器ip,推荐使用8.8.8.8<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/ppp/pptpd-options</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ms-dns <span class="number">8.8</span>.<span class="number">8.8</span></div><div class="line">ms-dns <span class="number">114.114</span>.<span class="number">114.114</span></div></pre></td></tr></table></figure>
-<p>5) 添加系统用户,没错,在linux中pptp也直接用的是系统用户,作为我们的vpn登录账户[不过,大多数可能都是nologin的]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># useradd xlion</span></div><div class="line"><span class="comment"># passwd  xlion</span></div></pre></td></tr></table></figure></p>
-<p>6) 把该账号密码添加到对应的pptp配置文件中,格式: username  pptpd password *,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/ppp/chap-secrets</span></div><div class="line">xlion  pptpd admin *</div></pre></td></tr></table></figure></p>
-<p>7) 重启pptpd服务,记得顺手看下服务有没有起来<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># /etc/init.d/pptpd restart</span></div><div class="line"><span class="comment"># netstat -tulnp | grep "1723"</span></div></pre></td></tr></table></figure></p>
-<p>8) 编辑sysctl.conf 文件,开启系统的路由转发功能,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/sysctl.conf  </span></div><div class="line">net.ipv4.ip_forward=<span class="number">1</span> 将ip_forward 值改为 <span class="number">1</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sysctl -p  重新读取sysctl配置</span></div></pre></td></tr></table></figure>
-<p>9) 如果你已经安装并且开启了iptables,可以顺手把下面的规则加进去,要不然,你可能会发现客户端连不上vpn,这里的ip段是vpn的内网ip段,网卡接口是外网卡接口<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># iptables -t nat -A POSTROUTING -s 172.16.110.0/24 -o  eth0 -j MASQUERADE</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">设置下mtu,正常情况下<span class="number">1200</span>即可,防止包过大,可以不用设置</div><div class="line"><span class="comment"># iptables -A FORWARD -s 172.16.110.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200  </span></div><div class="line"><span class="comment"># iptables-save &gt; /etc/iptables-rules   </span></div><div class="line"><span class="comment"># /etc/init.d/iptables restart</span></div></pre></td></tr></table></figure>
-<p>10) 让pptpd 服务随系统自启动<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update-rc.d pptpd enable</span></div></pre></td></tr></table></figure></p>
-<p>11) 开始配置客户端,进行连接测试,有时候,你可能会遇到这样的情况,虽然pptp客户端是连接成功了,但无法正常上网,ping的结果显示超时,绝大多数原因都是防火墙在搞鬼,你可以利用下面的命令直接把防火墙关掉,或者允许1723端口能正常进出应该就没问题了,至此,在ubuntu 14.04 LTS中搭建配置pptpd基本就算完成了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ufw status</span></div><div class="line"><span class="comment"># ufw disable  		停止防火墙并删除自启动</span></div><div class="line"><span class="comment"># ufw allow 1723    	允许外部的1723端口访问</span></div><div class="line"><span class="comment"># ufw delete allow 1723	禁止外部访问本机的1723端口</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/pptp server ubuntu.png" alt=""><br><br><img src="/img/ubuntu pptpd res.png" alt=""><br><br><img src="/img/ubuntu pptpd res ping .png" alt=""><br><br><img src="/img/ubuntu pptpd tracert.png" alt=""><br></p>
-<p>12) 是不是觉得手敲命令太枯燥了呢,把它写成shell脚本吧,其实非常简单,稍微把命令堆砌调整一下即可,稍后会把自己的脚本都提供给大家,可根据自己的实际需求再稍微改下<br><br></p>
-<h5 id="一些小结"><a href="#一些小结" class="headerlink" title="一些小结:"></a>一些小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;通观全文并没什么实际的技术含量,安装配置和win下基本也没有太大差别,只不过一个是靠图形界面,另一个是靠改配置文件来完成的,完全是看个人习惯,可能我自己比较习惯linux,所以更喜欢在linux中配置pptp,如果你觉得windows比较方便,那你就直接在windows上配置就好了,前提是要严格遵循前面所提到的一些关于系统的各种安全策略配置,不同的系统平台策略设置可能不太一样,后面会有专门的篇幅来讲解linux系统的安全部署,这里只要暂时能满足把服务先跑起来能用上即可,关于安全部署方面的东西,后面再详细说,因为你vpn宿主系统的安全也会直接关系到你自己的安全,大家可能在这上面还要多花点儿心思才是,不早了,睡觉咯,安……！</p>
-<p><br></p>
 
         </div>
     

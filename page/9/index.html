@@ -139,6 +139,47 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2015/04/16/reaver-crack-pin-code/">
+                利用reaver破解目标pin码
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2015-04-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wpa-wpa2-crack/">wpa/wpa2 crack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,说到pin码就不得不提wps,它是一种特殊的无线认证协议,当路由器开启wps功能后,会随机生成一个8位的pin码,通过暴力枚举这个pin码(共11000中可能),就可以达到破解目标wifi的目的,很不错的现象是,现在很多路由器默认就开启了wps功能<br><br><br>关于pin码爆破的具体原理简要分析,如下:<br>&nbsp;&nbsp;前4位为第一部分,第5-7位为第二部分,最后1位为第三部分<br>&nbsp;&nbsp;第一部分的验证跟第二部分没关联,最后1位的结果是根据第二部分计算得出的校验码<br>&nbsp;&nbsp;破解一开始是会先单独对第一部分进行pin码匹配,<br>&nbsp;&nbsp;也就是说先破解前4位pin码,而前4位也就是0000-9999共有10000个组合<br>&nbsp;&nbsp;当前4位pin码确定后再对第二部分进行pin码匹配,<br>&nbsp;&nbsp;再对5-7位进行破解,而5-7位是000-999,共有1000个组合<br>&nbsp;&nbsp;当前7位都确定后,最后1位也会自动得出,即破解完成<br>&nbsp;&nbsp;根据pin码破解的原理,可以看到只需要枚举11000种情况就会必然破解出pin码,<br>&nbsp;&nbsp;从而通过pin得到wifi密码,这么点儿组合对计算机来讲,破解出来是迟早的,不过实际很大程度上还要依赖于目标路由的网络状况和信号强弱<br>&nbsp;&nbsp;<img src="/img/pin.jpg" alt="pin码格式"><br></p>
+<p>2,具体的pin码破解流程如下,首先,依然是先开启网卡的监听模式:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># airmon-ng start wlan0</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/airmon.png" alt="开启网卡监听模式"><br></p>
+<p>3,而后,开始扫描附近所有开启了wps的无线设备,locked状态为’No’的,都可以作为下手的目标<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wash -i wlan0mon --ignore-fcs  这里有时会报fcs错误,加上该选项即可</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sec.png" alt="扫描附近开了wps的无线设备"><br></p>
+<p>4,使用reaver工具爆破pin码,关于reaver 一些选项作用如下:<br>&nbsp;&nbsp;-i     监听后的网卡接口名称<br>&nbsp;&nbsp;-b  指定目标无线ap的mac地址<br>&nbsp;&nbsp;-a  自动检测目标AP最佳配置<br>&nbsp;&nbsp;-S  使用最小的DH key(提高破解速度)<br>&nbsp;&nbsp;-vv 显示详细的破解过程<br>&nbsp;&nbsp;-d  即delay每穷举一次的闲置时间预设为1秒<br>&nbsp;&nbsp;-t  即timeout每次穷举等待反馈的最长时间,即破解超时时长<br>&nbsp;&nbsp;-c  指定频道可以方便找到无线信号,如-c 1 指定1频道</p>
+<p>根据无线信号强弱针对性的调整下命令:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># reaver -i wlan0mon -b MAC -a -S -vv -d0 -c 1  		信号非常好</span></div><div class="line"><span class="comment"># reaver -i wlan0mon -b MAC -a -S -vv -d2 -t 5 -c 1		信号普通</span></div><div class="line"><span class="comment"># reaver -i wlan0mon -b MAC -a -S -vv -d5 -c 1			信号一般</span></div><div class="line"><span class="comment"># reaver -i wlan0mon -b MAC -S -N -vv -c 4</span></div><div class="line"><span class="comment"># reaver -i wlan0mon -b DC:EE:06:96:B7:B8 -S -N -vv -c 6</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/reaver_finsal.png" alt="开始爆破pin码"><br></p>
+<p>最后,当reaver pin完之后会显示出目标的WPS PIN(正确的pin码)码和WPA PSK密码(正确的wifi密码)<br><br><br>5,假如目标的wpa psk密码被修改了,但wps功能却没有关,pin码也没有改,你还是可以直接用reaver再次获取目标wifi密码,如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># reaver -i mon0 -b mac -p pin码</span></div></pre></td></tr></table></figure></p>
+<p><br></p>
+<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,搞清楚具体的破解原理之后,你会发现其实也并没什么实际性的技术含量,只需要写程序组包跑就是了,可能就是验证的过程有点儿复杂需要多花些时间,但工具(reaver)现在别人都已经为我们写好了,我们所能做的,会用即可,仅此而已,另外,个人并也极不建议一开始破解无线的时候就用这个方法,因为它的速度,大家也可以看到了,影响的因素太多,导致了它非常的慢,尤其是对实地渗透来讲,我们可能根本没有那么长的时间等,所以,能用aircrack搞定的就直接用aircrack来搞定,实在搞不定,再考虑这个也不迟,仅仅是个人建议而已……!</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2015/04/15/auto-crack-wifi/">
                 利用wifite脚本全自动获取握手包
             </a>
@@ -706,45 +747,6 @@
 <h5 id="另外还有一些在线的工具站-不妨也可以利用下-虽然不报太大希望-但惊喜总会在不经意间出现的"><a href="#另外还有一些在线的工具站-不妨也可以利用下-虽然不报太大希望-但惊喜总会在不经意间出现的" class="headerlink" title="另外还有一些在线的工具站,不妨也可以利用下,虽然不报太大希望,但惊喜总会在不经意间出现的:"></a>另外还有一些在线的工具站,不妨也可以利用下,虽然不报太大希望,但惊喜总会在不经意间出现的:</h5><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">https://pentest-tools.com</div><div class="line">https://hackertarget.com/</div></pre></td></tr></table></figure>
 <p><br></p>
 <h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;对于这类工具的实现过程基本都是大同小异,在目标域名后面拼接字典中的路径,然后逐个请求(多线程),观察响应状态码和返回的数据长度变化,head方法因为不返回详细主体,响应速度会相对比较快,不过,对于head这种敏感方法,稍微有点儿经验的管理员都会把它禁用掉,另外还需要注意的是,这样的扫描会在对方的web日志中留下大量的请求记录,如果你的字典过大,可能会直接导致对方web日志文件大小短时间内剧增而触发报警……所以,适量即可,还有最重要的一点,网站目录字典一定要自己精心制作,搜集各种特征目录文件确实是个体力活,这里的特征目录其实就是各种敏感目录文件,关于敏感文件有哪些,在前面的章节中已经详细汇总过,不清楚的地方请直接查看相关说明……,没啥技术含量,总之,非常期待能和大家一起交流学习进步……<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/16/dirscan/">
-                快速搜集目标的各类web管理入口,敏感目录,文件及错误配置
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-16</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dirscan/">dirscan</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="1-自己找网站后台的一些办法-这里所指的找后台主要都是针对一些非开源的web程序-对于开源程序-直接把代码down下来看看目录结构-不就什么都有了-何苦要找呢"><a href="#1-自己找网站后台的一些办法-这里所指的找后台主要都是针对一些非开源的web程序-对于开源程序-直接把代码down下来看看目录结构-不就什么都有了-何苦要找呢" class="headerlink" title="1,自己找网站后台的一些办法[这里所指的找后台主要都是针对一些非开源的web程序,对于开源程序,直接把代码down下来看看目录结构,不就什么都有了,何苦要找呢]:"></a>1,自己找网站后台的一些办法[这里所指的找后台主要都是针对一些非开源的web程序,对于开源程序,直接把代码down下来看看目录结构,不就什么都有了,何苦要找呢]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">首先,看看目标网站页面中,有没有给我们提供后台入口,很多脑残的政府和学校站一般都会这么干,直接把后台入口留在前端页面上</div><div class="line">尝试访问目标的robots.txt文件,如果有的话,看看里面有没有后台或者上传点之类的敏感目录,至于robots.txt文件本身的作用,大家自行谷歌,这里就不多做解释了</div><div class="line">习惯性的盲打一些常见的后台目录名,例如<span class="symbol">:/admin/</span> /manage/ <span class="regexp">/cms/</span> /system/ <span class="regexp">/administrator/</span> /wp-login.php /control/等,试着大小写变换下……</div><div class="line">使用各类基于字典的目录爆破及爬行工具,例如<span class="symbol">:dirb</span>,wwwscan,cansina,uniscan,破壳以及其它的各种py脚本,非常多,现在也有很多在线的目录爆破工具站,其实,这类的工具没什么太多的技术含量,实际效果还得取决于你的字典质量和目标的防护程度,抛开防护先不说,起码网站敏感目录文件字典要精心准备是必须的</div><div class="line"><span class="string">"cscan"</span>谷歌浏览器小插件,速度快,误报极高,具体原理,本人暂时还没弄明白,不过可以尝试下,自己用的比较少,记得有一次实在没办法就尝试了一下,结果真的就跑出来了,可能是运气吧</div><div class="line">对于大型站点,可利用之前提到的google hacking,这里就不细说了,请仔细看前面的说明</div><div class="line">用各种wvs爬,也许也能爬出来一些,关于这类web漏洞扫描器的具体使用,后面会有详细说明,这里就先不细说了,例如: awvs,appscan,netsparker……</div><div class="line">如果是windows的话,不妨尝试下短文件漏洞扫描工具,鸡肋的是,它只能扫出前<span class="number">6</span>个字节(<span class="number">6</span>个英文字符),也就是说你只能看一部分猜一部分,好处在于前<span class="number">6</span>个字节起码是绝对正确的</div><div class="line">配合网站的域名或者业务社工,比如<span class="symbol">:</span>商城站一般我们会想到什么呢,shop?,有的后台目录也可能是依据域名的各种变形,多尝试……</div><div class="line">尝试各种万能密码,虽然很low,但很直接,存在万能密码问题的程序毕竟也不在少数,如<span class="symbol">:phpmyadmin</span> <span class="number">2.11</span>.<span class="number">3</span>-<span class="number">2.11</span>.<span class="number">4</span> 等……</div><div class="line">如果实在找不到,就想想办法直接问管理员吧,至于套不套的出来,就要看你自己的本事了,嘿嘿……</div></pre></td></tr></table></figure>
-<h5 id="2-除了一些常规的网站后台入口-我们也可以尝试各种java-web入口-尤其是针对各种java控制台的-当然-前提是目标要有-基本一旦进去-shell权限都非常大"><a href="#2-除了一些常规的网站后台入口-我们也可以尝试各种java-web入口-尤其是针对各种java控制台的-当然-前提是目标要有-基本一旦进去-shell权限都非常大" class="headerlink" title="2,除了一些常规的网站后台入口,我们也可以尝试各种java web入口,尤其是针对各种java控制台的,当然,前提是目标要有,基本一旦进去,shell权限都非常大:"></a>2,除了一些常规的网站后台入口,我们也可以尝试各种java web入口,尤其是针对各种java控制台的,当然,前提是目标要有,基本一旦进去,shell权限都非常大:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tomcat[默认端口<span class="number">8080</span> 需要用户名密码,还是那句话多尝试些弱口令,进去以后上传war马]</div><div class="line">jboss [默认端口<span class="number">8080</span>无需任何验证,进去以后上传war马]</div><div class="line">weblogic [默认端口<span class="number">7001</span>,实际很多是在<span class="number">8080</span>上,进去以后上传war马]</div><div class="line">Websphere[默认端口<span class="number">9043</span>,实际很多是在<span class="number">8080</span>上,进去以后上传war马]</div><div class="line">webmin[web版的服务器管理工具,默认端口<span class="number">10000</span>,可以把它当做图形版的ssh管理工具]</div><div class="line">……</div></pre></td></tr></table></figure>
-<h5 id="3-查找各种敏感文件目录-这里所说的网站敏感文件及目录一般包括如下"><a href="#3-查找各种敏感文件目录-这里所说的网站敏感文件及目录一般包括如下" class="headerlink" title="3,查找各种敏感文件目录,这里所说的网站敏感文件及目录一般包括如下:"></a>3,查找各种敏感文件目录,这里所说的网站敏感文件及目录一般包括如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">网站源码备份文件,数据库备份文件,一般命名都是wwwroot.zip,wwwroot.sql什么的以及其它的各种网站备份文件,建议直接用自己的字典跑</div><div class="line">目标服务器的各种探针类文件,例如<span class="symbol">:phpinfo</span>.php,test.asp,info.aspx……</div><div class="line">目标网站的物理路径,注意物理路径和网站路径的区别,网站路径都是以www为根目录,而物理路径则是指系统某个分区下的具体路径 例如<span class="symbol">:c</span><span class="symbol">:</span>\windows\system32  /usr/local/lib</div><div class="line">管理后台目录,上传目录,如: 各类上传点,各类编辑器的上传点</div><div class="line">网站数据库连接配置类文件</div><div class="line">各类数据库的web管理入口,例如<span class="symbol">:phpmyadmin</span>,adminer……之流</div><div class="line">目标网站后台脚本源码泄露及各种各样的网站报错信息</div><div class="line">svn 文件泄露</div><div class="line">各种第三方程序的核心配置文件,里面可能会有用户密码……例如<span class="symbol">:cisco</span> vpn,ser-u……</div><div class="line">目标内部的各种账号密码信息,并不仅限于邮箱,vpn,ftp……</div><div class="line">web服务器配置错误所导致的目录遍历</div><div class="line">别人的webshell,目录扫描工具对这个的扫描似乎不太靠谱,因为有些shell隐藏的比较深,所以建议直接用google爬各种webshell特征</div><div class="line">……</div></pre></td></tr></table></figure>
-<h5 id="4-还有一些内部的OA系统入口也并不在一些常规的web端口-又该怎么办呢-其实-很多情况下-你可以习惯性的尝试访问以下目标的81-82-83-86-88-8081-8082-8088这样的web端口-说不定会有惊喜呢"><a href="#4-还有一些内部的OA系统入口也并不在一些常规的web端口-又该怎么办呢-其实-很多情况下-你可以习惯性的尝试访问以下目标的81-82-83-86-88-8081-8082-8088这样的web端口-说不定会有惊喜呢" class="headerlink" title="4,还有一些内部的OA系统入口也并不在一些常规的web端口,又该怎么办呢,其实,很多情况下,你可以习惯性的尝试访问以下目标的81,82,83,86,88,8081,8082,8088这样的web端口,说不定会有惊喜呢:"></a>4,还有一些内部的OA系统入口也并不在一些常规的web端口,又该怎么办呢,其实,很多情况下,你可以习惯性的尝试访问以下目标的81,82,83,86,88,8081,8082,8088这样的web端口,说不定会有惊喜呢:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在目标防火墙没有开启的情况下,可以用一些之前介绍过的公网端口扫描工具,进行全端口扫描,然后根据扫到的结果,看着可能是web端口的,尝试在浏览器中逐个访问</div><div class="line">如果目标开起了防火墙[waf],除了谷歌,或者直接在目标网站上找找,基本也就没谁了,扫可能是不太现实的,嘿嘿……这些问题就留给大家一起讨论吧</div><div class="line">……</div></pre></td></tr></table></figure>
-<h5 id="5-搜集目标的各种元数据"><a href="#5-搜集目标的各种元数据" class="headerlink" title="5,搜集目标的各种元数据"></a>5,搜集目标的各种元数据</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">foca [工具除了挖据各种元数据之外,包括目标子域识别,服务器错误配置,web高危扫描……功能还是非常好用的,尤其是针对大中型站点]</div></pre></td></tr></table></figure>
-<p><br></p>
-<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;对于后台的查找,基本也就这么多了,如果实在找不到,不妨换换别的思路,web只是我们渗透过程中的其中一个入手点,却不是唯一的入手点,别太死板就行,更多姿势,也期待跟大家一起交流学习</p>
-<p><br></p>
 
         </div>
     
