@@ -256,9 +256,9 @@
     
         <div class="content">
             <p><br></p>
-<h5 id="首先-先大致看下目标机器都跑了什么服务-心里需要先大致有个谱"><a href="#首先-先大致看下目标机器都跑了什么服务-心里需要先大致有个谱" class="headerlink" title="首先,先大致看下目标机器都跑了什么服务,心里需要先大致有个谱:"></a>首先,先大致看下目标机器都跑了什么服务,心里需要先大致有个谱:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
-<h5 id="再尝试获取目标机器各个服务的的详细banner"><a href="#再尝试获取目标机器各个服务的的详细banner" class="headerlink" title="再尝试获取目标机器各个服务的的详细banner:"></a>再尝试获取目标机器各个服务的的详细banner:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
-<h5 id="ftp相关的一些漏洞检测脚本"><a href="#ftp相关的一些漏洞检测脚本" class="headerlink" title="ftp相关的一些漏洞检测脚本:"></a>ftp相关的一些漏洞检测脚本:</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标的<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure>
+<p>因为今天的重点并非nmap本身,这次主要是想介绍它的一些相对比较实用的脚本,所以一些选项的具体作用就不再说了,详情可参考端口渗透相关文章,实际中我们可以先用下面的语句,大概扫一眼目标机器或者目标C段都跑了什么服务,心里务必要先有个谱:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
+<p>当然,你也可以尝试获取目标机器各个服务更详细的banner:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
+<p>ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
     
@@ -424,11 +424,11 @@
 <footer class="footer-content">
 
 <center>如果有朋友需要优质vps,可以去老薛买,异常稳定,本人已自用多年,使用下面的优惠码,有25%折扣哦...</center><br>
-<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a>  优惠码: nuddle123<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
 <br>
 <a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
 <br>
-<span>另外,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...]及服务器代维  &nbsp;&nbsp;QQ 742116745</span>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维及 <font color="red"> 渗透培训 </font>  &nbsp;&nbsp;QQ 742116745</span>
 
     <div class="container">
         <div class="row">
