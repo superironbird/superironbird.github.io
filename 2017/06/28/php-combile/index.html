@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="极速编译配置 php 5.3.27"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>极速编译配置 php 5.3.27 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    about me
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    blogs
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/06/28/php-combile/">
+                极速编译配置 php 5.3.27
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-28</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br><br>00x1 关于FastCGI的作用:<br>&nbsp;&nbsp;&nbsp;&nbsp;http服务和动态脚本之间的通信接口,把http服务解析和动态脚本解析分开,apache,nginx默认都支持FastCGI</p>
+<p>00x2 以 Nginx+Php 为例,简述 FastCGI 大致工作原理:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Nginx<span class="string">[fastcgi_pass]</span>  &lt; -- &gt;  Php<span class="string">[php-fpm,可以同时起多个,加快处理速度]</span> wrapper<span class="string">[启动php解析器]</span> &lt; -- &gt; php解析器<span class="string">[读取php.ini]</span> &lt;--&gt; database<span class="string">[增删改查]</span></div><div class="line">		|					|</div><div class="line">	Fastcgi Client端			Fastcgi Server端<span class="string">[php-fpm.conf]</span></div></pre></td></tr></table></figure></p>
+<p>00x3 php 5.3.27 的具体编译安装过程:<br>前期环境准备 [必须先装好nginx和MySQL再来装php]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">nginx</span> 1<span class="selector-class">.12</span>	已完全部署配置完毕,且服务已正常启动</div><div class="line"><span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span>	已完全部署配置完毕,且服务已正常启动</div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/mysql/bin/mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>00x4 准备好yum源,等会儿还要来用它装一些依赖库 [这里暂时用网易的yum源]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /etc/yum.repos.d</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirrors.163.com/.<span class="built_in">help</span>/CentOS6-Base-163.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv CentOS6-Base-163.repo CentOS-Base.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum clean all</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum makecache</span></div></pre></td></tr></table></figure></p>
+<p>00x5 安装好所需的各种依赖 [libiconv-devel库可能会没有,不过没关系,后面再单独编译安装就好了]:<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install -y zlib-devel libxml2-devel openssl openssl-devel libiconv-devel libjpeg-devel free<span class="keyword">type</span>-devel libpng-devel gd-devel curl-devel libxslt-devel</div></pre></td></tr></table></figure></p>
+<p>00x6 安装 libiconv-1.14.tar.gz ,字体库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.14.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.14</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
+<p>00x7 yum安装 libmcrypt<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install epel-release -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install libmcrypt libmcrypt-devel mcrypt -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
+<p>00x8 编译安装加密拓展库 mhash-0.9.9.9.tar.gz<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf mhash-0.9.9.9.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> mhash-0.9.9.9</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
+<p>00x9 编译安装 php 5.3.27,详细配置参数如下:<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># tar xf php-5.3.27.tar.gz</div><div class="line"># cd php-5.3.27</div><div class="line"># ./configure \</div><div class="line">-<span class="ruby">-prefix=<span class="regexp">/usr/local</span><span class="regexp">/php-5.3.27 \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-mysql=/usr</span><span class="regexp">/local/mysql</span> \</span></div><div class="line">-<span class="ruby">-with-iconv-dir=<span class="regexp">/usr/local</span><span class="regexp">/libiconv \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-freetype-dir \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-jpeg-dir \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-png-dir \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-zlib \</span></span></div><div class="line">-<span class="ruby"><span class="regexp">-with-libxml-dir=/usr</span> \</span></div><div class="line">-<span class="ruby">-enable-xml \</span></div><div class="line">-<span class="ruby">-disable-rpath \</span></div><div class="line">-<span class="ruby">-enable-safe-mode \</span></div><div class="line">-<span class="ruby">-enable-bcmath \</span></div><div class="line">-<span class="ruby">-enable-shmop \</span></div><div class="line">-<span class="ruby">-enable-sysvsem \</span></div><div class="line">-<span class="ruby">-enable-inline-optimization \</span></div><div class="line">-<span class="ruby">-with-curl \</span></div><div class="line">-<span class="ruby">-with-curlwrappers \</span></div><div class="line">-<span class="ruby">-enable-mbregex \</span></div><div class="line">-<span class="ruby">-enable-fpm \</span></div><div class="line">-<span class="ruby">-enable-mbstring \</span></div><div class="line">-<span class="ruby">-with-mcrypt \</span></div><div class="line">-<span class="ruby">-with-gd \</span></div><div class="line">-<span class="ruby">-enable-gd-native-ttf \</span></div><div class="line">-<span class="ruby">-with-openssl \</span></div><div class="line">-<span class="ruby">-with-mhash \</span></div><div class="line">-<span class="ruby">-enable-pcntl \</span></div><div class="line">-<span class="ruby">-enable-sockets \</span></div><div class="line">-<span class="ruby">-with-xmlrpc \</span></div><div class="line">-<span class="ruby">-enable-zip \</span></div><div class="line">-<span class="ruby">-enable-soap \</span></div><div class="line">-<span class="ruby">-enable-short-tags \</span></div><div class="line">-<span class="ruby">-enable-zend-multibyte \</span></div><div class="line">-<span class="ruby">-enable-static \</span></div><div class="line">-<span class="ruby">-with-xsl \</span></div><div class="line">-<span class="ruby">-with-fpm-user=nginx \</span></div><div class="line">-<span class="ruby">-with-fpm-group=nginx \</span></div><div class="line">-<span class="ruby">-enable-ftp</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/mysql/lib/libmysqlclient.so.18  /usr/lib64/ 它默认找到32位的库底下去了,64需要自己做个链接,链上就好了</span></div><div class="line"><span class="meta">#</span><span class="bash"> touch ext/phar/phar.phar</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/php-5.3.27/ /usr/<span class="built_in">local</span>/php</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp php.ini-production /usr/<span class="built_in">local</span>/php/lib/php.ini</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/php/lib/php.ini</span></div></pre></td></tr></table></figure>
+<p>00x10 单独安装各种php额外扩展库 [一定要记得重启nginx才能生效],如下,安装mysqli:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install autoconf -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /root/lamp/php-5.2.17/ext/mysqli</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/php/bin/phpize</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/mysqli --with-php-config=/usr/<span class="built_in">local</span>/php/bin/php-config --with-mysqli=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/php-5.3.27/lib/php/extensions/no-debug-non-zts-20090626/</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /etc/php.ini</span></div></pre></td></tr></table></figure></p>
+<p>00x11 安装pdo:</p>
+<p>00x12 安装memcache:</p>
+<p>00x13 调整 php-fpm ,提高php的实际处理速度<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/php/etc/</span></div><div class="line"><span class="meta">#</span><span class="bash"> mkdir /app/logs/ -p</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp php-fpm.conf.default php-fpm.conf</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi php-fpm.conf</span></div><div class="line"><span class="attr">pid</span> = /app/logs/php-fpm.pid</div><div class="line"><span class="attr">error_log</span> = /app/logs/php-fpm.log</div><div class="line"><span class="attr">log_level</span> = error</div><div class="line"><span class="attr">rlimit_files</span> = <span class="number">32768</span></div><div class="line">events.<span class="attr">mechanism</span> = epoll</div><div class="line">listen.<span class="attr">owner</span> = nginx</div><div class="line">listen.<span class="attr">group</span> = nginx</div><div class="line">pm.<span class="attr">max_children</span> = <span class="number">1024</span></div><div class="line">pm.<span class="attr">start_servers</span> = <span class="number">16</span></div><div class="line">pm.<span class="attr">min_spare_servers</span> = <span class="number">5</span></div><div class="line">pm.<span class="attr">max_spare_servers</span> = <span class="number">20</span></div><div class="line">pm.<span class="attr">process_idle_timeout</span> = <span class="number">15</span>s;</div><div class="line">pm.<span class="attr">max_requests</span> = <span class="number">2048</span></div><div class="line"><span class="attr">slowlog</span> = /app/logs/$pool.log.slow</div><div class="line"><span class="attr">request_slowlog_timeout</span> = <span class="number">10</span></div><div class="line">php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f klionsec@gmail.com</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/php/sbin/php-fpm</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"/usr/local/php/sbin/php-fpm"</span> &gt;&gt; /etc/rc.local</span></div><div class="line"><span class="meta">#</span><span class="bash"> lsof -i :9000</span></div></pre></td></tr></table></figure>
+<p>00x14 最后,整合php + nginx + mysql 即可:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /usr/local/nginx/conf/extra/www.conf</span><span class="built_in"></span></div><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  www.rootkit.org rootkit.org rootkit.net;</div><div class="line">    root html/www;	一定要把目录单独拿出来,不然就会404</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">		index index.php index.html index.htm;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location ~ .*\.(php|php5)?$ &#123;</div><div class="line">        fastcgi_pass 127.0.0.1:9000;</div><div class="line">        fastcgi_index index.php;</div><div class="line">        include fastcgi.conf;</div><div class="line">    &#125;</div><div class="line">    access_log logs/access_www.log main;</div><div class="line">    error_page   500 502 503 504  /50x.html;</div><div class="line">    location = /50x.html &#123;</div><div class="line">        root   html/www;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx -t</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx -s reload</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/nginx/html/www/index.php</span></div><div class="line">&lt;?php phpinfo();?&gt;</div></pre></td></tr></table></figure>
+<p>00x15 安装当前最新版的 wordpress,drupal,joomla,phpbb,discuz…程序对环境进行全面仔细测试,观察相应的php模块函数是否工作正常…</p>
+<p>00x16 关于php.ini的参数安全优化,又是另一个话题了,我们后续单独再细说….</p>
+<p>更多,待续……</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/演练环境搭建/">#演练环境搭建</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
+<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
+<br><a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
+<br>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维<font color="red"> &nbsp;&nbsp;QQ 742116745</span><br>
+<br>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">博客累计访问共 <span id="busuanzi_value_site_pv"></span> 次</span>
+<span id="busuanzi_container_site_uv">
+访客数累计 <span id="busuanzi_value_site_uv"></span> 人
+</span>
+<span id="showDays"></span>
+<script>
+var birthDay = new Date("11/20/2014");
+var now = new Date();
+var duration = now.getTime() - birthDay.getTime(); 
+var total= Math.floor(duration / (1000 * 60 * 60 * 24));
+document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了 "+total+" 天";
+</script>
+<br>
+<br>
+有多年实战渗透经验积累[大中小型网络] + 娴熟的底层开发能力 + 熟练的协议分析能力 + 有多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 安全架构师
+<br>
+<br>
+<font size=6 color="white">唯一不变的,就是一直在变</font>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+		<audio autoplay="autoplay">
+		<source src="/img/Good_Goodbye.mp3" type="audio/mpeg" />
+		</audio>
+</footer>
+
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
