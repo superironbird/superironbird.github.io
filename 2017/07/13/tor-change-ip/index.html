@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="利用tor实现纯匿名渗透"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>利用tor实现纯匿名渗透 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    about me
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    blogs
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/07/13/tor-change-ip/">
+                利用tor实现纯匿名渗透
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/tor/">tor</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透中,我们经常会遇到各种ips或者waf,有时候,跑个目录就直接把你ip封了,因为经常会遇到这种尴尬的情况,所以就灵机一动想了比较折中简单的办法,利用tor频繁的切ip,然后用socks5代理的方式,把常用的工具代理进去搞,注意用工具跑的时候,线程要尽量给少点,唯一的缺点就是慢,当然,你也可以写成分布式扫描,不过可能需要你事先准备好一大批高质量代理列表,然后随机轮训,不过咱们不需要这么麻烦,不到五分钟写了个小脚本,暂且能满足需求,将就用吧</p>
+<p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,确实比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">ip_addr=`ifconfig | grep <span class="string">"inet"</span> | awk -F <span class="string">" "</span> &#123;<span class="string">'print $2'</span>&#125; | sed -n <span class="string">'1p'</span>`</div><div class="line"></div><div class="line"><span class="comment"># auto install tor privoxy proxychains</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">"tor"</span> <span class="string">"proxychains"</span> <span class="string">"privoxy"</span></div><div class="line"><span class="keyword">do</span></div><div class="line">	<span class="built_in">which</span> <span class="variable">$i</span> 2&gt;&amp;1 &gt;/dev/null</div><div class="line">	<span class="keyword">if</span> [ $? -ne 0 ];<span class="keyword">then</span></div><div class="line">		</div><div class="line">		<span class="built_in">echo</span> <span class="string">"please wait moment.....,come soon\n"</span></div><div class="line">		apt-get install <span class="variable">$i</span> -y &gt;/dev/null 2&gt;&amp;1</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> [ $? -eq 0 ];<span class="keyword">then</span></div><div class="line">			<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> installed....ok!\n"</span></div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> install failed! please check you network!...... \n"</span></div><div class="line">			<span class="built_in">exit</span> 1</div><div class="line">		<span class="keyword">fi</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		/etc/init.d/tor stop &gt;/dev/null 2&gt;&amp;1</div><div class="line">		killall privoxy &gt;/dev/null 2&gt;&amp;1</div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> installed ready ....ok\n"</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="comment"># proxychains config</span></div><div class="line">proxychains_config=<span class="string">"/etc/proxychains.conf"</span></div><div class="line">&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"random_chain"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"chain_len = 1"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"proxy_dns"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"tcp_read_time_out 15000"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"tcp_connect_time_out 8000"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"[ProxyList]"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"socks4	<span class="variable">$ip_addr</span> 9050"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"proxychains config succeed ! \n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"proxychains config failed ! please check.....\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># privoxy config</span></div><div class="line">privoxy_config=<span class="string">"/etc/privoxy/config"</span></div><div class="line">sed -i <span class="string">"s#127.0.0.1:8118#<span class="variable">$ip_addr</span>:8118#g"</span> <span class="variable">$privoxy_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"forward-socks5 / <span class="variable">$ip_addr</span>:9050 ."</span> &gt;&gt; <span class="variable">$privoxy_config</span></div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"privoxy config succeed\n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"privoxy config failed ! please check....\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># start tor &amp; privoxy</span></div><div class="line">/etc/init.d/tor start &gt;/dev/null 2&gt;&amp;1</div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Tor start succeed ....ok\n"</span>	</div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Tor start failed,please use 'journalctl -xe' check,thank you....failed\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">/usr/sbin/privoxy /etc/privoxy/config &gt;/dev/null 2&gt;&amp;1</div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Privoxy start succeed .....ok\n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Privoxy start failed,please use 'journalctl -xe' check,thank you....failed\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># auto change ip every 45 second</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"please Ctrl+C to stop !\n"</span></div><div class="line"><span class="keyword">while</span> <span class="literal">true</span></div><div class="line"><span class="keyword">do</span></div><div class="line">	sleep 45s</div><div class="line">	/etc/init.d/tor restart &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">	<span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"Tor restart  succeed! \n"</span>	</div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"\n\033[33m Tor restart  failed !\033[0m\n"</span></div><div class="line">		<span class="built_in">exit</span> 1</div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/tor/">#tor</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
+<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
+<br><a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
+<br>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维<font color="red"> &nbsp;&nbsp;klionsec@gmail.com</span><br>
+<br>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">博客累计访问共 <span id="busuanzi_value_site_pv"></span> 次</span>
+<span id="busuanzi_container_site_uv">
+访客数累计 <span id="busuanzi_value_site_uv"></span> 人
+</span>
+<span id="showDays"></span>
+<script>
+var birthDay = new Date("12/20/2014");
+var now = new Date();
+var duration = now.getTime() - birthDay.getTime(); 
+var total= Math.floor(duration / (1000 * 60 * 60 * 24));
+document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了 "+total+" 天";
+</script>
+<br>
+<br>
+有多年实战渗透经验积累[大中小型网络] + 娴熟的底层开发能力 + 熟练的协议分析能力 + 有多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 安全架构师
+<br>
+<br>
+<font size=6 color="white">唯一不变的,就是一直在变</font>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+		<audio autoplay="autoplay">
+		<source src="/img/Good_Goodbye.mp3" type="audio/mpeg" />
+		</audio>
+</footer>
+
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

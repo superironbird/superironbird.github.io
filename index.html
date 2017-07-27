@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/13/tor-change-ip/">
+                利用tor实现纯匿名渗透
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/tor/">tor</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透中,我们经常会遇到各种ips或者waf,有时候,跑个目录就直接把你ip封了,因为经常会遇到这种尴尬的情况,所以就灵机一动想了比较折中简单的办法,利用tor频繁的切ip,然后用socks5代理的方式,把常用的工具代理进去搞,注意用工具跑的时候,线程要尽量给少点,唯一的缺点就是慢,当然,你也可以写成分布式扫描,不过可能需要你事先准备好一大批高质量代理列表,然后随机轮训,不过咱们不需要这么麻烦,不到五分钟写了个小脚本,暂且能满足需求,将就用吧</p>
+<p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,确实比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">ip_addr=`ifconfig | grep <span class="string">"inet"</span> | awk -F <span class="string">" "</span> &#123;<span class="string">'print $2'</span>&#125; | sed -n <span class="string">'1p'</span>`</div><div class="line"></div><div class="line"><span class="comment"># auto install tor privoxy proxychains</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">"tor"</span> <span class="string">"proxychains"</span> <span class="string">"privoxy"</span></div><div class="line"><span class="keyword">do</span></div><div class="line">	<span class="built_in">which</span> <span class="variable">$i</span> 2&gt;&amp;1 &gt;/dev/null</div><div class="line">	<span class="keyword">if</span> [ $? -ne 0 ];<span class="keyword">then</span></div><div class="line">		</div><div class="line">		<span class="built_in">echo</span> <span class="string">"please wait moment.....,come soon\n"</span></div><div class="line">		apt-get install <span class="variable">$i</span> -y &gt;/dev/null 2&gt;&amp;1</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> [ $? -eq 0 ];<span class="keyword">then</span></div><div class="line">			<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> installed....ok!\n"</span></div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> install failed! please check you network!...... \n"</span></div><div class="line">			<span class="built_in">exit</span> 1</div><div class="line">		<span class="keyword">fi</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		/etc/init.d/tor stop &gt;/dev/null 2&gt;&amp;1</div><div class="line">		killall privoxy &gt;/dev/null 2&gt;&amp;1</div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> installed ready ....ok\n"</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="comment"># proxychains config</span></div><div class="line">proxychains_config=<span class="string">"/etc/proxychains.conf"</span></div><div class="line">&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"random_chain"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"chain_len = 1"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"proxy_dns"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"tcp_read_time_out 15000"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"tcp_connect_time_out 8000"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"[ProxyList]"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"socks4	<span class="variable">$ip_addr</span> 9050"</span> &gt;&gt; <span class="variable">$proxychains_config</span></div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"proxychains config succeed ! \n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"proxychains config failed ! please check.....\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># privoxy config</span></div><div class="line">privoxy_config=<span class="string">"/etc/privoxy/config"</span></div><div class="line">sed -i <span class="string">"s#127.0.0.1:8118#<span class="variable">$ip_addr</span>:8118#g"</span> <span class="variable">$privoxy_config</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"forward-socks5 / <span class="variable">$ip_addr</span>:9050 ."</span> &gt;&gt; <span class="variable">$privoxy_config</span></div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"privoxy config succeed\n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"privoxy config failed ! please check....\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># start tor &amp; privoxy</span></div><div class="line">/etc/init.d/tor start &gt;/dev/null 2&gt;&amp;1</div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Tor start succeed ....ok\n"</span>	</div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Tor start failed,please use 'journalctl -xe' check,thank you....failed\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">/usr/sbin/privoxy /etc/privoxy/config &gt;/dev/null 2&gt;&amp;1</div><div class="line"><span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Privoxy start succeed .....ok\n"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"Privoxy start failed,please use 'journalctl -xe' check,thank you....failed\n"</span></div><div class="line">	<span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># auto change ip every 45 second</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"please Ctrl+C to stop !\n"</span></div><div class="line"><span class="keyword">while</span> <span class="literal">true</span></div><div class="line"><span class="keyword">do</span></div><div class="line">	sleep 45s</div><div class="line">	/etc/init.d/tor restart &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">	<span class="keyword">if</span> [ $? -eq 0 ] ;<span class="keyword">then</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"Tor restart  succeed! \n"</span>	</div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"\n\033[33m Tor restart  failed !\033[0m\n"</span></div><div class="line">		<span class="built_in">exit</span> 1</div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/09/nginx-waf/">
                 nginx + lua 纯手工实现全方位应用层waf
             </a>
@@ -358,41 +390,6 @@
 <p>00x3 安装 nginx前的一些必要的准备工作:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rpm -qa pcre pcre-devel openssl-devel		正则库,nginx中的rwrite模块会用到,后面是加密函数库,https要用到</span></div><div class="line"><span class="meta">#</span><span class="bash"> mount /dev/cdrom /mnt/cdrom/  		因为我这里用的是本地yum源,所以需要先挂下光盘,如果你直接用的网络yum源,可以忽略此步骤</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y		安装所需的所有依赖库</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx		创建nginx服务用户,既是服务用户,也就意味着它并不需要登陆系统,更不需要有家目录</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/03/nginx1-12-env/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/02/mysql-bin-install/">
-                mysql5.5 二进制包单实例极速部署
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-02</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 关于数据库的简单科普:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">关系型数据库:</div><div class="line">	mysql,mssql,db2,oracle</div><div class="line">	二维表 <span class="string">[ 基于标准sql操作 ]</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">非关系型数据库:</div><div class="line">	memcached,redis</div><div class="line">	键值对 [ <span class="function"><span class="params">key</span> =&gt;</span> value ]</div></pre></td></tr></table></figure>
-<p>00x2 mysql 当下主流版本:<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">5.1</span> / <span class="number">5.4</span> / <span class="number">5.5</span> /  <span class="number">5.6</span> /  <span class="number">5.7</span></div></pre></td></tr></table></figure></p>
-<p>00x3 下载 mysql5.5 [ 暂以二进制包安装配置为例,注意,二进制包解压即可使用 ]:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># wget http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.49-linux2.6-x86_64.tar.gz</div></pre></td></tr></table></figure></p>
-<p>00x4 快速初始化配置[脚本中的默认路径都是在/usr/local/mysql下],首先,创建mysql服务用户[相信,不管什么时候尽可能以一个较低的系统身份权限运行服务会是个很好的习惯]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M	  不需要登陆系统,更不需要有家目录</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.5.49-linux2.6-x86_64.tar.gz  二进制包,相当于win下的绿色软件,<span class="string">"免注册"</span>,直接运行即可</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv mysql-5.5.49-linux2.6-x86_64 /usr/<span class="built_in">local</span>/mysql-5.5.49</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ ;ln -s mysql-5.5.49/ mysql</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/02/mysql-bin-install/" class="read-more">Read More</a>
     
 
 </div>

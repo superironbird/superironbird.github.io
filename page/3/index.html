@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/05/19/wevtutil/">
+                针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wevtutil/">wevtutil</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<p>1,入侵日志处理作为后渗透环节的重要组成部分,可能很多朋友在实际渗透中,对它貌似都并不怎么上心[ 但确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘不过,有点儿太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/05/18/nmap-script/">
                 nmap 进阶使用 [ 脚本篇 ]
             </a>
@@ -358,38 +390,6 @@
 <p>2,关于漏洞的简要描述,说的通俗一点就是’允许samba用户上传自己的类库到可读写的samba目录中’所导致的远程执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.samba.org/samba</span><span class="regexp">/security/</span>CVE-<span class="number">2017</span>-<span class="number">7494</span>.html</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/25/samba-rce/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/24/tar-file/">
-                利用目标系统现有工具快速打包目标机器数据
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/tar-file/">tar file</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎对所有渗透者来讲,初衷或者最终目的无非就是想对目标实施长期监控,但,具体怎么监控呢[好吧,那又是个非常大的话题,个人能力现在实在有限],无非就是下些各种各样的资料回来[当然,这可能是所有监控里面最朴实无华的一种],今天,我们单就这一点来做些简要说明,事先声明,可以写脚本[有时候确实不太灵活],但大多数脚本的核心可能还是靠这些东西,废话就先到这儿吧,希望下面的内容能帮到你,写的不好,管用就行</p>
-<p>在linux机器下的快速打包方式[下面这些工具一般在目标机器上都会自带]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">利用 <span class="string">'tar'</span>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]</div><div class="line"></div><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/24/tar-file/" class="read-more">Read More</a>
     
 
 </div>
