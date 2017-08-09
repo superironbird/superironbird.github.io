@@ -139,6 +139,131 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/06/19/https-mitmf/">
+                https 中间人劫持全过程
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/https-mitmf/">https-mitmf</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>抱歉,待续….</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/18/http-basic/">
+                重新理解 http 协议
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http/">http</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>1,前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;不管是web开发者还是web渗透者,熟练掌握http协议核心技术点都是非常必要的,深入理解下http协议的关键运作细节,对于我们后面一系列动作的展开都至关重要,当然啦,就http协议本身来讲,还是非常非常复杂的,我们今天就单单站在一个入侵者的角度来学习掌握必要的http协议基础,单靠一篇文档,想全面透彻掌握http协议,肯定不太现实,我们只需要掌握一些我们实际渗透中会用到的东西即可,如果大家真的有精力有兴趣愿意去深入研究http协议,可以自行参考《http权威指南》一书,个人觉得写的还是非常棒的</p>
+<p>2,简述 http 工作过程:<br>&nbsp;&nbsp;客户端向web服务器请求所指定的资源(request)  =&gt; web服务器(默认端口通常为80,8080)<br>&nbsp;&nbsp;web服务器响应给客户端所请求的对应的资源数据(response) =&gt; 客户端(随机端口和目标web服务端口进行连接)<br>&nbsp;&nbsp;简单来讲,http就是一套用来规定”请求(request)”和”响应(response)”的规范,以此来确保客户端和服务端能够正常的进行http通信<br>
+        </div>
+        <a href="/2017/06/18/http-basic/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/18/https-learn/">
+                深入理解 https 通信过程
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/https/">https</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/20/web-pentest-options/">
+                web渗透基本流程小结 [ 边界1 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/web-pentest/">web pentest</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定其对应的具体版本号,然后去找下该版本曾经爆过的一些exp并尝试利用,不过在此之前,最好先自己在本地搭环境测一下,成功以后再丢到目标上去搞不迟</div><div class="line">只不过,你可能事先需要对各种开源程序拿shell的方式比较熟悉</div></pre></td></tr></table></figure></p>
+<p>如果是针对非开源程序[ 应该尽量先直奔一些比较高危的漏洞去,因为我们最终的目的可能还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找目标网站的各种web入口[ 这里并不仅限目标网站后台,如,各种数据库的web管理入口(phpmyadmin),各类java控制台……都是可以的,如果连入口都没有,后面有些漏洞利用就比较尴尬了],找到以后,可以先顺手简单尝试些弱口令[尽量多试几个,没有验证码的情况下,也可尝试爆破],万能密码[sql注入的一种,需要自己平时多搜集一些],未授权访问[有些后台可能会存在这样的问题,页面权限控制不好所致]</div><div class="line">找目标网站的各种上传点[包括各类漏洞编辑器路径],挨个尝试上传……</div><div class="line">多翻翻目标网站,仔细观察下请求,尝试利用可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行或者反序列化类的参数进行尝试,说实话,对这类的漏洞,如果不审代码,仅仅单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……],除非一些非常特殊的功能,不过那个,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,挨个尝试,观察目标响应</div><div class="line">尝试找一些下载点参数,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能从中看到一些目标的敏感文件什么的,比如,各种网站,数据库备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,不妨尝试用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标网站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器,具体什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 曾经的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,先自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众程序[嘿嘿……]像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要,也没能力去独立审],在上面这些办法都搞不定的情况下,可以尝试把目标用的程序对应版本的的源码搞一份,down下来多花点儿时间好好审审,也许能审出一点点突破</div><div class="line">如果你实在觉得,这样手工搞下去,希望不大,不妨直接丢给各种web wvs 自己去扫就好了[当然啦,前提得目标<span class="string">'让'</span>你扫才行,对于那些上了各种waf,ids的目标,还是手工低调的慢慢搞比较好一点],记得尽量把高危的一些规则集事先更新一下,切记,务必慢慢扫[别着急],避免惹一些不必要的麻烦[主要是各类防火墙,频繁的切代理,比较烦,tor也比较慢....]</div><div class="line">如果上面的这些还不太好使,这时可以先确定目标站的真实ip[务必是目标站的真实ip,相信这些东西,在信息搜集阶段你就已经搞定了],然后再想办法从旁站搞,如果旁站也不行,可以再试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux 虚拟机,说实话,不太好提,另外,没必要在C段浪费太多时间,能有一个进去就行了]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长这方面[对于自己手里现有的目标想很好的利用起来太难了,有发xss的机会不如直接发马来的更直接],不过需要你自己先把xss平台搭起来[如果你喜欢把beef转发出来也行,随意,看你自己],一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可直接远程利用0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,这中间还有很多不确定因素,需要相互配合才行],关于其它的一些东西,自己目前暂时也还在努力学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,并且好好坚持下去,这比任何技巧姿势都重要 [始终坚信,所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,有很多很多的不足是肯定的,虽然这里说的感觉好像很容易,但实际渗透中,远非如此,中间还会有非常非常多的各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多交流提携……</div><div class="line">待续……</div></pre></td></tr></table></figure></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/05/19/wevtutil/">
                 针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
             </a>
@@ -159,7 +284,7 @@
     
         <div class="content">
             <p><br></p>
-<p>1,入侵日志处理作为后渗透环节的重要组成部分,可能很多朋友在实际渗透中,对它貌似都并不怎么上心[ 但确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘不过,有点儿太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
+<p>0x01 入侵日志处理作为后渗透环节的重要组成部分,可能很多朋友在实际渗透中,对它貌似都并不怎么上心[ 但确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘不过,有点儿太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
     
@@ -256,140 +381,11 @@
 
     
         <div class="content">
-            <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;另一款相对比较实用的hash破解工具,其本质是基于事先生成好的对应的各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常自己都是专门用来跑windows系统用户密码hash[ntlm]的,想比之下,要比之前所介绍的两款hash工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
 <p><br></p>
-<p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中键值对的形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,能用就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
+<p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中的键值对形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,实际渗透中能上就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/15/RainbowCrack/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/15/PS1/">
-                烦躁的不行……,调了个好看的 PS1
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/PS1/">PS1</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 最近有些烦躁,顺手调了个好看的PS1,以发泄下’不满’的牢骚,顺便分享给大家:</p>
-<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd </div><div class="line"># vi .bash_profile   把PS1换成下面的语句</div><div class="line">	PS1="<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[35m<span class="symbol">\]</span><span class="symbol">\t</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> - <span class="symbol">\[</span><span class="symbol">\0</span>33[36m<span class="symbol">\]</span><span class="symbol">\u</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span>@<span class="symbol">\[</span><span class="symbol">\0</span>33[32m<span class="symbol">\]</span><span class="symbol">\h</span> :)<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[33;1m<span class="symbol">\]</span><span class="symbol">\w</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> =&gt; "</div><div class="line"># source .bash_profile</div></pre></td></tr></table></figure>
-<p><img src="/img/PS1.png" alt=""><br>
-        </div>
-        <a href="/2017/05/15/PS1/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/26/use-john/">
-                快速破解各种散列hash [ john入门篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/john/">john</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x00 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;john[又名JTR] 本身是用来专门破解linux系统用户hash的,但现在已经不再那么局限了,它同样也提供了非常多的散列类型,虽然,跟hashcat在某些方面确实还差了一个量级,但它也有自己很独到的地方,多用你就知道了,废话不多说,咱们开始吧</p>
-<p>0x01 尝试在Ubuntu16.04.2 LTS上编译安装john 1.8[当然啦,也有已经编译好对应的win版下的,不过实际破解还是更推荐用linux],像类似的hash破解工具,不用多说,单独找个显卡或者CPU性能好点的机器是必须的,要不,意义何在呢,编译安装的过程就非常简单了,如下[如果嫌手敲的累,自己放脚本里跑跑就好了]<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget http://www.openwall.com/john/j/john-1.8.0.tar.xz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xvfJ john-1.8.0.tar.xz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> john-1.8.0/src</span></div><div class="line"><span class="meta">#</span><span class="bash"> make 选择对应的系统平台进行编译</span></div><div class="line"><span class="meta">#</span><span class="bash"> make clean linux-x86-64</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> ../run/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./john --<span class="built_in">test</span> 测试当前系统的破解速度</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/26/use-john/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/26/use-hashcat-crack-hash/">
-                快速破解各种散列hash [ hashcat入门篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/hashcat/">hashcat</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;最近恰巧刚好搞到一批hash,所以就寻思着,要不顺手小结一点关于hash破解的东西吧,反正经常要用,就当留备忘了,顺便也分享给大家,主要还是希望大家都能在实际渗透中能尽快上手用,既是这样,就肯定不会涉及太深,比如,其内部的破解算法具体是如何实现的等等…,我们都不会去深入剖析,毕竟,并不是为了去写此类工具,如果真的有兴趣,可自行去读源码[起码自己暂时还没那能力],经常渗透的朋友可能都非常清楚,由于各种各样的途径,我们经常会搞到各种各样的散列[hash],比如,各类web管理用户的密码hash,各类系统用户的密码hash,各种第三方服务器工具配置文件中的hash,各类办公套件文件启动密码的加密hash,等等……今天,我们就来简要说明一下关于各类hash破解工具的使用,以备不时之需……其实,明眼人都很清楚,hash破解的本质是没啥实际的技术含量的[前提你不自己写此类工具],还是那句话,主要目的还是希望大家能尽快上手,既然是好东西就要想办法把它应用到实际干活儿中,不然,意义何在呢…废话少说,咱们开始介绍今天的第一款hash破解工具,’hashcat’想必该工具早已家喻户晓 [关于hash破解的东西,后续我会做成一个单独的系列],希望大家能持续关注,你们的支持,会是自己努力创作的源泉,嘿嘿……<br><br><br>
-        </div>
-        <a href="/2017/04/26/use-hashcat-crack-hash/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/25/samba-rce/">
-                Samba RCE 利用小记 [ CVE-2017-7494 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/CVE/">CVE</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,Samba 远程执行快速利用小结 CVE-2017-7494,至于samba是什么,我就不科普了[说白点儿就是个win和linux机器共享文件的服务,企业里面已经用到烂的东西],直接看过程吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">漏洞影响Samba <span class="number">3.5</span>.<span class="number">0</span> 之后到<span class="number">4.6</span>.<span class="number">4</span>/<span class="number">4.5</span>.<span class="number">10</span>/<span class="number">4.4</span>.<span class="number">14</span>中间的所有版本</div></pre></td></tr></table></figure></p>
-<p>2,关于漏洞的简要描述,说的通俗一点就是’允许samba用户上传自己的类库到可读写的samba目录中’所导致的远程执行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.samba.org/samba</span><span class="regexp">/security/</span>CVE-<span class="number">2017</span>-<span class="number">7494</span>.html</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/25/samba-rce/" class="read-more">Read More</a>
     
 
 </div>
@@ -446,7 +442,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
 </script>
 <br>
 <br>
-有多年实战渗透经验积累[大中小型网络] + 娴熟的底层开发能力 + 熟练的协议分析能力 + 有多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 安全架构师
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
 <br>
 <br>
 <font size=6 color="white">唯一不变的,就是一直在变</font>
@@ -492,7 +488,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good_Goodbye.mp3" type="audio/mpeg" />
+		<source src="/img/Good Time.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

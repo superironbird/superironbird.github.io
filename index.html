@@ -158,8 +158,8 @@
 
     
         <div class="content">
-            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透中,我们经常会遇到各种ips或者waf,有时候,跑个目录就直接把你ip封了,因为经常会遇到这种尴尬的情况,所以就灵机一动想了比较折中简单的办法,利用tor频繁的切ip,然后用socks5代理的方式,把常用的工具代理进去搞,注意用工具跑的时候,线程要尽量给少点,唯一的缺点就是慢,当然,你也可以写成分布式扫描,不过可能需要你事先准备好一大批高质量代理列表,然后随机轮训,不过咱们不需要这么麻烦,不到五分钟写了个小脚本,暂且能满足需求,将就用吧</p>
-<p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,确实比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br>
+            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透中,我们经常会遇到各种ips或者waf的围追堵截,有时候,跑个目录就直接把你ip封了,因为经常会遇到这种尴尬的情况,所以就灵机一动想了个比较折中的办法,利用tor来频繁的切ip,然后用socks5代理,把常用的工具丢进去搞,注意用工具跑的时候,线程要尽量给少点,tor唯一的缺点就是慢,当然,你也可以写成分布式扫描,不过可能需要你事先准备好一大批高质量代理ip,然后随机轮训,不过咱们不需要这么麻烦,不到五分钟写了个小脚本,暂且能满足需求,将就用吧</p>
+<p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br>
         </div>
         <a href="/2017/07/13/tor-change-ip/" class="read-more">Read More</a>
     
@@ -221,7 +221,7 @@
 
     
         <div class="content">
-            <p><br><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,为了更加贴近实战,所有相关的部署配置,均是按照实际生产标准来的,力求做到真实,也是为了方便大家更靠谱的学习...</div><div class="line"><span class="number">2</span>,作为一名职业渗透者,你极度有必要熟知其中涉及到安全问题的每一个配置参数选项的具体作用,每一次权限映射背后所带来的实际利用价值...</div><div class="line"><span class="number">3</span>,大家可能也看到了,在实际部署过程中,基本都特别标明了详细的版本号,比如,php5<span class="number">.2</span>,php5<span class="number">.3</span>及php5<span class="number">.5</span>,因为有些漏洞特性只能针对特定的版本才会有用,所以不得不费点儿劲....</div><div class="line"><span class="number">4</span>,就整个部署过程来讲,其实也是一个非常好的学习进步的机会,你完全可以通过这种实际部署更深的去理解某些漏洞产生的根因,而不用人云亦云[用事实说话],说白点儿,这就是在潜移默化的积累,积累的多了,自然就触类旁通,根本不用什么高大上的东西</div><div class="line"><span class="number">5</span>,你要做的只是把前人的优秀经验彻彻底底的真正变成你自己的知识储备,然后在此基础上灵活变通改进,足矣,虽然短时间会比别人走的慢点,但你会收获的更多,甚至看到很多别人看不见的东西,很显然,这种方式对于<span class="string">'天才'</span>或者<span class="string">'神童'</span>,是完全不适用的,但那毕竟只是极小的一部分人</div><div class="line"><span class="number">5</span>,脚踏实地,一步步的来,不要总觉得这也不重要,那也不重要,然后你就以这种态度持续了很多年,而等再回头看那些曾经一直默默坚持到现在的人,已经把你甩的很远了,再想追上,难于上青天...</div><div class="line"><span class="number">6</span>,还是那句话,<span class="string">"运维会的那一套,你要比他还精通,你才有可能搞定他,开发会的那一套,你要比他还娴熟,才有可能挖到更有价值的洞...."</span>,我跟大家一样也一直为此而不懈努力着</div><div class="line"><span class="number">7</span>,不为任何人,就为了你自己,学习吧,哪怕每天进步一点点,起码你不会因为一天碌碌无为而感到空虚....</div><div class="line"><span class="number">8</span>,人生苦短,能做点自己喜欢的事情应该珍惜,个人一直坚信<span class="string">"唯一不变的,就是一直在变"</span>,安于现状,不思进取,自以为是,乃致命毒药....</div><div class="line">......</div></pre></td></tr></table></figure></p>
+            <p><br><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">为了更加贴近实战,所有相关的部署配置,均是按照实际生产标准来的,力求做到真实,也是为了方便大家更靠谱的学习...</div><div class="line">作为一名职业渗透者,你极度有必要熟知其中涉及到安全问题的每一个配置参数选项的具体作用,每一次权限映射背后所带来的实际利用价值...</div><div class="line">大家可能也看到了,在实际部署过程中,基本都特别标明了详细的版本号,比如,php5<span class="number">.2</span>,php5<span class="number">.3</span>及php5<span class="number">.5</span>,因为有些漏洞特性只能针对特定的版本才会有用,所以不得不费点儿劲....</div><div class="line">就整个部署过程来讲,其实也是一个非常好的学习进步的机会,你完全可以通过这种实际部署更深的去理解某些漏洞产生的根因,而不用人云亦云[用事实说话],说白点儿,这就是在潜移默化的积累,积累的多了,自然就触类旁通,根本不用什么高大上的东西</div><div class="line">你要做的只是把前人的优秀经验彻彻底底的真正变成你自己的知识储备,然后在此基础上灵活变通改进,足矣,虽然短时间会比别人走的慢点,但你会收获的更多,甚至看到很多别人看不见的东西,很显然,这种方式对于<span class="string">'天才'</span>或者<span class="string">'神童'</span>,是完全不适用的,但那毕竟只是极小的一部分人</div><div class="line">脚踏实地,一步步的来,不要总觉得这也不重要,那也不重要,然后你就以这种态度持续了很多年,而等再回头看那些曾经一直默默坚持到现在的人,已经把你甩的很远了,再想追上,难于上青天...</div><div class="line">还是那句话,<span class="string">"运维会的那一套,你要比他还精通,你才有可能搞定他,开发会的那一套,你要比他还娴熟,才有可能挖到更有价值的洞...."</span>,我跟大家一样也一直为此而不懈努力着</div><div class="line">不为任何人,就为了你自己,学习吧,哪怕每天进步一点点,起码你不会因为一天碌碌无为而感到空虚....</div><div class="line">人生苦短,能做点自己喜欢的事情应该珍惜,个人一直坚信<span class="string">"唯一不变的,就是一直在变"</span>,安于现状,不思进取,自以为是,乃致命毒药....</div><div class="line">......</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/08/readme-Framework/" class="read-more">Read More</a>
     
@@ -446,7 +446,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
 </script>
 <br>
 <br>
-有多年实战渗透经验积累[大中小型网络] + 娴熟的底层开发能力 + 熟练的协议分析能力 + 有多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 安全架构师
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
 <br>
 <br>
 <font size=6 color="white">唯一不变的,就是一直在变</font>
@@ -492,7 +492,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good_Goodbye.mp3" type="audio/mpeg" />
+		<source src="/img/Good Time.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 
