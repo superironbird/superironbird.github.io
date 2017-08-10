@@ -197,7 +197,7 @@
 <p>常用的几个相对比较实用的firefox插件,自己在配置渗透环境的时候最好预先装上:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hackbar</div><div class="line">tamper data</div><div class="line">live http headers</div><div class="line">firebug</div><div class="line">downthemall</div></pre></td></tr></table></figure></p>
 <p>使用whatweb[探测到的信息相对比较全面],返回的结果中大致包括以下内容:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">请求返回的状态码</div><div class="line">web服务器版本</div><div class="line">ip所在国家</div><div class="line">操作系统详细的版本信息</div><div class="line">脚本语言版本信息</div><div class="line">域名解析到的ip</div><div class="line">截取并显示网站标题</div><div class="line">等等……</div></pre></td></tr></table></figure></p>
 <p>如何快速判断目标使用的系统平台:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,在url中尝试变化大小写,进行请求,观察页面响应,windows默认对大小写不敏感,linux则严格区分大小写,所以返回的页面肯定是不一样的</div><div class="line"><span class="number">2</span>,观察各种报错信息,看看里面有没有泄露服务器的相关信息</div><div class="line"><span class="number">3</span>,等等……</div></pre></td></tr></table></figure></p>
-<p>8,一些常见端口的渗透用途汇总:</p>
+<p>8,一些常见端口渗透用途汇总:</p>
 <table>
 <thead>
 <tr>
@@ -209,78 +209,83 @@
 <tbody>
 <tr>
 <td>tcp 20,21</td>
-<td style="text-align:center">ftp 的默认数据和命令传输端口</td>
-<td style="text-align:center">可能允许匿名上传下载,爆破,嗅探,提权,远程溢出(proftpd 1.3.5),后门(vsftp 2.3.4)</td>
+<td style="text-align:center">ftp 默认的数据和命令传输端口[可明文亦可加密传输]</td>
+<td style="text-align:center">允许匿名的上传下载,爆破,嗅探,win提权,远程执行(proftpd 1.3.5),各类后门(proftpd,vsftp 2.3.4)</td>
 </tr>
 <tr>
 <td>tcp 22</td>
 <td style="text-align:center">ssh[数据ssl加密传输]</td>
-<td style="text-align:center">爆破,28个退格漏洞(grub2漏洞),ssh隧道及内网代理转发,一般用于linux远程管理</td>
+<td style="text-align:center">可根据已有信息尝试爆破,v1版本可中间人,ssh隧道及内网代理转发,文件传输,等等…常用于linux远程管理…</td>
 </tr>
 <tr>
 <td>tcp 23</td>
 <td style="text-align:center">telnet[明文传输]</td>
-<td style="text-align:center">爆破,嗅探,一般常用于路由登陆,可尝试弱口令,也许会有意想不到的收获</td>
+<td style="text-align:center">爆破,嗅探,一般常用于路由,交换登陆,可尝试弱口令,也许会有意想不到的收获</td>
 </tr>
 <tr>
 <td>tcp 25</td>
-<td style="text-align:center">smtp[简单邮件传输协议,linux可能会默认开启]</td>
+<td style="text-align:center">smtp[简单邮件传输协议,多数linux发行版可能会默认开启此服务]</td>
 <td style="text-align:center">邮件伪造,vrfy/expn 查询邮件用户信息,可使用smtp-user-enum工具来自动跑</td>
 </tr>
 <tr>
 <td>tcp/udp 53</td>
 <td style="text-align:center">dns[域名解析]</td>
-<td style="text-align:center">检查区域传送,可dns劫持,缓存投毒,欺骗以及dns隧道</td>
+<td style="text-align:center">允许区域传送,dns劫持,缓存投毒,欺骗以及各种基于dns隧道的远控</td>
 </tr>
 <tr>
 <td>tcp/udp 69</td>
 <td style="text-align:center">tftp[简单文件传输协议,无认证]</td>
-<td style="text-align:center">直接尝试下载服务器的各种配置文件,例如:/etc/passwd等……</td>
+<td style="text-align:center">尝试下载目标及其的各类重要配置文件</td>
 </tr>
 <tr>
-<td>tcp 80-89/443/8080-8089</td>
+<td>tcp 80-89,443,8440-8450,8080-8089</td>
 <td style="text-align:center">web[各种常用的web服务端口]</td>
-<td style="text-align:center">web top10,vpn,owa,各类java控制台弱口令,oa,struts2,iis5,6.x写利用,短文件等等……</td>
+<td style="text-align:center">各种常用web服务端口,可尝试经典的top10,vpn,owa,webmail,目标oa,各类java控制台,各类服务器web管理面板,各类web中间件漏洞利用,各类web框架漏洞利用等等……</td>
 </tr>
 <tr>
 <td>tcp 110</td>
-<td style="text-align:center">pop3[邮局协议]</td>
+<td style="text-align:center">[邮局协议,可明文可密文]</td>
 <td style="text-align:center">可尝试爆破,嗅探</td>
 </tr>
 <tr>
-<td>tcp 137/139/445</td>
-<td style="text-align:center">samba[smb实现windows和linux间文件共享]</td>
-<td style="text-align:center">可尝试爆破,远程执行(ms17-010),嗅探等……</td>
+<td>tcp 137,139,445</td>
+<td style="text-align:center">samba[smb实现windows和linux间文件共享,明文]</td>
+<td style="text-align:center">可尝试爆破以及smb自身的各种远程执行类漏洞利用,如,ms08-067,ms17-010,嗅探等……</td>
 </tr>
 <tr>
 <td>tcp 143</td>
-<td style="text-align:center">imap</td>
+<td style="text-align:center">imap[可明文可密文]</td>
 <td style="text-align:center">可尝试爆破</td>
 </tr>
 <tr>
 <td>udp 161</td>
-<td style="text-align:center">snmp</td>
-<td style="text-align:center">默认community为public,信息搜集</td>
+<td style="text-align:center">snmp[明文]</td>
+<td style="text-align:center">爆破默认团队字符串,搜集目标内网信息</td>
 </tr>
 <tr>
 <td>tcp 389</td>
 <td style="text-align:center">ldap[轻量级目录访问协议]</td>
-<td style="text-align:center">ldap注入,弱口令,未授权访问</td>
+<td style="text-align:center">ldap注入,允许匿名访问,弱口令</td>
 </tr>
 <tr>
-<td>tcp 512/513/514</td>
+<td>tcp 512,513,514</td>
 <td style="text-align:center">linux rexec</td>
-<td style="text-align:center">rlogin登陆</td>
+<td style="text-align:center">可爆破,rlogin登陆</td>
 </tr>
 <tr>
 <td>tcp 873</td>
-<td style="text-align:center">rsync服务</td>
-<td style="text-align:center">未授权访问</td>
+<td style="text-align:center">rsync备份服务</td>
+<td style="text-align:center">匿名访问,文件上传</td>
+</tr>
+<tr>
+<td>tcp 1194</td>
+<td style="text-align:center">openvpn</td>
+<td style="text-align:center">想办法钓vpn账号,进内网</td>
 </tr>
 <tr>
 <td>tcp 1352</td>
-<td style="text-align:center">lotus</td>
-<td style="text-align:center">弱口令,信息泄漏,源代码,爆破</td>
+<td style="text-align:center">Lotus domino邮件服务</td>
+<td style="text-align:center">弱口令,信息泄漏,爆破</td>
 </tr>
 <tr>
 <td>tcp 1433</td>
@@ -290,16 +295,26 @@
 <tr>
 <td>tcp 1521</td>
 <td style="text-align:center">oracle数据库</td>
-<td style="text-align:center">tns爆破,注入</td>
+<td style="text-align:center">tns爆破,注入,弹shell…</td>
+</tr>
+<tr>
+<td>tcp 1500</td>
+<td style="text-align:center">ispmanager    主机控制面板</td>
+<td style="text-align:center">弱口令</td>
 </tr>
 <tr>
 <td>tcp 1025,111,2049</td>
 <td style="text-align:center">nfs</td>
-<td style="text-align:center">未授权访问</td>
+<td style="text-align:center">权限配置不当</td>
+</tr>
+<tr>
+<td>tcp 1723</td>
+<td style="text-align:center">pptp</td>
+<td style="text-align:center">爆破,想办法钓vpn账号,进内网</td>
 </tr>
 <tr>
 <td>tcp 2082,2083</td>
-<td style="text-align:center">cpanel主机管理登录</td>
+<td style="text-align:center">cpanel主机管理面板登录</td>
 <td style="text-align:center">弱口令</td>
 </tr>
 <tr>
@@ -314,11 +329,11 @@
 </tr>
 <tr>
 <td>tcp 3128</td>
-<td style="text-align:center">squid默认端口</td>
+<td style="text-align:center">squid代理服务</td>
 <td style="text-align:center">弱口令</td>
 </tr>
 <tr>
-<td>tcp 3312/3311</td>
+<td>tcp 3312,3311</td>
 <td style="text-align:center">kangle主机管理登录</td>
 <td style="text-align:center">弱口令</td>
 </tr>
@@ -330,7 +345,7 @@
 <tr>
 <td>tcp 3389</td>
 <td style="text-align:center">windows rdp远程桌面</td>
-<td style="text-align:center">shift后门,爆破,ms12-020[远程蓝屏]</td>
+<td style="text-align:center">shift后门[需要03以下的系统],爆破,ms12-020[蓝屏exp]</td>
 </tr>
 <tr>
 <td>tcp 4848</td>
@@ -339,8 +354,8 @@
 </tr>
 <tr>
 <td>tcp 4899</td>
-<td style="text-align:center">radmin远程桌面管理工具</td>
-<td style="text-align:center">提权</td>
+<td style="text-align:center">radmin远程桌面管理工具,现在已经非常非常少了</td>
+<td style="text-align:center">抓密码拓展机器</td>
 </tr>
 <tr>
 <td>tcp 5000</td>
@@ -355,27 +370,27 @@
 <tr>
 <td>tcp 5632</td>
 <td style="text-align:center">pcanywhere远程桌面管理工具</td>
-<td style="text-align:center">提权,代码执行</td>
+<td style="text-align:center">抓密码,代码执行,已经快退出历史舞台了</td>
 </tr>
 <tr>
-<td>tcp 5900/5901/5902</td>
+<td>tcp 5900,5901,5902</td>
 <td style="text-align:center">vnc远程桌面管理工具</td>
-<td style="text-align:center">弱口令</td>
+<td style="text-align:center">弱口令爆破,如果信息搜集不到位,几率很小</td>
 </tr>
 <tr>
 <td>tcp 5984</td>
 <td style="text-align:center">CouchDB</td>
-<td style="text-align:center">未授权</td>
+<td style="text-align:center">未授权导致的任意指令执行</td>
 </tr>
 <tr>
 <td>tcp 6379</td>
 <td style="text-align:center">redis未授权</td>
-<td style="text-align:center">爆破弱口令,未授权访问</td>
+<td style="text-align:center">可尝试未授权访问,弱口令爆破</td>
 </tr>
 <tr>
 <td>tcp 7001,7002</td>
 <td style="text-align:center">weblogic控制台</td>
-<td style="text-align:center">java反序列化/弱口令</td>
+<td style="text-align:center">java反序列化,弱口令</td>
 </tr>
 <tr>
 <td>tcp 7778</td>
@@ -383,24 +398,39 @@
 <td style="text-align:center">主机面板登录</td>
 </tr>
 <tr>
+<td>tcp 8000</td>
+<td style="text-align:center">Ajenti主机控制面板</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
+<td>tcp 8443</td>
+<td style="text-align:center">plesk主机控制面板</td>
+<td style="text-align:center">弱口令</td>
+</tr>
+<tr>
 <td>tcp 8069</td>
 <td style="text-align:center">zabbix</td>
-<td style="text-align:center">远程命令执行</td>
+<td style="text-align:center">远程执行,sql注入</td>
 </tr>
 <tr>
 <td>tcp 8080-8089</td>
 <td style="text-align:center">Jenkins,jboss</td>
-<td style="text-align:center">控制台弱口令</td>
+<td style="text-align:center">反序列化,控制台弱口令</td>
 </tr>
 <tr>
-<td>tcp 9080-9081/9090</td>
+<td>tcp 9080-9081,9090</td>
 <td style="text-align:center">websphere控制台</td>
 <td style="text-align:center">java反序列化/弱口令</td>
 </tr>
 <tr>
 <td>tcp 9200,9300</td>
 <td style="text-align:center">elasticsearch</td>
-<td style="text-align:center">命令执行</td>
+<td style="text-align:center">远程执行</td>
+</tr>
+<tr>
+<td>tcp 10000</td>
+<td style="text-align:center">webmin linux主机web控制面板入口</td>
+<td style="text-align:center">弱口令</td>
 </tr>
 <tr>
 <td>tcp 11211</td>
@@ -408,7 +438,7 @@
 <td style="text-align:center">未授权访问</td>
 </tr>
 <tr>
-<td>tcp 27017/27018</td>
+<td>tcp 27017,27018</td>
 <td style="text-align:center">mongodb</td>
 <td style="text-align:center">爆破,未授权访问</td>
 </tr>
@@ -419,8 +449,8 @@
 </tr>
 <tr>
 <td>tcp 50000</td>
-<td style="text-align:center">SAP</td>
-<td style="text-align:center">命令执行</td>
+<td style="text-align:center">SAP Management Console</td>
+<td style="text-align:center">远程执行</td>
 </tr>
 <tr>
 <td>tcp 50070,50030</td>
@@ -430,12 +460,12 @@
 </tbody>
 </table>
 <p><br></p>
-<p>8,说了这么多,想必大家应该很清楚这些端口具体该怎么利用了</p>
-<p>9,最后,在介绍个小脚本,whatportis 专门用来查询某个端口的具体作用</p>
-<p>10,如果你有兴趣,想对某个国家网段进行大规模扫描也可以把它写成这样,当然,我这里是随便写的,你要想实际用,可能还要好好把它完善一下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">while read LINE</div><div class="line">do</div><div class="line">   masscan -p 21 --rate=100 $LINE | tee -a 21.txt</div><div class="line">done &lt; hk_ip.txt</div></pre></td></tr></table></figure></p>
+<p>9,说了这么多,想必大家应该很清楚这些端口具体该怎么利用了</p>
+<p>10,最后,在介绍个小脚本,whatportis 专门用来查询某个端口的具体作用</p>
+<p>11,如果你有兴趣,想对某个国家网段进行大规模扫描也可以把它写成这样,当然,我这里是随便写的,你要想实际用,可能还要好好把它完善一下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/bash</div><div class="line">while read LINE</div><div class="line">do</div><div class="line">   masscan -p 21 --rate=100 $LINE | tee -a 21.txt</div><div class="line">done &lt; hk_ip.txt</div></pre></td></tr></table></figure></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tail -f 21.txt</span></div><div class="line"><span class="comment"># awk &#123;'print $6'&#125; 21.txt &gt;&gt; result.txt</span></div><div class="line"><span class="comment"># nmap -p 21 -iL result.txt  -oN ftp_anonymous.txt  -v --script ftp-anon.nse</span></div></pre></td></tr></table></figure>
 <p><br></p>
-<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身并没多少技术含量,工具总体使用上还是比较简单的[对于无状态扫描的具体内部实现还是比较复杂的,至今为止,我自己也有很多东西都没整明白],这个东西怎么说呢,很多是运气和经验的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网爆破是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路不妨尝试],当然啦,对于端口,爆破只是一个很小的方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[肯定不仅限于此类的可远程利用的漏洞],就可以通过这种方式大规模的批量实施端口入侵,这也许才是它真正的价值所在,可能还有很多其它的小工具,脚本这里都没提到,不过那些都不太重要,对于公网扫描,有这些,足矣,至于那些,后期到内网中我们再具体说不迟,祝大家好运!<br><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身并没多少技术含量,工具总体使用上还是比较简单的[对于无状态扫描的具体内部实现还是比较复杂的,至今为止,我自己也有很多东西都没整明白],这个东西怎么说呢,很多是运气和经验的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网爆破是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路不妨尝试],当然啦,对于端口,爆破只是一个很小的方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[肯定不仅限于此类的可远程利用的漏洞],就可以通过这种方式大规模的批量实施端口入侵,这也许才是它真正的价值所在,可能还有很多其它的小工具,脚本这里都没提到,不过那些都不太重要,对于公网扫描,有这些,足矣,至于那些,后期到内网中我们再具体说不迟,祝大家好运!<br><br></p>
 
     </div>
 
@@ -464,7 +494,7 @@
 
 <footer class="footer-content">
 
-<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
 至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
 <br>
 <a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
@@ -533,7 +563,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good Time.mp3" type="audio/mpeg" />
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

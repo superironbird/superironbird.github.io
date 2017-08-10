@@ -139,6 +139,102 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/06/26/php-5-5-38/">
+                极速部署 php5.5.38
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 检查安装各种依赖库:<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rpm -qa zlib-devel libxml2-devel libjpeg-devel libiconv-devel free<span class="keyword">type</span>-devel libpng-devel gd-devel curl-devellibxslt-devel</div></pre></td></tr></table></figure></p>
+<p>配置yum源[同样,还是用网易的]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /etc/yum.repos.d</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirrors.163.com/.<span class="built_in">help</span>/CentOS6-Base-163.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv CentOS6-Base-163.repo CentOS-Base.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum clean all</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum makecache</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/26/php-5-5-38/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/24/php-5-2-17/">
+                重温经典的 php 5.2.17
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>00x1 php 5.2.17 [一个比较经典的php版本],安装环境准备[对于centos5.x直接用 yum groupinstall “X Software Development” 这个包组就可以了]:</p>
+<p>中间可能还有些库可能直接用yum装不上,不过没关系,后面再单独装就好了<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install -y zlib zlib-devel libxml libxml2-devel libjpeg libjpeg-devel libpng libpng-devel free<span class="keyword">type</span> freetype-devel gd gd-devel curl curl-devel libiconv</div></pre></td></tr></table></figure></p>
+<p>安装 libiconv 字体库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.14.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.14</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/24/php-5-2-17/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/21/nginx-lbd/">
+                基于 nginx 的负载均衡实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-21</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/lbd/">lbd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>抱歉,待续….</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/06/19/https-mitmf/">
                 https 中间人劫持全过程
             </a>
@@ -202,13 +298,13 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/06/18/https-learn/">
-                深入理解 https 通信过程
+            <a href="/2017/05/31/bypasswaf-for-webshell/">
+                webshell 免杀篇
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2017-06-18</span>
+                <span class="date">2017-05-31</span>
             
             
             
@@ -291,105 +387,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/nmap-script/">
-                nmap 进阶使用 [ 脚本篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/nmap/">nmap</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>因为今天的重点并非nmap本身,这次主要还是想给大家介绍它的一些相对比较实用的脚本,所以一些选项的具体作用就不再说了,详情可参考端口渗透相关文章,实际中我们可以先用下面的语句,大概扫一眼目标机器或者目标C段都跑了什么服务,心里务必要先有个谱:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-<p>当然,你也可以尝试获取目标机器各个服务更详细的banner:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-<p>ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
-                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/joomla-exp/">joomla exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
-<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
-        </div>
-        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/15/RainbowCrack/">
-                使用 rainbowcrack 快速破解 ntlm
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/rainbowcrack/">rainbowcrack</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
-<p><br></p>
-<p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中的键值对形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,实际渗透中能上就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/05/15/RainbowCrack/" class="read-more">Read More</a>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -419,7 +416,7 @@
 
 <footer class="footer-content">
 
-<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
 至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
 <br>
 <a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
@@ -488,7 +485,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good Time.mp3" type="audio/mpeg" />
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

