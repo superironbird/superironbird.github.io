@@ -140,7 +140,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2017/08/01/log-find/">
-                入侵取证 [ 之日志分析初步 ]
+                入侵取证 [ web日志分析初步 ]
             </a>
         </h1>
         <div class="post-info">
@@ -158,8 +158,10 @@
 
     
         <div class="content">
-            
+            <p><br><br>0x01 将web访问日志尽量调整稍微详细点儿的格式</p>
+<p>0x02 从异常敏感的状态码开始:<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">404</span>	  正常用户是很难返回<span class="number">404</span>,大多数可能都是入侵者在尝试一些敏感路径不存在时的响应才会造成这种状况....</div><div class="line"><span class="symbol">403 </span>  	  通常都一些不想让用户访问到敏感路径</div><div class="line"><span class="number">401</span>	  可能是用尝试http基础认证时账号密码错误</div><div class="line"><span class="number">500</span>	  后端脚本或者数据库报错</div><div class="line"><span class="number">503</span>	  ....</div></pre></td></tr></table></figure></p>
         </div>
+        <a href="/2017/08/01/log-find/" class="read-more">Read More</a>
     
 
 </div>

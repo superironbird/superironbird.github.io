@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="入侵取证 [ 之日志分析初步 ]"/>
+        <meta property="og:title" content="入侵取证 [ web日志分析初步 ]"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>入侵取证 [ 之日志分析初步 ] - klion&#39;s blog</title>
+    <title>入侵取证 [ web日志分析初步 ] - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/08/01/log-find/">
-                入侵取证 [ 之日志分析初步 ]
+                入侵取证 [ web日志分析初步 ]
             </a>
         </h1>
         <div class="post-info">
@@ -159,7 +159,13 @@
         
 
         <!-- Post Content -->
-        
+        <p><br><br>0x01 将web访问日志尽量调整稍微详细点儿的格式</p>
+<p>0x02 从异常敏感的状态码开始:<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">404</span>	  正常用户是很难返回<span class="number">404</span>,大多数可能都是入侵者在尝试一些敏感路径不存在时的响应才会造成这种状况....</div><div class="line"><span class="symbol">403 </span>  	  通常都一些不想让用户访问到敏感路径</div><div class="line"><span class="number">401</span>	  可能是用尝试http基础认证时账号密码错误</div><div class="line"><span class="number">500</span>	  后端脚本或者数据库报错</div><div class="line"><span class="number">503</span>	  ....</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>0x03 定位常见攻击特征关键字:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">提取敏感文件扫描特征						:	主要是针对各类web入口,svn,网站备份文件,数据库备份文件,敏感配置文件,各类探针文件,以及其它的各类泄露<span class="built_in">..</span>.</div><div class="line">各类wvs扫描标志特征	 					:	awvs,appscan,netsparker,webcuriser,vega,owasp zap,w3af,nessus,openvas<span class="built_in">..</span><span class="built_in">..</span> </div><div class="line">常规sql注入特征							: 	union,select,<span class="keyword">and</span>,insert,information_schema,<span class="keyword">or</span>,xor,like,order by,<span class="literal">null</span>,sleep<span class="built_in">..</span><span class="built_in">..</span>.</div><div class="line">提取典型的代码执行特征  						:	eval,assert,system,passthru<span class="built_in">..</span><span class="built_in">..</span></div><div class="line">异常的后台或者其它入口访问记录					:	可提取200的入口访问记录[如,常规后台入口,各类数据库web管理入口等<span class="built_in">..</span>],定位其ip<span class="built_in">..</span>.</div><div class="line">webshell文件典型命名特征						:	spy系列,b374k,shell,webshell,hacker,dama,ma,maer<span class="built_in">..</span>.</div><div class="line">捕捉敏感get参数特征						:	php?cmd= php?filemanager= php?upload=</div><div class="line">典型的包含特征							:	在url中带有典型的目录特征,如,./ <span class="built_in">..</span>/<span class="built_in">..</span>/<span class="built_in">..</span><span class="built_in">..</span>.</div><div class="line">典型的xss特征							:	url中带有典型的js代码特征</div><div class="line">对于开源程序或者框架可直接捕捉相应的exp特征				:	具体的程序具体对待,比如,discuz,wp,joomla,drupal,phpbb,phpcms,strus2,tp<span class="built_in">..</span><span class="built_in">..</span>.</div><div class="line">锁定频繁请求ip							:	提取某个时段访问频繁的ip</div><div class="line">利用现有工具,手工查杀网站目录webshell				:	egrep,find,sed,awk,sort,findstr<span class="built_in">..</span><span class="built_in">..</span>.</div><div class="line">利用专业的webshell查杀工具扫描网站目录				:	安全狗之流<span class="built_in">..</span><span class="built_in">..</span></div><div class="line"><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span></div></pre></td></tr></table></figure></p>
+<p>0x04 web日志分析过程中的一些困境:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">入侵者挂vpn或者频繁切代理,不好确定真实ip</div><div class="line">post数据无法被记录,有很多恶意操作都是基于post的</div><div class="line">各种形式的编码容易遗漏</div><div class="line">基于各类回调特性的危险操作,无法获取</div><div class="line">......</div></pre></td></tr></table></figure></p>
+<p>0x05 find + awk + egrep 一句话快速定位网站目录中的webshell</p>
+
     </div>
 
     
