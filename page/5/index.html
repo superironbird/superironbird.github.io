@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/24/tar-file/">
+                利用目标系统现有工具快速打包目标机器数据
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/tar-file/">tar file</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎对所有渗透者来讲,初衷或者最终目的无非就是想对目标实施长期监控,但,具体怎么监控呢[好吧,那又是个非常大的话题,个人能力现在实在有限],无非就是下些各种各样的资料回来[当然,这可能是所有监控里面最朴实无华的一种],今天,我们单就这一点来做些简要说明,事先声明,可以写脚本[有时候确实不太灵活],但大多数脚本的核心可能还是靠这些东西,废话就先到这儿吧,希望下面的内容能帮到你,写的不好,管用就行</p>
+<p>在linux机器下的快速打包方式[下面这些工具一般在目标机器上都会自带]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">利用 <span class="string">'tar'</span>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]</div><div class="line"></div><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/24/tar-file/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/24/SquirrelMail-RCE/">
                 SquirrelMail < 1.4.23 RCE (CVE-2017-7692) 利用小记 [ 尼玛,多次尝试未果,待解决…… ]
             </a>
@@ -354,37 +386,6 @@
             <p><br><br>单单对于渗透而言,我们可以拿 tcpdump 干些什么:<br>&nbsp;&nbsp;&nbsp;&nbsp;从工具命名不难看出,所谓 tcpdump 的意思,其实就是把 tcp 的数据[当然啦,它并非仅仅支持tcp/ip协议族] dump下来,我想作者应该也是这个意思,在常规生产环境中,运维或者协议分析师可能主要用它来捕捉一些敏感的流量行为(通过不同的数据特征来辨别出哪些流量可能带有入侵或者攻击行为),排查诊断各种网络故障,或者专门针对某个工具进行逆向(流量)分析等等……,就tcpdump本身来讲,它能做的事情非常多,真要仔细讲,可能会像wireshark那样,又得出本书,工具虽然小巧,但用途良多,下面就我们单单就实际渗透过程中的一些用法做些简单科普,主要还是用它来抓抓明文密码[当然,它本身的强大绝非仅限于此,个人能力有限,也没一下子涉及那么多,今天只单单说一个点(可能连个点都算不上吧,基本是没有任何技术含量的)]<br><br><br>以centos 6.x中的具体编译安装为例[在其它的发行版中安装方法基本类似],都非常简单,但考虑到文章的完整性想想还是一并说了算了(主要是想让大家能快速上手),工具是开源的(基于c,安装自然需要c编译器[gcc]),请自行到官方站点下载其源码包:<br><a href="http://www.tcpdump.org/" target="_blank" rel="external">http://www.tcpdump.org/</a><br>
         </div>
         <a href="/2017/01/31/tcpdump-sniffer-pass/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/10/06/empire-powershell/">
-                powershell 渗透框架 [ empire篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-10-06</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/powershell/">powershell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;对于 ‘empire’[确实有些老了] 想必大家也都已经不再陌生,很多人说它是’神器’,嘿嘿……原谅我一直也没搞清楚’神器’的具体定义到底是什么[虽然,我知道这对于实际渗透并没有任何卵用],也许在我有限的认知里,一直都以为只有能千里之外轻松get到目标系统的system或者root权限的shell的’0day’才叫神器,如果动不动就把某个确实好用点儿的脚本或者工具就叫神器,未免有点儿草率,也显得不稳重,不是吗,我自己有个比较野蛮的习惯,在用别人工具的时候,总是忍不住会观察,因为想尽可能理解它的内部实现[最好也是最直接的学习资料],’如果换成是我自己这代码会怎么写呢’,虽然是后知后觉,但拓展出来的思路足以让自己受益良多[站在别人的肩膀上可以走的更快,这是真的],虽然,自己并没有再把代码把它实现一遍,但对整个工具架构实现已经有了更清晰的理解和把握,到了实际用的时候自然就不一样了[更灵活点儿嘛],以后再看到类似的工具,可能一眼就能看透个百分之七八十,嘿嘿……纯粹是个人喜好哈,听过就好,废话过后,咱们说正题,今天主要是对empire中一些好用的powershell模块做些简要的使用说明,当然啦,自己已经事先把empire中的powershell模块选择性的提取了一下,因为我们的重点还是powershell,并非empire脚本本身,整个过程中也不会有任何涉及脚本自身的东西,其实,empire使用真的非常简单,命令帮助已经写的非常详细了,看看帮助相信大家很快就能上手,不过整个工具最核心的东西还是这些ps脚本[对于一个职业渗透者来讲,您应该一开始就尽量朝着你所能理解的本质去,慢慢的,一旦养成这种习惯,同一个东西,你往往能看见别人看不见的一些小细节],因为这中间有很多脚本跟之前是重复的,所以就选择性的说一些,脚本使用都非常简单,就不再一一截图了,实在是好累啊,还是那句话,关键是大家能在实际渗透中用上,别的都是扯淡<br>
-        </div>
-        <a href="/2016/10/06/empire-powershell/" class="read-more">Read More</a>
     
 
 </div>

