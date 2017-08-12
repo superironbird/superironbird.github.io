@@ -139,6 +139,37 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/08/readme-Framework/">
+                关于各类环境部署简要说明
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-08</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">为了更加贴近实战,所有相关的部署配置,均是按照实际生产标准来的,力求做到真实,也是为了方便大家更靠谱的学习...</div><div class="line">作为一个对技术深度有追求的渗透者,你极度有必要熟知其中涉及到安全问题的每一个配置参数选项的具体作用,每一次权限映射背后所带来的实际利用价值...</div><div class="line">大家可能也看到了,在实际部署过程中,基本都特别标明了详细的版本号,比如,php5<span class="number">.2</span>,php5<span class="number">.3</span>及php5<span class="number">.5</span>,因为有些漏洞特性只能针对特定的版本才会有用,所以不得不费点儿劲....</div><div class="line">就整个部署过程来讲,其实也是一个非常好的学习进步的机会,你完全可以通过这种实际部署更深的去理解某些漏洞产生的根因,而不用人云亦云[用事实说话],说白点儿,这就是在潜移默化的积累,积累的多了,自然就触类旁通,根本不用什么高大上的东西</div><div class="line">你要做的只是把前人的优秀经验彻彻底底的真正变成你自己的知识储备,然后在此基础上灵活变通改进,足矣,虽然短时间会比别人走的慢点,但你会收获的更多,甚至看到很多别人看不见的东西,很显然,这种方式对于<span class="string">'天才'</span>或者<span class="string">'神童'</span>,是完全不适用的,但那毕竟只是极小的一部分人</div><div class="line">脚踏实地,一步步的来,不要总觉得这也不重要,那也不重要,然后你就以这种态度持续了很多年,而等再回头看那些曾经一直默默坚持到现在的人,已经把你甩的很远了,再想追上,难于上青天...</div><div class="line">还是那句话,<span class="string">"运维会的那一套,你要比他还精通,你才有可能搞定他,开发会的那一套,你要比他还娴熟,才有可能挖到更有价值的洞...."</span>,我跟大家一样也一直为此而不懈努力着</div><div class="line">不为任何人,就为了你自己,学习吧,哪怕每天进步一点点,起码你不会因为一天碌碌无为而感到空虚....</div><div class="line">人生苦短,能做点自己喜欢的事情应该珍惜,个人一直坚信<span class="string">"唯一不变的,就是一直在变"</span>,安于现状,不思进取,自以为是,乃致命毒药....</div><div class="line">......</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/08/readme-Framework/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/07/ssh-key-mac/">
                 基于原始 ssh key 的分发机实现
             </a>
@@ -363,36 +394,6 @@
 <p>00x2 快速编译配置并启动 apache 2.2:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install zlib zlib-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirror.bit.edu.cn/apache/httpd/httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> httpd-2.2.34</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/httpd-2.2.34 --<span class="built_in">enable</span>-deflate --<span class="built_in">enable</span>-expires --<span class="built_in">enable</span>-headers --<span class="built_in">enable</span>-modules=most --<span class="built_in">enable</span>-so --with-mpm=worker --<span class="built_in">enable</span>-rewrite</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/httpd-2.2.34/ /usr/<span class="built_in">local</span>/httpd</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/httpd &amp;&amp; ll</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl -l		查看所编译的模块</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl start		启动apache</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"/usr/local/httpd/bin/apachectl start"</span> &gt;&gt; /etc/rc.local	加入自启动</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/httpd/conf/httpd.conf 		修改apache主配置文件</span></div><div class="line">	ServerName 127.0.0.1:80			改下机器名,要不然每次启动都会警告</div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl -t		检查语法</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl graceful	平滑重启</span></div><div class="line"><span class="meta">#</span><span class="bash"> curl 127.0.0.1</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/06/30/httpd2-2-env/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/30/GPU-HASH-CRACK/">
-                GPU hash破解工作站部署备忘
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-30</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/hash-crack/">hash crack</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            
-        </div>
     
 
 </div>

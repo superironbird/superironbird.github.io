@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="ModSecurity + nginx 快速部署简易WAF"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>ModSecurity + nginx 快速部署简易WAF - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    about me
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    blogs
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/07/31/waf-for-modsecurity/">
+                ModSecurity + nginx 快速部署简易WAF
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ModSecurity/">ModSecurity</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br><br>0x01 关于 modsecurity :<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">关于这款老牌开源waf,我想大家都已经非常熟悉了,尤其是经常搞境外目标的同学,肯定会接触的非常多</div><div class="line">废话不多说,咱们直奔主题,这次我们的目的只是先把它完整部署好,<span class="string">'绕过'</span>是后面的话题....</div></pre></td></tr></table></figure></p>
+<p>0x02 准备好所需软件包:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://nginx.org/download/nginx-1.12.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://www.modsecurity.org/tarball/2.9.2/modsecurity-2.9.2.tar.gz</span></div></pre></td></tr></table></figure></p>
+<p>0x03 安装依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel zlib zlib-devel openssl openssl-devel -y</span></div></pre></td></tr></table></figure></p>
+<a id="more"></a>    
+<p>0x04 这里我们可以直接把 modsecurity 编译成nginx的静态模块,等会儿在编译nginx的时候可以方便的把该模块加进去:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar -xf modsecurity-2.9.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> bash autogen.sh</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --<span class="built_in">enable</span>-standalone-module --<span class="built_in">disable</span>-mlogc</span></div></pre></td></tr></table></figure></p>
+<p>0x05 开始编译 nginx ,在编译过程中添加modsecurity模块:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf nginx-1.12.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> nginx-1.12.1</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/nginx-1.12.1 --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --add-module=/root/modsecurity-2.9.2/nginx/modsecurity/</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/nginx-1.12.1/ /usr/<span class="built_in">local</span>/nginx</span></div></pre></td></tr></table></figure></p>
+<p>0x06 下载 OWASP 拦截规则:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/SpiderLabs/owasp-modsecurity-crs.git</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp -r owasp-modsecurity-crs/ /usr/<span class="built_in">local</span>/nginx/conf/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/owasp-modsecurity-crs/</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp crs-setup.conf.example crs-setup.conf</span></div></pre></td></tr></table></figure></p>
+<p>0x07 修改 crs 默认配置,默认只是记录到日志中,并不会拦截,如果想让其拦截恶意http数据,需要替换下面的选项:<br><figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># sed -ie <span class="symbol">'s</span>/<span class="type">SecDefaultAction</span> <span class="string">"phase:1,log,auditlog,pass"</span>/#<span class="type">SecDefaultAction</span> <span class="string">"phase:1,log,auditlog,pass"</span>/g' crs-setup.conf</div><div class="line"># sed -ie <span class="symbol">'s</span>/<span class="type">SecDefaultAction</span> <span class="string">"phase:2,log,auditlog,pass"</span>/#<span class="type">SecDefaultAction</span> <span class="string">"phase:2,log,auditlog,pass"</span>/g' crs-setup.conf</div><div class="line"># sed -ie <span class="symbol">'s</span>/#.*<span class="type">SecDefaultAction</span> <span class="string">"phase:1,log,auditlog,deny,status:403"</span>/<span class="type">SecDefaultAction</span> <span class="string">"phase:1,log,auditlog,deny,status:403"</span>/g' crs-setup.conf</div><div class="line"># sed -ie <span class="symbol">'s</span>/# <span class="type">SecDefaultAction</span> <span class="string">"phase:2,log,auditlog,deny,status:403"</span>/<span class="type">SecDefaultAction</span> <span class="string">"phase:2,log,auditlog,deny,status:403"</span>/g' crs-setup.conf</div></pre></td></tr></table></figure></p>
+<p>0x08 启用ModSecurity模块和CRS规则:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp modsecurity.conf-recommended /usr/<span class="built_in">local</span>/nginx/conf/modsecurity.conf</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp unicode.mapping /usr/<span class="built_in">local</span>/nginx/conf/</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /usr/local/nginx/conf/modsecurity.conf</span></div><div class="line"></div><div class="line">SecRuleEngine <span class="keyword">on</span>	<span class="comment"># 开启拦截</span></div></pre></td></tr></table></figure>
+<p>0x09 ModSecurity.conf 常用配置参数简介,除了这些,大家可以仔细去配置里面好好看看,依次加深对ModSecurity的功能理解:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SecRuleEngine			# 安全规则引擎的工作方式</div><div class="line">SecRequestBodyAccess		# 根据规则检查请求数据</div><div class="line">SecResponseBodyAccess		# 根据规则检查响应数据</div><div class="line">SecDataDir			# modsecurity 的临时存放目录</div><div class="line">....</div></pre></td></tr></table></figure></p>
+<p>0x10 根据实际需求启用 modsecurity 自带的一些拦截规则:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/owasp-modsecurity-crs/</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp rules/*.data /usr/<span class="built_in">local</span>/nginx/conf</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/nginx/conf/modsec_includes.conf</span></div></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">include</span> modsecurity.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/crs-setup.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-901-INITIALIZATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">Include</span> owasp-modsecurity-crs/rules/REQUEST-903.9002-WORDPRESS-EXCLUSION-RULES.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-905-COMMON-EXCEPTIONS.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-910-IP-REPUTATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-911-METHOD-ENFORCEMENT.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-912-DOS-PROTECTION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-913-SCANNER-DETECTION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-921-PROTOCOL-ATTACK.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-931-APPLICATION-ATTACK-RFI.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-933-APPLICATION-ATTACK-PHP.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-941-APPLICATION-ATTACK-XSS.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-950-DATA-LEAKAGES.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-951-DATA-LEAKAGES-SQL.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-952-DATA-LEAKAGES-JAVA.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-953-DATA-LEAKAGES-PHP.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-954-DATA-LEAKAGES-<span class="keyword">IIS</span>.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-959-BLOCKING-EVALUATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-980-CORRELATION.<span class="keyword">conf</span></div><div class="line"><span class="keyword">include</span> owasp-modsecurity-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.<span class="keyword">conf</span></div></pre></td></tr></table></figure>
+<p>0x11 让 nginx 支持Modsecurity,在需要启用Modsecurity的server中的location中加入下面的配置,就像下面这样<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="section">server</span> &#123;</div><div class="line">	<span class="attribute">listen</span>       <span class="number">80</span>;</div><div class="line">	<span class="attribute">server_name</span>  www.modsec.org;</div><div class="line">	<span class="attribute">location</span> / &#123;</div><div class="line">		<span class="attribute">ModSecurityEnabled</span> <span class="literal">on</span>;				<span class="comment"># 启动 Modsecurity</span></div><div class="line">		<span class="attribute">ModSecurityConfig</span> modsec_includes.conf;		<span class="comment"># 加载 Modsecurity 规则</span></div><div class="line">		<span class="attribute">root</span>   html;</div><div class="line">		<span class="attribute">index</span>  index.html index.htm;</div><div class="line">	&#125;</div><div class="line">	<span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</div><div class="line">	<span class="attribute">location</span> = /50x.html &#123;</div><div class="line">		<span class="attribute">root</span>   html;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>0x12 启动nginx:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx -t</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div></pre></td></tr></table></figure></p>
+<p>0x013 实际测试效果:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tail -f /var/<span class="built_in">log</span>/modsec_audit.log		<span class="comment"># 观察命中记录</span></span></div></pre></td></tr></table></figure></p>
+<p>一点小结:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">根据实际测试效果可以看到确实能正常命中一些非常典型的漏洞攻击特征,但稍微变形下还是比较容易绕过的</div><div class="line">规则虽然在保持着更新,但离满足我们的现实需求还有比较远的距离,另外,效率也是个非常大的问题,明显感觉到,nginx在启动时会有很明显的卡顿</div><div class="line">其它也有一些并不如人意的地方,所以,最好还是参考自带的规则格式根据自己的实际需求有针对性的编写拦截规则</div></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/ModSecurity/">#ModSecurity</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
+至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
+<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
+<br><a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
+<br>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维<font color="red"> &nbsp;&nbsp;klionsec@gmail.com</span><br>
+<br>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">博客累计访问共 <span id="busuanzi_value_site_pv"></span> 次</span>
+<span id="busuanzi_container_site_uv">
+访客数累计 <span id="busuanzi_value_site_uv"></span> 人
+</span>
+<span id="showDays"></span>
+<script>
+var birthDay = new Date("12/28/2014");
+var now = new Date();
+var duration = now.getTime() - birthDay.getTime(); 
+var total= Math.floor(duration / (1000 * 60 * 60 * 24));
+document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了 "+total+" 天";
+</script>
+<br>
+<br>
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
+<br>
+<br>
+<font size=6 color="white">唯一不变的,就是一直在变</font>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+		<audio autoplay="autoplay">
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
+		</audio>
+</footer>
+
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
