@@ -139,6 +139,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/07/ssh-key-mac/">
+                基于原始 ssh key 的分发机实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-07</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 基于最原始的 SSH key 实现批量ssh管理 [适合较小规模集群场景,100台机器以内]:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>,批量分发文件 [配置管理]</div><div class="line"><span class="number">2</span>,批量执行命令</div><div class="line">......</div></pre></td></tr></table></figure></p>
+<p>00x2 基于SSH key 的批量ssh管理具体实现:<br>已经相对比较成熟的相关产品,后续还会再专门针对每个单独说:<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">saltstack</span></span>,puppet...</div></pre></td></tr></table></figure></p>
+<p>00x3 批量在所有机器上创建普通用户,主要用此用户身份来进行各种分发操作 [root权限过高,太危险,只要分发机一旦被攻陷,所有机器也就随之沦陷了,建议必要的时候用sudo或者suid(其实也不推荐)来进行高权限操作]<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd sysadm</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"admin"</span> | passwd --stdin sysadm</span></div></pre></td></tr></table></figure></p>
+<p>00x4 先在分发机上创建好密钥对<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> su - sysadm</span></div><div class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t dsa	一路回车即可</span></div><div class="line"><span class="meta">$</span><span class="bash"> ls -l .ssh/</span></div><div class="line">	id_rsa		私钥[钥匙]</div><div class="line">	id_rsa.pub	公钥[锁],把公钥分发给所有要ssh的机器</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/07/ssh-key-mac/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/07/NFS-sec/">
                 服务安全 [ NFS安全 ]
             </a>
@@ -359,40 +393,6 @@
         <div class="content">
             
         </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/28/php-combile/">
-                极速编译配置 php 5.3.27
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-28</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 关于FastCGI的作用:<br>&nbsp;&nbsp;&nbsp;&nbsp;http服务和动态脚本之间的通信接口,把http服务解析和动态脚本解析分开,apache,nginx默认都支持FastCGI</p>
-<p>00x2 以 Nginx+Php 为例,简述 FastCGI 大致工作原理:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Nginx<span class="string">[fastcgi_pass]</span>  &lt; -- &gt;  Php<span class="string">[php-fpm,可以同时起多个,加快处理速度]</span> wrapper<span class="string">[启动php解析器]</span> &lt; -- &gt; php解析器<span class="string">[读取php.ini]</span> &lt;--&gt; database<span class="string">[增删改查]</span></div><div class="line">		|					|</div><div class="line">	Fastcgi Client端			Fastcgi Server端<span class="string">[php-fpm.conf]</span></div></pre></td></tr></table></figure></p>
-<p>00x3 php 5.3.27 的具体编译安装过程:<br>前期环境准备 [必须先装好nginx和MySQL再来装php]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">nginx</span> 1<span class="selector-class">.12</span>	已完全部署配置完毕,且服务已正常启动</div><div class="line"><span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span>	已完全部署配置完毕,且服务已正常启动</div></pre></td></tr></table></figure></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/mysql/bin/mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp</span></div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/06/28/php-combile/" class="read-more">Read More</a>
     
 
 </div>

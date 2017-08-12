@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="基于 nginx 的负载均衡初步实现"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>基于 nginx 的负载均衡初步实现 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    about me
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    blogs
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/07/27/nginx-lbd/">
+                基于 nginx 的负载均衡初步实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/lbd/">lbd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br><br>0x01 基本环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.121</span>  <span class="selector-tag">nginx</span> 负载均衡器</div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>   后端 <span class="selector-tag">lnmp01</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   后端 <span class="selector-tag">lnmp02</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span>   客户端,用来进行访问测试</div></pre></td></tr></table></figure></p>
+<p>0x02 常用调度算法简介:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rr   	 [ 轮询 ]     适合性能相近,业务相同</div><div class="line">wrr  	 [ 权重轮询 ] 性能差距较大,业务相同</div><div class="line">ip_hash  [<span class="built_in"> ip </span>hash ] 只要客户端ip不变,在一段时间内就只访问固定的后端web服务器</div></pre></td></tr></table></figure></p>
+<p>0x03 nginx 中可实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>0x04 先在用来做负载均衡的机器上安装好 nginx:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> mount /dev/cdrom /mnt/cdrom/</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">export</span> LANG=en</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://nginx.org/download/nginx-1.6.3.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf nginx-1.6.3.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> nginx-1.6.3</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/nginx-1.6.3 --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --with-mail_ssl_module</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/nginx-1.6.3/ /usr/<span class="built_in">local</span>/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div></pre></td></tr></table></figure>
+<p>0x05 开始配置 nginx 负载均衡:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">worker_processes  1;</div><div class="line">	error_log logs/error.log error;</div><div class="line">	<span class="keyword">events</span> &#123;</div><div class="line">		worker_connections  <span class="number">204800</span>;</div><div class="line">		<span class="literal">use</span> epoll;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">http</span> &#123;</div><div class="line">		<span class="literal">include</span>       mime.types;</div><div class="line">		default_type  application/octet-stream;</div><div class="line">		sendfile        on;</div><div class="line">		keepalive_timeout  <span class="number">65</span>;</div><div class="line">		autoindex off;    </div><div class="line">		server_tokens off;</div><div class="line"></div><div class="line">		log_format <span class="keyword">main</span> <span class="string">'<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span>  [<span class="variable">$time_local</span>]  '</span> </div><div class="line">				<span class="string">' "<span class="variable">$request</span>"  <span class="variable">$status</span>  <span class="variable">$body_bytes_sent</span>  '</span></div><div class="line">				<span class="string">' "<span class="variable">$http_referer</span>"  "<span class="variable">$http_user_agent</span>"  "<span class="variable">$http_x_forwarded_for</span>" '</span>;</div><div class="line"></div><div class="line">		upstream www_server_pools&#123;	<span class="comment"># 在这里定义好后端有哪些web服务器</span></div><div class="line">			ip_hash; 		<span class="comment"># 一个客户端就找一个,默认是1比1来轮询</span></div><div class="line">			server <span class="number">192.168</span>.<span class="number">3.30</span>:<span class="number">80</span> weight=<span class="number">4</span>; 	<span class="comment"># 这里暂且按4比1的权重来轮询</span></div><div class="line">			server <span class="number">192.168</span>.<span class="number">3.41</span>:<span class="number">80</span>;			<span class="comment"># 后端的机器实际中可以用机器名解析</span></div><div class="line">		&#125;</div><div class="line">		<span class="keyword">include</span> <span class="keyword">extra</span>/lb_www.conf;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>0x06 进到指定的server标记中调用上面的负载均衡配置:<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vi <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>conf<span class="regexp">/extra/</span>lb_www.conf</div></pre></td></tr></table></figure></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="section">server</span> &#123;</div><div class="line">	<span class="attribute">listen</span>       <span class="number">80</span>;</div><div class="line">	<span class="attribute">server_name</span>  www.rootkit.org rootkit.org;</div><div class="line"></div><div class="line">	<span class="attribute">location</span> / &#123;</div><div class="line">		<span class="attribute">proxy_pass</span> http://www_server_pools;		<span class="comment"># 调用上面定义的后台机器</span></div><div class="line">		<span class="attribute">proxy_set_header</span> Host  <span class="variable">$host</span>;			<span class="comment"># 当用户被丢到后端机器处理的时候,可以把指定的头部信息也带上,如,把用户请求的域名也同时传给后端</span></div><div class="line">		<span class="attribute">proxy_set_header</span> X-Forwarded-For  <span class="variable">$remote_addr</span>;	<span class="comment"># 记录远端客户端真实ip,apache格式可能不太一样,需要自己手工改下</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>0x07 回到客户端进行请求测试:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"192.168.3.121 www.rootkit.org rootkit.org"</span> &gt;&gt; /etc/hosts</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> i <span class="keyword">in</span> `seq 10`; <span class="keyword">do</span> curl www.rootkit.org;sleep 1 ;<span class="keyword">done</span></span></div></pre></td></tr></table></figure></p>
+<p>0x08 最后,再回到lnmp01或者lnmp02上看看日志有没有记录到客户端的真实ip:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tail -f access_www.log</span></div></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/lbd/">#lbd</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
+至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
+<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
+<br><a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
+<br>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维<font color="red"> &nbsp;&nbsp;klionsec@gmail.com</span><br>
+<br>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">博客累计访问共 <span id="busuanzi_value_site_pv"></span> 次</span>
+<span id="busuanzi_container_site_uv">
+访客数累计 <span id="busuanzi_value_site_uv"></span> 人
+</span>
+<span id="showDays"></span>
+<script>
+var birthDay = new Date("12/28/2014");
+var now = new Date();
+var duration = now.getTime() - birthDay.getTime(); 
+var total= Math.floor(duration / (1000 * 60 * 60 * 24));
+document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了 "+total+" 天";
+</script>
+<br>
+<br>
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
+<br>
+<br>
+<font size=6 color="white">唯一不变的,就是一直在变</font>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+		<audio autoplay="autoplay">
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
+		</audio>
+</footer>
+
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
