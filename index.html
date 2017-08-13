@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/08/01/ELK-LOG/">
+                利用 ELK 深度定制实时入侵日志分析平台初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-08-01</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ELK/">ELK</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 先安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
+<p>0x02 先来熟悉一些必要的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
+<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/08/01/log-find/">
                 入侵取证 [ web日志分析初步 ]
             </a>
@@ -360,39 +393,6 @@
 <p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br>
         </div>
         <a href="/2017/07/13/tor-change-ip/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/09/nginx-waf/">
-                利用 nginx + lua 实现高效灵活的应用层WAF
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-09</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 利用nginx + lua 实现更加灵活高效的waf,准备好所需软件包和依赖库:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">tar</span> <span class="selector-tag">xf</span> <span class="selector-tag">lua-nginx-module-0</span><span class="selector-class">.9</span><span class="selector-class">.13</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"># <span class="selector-tag">tar</span> <span class="selector-tag">xf</span> <span class="selector-tag">ngx_devel_kit-0</span><span class="selector-class">.2</span><span class="selector-class">.19</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>0x02 编译安装Lua JIT,其实,简单理解就是一个lua脚本解释器:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf LuaJIT-2.0.5.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> LuaJIT-2.0.5</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
-<p>0x03 编译安装nginx 并加载lua模块:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf nginx-1.8.0.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> nginx-1.8.0</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/nginx-1.8.0 --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --with-file-aio --with-http_dav_module --add-module=../lua-nginx-module-0.9.13 --add-module=../ngx_devel_kit-0.2.19</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/nginx-1.8.0/ /usr/<span class="built_in">local</span>/nginx</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/09/nginx-waf/" class="read-more">Read More</a>
     
 
 </div>

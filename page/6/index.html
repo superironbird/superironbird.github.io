@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/02/20/short-open-tag/">
+                利用php短格式bypasswaf查杀
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-02-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell/">webshell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="利用php短格式简单bypasswaf查杀"><a href="#利用php短格式简单bypasswaf查杀" class="headerlink" title="利用php短格式简单bypasswaf查杀:"></a>利用php短格式简单bypasswaf查杀:</h5><p>需要php开启短格式支持,到php.ini中去开启一下,然后重启web服务即可<br>[当然啦,它默认是不开的,生产环境中也很少会有运维去开,直接利用可能不太行,但用来隐藏webshell或者bypass waf还是值得尝试的]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">short_open_tag = On</div></pre></td></tr></table></figure></p>
+<p><img src="/img/short_open_tag .png" alt=""><br>
+        </div>
+        <a href="/2017/02/20/short-open-tag/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/01/31/tcpdump-sniffer-pass/">
                 linux下的嗅探实践 [tcpdump篇]
             </a>
@@ -358,38 +391,6 @@
 <h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认2.6.6,有些脚本很难跑起来),因为win下的工具已经非常丰富了,这里就不说了<br><br><br>1,编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/25/msf-socks4a/">
-                通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/scoks4a/">scoks4a</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得用别的socks代理工具太麻烦,不用担心,在msf中同样也为我们提供好了用于socks代理的模块[socks4a],虽然它只是基于scoks4的,但对于我们实际渗透来讲,关系并不大<br><br><br>1,首先,假设我们已经获取了目标系统的meterpreter会话,然后,我们发现在目标机器上存在内网段,这时,我们想继续对目标内网进行渗透,然后就有了下面的一些内容<br><img src="/img/ipconfig meter.jpg" alt=""><br><br>
-        </div>
-        <a href="/2016/09/25/msf-socks4a/" class="read-more">Read More</a>
     
 
 </div>
