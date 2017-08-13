@@ -139,18 +139,18 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/08/01/ELK-LOG/">
-                利用 ELK 深度定制实时入侵日志分析平台初步
+            <a href="/2017/08/02/navicat-dump/">
+                利用 Navicat 自带的http隧道进行脱裤
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2017-08-01</span>
+                <span class="date">2017-08-02</span>
             
             
             
                 <span class="category">
-                    <a href="/categories/ELK/">ELK</a>
+                    <a href="/categories/dump/">dump</a>
                 </span>
             
         </div>
@@ -158,11 +158,12 @@
 
     
         <div class="content">
-            <p><br><br>0x01 先安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
-<p>0x02 先来熟悉一些必要的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
-<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 基本环境简介:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">目标边界机器<span class="selector-tag">lnmp01</span>的域名及内网<span class="selector-tag">ip</span>: <span class="selector-tag">www</span><span class="selector-class">.rootkit</span><span class="selector-class">.org</span> 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div><div class="line">目标内网中的<span class="selector-tag">win7</span> 数据库<span class="selector-attr">[暂以mysql为例]</span>服务器的内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.168</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">很明显,l<span class="symbol">nmp01</span>和wi<span class="symbol">n7</span>在目标内网是可以互通的</div></pre></td></tr></table></figure>
+<p>0x02 可能会面临的问题:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">想脱数据,但目标数据库不能外连,原因可能多种多样,比如下面这些经常会遇到的情况</div><div class="line">目标站库分离,数据库在内网机器上</div><div class="line">即使没分离,指定的数据库用户又不允许外联</div><div class="line">当前数据库用户权限不够,没法自己开启外联</div><div class="line">防火墙阻断外部ip对内部数据库端口的访问等等....</div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过l<span class="symbol">nmp01</span>这台机器,脱取内网wi<span class="symbol">n7</span>机器上的所有数据</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
+        <a href="/2017/08/02/navicat-dump/" class="read-more">Read More</a>
     
 
 </div>
@@ -195,6 +196,39 @@
 <p>0x02 从敏感异常的状态码开始:<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">404</span>	  正常用户是很难返回<span class="number">404</span>,大多数可能都是入侵者在尝试一些敏感路径不存在时的响应才会造成这种状况....</div><div class="line"><span class="symbol">403 </span>  	  通常都一些不想让用户访问到敏感路径</div><div class="line"><span class="number">401</span>	  可能是用尝试http基础认证时账号密码错误</div><div class="line"><span class="number">500</span>	  后端脚本或者数据库报错</div><div class="line"><span class="number">503</span>	  ....</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/08/01/log-find/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/08/01/ELK-LOG/">
+                利用 ELK 深度定制实时入侵日志分析平台初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-08-01</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ELK/">ELK</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 先安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
+<p>0x02 先来熟悉一些必要的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
+<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
     
 
 </div>
@@ -361,38 +395,6 @@
 <p>0x03 nginx 中可实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/13/tor-change-ip/">
-                如何更隐匿地渗透
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/tor/">tor</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透中,我们经常会遇到各种ips或者waf的围追堵截,有时候,跑个目录就直接把你ip封了,因为经常会遇到这种尴尬的情况,所以就灵机一动想了个比较折中的办法,利用tor来频繁的切ip,然后用socks5代理,把常用的工具丢进去搞,注意用工具跑的时候,线程要尽量给少点,tor唯一的缺点就是慢,当然,你也可以写成分布式扫描,不过可能需要你事先准备好一大批高质量代理ip,然后随机轮训,不过咱们不需要这么麻烦,不到五分钟写了个小脚本,暂且能满足需求,将就用吧</p>
-<p>0x02 代码如下<br>&nbsp;&nbsp;&nbsp;&nbsp;随便写的,比较粗糙,大家将就着看吧,如下,有些地方还有问题,后期抽空想到好点子了,再完善下,对了,不知道为啥tor自己的切ip选项不管用,希望哪位兄弟如果找到原因麻烦也告诉我一声,谢谢……<br>
-        </div>
-        <a href="/2017/07/13/tor-change-ip/" class="read-more">Read More</a>
     
 
 </div>

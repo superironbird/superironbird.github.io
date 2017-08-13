@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/26/install-py27-on-centos/">
+                在目标机器上快速编译安装py2.7
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/python/">python</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认2.6.6,有些脚本很难跑起来),因为win下的工具已经非常丰富了,这里就不说了<br><br><br>1,编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/25/msf-socks4a/">
                 通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
             </a>
@@ -362,40 +394,6 @@
 <p>3,具体过程如下,首先,编辑边界linux系统的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/18/netsh-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 netsh ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/netsh/">netsh</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;除了前面提到的用一些端口转发工具来进行端口转发,其实windows系统自己也给我们提供了类似的功能,比如,其自带的防火墙管理工具’netsh’套件(确实非常实用),尤其碰到一些稍微畸形点的内网环境:<br><br></p>
-<p>1,先来假设这么一种情况<br>&nbsp;&nbsp;&nbsp;&nbsp;当你搞定边界的一台windows机器以后,上去一看发现,机器上有两块网卡,一块外网卡,一块内网卡(先以正常的DMZ来讲),这时又你通过别的方式搞定了同内网的另一台windows机器,本来以为简单的种上马就可以走人了,但你发现马执行以后似乎什么都没发生,搞了半天,你才发现,原来这台内网机器根本不能连外网,说到这里,相必你也应该知道我要干啥了,没错,虽然内网的那台机器不能连外网,但它起码能跟边界的这台机器正常通信,这就够了,我们可以直接从外部通过边界这台机器来访问内网的那台不能连外网的机器<br><br><br>2,演示简单环境如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">目标的边界机器(win7en) <span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.212</span>(假设为目标公网ip,这台机器没有任何服务,就是台个人机,rdp和telnet当然也不会开了) <span class="number">192.168</span>.<span class="number">32.132</span>(目标内网ip)</div><div class="line">目标内网的那台不能连外网的机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span>(目标内网ip)</div><div class="line">外部的攻击者的机器(win7cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>3,要实现的目的很简单:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,可以确认的是,边界机器和攻击者机器通信正常,边界机器和目标内网的那台不能连外网的机器通信正常</div><div class="line">现在,我想通过边界机器的某个端口去访问目标内网的那台不能上外网的机器的<span class="number">3389</span>,下面是具体的操作步骤</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/18/netsh-portfward/" class="read-more">Read More</a>
     
 
 </div>

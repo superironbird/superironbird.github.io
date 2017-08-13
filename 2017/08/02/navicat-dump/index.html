@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="知道自己想要做什么,比怎么做更重要">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="klion">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="利用 Navicat 自带的http隧道进行脱裤"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="知道自己想要做什么,比怎么做更重要" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="klion&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>利用 Navicat 自带的http隧道进行脱裤 - klion&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    about me
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact">
+                    blogs
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2017/08/02/navicat-dump/">
+                利用 Navicat 自带的http隧道进行脱裤
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-08-02</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dump/">dump</a>
+                </span>
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><br><br>0x01 基本环境简介:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">目标边界机器<span class="selector-tag">lnmp01</span>的域名及内网<span class="selector-tag">ip</span>: <span class="selector-tag">www</span><span class="selector-class">.rootkit</span><span class="selector-class">.org</span> 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div><div class="line">目标内网中的<span class="selector-tag">win7</span> 数据库<span class="selector-attr">[暂以mysql为例]</span>服务器的内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.168</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">很明显,l<span class="symbol">nmp01</span>和wi<span class="symbol">n7</span>在目标内网是可以互通的</div></pre></td></tr></table></figure>
+<p>0x02 可能会面临的问题:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">想脱数据,但目标数据库不能外连,原因可能多种多样,比如下面这些经常会遇到的情况</div><div class="line">目标站库分离,数据库在内网机器上</div><div class="line">即使没分离,指定的数据库用户又不允许外联</div><div class="line">当前数据库用户权限不够,没法自己开启外联</div><div class="line">防火墙阻断外部ip对内部数据库端口的访问等等....</div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过l<span class="symbol">nmp01</span>这台机器,脱取内网wi<span class="symbol">n7</span>机器上的所有数据</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>0x04 大概思路,前提是你现在至少已经有了一个菜刀的webshell且可执行系统命令,上传文件的的情况下::<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">在数据量非常少的情况下,可考虑直接用菜刀,大马或者针对各种数据库的脱裤脚本来脱数据,一两万还是勉强可行的</div><div class="line">还有一种,就是你也可以通过拦截菜刀的发送的sql语句,借助py把里面的语句替换成你自己的,以此来实现导出数据,不过效率肯定不是太高....</div><div class="line">如果数据量非常多的情况下,传统的方法,还可能会利用端口转发,把目标本地或内网指定机器的数据库端口转发到自己vps上,然后在vps本地用navicat来脱,至于转发工具就非常多了,如,ew,socat之流....</div><div class="line">还有一种,就是咱们今天要介绍到的,利用Navicat自身提供的http代理连接方式,说白点儿就是http隧道,其实也是个烂大街的招儿了,嘿嘿……</div></pre></td></tr></table></figure></p>
+<p>0x05 具体操作,如下:<br>首先,上传对应数据库的代理脚本[目前我们看到只支持postgresql,sqlite以及mysql],这里暂以mysql为例,即上传Navicat安装目录下的ntunnel_mysql.php脚本到目标网站的任意目录中<br><img src="/img/ntuunel_mysql.png" alt=""><br><img src="/img/ntuunel_mysql_upload.png" alt=""><br></p>
+<p>然后,在浏览器中尝试访问该脚本,从界面乍一看,还以为是个脱裤脚本,其实只是个连接测试,它只是为了保证你的代理能成功,做了下简单的连接验证<br><img src="/img/ntuunel_mysql_upload_res.png" alt=""><br></p>
+<p>此时,本地打开Navicat配置http连接,这里的通道地址就写你上面访问的那个url,其实就是个代理端,记得勾选下使用base64编码,防止waf从中作祟,然后主机名写localhost,账号密码写本地数据库用户的账号即可,因为要连接lnmp01本地的mysql<br><img src="/img/ntuunel_mysql_connect.png" alt=""><br><img src="/img/ntuunel_mysql_upload_connect.png" alt=""><br></p>
+<p>再来尝试连接目标内网的win7机器上的mysql,这时主机名ip就要写内网机器的真实ip了,数据库账号密码也要写那台机器上的数据库账号密码<br><img src="/img/ntuunel_mysql_upload_connect_win7.png" alt=""><br><img src="/img/ntuunel_mysql_upload_connect_win7_res.png" alt=""><br></p>
+<p>最后,实际的连接效果如下,此时即可尽情的脱裤了,navicat的速度和稳定性还是非常值得信赖的<br><img src="/img/ntuunel_mysql_all.png" alt=""><br></p>
+<p>0x06 一点扩展:<br>&nbsp;&nbsp;&nbsp;&nbsp;从上面的选项卡中我们也可以清晰的看到,除了使用http隧道,它还支持通过ssh隧道和ssl加密的连接,不得不说,Navicat实在是做的太贴心了,原谅自己用了这么年,直到今天才发现它的精髓,哈哈……实在是遗憾<br><img src="/img/ntuunel_mysql_upload_connect_ssl_ssh.png" alt=""><br></p>
+<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这也是无意间听同事说到的,顿时感觉耳目一新,就回来好奇的多喵了一眼,自己用http隧道用了这么多年,当时一看到Navicat的选项心里就已经猜中了90%,它大概是怎么实现的,其实早该想到了,结果回来仔细一看,原来都是烂大街的脱裤技巧了,这里就顺便记录下,当备忘吧</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/Navicat/">#Navicat</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+
+<center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>的折扣哦...</center><br>
+至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本是没什么问题<br>
+<br>
+<a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font><br>
+<br><a href="/img/laoxue.png" target="_blank">优惠码具体使用方法</a><br>
+<br>
+<span>另,有偿提供各类服务搭建,配置加固[lamp,lnmp,vpn...],服务器代维<font color="red"> &nbsp;&nbsp;klionsec@gmail.com</span><br>
+<br>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">博客累计访问共 <span id="busuanzi_value_site_pv"></span> 次</span>
+<span id="busuanzi_container_site_uv">
+访客数累计 <span id="busuanzi_value_site_uv"></span> 人
+</span>
+<span id="showDays"></span>
+<script>
+var birthDay = new Date("12/28/2014");
+var now = new Date();
+var duration = now.getTime() - birthDay.getTime(); 
+var total= Math.floor(duration / (1000 * 60 * 60 * 24));
+document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了 "+total+" 天";
+</script>
+<br>
+<br>
+多年实战渗透经验积累[大中小型网络] + 娴熟的底层及脚本编写能力 + 熟练的协议分析能力 + 多个大中型安全架构实际设计部署经验 + 良好的逆向分析能力[一定的0day挖掘能力] = 合格安全架构师
+<br>
+<br>
+<font size=6 color="white">唯一不变的,就是一直在变</font>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klionsec">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:klionsec@gmail.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    <h2>blog by klion</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+		<audio autoplay="autoplay">
+		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
+		</audio>
+</footer>
+
+
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
