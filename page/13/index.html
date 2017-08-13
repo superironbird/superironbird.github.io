@@ -139,6 +139,57 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2014/12/18/inside-method/">
+                web渗透第一步之信息搜集  [ 找目标内网入口 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dirscan-tools/">dirscan tools</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 为什么要找内网入口:<br>&nbsp;&nbsp;&nbsp;&nbsp;我们渗透的最终目的大多数都是目标内网,有些核心敏感数据(比如,个人机上的一些数据),我们从边界机器是拿不到的,所以,只能深入内部,当然,这里所指的内部文件数据,并不仅限于数据库,邮件这类数据,可能由于各种各样的需求,我们还需要某些个人的数据或者组织的各种业务数据,技术的各种数据等等,一般情况下,渗透web的目的,很大程度上也是希望能从web边界直接进入到目标内部(内网),对于apt来讲,价值比较高的东西基本也全部在内部,不得不承认的是,有时候公开信息调研确实也能找到部分敏感信息,但那个含金量和时效性就远远不如内网中的了,至于如何深入到目标内部,很大程度上也取决于,我们能不能尽可能多的找到目标可能的内网入口</p>
+<p>0x02 第一种,通过vpn进入目标内网[一般都会提供一个web端的443端口表单验证]:<br>&nbsp;&nbsp;&nbsp;&nbsp;vpn,想必大家都已经非常熟悉了,在前面也已经详细说明过它的用途,除了能帮我们翻墙当跳板之外,对于一些大型目标组织或是跨国公司,他们大部分都会选择利用vpn的方式来协作办公,通过vpn在公网上开辟一条专有通道,以方便公司内部的各种业务处理,但有个前提,你要想进入这条通道,必须有正确的vpn账号密码和vpn服务器地址,登陆成功后,才能处在目标的内网中,重点也就在这里,怎么搞到目标的vpn账号密码呢,嘿嘿……方法比较多,例如,发信钓鱼,搜集目标泄露过的各种配置文件,社工撞库……</p>
+<p>0x03 利用各类邮件程序自身的漏洞尝试从web边界进入目标内网<br>&nbsp;&nbsp;&nbsp;&nbsp;下面就简单介绍一种常见的web邮件程序,[这里为什么一定要是邮件程序呢,不同于普通的web网站,普通的web服务器有时候即使拿到shell,但有可能机器并不在内网或者该机器上根本没有内网网卡,但邮件服务器一般都被会用来处理内部实际业务,从个人经验来看,web邮件程序的机器,绝大部分都在内网]:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;owa 微软自家的exchange服务,企业为了便于统一协作管理,一般都会直接把exchange服务部署在域内,邮箱名称和邮箱密码大部分也直接是域内的系统账号密码,可以直接拿来登陆域内系统,当然,vpn也是可以尝试的,关键还是看目标具体是怎么部署的了,至于,如何搞到目标的owa的账号密码,嘿嘿……后面再总结吧,包括命令行邮件导出成pst文件,如果目标部署的有exchange server 一般直接访问下/owa/auth即可看到,服务被部署好以后管理员没有特殊情况基本就不怎么会关注/owa/auth目录下的文件了,所以当你拿到权限后,在这儿放个webshell,还是很靠谱的,一般都是web的443端口,另外,对于owa本身几乎是没什么漏洞的</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa的一般入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/remote.bmtjfa.com.au/owa</span><span class="regexp">/auth/logon</span>.aspx机器在域内的情况</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.advancedptsm.com/owa</span><span class="regexp">/auth/logon</span>.aspx机器不在域内的情况</div><div class="line"></div><div class="line">如果没有删的话,可以访问下面的路径爆出服务器信息:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com/owa</span><span class="regexp">/auth/test</span>.aspx</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Mirapoint邮件系统:</div><div class="line">ShellShock漏洞,漏洞地址如下:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/search.cgi</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/madmin.cgi</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">KerioConnect 邮件系统:</div><div class="line">一般后台只能内网访问,入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com:4040/admin</span><span class="regexp">/login/</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra 邮件系统: </div><div class="line">本地包含,入口:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com:7071/zimbra</span>Admin/</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查看zimbra版本:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com/help</span><span class="regexp">/zh_CN/standard</span><span class="regexp">/version.htm</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Atmail 邮件系统: </div><div class="line">敏感信息泄露问题[数据库账号密码]:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/config</span><span class="regexp">/dbconfig.ini</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Lotus Domino <span class="symbol">Webmail:</span></div><div class="line">越权访问,<span class="symbol">inurl:</span>.nsf/WebHelp/!OpenPage</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TurboMail邮件系统: </div><div class="line">默认配置不当可进入任意邮箱,默认有四个root域账号,一个管理员,三个普通用户</div><div class="line">由于设置缺陷,导致普通用户可以查看任意用户的密码</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">U-<span class="symbol">mail:</span></div><div class="line">sql注入,可写shell</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">WinMail:</span></div><div class="line">非授权访问/权限绕过</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExtMail :</div><div class="line">老版本注入</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SquirrelMail</div></pre></td></tr></table></figure>
+<p>0x04 找目标的oa系统或者图书馆之类的网站以及各种边界网络设备的web管理端[一般像这些东西跟内网的联系比较大]:<br>&nbsp;&nbsp;&nbsp;&nbsp;oa本来就是为了方便员工远程办公,处理公司各种业务用的,但,这也给我们提供了通往目标内部的入口至于,为什么非要选则图书馆,目的很显然,既然是图书馆,你肯定会想到内部的什么图书管理系统,实际经验也证明,大多数图书馆的站,都会处在内网中找各种网络设备的web管理端,主要是想登进去以后,看看有没有可以上传shell的地方,也许可以利用得到</p>
+<p>0x05 在你能力足够的情况下,直接搞路由也是可以的[比如,cisco,端口镜像,抓包分析,说实话自己对路由并不是非常擅长]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">路由作为一种边界设备,搞它的意义就不用再多说了吧</div></pre></td></tr></table></figure></p>
+<p>0x06 暴露在边界的目标打印机,智能点儿的打印机都会自带一些web服务[通常是java]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打印机,就更不用说了,典型的内部设备,一般是先找到配置管理界面,部署war包</div></pre></td></tr></table></figure></p>
+<p>0x07 如果实在外部搞不定,条件允许的情况下,尝试实地渗透也是可以的,比如,通过无线进入目标内部<br>&nbsp;&nbsp;&nbsp;&nbsp;这也算是一种相对比较高效的渗透方式,老外非常干这个,但前提是,你可能需要很多次的蹲点,才能确认目标,实地渗透对你的心里素质要求可能会更高一些,另外,现场的环境和有限的时间也多多少少会影响到你<br><br></p>
+<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;时间原因,暂时就想到这些,都是一些平时的经验加上一点自己的想法,其实,就整个信息搜集来讲,对你的社工能力其实是个不小的考验,我自己在这方面确实是弱项,后续会慢慢加强<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2014/12/17/info-getshell/">
                 在信息搜集阶段快速getshell的一些方式
             </a>
@@ -491,63 +542,6 @@
 <p><br><br>2,什么是C段<br>和旁站差不多的是,旁站是通过同一台服器上的其它网站跨到目标站的目录里,而C段,则是通过目标所在C段的其他任意一台机器,想办法跨到我们的目标机器上,至于怎么跨,嗅探,社工,web……随你便,反正最终目的能跨过去即可,实战可能还会有个问题就是,目标的机器在内网里面,也就是它根本没有公网ip[代理进去的],这种方法可能就不太管用了,另外,如果是虚拟机,这种方式可能也不太好使,因为提权比较难,这只是其中一些问题,很多其它的问题,我们暂时先不说,后续碰到再详细说,这里先理解一下基础概念即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C段: 和目标机器ip处在同一个C段的其它机器,即都在同一个交换机下</div></pre></td></tr></table></figure></p>
 <p><br><br>3,关于旁站/C段工具的基本编写原理<br>市面上这类的工具多如牛毛,但各有优劣(可能是用的接口质量的不同吧),但大多数都是通过bing的接口,把查询到的结果数据中的旁站链接提取出来,C段和旁站唯一不一样的地方,就是C段是把整个段的ip上的旁站都轮询一遍,不过在此之前你需要先申请一下bing的搜索api,其实我自己是不怎么用这类的工具的[不太准],基本都是手工直接在bing里面,ip:*慢慢分析找入手点的,因为工具本身可能会漏掉很多有价值的参考信息,反正我们的目的就是找个站能进去的站即可,怎么找,随意,你自己觉得怎么快就怎么来,渗透在乎更多的是结果和效率,过程几乎不会太在意<br><br><br>4,好了,这部分内容确实比较简单,工具也没太多技术含量,单纯只是为了理解一些基本概念而已,这里就不多说了<br><br></p>
 <h5 id="一些提供类似功能的工具站-之前好用的-现在大多已经失效了-后期遇到好的再贴上来"><a href="#一些提供类似功能的工具站-之前好用的-现在大多已经失效了-后期遇到好的再贴上来" class="headerlink" title="一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来:"></a>一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.sameip.org/</span></div></pre></td></tr></table></figure>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/11/search-ipinfo/">
-                web渗透第一步 之 信息搜集 [ 搜集目标真实ip信息 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-11</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/信息搜集/">信息搜集</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,在实际渗透中,给我们的目标可能仅仅就是一个域名或者某个组织名,那么该如何仅仅通过一个目标域名或者组织域名来确定目标所在的一些真实ip段呢,下面我们就开始整个信息搜集任务的第一步,搜集目标ip及域名信息,注意,这里我们暂且先不考虑目标是否用了CDN的问题,如何透过cdn找真实ip在后面会做单独说明,这里就先以正常的情况来说明<br><br></p>
-<p>2,以 www.cityu.edu.hk 为例,拿到目标域名的第一反应,没别的,先ping下目标域名看看解析情况再说<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ping www.cityu.edu.hk</span></div><div class="line">www.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.62</span>) ping 目标主域解析到的ip是这个</div></pre></td></tr></table></figure></p>
-<p><br><br>3,虽然没ping通,但这并不影响我们看它解析到的ip,不通的原因,还要看它提示的是什么,如果是超时,多半是因为防火墙拦截了imcp请求,不过这并不是重点,重点是我们已经发现这个域名被解析到了这个ip上,而且被解析的这个域名依然是 www.cityu.edu.hk,其实,从这里基本就已经可以确定这个ip就是目标的真实ip段内的[搞多了,自然就会有感觉],不信的话,我们可以直接尝试在浏览器中访问下解析到的这个ip,看看是不是会自动跳转到www.cityu.edu.hk 这个域名上的网页上,但仅仅就这一个ip还是远远不够的,对一个这种规模的大学来讲,机器肯定不再少数,我们接着往下走……<br><img src="/img/www.cityu.edu.hk.png" alt=""><br></p>
-<p>4,ping 完主域,顺手再来ping下子域,依然是没ping通,不过我们看到这个子域也被解析到了这个ip上[很可能是代理服务器或者负载均衡器什么的]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ping cityu.edu.hk</span></div><div class="line">cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.62</span>)</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu.edu.hk.png" alt=""><br></p>
-<p>5,通过上面简单的ping,我们已初步发现目标所在的其中一个真实ip段,但仅仅只有这一个段还是远远不够的[像这种规模的大学,几乎整个B段都可能是它的],接着我们可以从目标的mx,ns,a记录入手,至于这些记录具体都是干什么的,这里就不细说了,大家请自行谷歌,因为我们今天的重点并不在这些记录本身,而仅仅是想通过这些记录[子域]获取一些目标的真实ip段,如下,推荐dig,nslookup不太准[非权威查询]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标的mx记录:</div><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk mx</span></div><div class="line">smtp.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">4.72</span>)  很显然,这只是目标的一个子域,根据ping解析到的结果我们发现这个ip也确实是香港ip,跟ping主域返回的结果是<span class="number">144.214</span>.<span class="number">5.62</span>,貌似是差了一个<span class="string">'C'</span>段,不过,大致可以确定是目标的真实ip段</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu mx 1.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cityu-edu-hk.mail.protection.outlook.com (<span class="number">65.55</span>.<span class="number">88.234</span>)  注意此域名,它并非目标子域,很显然是挂到outlook上的,ip也不是香港的,所以,此ip对我们实际的渗透意义并不大,可以忽略</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu mx 2.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标ns记录:</div><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk ns</span></div><div class="line">cpccspc.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.254</span>) 目标子域,ip和主域处在同一C段中,可以确定为目标真实ip</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu ns 1.png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vax.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">2.1</span>) 目标子域,同处在B段中,初步确定为目标真实ip</div></pre></td></tr></table></figure>
-<p><img src="/img/cityu ns 2.png" alt=""></p>
-<p>cpccux0.cityu.edu.hk (144.214.5.253) 目标子域,ip和主域处在同一C段中,可以确定为目标真实ip<br><img src="/img/cityu ns 3.png" alt=""><br><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标a记录:</div><div class="line"><span class="comment"># dig +short cityu.edu.hk a</span></div><div class="line"><span class="number">144.214</span>.<span class="number">5.62</span>   和直接ping的结果一致,确定为真实ip</div></pre></td></tr></table></figure>
-<p><br></p>
-<p>6,当然,你可以从一些第三方网站上获取到目标的一些ip及域名信息,下面就推荐几个自己常用的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ip138的数据库还是蛮不错的,主要是更新频繁,只需提供一个目标ip或者域名[给子域就好了]即可定位ip所在地,如果你想把它写到脚本中批量查,它也提供查询接口,付点儿费,然后把接口写到你的脚本中即可</div><div class="line"></div><div class="line">www.ip138.com</div></pre></td></tr></table></figure></p>
-<p><img src="/img/ip138 ip info res.png" alt=""> <img src="/img/ip138 ip info.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这是个相对比较老的信息搜集站,直接给个目标子域,它会把目标的一些子域也都列出来,然后你可以挨个点到每个子域里面再去看该子域详情,域名详情包括这个域名ip变更的历史记录[比如,我们发现在www.cityu.edu.hk这个域名上曾经解析到过三个ip,尝试ping下以前的ip看看还在不在,说不定是个入手点呢],web服务器版本型号,操作系统类型[如果是一些低版本的操作系统,我们可以直接尝试比较经典的漏洞exp,比如iis(<span class="number">2000</span> <span class="number">2003</span>)写等等……],域名注册商[如果你想做域名劫持可能会用到],域名所在地等等……,从结果看到我们看到,主域其实是一台f5负载均衡设备[印证了前面的猜测],另外从别的子域里面我们又发现了很多其它的真实ip段</div><div class="line"></div><div class="line">www.netcraft.com</div></pre></td></tr></table></figure>
-<p><img src="/img/netcraft.com.png" alt=""><br><img src="/img/netcraft.com res.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">最后再来查下目标域名的 whois 信息,里面的一些内容对我们渗透也是有一定帮助的,比如,注册时留下的各种联系信息,邮箱,电话,姓名等等……</div><div class="line"></div><div class="line">www.whois.com/whois</div></pre></td></tr></table></figure>
-<p>whois里面对我们有用的信息可能也就下面这些:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">注册信息中的邮箱,名字,域名注册时间,过期时间以及当前注册状态</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Registrant Contact Information.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">管理员各种联系信息,包括管理员邮箱电话,传真,各种名字[可以用来制作字典]</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Administrative Contact.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">目标技术的联系方式,包括邮箱,电话,传真,名称</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Technical Contact.png" alt=""><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">用于解析该域名的所有ns服务器,从这里面我们发现了两个我们之前在ns记录没查到的域名,不过一看,这很显然就不是目标自己的ns服务器,所以,忽略</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Name Servers Information.png" alt=""><br></p>
-<p>7,通过上面的初步搜集,我们大致整理出了下面的一些目标真实ip段,因为段比较多,这里并没有都写上去……,关键是大家的搜集思路清晰就好:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">144.214</span>.<span class="number">2.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">4.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">5.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">236.0</span>/<span class="number">24</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
-<p><br><br>8,到这一步,初步的ip及域名信息搜集就基本算是完成了,内容确实比较简单,关于工具的使用也比较容易,实在不会,看看命令的相关帮助应该就能明白了,可能最需要注意的地方还是 ping 的时候最好多ping几次,有时候因为自己的网速或者目标的网络问题,也会导致超时,并非一定是防火墙的原因,所以,一般ping 个5,6次就差不多了,当然,这里只是大家告诉你怎么手工去找,相信这里的一点铺垫,到后面会更利于你去理解和使用这一类的信息搜集工具,因为它们的工作流程大致都是如此,只不过我们现在是在手工实现它,还是那句话,实际渗透中怎么快怎么来[以效率为重],后面会说到dnsenum,一个脚本基本就可以把上面说的东西全干了……<br><br><br>9,当然啦,这仅仅还是万里长征的第一步,拿到准确的目标ip段信息,也是为了方便我们后面,对目标机器大概的部署情况做一些简要判断,从中找到一些可能的突破口,这中间还会涉及到cdn的问题,不过不用太着急,后面会再专门针对cdn做单独的详细说明,至于拿到这些真实ip信息以后的事情,就自己随意了,旁站,C段,ddos,爆破…………,自己想怎么发挥都行…<br><br></p>
-<h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;没啥技术含量,方便加深对此类工具的深层理解,顺带留给有需要的朋友<br><br></p>
 
         </div>
     

@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/03/nginx1-12-env/">
+                极速部署 nginx 1.12.0
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-03</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 依旧是先简单的科普:<br>&nbsp;&nbsp;&nbsp;&nbsp;nginx [tengine基于Nginx的变种] 一款流行的开源web中间件,基于c,毛子写的,支持高并发[epoll模型,日PV2000W以内基本是没什么感觉的],不过,高并发仅仅是针对静态资源来说的,如果是动态资源还要看后端脚本和数据库的实际处理速度,另外,它本身占用资源较少,配置也十分方便灵活</p>
+<p>00x2 除了提供基本的web服务相关功能之外,它也提供了很多其它的很实用的功能[都是基于模块的形式]:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">动态脚本解析服务</div><div class="line">反向代理[类似负载均衡,f5,a10]</div><div class="line">提供缓存功能,类似ats varnish...</div><div class="line">....</div></pre></td></tr></table></figure></p>
+<p>00x3 安装 nginx前的一些必要的准备工作:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rpm -qa pcre pcre-devel openssl-devel		正则库,nginx中的rwrite模块会用到,后面是加密函数库,https要用到</span></div><div class="line"><span class="meta">#</span><span class="bash"> mount /dev/cdrom /mnt/cdrom/  		因为我这里用的是本地yum源,所以需要先挂下光盘,如果你直接用的网络yum源,可以忽略此步骤</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y		安装所需的所有依赖库</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx		创建nginx服务用户,既是服务用户,也就意味着它并不需要登陆系统,更不需要有家目录</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/03/nginx1-12-env/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/02/mysql-bin-install/">
                 mysql5.5 二进制包单实例极速部署
             </a>
@@ -358,37 +391,6 @@
 <p>安装 libiconv 字体库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.14.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.14</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/06/24/php-5-2-17/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/19/https-mitmf/">
-                https 中间人劫持全过程
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/https-mitmf/">https-mitmf</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>抱歉,待续….</p>
-
-        </div>
     
 
 </div>

