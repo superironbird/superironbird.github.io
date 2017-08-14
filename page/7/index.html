@@ -139,6 +139,73 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/10/05/nishang/">
+                powershell 渗透框架 [nishang篇]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-10-05</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/powershell/">powershell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只针对win7以后的系统,此之前的系统是没有引入powershell的,至于powershell是什么,这里就不废话了,大家自行谷歌,在使用各种powrshell脚本的过程中,系统权限自然也是越高越好,权限大一些效果可能会更佳,至于为什么会选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,方便定制……这里就不啰嗦了,说破天,我们最终的目的也是希望能在实际渗透中把它用起来,不然,价值何在呢<br><br></p>
+<p>1,今天先来聊聊第一款powershell工具[其实把它称为powershell渗透框架似乎更合适些],nishang[想必早已家喻户晓],关于nishang中的每个ps脚本的选项用法,在代码的最前面都已有详细说明,请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps的shell,你也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本需要在脚本的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/10/05/nishang/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/10/05/hidden-webshell/">
+                放心种下你的webshell 之 webshell隐藏小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-10-05</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell-hidden/">webshell hidden</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<p>1,拿到webshell的第一件事儿,就是顺手把webshell时间属性改为和同目录其它文件相同的时间戳,一般在大马里和其它的一些webshell管理工具都提供了类似的功能</p>
+<p>2,尽量放在那些程序员和管理都不会经常光顾到的目录中,比如:各种第三方工具(phpmyadmin)的一些插件目录,主题目录以及一些临时目录……</p>
+<p>3,webshell所在目录的层级自然是越深越好,平时网站不出问题的话,一般四五级目录里面很少会被人注意到……<br>
+        </div>
+        <a href="/2016/10/05/hidden-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/27/revese-shell/">
                 很多时候你需要的也许只是一个shell
             </a>
@@ -325,73 +392,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2016/09/22/strace/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/21/ssh-portforward/">
-                通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-21</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ssh-portforwd/">ssh portforwd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="ssh端口转发-可以连续转发多个端口-这里只以转单个端口为例"><a href="#ssh端口转发-可以连续转发多个端口-这里只以转单个端口为例" class="headerlink" title="ssh端口转发(可以连续转发多个端口,这里只以转单个端口为例):"></a>ssh端口转发(可以连续转发多个端口,这里只以转单个端口为例):</h5><p><br></p>
-<h5 id="ssh-命令选项作用简介-更多选项详情-请自行man-ssh-那里面确实说的非常详细"><a href="#ssh-命令选项作用简介-更多选项详情-请自行man-ssh-那里面确实说的非常详细" class="headerlink" title="ssh 命令选项作用简介[更多选项详情,请自行man ssh,那里面确实说的非常详细]:"></a>ssh 命令选项作用简介[更多选项详情,请自行man ssh,那里面确实说的非常详细]:</h5><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">-C  压缩数据传输,加快传输速度</div><div class="line">-f  后台登录用户名密码</div><div class="line">-n  后台运行</div><div class="line">-q  安静模式,不要显示警告等信息</div><div class="line">-l  指定登录名</div><div class="line">-N  不执行shell通,主要用在转发中</div><div class="line">-g  允许远程主机连接到本地转发的端口     </div><div class="line">-L  本地端口转发</div><div class="line">-R  远程端口转发</div><div class="line">-D  socks代理</div><div class="line">-T  禁止分配伪终端</div><div class="line">-p  指定远程ssh 端口</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2016/09/21/ssh-portforward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/20/fpipe-redirect-port/">
-                通向彼岸 之内网代理转发 [ 利用端口重定向bypass各类应用层防火墙 fpipe ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/fpipe/">fpipe</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上(转发),再通过转到的这个本地端口去连远程机器的某个端口(管道),而不是像netsh只是单纯的把端口转过去,简易的通信流程如下</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">外部端口访问 <span class="tag">&lt;<span class="name">-</span>&gt;</span> 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) <span class="tag">&lt;<span class="name">-</span>&gt;</span> 通过本地的另一个端口和远程机器的某个端口通信</div></pre></td></tr></table></figure>
-<p>工具选项如下,非常简单,看选项说明就懂了:<br><img src="/img/fpipe help.png" alt=""><br></p>
-<p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
-        </div>
-        <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
     
 
 </div>

