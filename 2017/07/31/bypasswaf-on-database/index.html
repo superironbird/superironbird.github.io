@@ -180,7 +180,7 @@
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="section">mysql&gt; select username,password,email from user where id=-1 union select if((select length(schema_name),\Nfrom information_schema.schemata limit 1) &gt; (select 1,\N),110,0),2,3;</span></div><div class="line">+----------+----------+-------+</div><div class="line"><span class="section">| username | password | email |</span></div><div class="line">+----------+----------+-------+</div><div class="line"><span class="section">| 110      | 2        | 3     |</span></div><div class="line">+----------+----------+-------+</div></pre></td></tr></table></figure>
 <p>灵活配合利用各类空白符,注释符:<br>注释符:<br><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="section">#</span></div><div class="line">--</div><div class="line"><span class="section">-- -</span></div><div class="line">--+</div><div class="line">/*<span class="strong">*/</span></div><div class="line">/*!<span class="strong">*/</span></div><div class="line">/*!50000*/</div><div class="line">......</div></pre></td></tr></table></figure></p>
 <p>空白符:<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">09 </span><span class="number">0</span>A <span class="number">0</span>B <span class="number">0</span>C <span class="number">0D</span> A0 <span class="number">20</span> .....</div></pre></td></tr></table></figure></p>
-<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;说实话,指望单一的技巧是很难bypass掉现在的waf的,把前辈的思路和技巧变着法的灵活配合起来,才有可能达到想要的效果,bypasswaf确实是一个比较漫长的过程,因为这需要你去不断发掘各种新的一些偏门的可利用的数据库特性,当然啦,这仅仅基于各种数据库层面来说,来日方长,我们后面还会有大量的篇幅来说这个东西,今天只是先打个照面…</p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;说实话,指望单一的技巧是很难bypass掉现在的waf的,把前辈的思路和技巧变着法的灵活配合起来,才有可能达到想要的效果,bypasswaf也确实是一个比较漫长的过程,因为需要你不断的去发掘各种新的一些偏门的可利用的数据库,前端脚本,http协议及各类web中间件的特性,当然啦,这次仅仅是基于各种数据库层面来说,来日方长,我们后面还会有大量的篇幅来说这个东西,今天只是先打个照面,混个脸熟…</p>
 
     </div>
 
@@ -278,7 +278,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
+		<source src="/img/China-X.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 

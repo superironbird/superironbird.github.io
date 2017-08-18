@@ -172,7 +172,8 @@
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">RulePath = <span class="string">"/usr/local/nginx/conf/waf/wafconf/"</span></div><div class="line">attacklog = <span class="string">"on"</span>		<span class="comment"># 开启攻击日志记录</span></div><div class="line">logdir = <span class="string">"/tmp/waf_logs"</span>	<span class="comment"># 拦截记录位置</span></div></pre></td></tr></table></figure>
 <p>0x07 创建日志存放位置:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> mkdir /tmp/waf_logs</span></div><div class="line"><span class="meta">#</span><span class="bash"> chown nginx.nginx /tmp/waf_logs</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx -t</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx -s reload</span></div></pre></td></tr></table></figure></p>
 <p>0x08 进行实际漏洞特征测试:<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># tail -f /tmp/waf_logs/localhost_2017<span class="number">-08</span><span class="number">-13</span>_sec.log</div></pre></td></tr></table></figure></p>
-<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;虽然作者自己给出的规则能很有限,不过好在他已经把架子给我们搭好了,后期完全可以根据自己的实际需求和渗透经验针对性的补充增强规则,这是个比较重要的点,后续我们抽空再单独说…</p>
+<p><br></p>
+<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;虽然作者自己给出的规则能力很有限,不过好在他已经把架子给我们搭好了,后期完全可以根据自己的实际需求和渗透经验针对性的补充增强规则即可,这是个比较重要的点,后续我们抽空再单独说…</p>
 
     </div>
 
@@ -270,7 +271,7 @@ document.getElementById("showDays").innerHTML = " 其实博客已默默坚挺了
         </div>
     </div>
 		<audio autoplay="autoplay">
-		<source src="/img/call you tonight.mp3" type="audio/mpeg" />
+		<source src="/img/China-X.mp3" type="audio/mpeg" />
 		</audio>
 </footer>
 
