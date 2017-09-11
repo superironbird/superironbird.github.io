@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/07/NFS-sec/">
+                服务安全 [ NFS安全 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-07</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 NFS简介:<br>&nbsp;&nbsp;&nbsp;&nbsp;NFS 由服务端和客户端组成[C/S架构],服务端主要负责提供共享目录 [一般都是web设置好的上传目录,专门用来存放用户的各类静态数据],而客户端则负责存取共享目录中的数据</p>
+<p>00x2 NFS 安全主要包括两个方面:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">本地文件系统权限问题</div><div class="line">服务端共享目录权限问题</div><div class="line">客户端挂载安全</div><div class="line">.....</div></pre></td></tr></table></figure></p>
+<p>00x3 环境部署简介 [ 所有系统均为centOS6.8_x64 ]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">nfs</span>服务端:</div><div class="line">主<span class="selector-tag">NFS</span>	192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.61</span></div><div class="line">热备<span class="selector-tag">NFS</span>	192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.71</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/07/NFS-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/07/nosql-memcached/">
                 服务安全 [ memcached安全 ]
             </a>
@@ -362,38 +395,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/mysql/bin/mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/06/28/php-combile/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/27/mysql51-compile/">
-                极速编译安装 mysql 5.1
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-27</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>00x1 创建 mysql 服务用户:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> groupadd mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M -g mysql</span></div></pre></td></tr></table></figure></p>
-<p>00x2 下载编译安装 mysql5.1:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install ncurses-devel -y 	mysql需要此库的支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://sources.openelec.tv/mirror/mysql/mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> mysql-5.1.68</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/06/27/mysql51-compile/" class="read-more">Read More</a>
     
 
 </div>

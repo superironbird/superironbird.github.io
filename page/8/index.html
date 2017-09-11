@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/25/msf-socks4a/">
+                通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/scoks4a/">scoks4a</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得用别的socks代理工具太麻烦,不用担心,在msf中同样也为我们提供好了用于socks代理的模块[socks4a],虽然它只是基于scoks4的,但对于我们实际渗透来讲,关系并不大<br><br><br>1,首先,假设我们已经获取了目标系统的meterpreter会话,然后,我们发现在目标机器上存在内网段,这时,我们想继续对目标内网进行渗透,然后就有了下面的一些内容<br><img src="/img/ipconfig meter.jpg" alt=""><br><br>
+        </div>
+        <a href="/2016/09/25/msf-socks4a/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/24/ipc-reverse-shell/">
                 win内网中利用ipc弹shell 小记
             </a>
@@ -364,38 +396,6 @@
 <p>3,要实现的目的很简单:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,可以确认的是,边界机器和攻击者机器通信正常,边界机器和目标内网的那台不能连外网的机器通信正常</div><div class="line">现在,我想通过边界机器的某个端口去访问目标内网的那台不能上外网的机器的<span class="number">3389</span>,下面是具体的操作步骤</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/18/netsh-portfward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/16/http-tunnel-question/">
-                通向彼岸 之内网代理转发 [ http隧道篇 使用过程中容易出现的一些问题 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-16</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="关于使用http隧道代理脚本时-容易出现的一些错误及解决办法"><a href="#关于使用http隧道代理脚本时-容易出现的一些错误及解决办法" class="headerlink" title="关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:"></a>关于使用http隧道代理脚本时,容易出现的一些错误及解决办法:</h5><p><br><br>1,如果是php程序,你可能需要先确保php.ini中的socket模块已正常开启并且可用,因为php中的socket函数要基于此模块,不过,reGeorg早已经提供了不再需要开启socket的代理脚本<br><br><br>2,有时候你在绑定某些端口会遇到socket无法建立连接的问题,不妨尝试换一下端口,比如:53,8080,443,只要不跟目标系统中的现有端口冲突即可,尽量用一些穿透性比较好的端口<br><br><br>3,有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,里面肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本(webshell)的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/16/http-tunnel-question/" class="read-more">Read More</a>
     
 
 </div>

@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/26/use-hashcat-crack-hash/">
+                快速破解各种散列hash [ hashcat入门篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/hashcat/">hashcat</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;最近恰巧刚好搞到一批hash,所以就寻思着,要不顺手小结一点关于hash破解的东西吧,反正经常要用,就当留备忘了,顺便也分享给大家,主要还是希望大家都能在实际渗透中能尽快上手用,既是这样,就肯定不会涉及太深,比如,其内部的破解算法具体是如何实现的等等…,我们都不会去深入剖析,毕竟,并不是为了去写此类工具,如果真的有兴趣,可自行去读源码[起码自己暂时还没那能力],经常渗透的朋友可能都非常清楚,由于各种各样的途径,我们经常会搞到各种各样的散列[hash],比如,各类web管理用户的密码hash,各类系统用户的密码hash,各种第三方服务器工具配置文件中的hash,各类办公套件文件启动密码的加密hash,等等……今天,我们就来简要说明一下关于各类hash破解工具的使用,以备不时之需……其实,明眼人都很清楚,hash破解的本质是没啥实际的技术含量的[前提你不自己写此类工具],还是那句话,主要目的还是希望大家能尽快上手,既然是好东西就要想办法把它应用到实际干活儿中,不然,意义何在呢…废话少说,咱们开始介绍今天的第一款hash破解工具,’hashcat’想必该工具早已家喻户晓 [关于hash破解的东西,后续我会做成一个单独的系列],希望大家能持续关注,你们的支持,会是自己努力创作的源泉,嘿嘿……<br><br><br>
+        </div>
+        <a href="/2017/04/26/use-hashcat-crack-hash/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/25/samba-rce/">
                 Samba RCE 利用小记 [ CVE-2017-7494 ]
             </a>
@@ -354,39 +386,6 @@
 <h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透过程中,我们有时可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却写不进去,可以肯定的是,我们对所指定的目标网站目录是绝对有写权限的且mysql的root用户并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你<br><br><br><img src="/img/show variables waf.png" alt=""><br><br>
         </div>
         <a href="/2017/03/24/mysql-log-write-webshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/02/20/short-open-tag/">
-                利用php短格式bypasswaf查杀
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-02-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/webshell/">webshell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="利用php短格式简单bypasswaf查杀"><a href="#利用php短格式简单bypasswaf查杀" class="headerlink" title="利用php短格式简单bypasswaf查杀:"></a>利用php短格式简单bypasswaf查杀:</h5><p>需要php开启短格式支持,到php.ini中去开启一下,然后重启web服务即可<br>[当然啦,它默认是不开的,生产环境中也很少会有运维去开,直接利用可能不太行,但用来隐藏webshell或者bypass waf还是值得尝试的]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">short_open_tag = On</div></pre></td></tr></table></figure></p>
-<p><img src="/img/short_open_tag .png" alt=""><br>
-        </div>
-        <a href="/2017/02/20/short-open-tag/" class="read-more">Read More</a>
     
 
 </div>
