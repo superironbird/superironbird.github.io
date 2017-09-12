@@ -139,8 +139,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/waf-for-modsecurity/">
-                ModSecurity + nginx 快速部署简易WAF
+            <a href="/2017/07/31/bypasswaf-on-database/">
+                bypasswaf for mysql [数据库层面之特殊字符篇]
             </a>
         </h1>
         <div class="post-info">
@@ -150,7 +150,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/ModSecurity/">ModSecurity</a>
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
                 </span>
             
         </div>
@@ -158,11 +158,9 @@
 
     
         <div class="content">
-            <p><br><br>0x01 关于 modsecurity :<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">关于这款老牌开源waf,不用说,想必大家也都已经非常熟悉了,尤其是经常搞境外目标的同学,肯定会接触的非常多</div><div class="line">废话不多说,咱们直奔主题,这次我们的目的只是先把它完整部署好,具体怎么<span class="string">'绕过'</span>是后面的话题....</div></pre></td></tr></table></figure></p>
-<p>0x02 准备好所需软件包:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://nginx.org/download/nginx-1.12.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://www.modsecurity.org/tarball/2.9.2/modsecurity-2.9.2.tar.gz</span></div></pre></td></tr></table></figure></p>
-<p>0x03 安装依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel zlib zlib-devel openssl openssl-devel -y</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/waf-for-modsecurity/" class="read-more">Read More</a>
+        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
     
 
 </div>
