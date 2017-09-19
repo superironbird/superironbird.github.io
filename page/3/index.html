@@ -139,137 +139,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/07/NFS-sec/">
-                服务安全 [ NFS安全 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-07</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 NFS简介:<br>&nbsp;&nbsp;&nbsp;&nbsp;NFS 由服务端和客户端组成[C/S架构],服务端主要负责提供共享目录 [一般都是web设置好的上传目录,专门用来存放用户的各类静态数据],而客户端则负责存取共享目录中的数据</p>
-<p>00x2 NFS 安全主要包括两个方面:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">本地文件系统权限问题</div><div class="line">服务端共享目录权限问题</div><div class="line">客户端挂载安全</div><div class="line">.....</div></pre></td></tr></table></figure></p>
-<p>00x3 环境部署简介 [ 所有系统均为centOS6.8_x64 ]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">nfs</span>服务端:</div><div class="line">主<span class="selector-tag">NFS</span>	192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.61</span></div><div class="line">热备<span class="selector-tag">NFS</span>	192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.71</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/07/NFS-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/07/nosql-memcached/">
-                服务安全 [ memcached安全 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-07</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/memcached/">memcached</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 常用 Nosql 数据库:<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">memcached</span> 基于纯内存,数据只要重启即丢失,简单,相对高效,易于上手</div><div class="line">redis     即可内存亦可磁盘,另外,支持的数据类型较多,功能也较完善</div><div class="line">MongDB</div></pre></td></tr></table></figure></p>
-<p>0x02 Memcached 缓存实战应用:<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">基于纯内存缓存,速度快,基于 服务端S / <span class="keyword">C</span>客户端的形式</div><div class="line">libevent 进行异步事件的处理库</div><div class="line">主要用来存放用户访问的一些高频关键字,加快数据库命中,提高数据响应速度</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/07/nosql-memcached/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/05/rsync-sec/">
-                服务安全 [ rsync安全 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-05</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 rsync 部署环境简介 [所有系统均为 centOS6.8_x64]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">rsync</span>服务端:</div><div class="line">主<span class="selector-tag">rsync</span><span class="selector-attr">[crontab]</span>		192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.91</span></div><div class="line">热备<span class="selector-tag">rsync</span><span class="selector-attr">[inotify]</span>		192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.81</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">rsync</span>客户端:</div><div class="line"><span class="selector-tag">lamp01</span> 			192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span></div><div class="line"><span class="selector-tag">lamp</span>(<span class="selector-tag">centos5</span><span class="selector-class">.5</span>) 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.17</span>	只有这一个是基于<span class="selector-tag">centOS5</span><span class="selector-class">.5</span> 32位系统的</div><div class="line"><span class="selector-tag">lnmp01</span>			192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>	</div><div class="line"><span class="selector-tag">lnmp02</span>			192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span></div><div class="line"><span class="selector-tag">tomcat8</span>			192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.211</span></div></pre></td></tr></table></figure>
-<p>00x2 rsync 一款同时支持本地及远程的开源备份工具,不管推还是拉,在此之前都会自动和之前的文件进行比对,只要有文件属性或者内容发生改变就重新备份,否则不会有任何动作<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="section">远程拷贝[加密拷贝]: 相当于scp工具</span></div><div class="line"><span class="comment"># scp /root/rsync_bak.sh  root@192.168.3.81:/tmp</span></div><div class="line"></div><div class="line"><span class="section">本地拷贝: 相当于cp命令</span></div><div class="line"><span class="comment"># cp -R /etc/ /webbak/</span></div><div class="line"></div><div class="line"><span class="section">支持删除: 相当于rm</span></div><div class="line"><span class="comment"># rm -fr /webbak/etc/</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/05/rsync-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/04/inotify-rsync/">
-                inotify + rsync '小剂量'实时同步
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-04</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 利用 intify 做实时同步 [ 适合文件并发较少文件较小的备份场景,并发范围在200-300个小文件,延迟基本是很小的,如果超过这个量就比较吃力了 ]:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NFS共享目录 + <span class="function"><span class="title">inotify</span>   -&gt;</span> inotify会一直监控NFS共享目录变化,只要所监控的目录一有变化,会自动推到备份服务器</div></pre></td></tr></table></figure></p>
-<p>00x2 环境准备:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">一台已经完全配置好的rsync服务器</div><div class="line">然后再在已经事先部署好的NFS服务器上配置好rsync客户端,并先尝试手工往rsync服务端推,没问题以后再开始在NFS服务器上装inotify</div></pre></td></tr></table></figure></p>
-<p>00x3 在指定的所有rsync客户端上编译安装inotiy:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ls -l /proc/sys/fs/inotify/ 	首先,查看当前内核是否支持,如果出现以下三个文件则表示支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://jaist.dl.sourceforge.net/project/inotify-tools/inotify-tools/3.13/inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> inotify-tools-3.13</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/inotify-tools-3.13 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/inotify-tools-3.13/ /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/inotify-tools-3.13/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> bin/</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/04/inotify-rsync/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/07/03/nginx1-12-env/">
                 极速部署 nginx 1.12.0
             </a>
@@ -399,6 +268,198 @@
 
 </div>
             
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/27/mysql51-compile/">
+                极速编译安装 mysql 5.1
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>00x1 创建 mysql 服务用户:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> groupadd mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M -g mysql</span></div></pre></td></tr></table></figure></p>
+<p>00x2 下载编译安装 mysql5.1:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install ncurses-devel -y 	mysql需要此库的支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://sources.openelec.tv/mirror/mysql/mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> mysql-5.1.68</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/27/mysql51-compile/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/26/php-5-5-38/">
+                极速部署 php5.5.38
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 检查安装各种依赖库:<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rpm -qa zlib-devel libxml2-devel libjpeg-devel libiconv-devel free<span class="keyword">type</span>-devel libpng-devel gd-devel curl-devellibxslt-devel</div></pre></td></tr></table></figure></p>
+<p>配置yum源[同样,还是用网易的]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /etc/yum.repos.d</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirrors.163.com/.<span class="built_in">help</span>/CentOS6-Base-163.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv CentOS6-Base-163.repo CentOS-Base.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum clean all</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum makecache</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/26/php-5-5-38/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/24/php-5-2-17/">
+                重温经典的 php 5.2.17
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>00x1 php 5.2.17 [一个比较经典的php版本],安装环境准备[对于centos5.x直接用 yum groupinstall “X Software Development” 这个包组就可以了]:</p>
+<p>中间可能还有些库可能直接用yum装不上,不过没关系,后面再单独装就好了<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install -y zlib zlib-devel libxml libxml2-devel libjpeg libjpeg-devel libpng libpng-devel free<span class="keyword">type</span> freetype-devel gd gd-devel curl curl-devel libiconv</div></pre></td></tr></table></figure></p>
+<p>安装 libiconv 字体库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.14.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.14</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/06/24/php-5-2-17/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/19/https-mitmf/">
+                https 中间人劫持全过程
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/https-mitmf/">https-mitmf</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>抱歉,待续….</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/06/18/http-basic/">
+                重新理解 http 协议
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http/">http</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>1,前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;不管是web开发者还是web渗透者,熟练掌握http协议核心技术点都是非常必要的,深入理解下http协议的关键运作细节,对于我们后面一系列动作的展开都至关重要,当然啦,就http协议本身来讲,还是非常非常复杂的,我们今天就单单站在一个入侵者的角度来学习掌握必要的http协议基础,单靠一篇文档,想全面透彻掌握http协议,肯定不太现实,我们只需要掌握一些我们实际渗透中会用到的东西即可,如果大家真的有精力有兴趣愿意去深入研究http协议,可以自行参考《http权威指南》一书,个人觉得写的还是非常棒的</p>
+<p>2,简述 http 工作过程:<br>&nbsp;&nbsp;客户端向web服务器请求所指定的资源(request)  =&gt; web服务器(默认端口通常为80,8080)<br>&nbsp;&nbsp;web服务器响应给客户端所请求的对应的资源数据(response) =&gt; 客户端(随机端口和目标web服务端口进行连接)<br>&nbsp;&nbsp;简单来讲,http就是一套用来规定”请求(request)”和”响应(response)”的规范,以此来确保客户端和服务端能够正常的进行http通信<br>
+        </div>
+        <a href="/2017/06/18/http-basic/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/20/web-pentest-options/">
+                web渗透基本流程小结 [ 边界1 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/web-pentest/">web pentest</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定其对应的具体版本号,然后去找下该版本曾经爆过的一些exp并尝试利用,不过在此之前,最好先自己在本地搭环境测一下,成功以后再丢到目标上去搞不迟</div><div class="line">只不过,你可能事先需要对各种开源程序拿shell的方式比较熟悉</div></pre></td></tr></table></figure></p>
+<p>如果是针对非开源程序[ 应该尽量先直奔一些比较高危的漏洞去,因为我们最终的目的可能还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找目标网站的各种web入口[ 这里并不仅限目标网站后台,如,各种数据库的web管理入口(phpmyadmin),各类java控制台……都是可以的,如果连入口都没有,后面有些漏洞利用就比较尴尬了],找到以后,可以先顺手简单尝试些弱口令[尽量多试几个,没有验证码的情况下,也可尝试爆破],万能密码[sql注入的一种,需要自己平时多搜集一些],未授权访问[有些后台可能会存在这样的问题,页面权限控制不好所致]</div><div class="line">找目标网站的各种上传点[包括各类漏洞编辑器路径],挨个尝试上传……</div><div class="line">多翻翻目标网站,仔细观察下请求,尝试利用可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行,反序列化,ssrf...类的参数进行尝试,说实话,对这类的漏洞,如果不审代码,仅仅单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……,话说回来,像命令执行这类的漏洞可以在发邮件的地方顺手尝试下,仅仅对于php而言哈,说不定有惊喜呢],除非一些非常特殊的功能,不过那个,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,挨个尝试,观察目标响应</div><div class="line">尝试找一些下载点参数,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能从中看到一些目标的敏感文件什么的,比如,各种网站,数据库备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,不妨尝试用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标网站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器,具体什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 曾经的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,先自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众程序[嘿嘿……]像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要,也没能力去独立审],在上面这些办法都搞不定的情况下,可以尝试把目标用的程序对应版本的的源码搞一份,down下来多花点儿时间好好审审,也许能审出一点点突破</div><div class="line">如果你实在觉得,这样手工搞下去,希望不大,不妨直接丢给各种web wvs 自己去扫就好了[当然啦,前提得目标<span class="string">'让'</span>你扫才行,对于那些上了各种waf,ids的目标,还是手工低调的慢慢搞比较好一点],记得尽量把高危的一些规则集事先更新一下,切记,务必慢慢扫[别着急],避免惹一些不必要的麻烦[主要是各类防火墙,频繁的切代理,比较烦,tor也比较慢....]</div><div class="line">如果上面的这些还不太好使,这时可以先确定目标站的真实ip[务必是目标站的真实ip,相信这些东西,在信息搜集阶段你就已经搞定了],然后再想办法从旁站搞,如果旁站也不行,可以再试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux 虚拟机,说实话,不太好提,另外,没必要在C段浪费太多时间,能有一个进去就行了]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长这方面[对于自己手里现有的目标想很好的利用起来太难了,有发xss的机会不如直接发马来的更直接],不过需要你自己先把xss平台搭起来[如果你喜欢把beef转发出来也行,随意,看你自己],一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可直接远程利用0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,这中间还有很多不确定因素,需要相互配合才行],关于其它的一些东西,自己目前暂时也还在努力学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,并且好好坚持下去,这比任何技巧姿势都重要 [始终坚信,所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,有很多很多的不足是肯定的,虽然这里说的感觉好像很容易,但实际渗透中,远非如此,中间还会有非常非常多的各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多交流提携……</div><div class="line">待续……</div></pre></td></tr></table></figure></p>
+
+        </div>
+    
+
+</div>
+            
         </section>
     </div>
 </div>
@@ -429,7 +490,7 @@
 <footer class="footer-content">
 
 <center>如果有朋友需要优质vps,可以去<a href="http://www.laoxuehost.com/vps/" target="_blank">老薛</a>买,异常稳定,本人已自用多年,使用下面的优惠码, <font color="red">25% </font>折扣哦...</center><br>
-至少,在同等质量的vps中,已经算是非常好的了,起码自己平时 youtube 1080 基本问题不太大<br>
+至少,在同等质量的vps中,已经算是非常好的,起码自己平时 youtube 1080 基本问题不太大<br>
 <br>
 <a href="http://www.laoxuehost.com/vps/" target="_blank" > 购买老薛vps </a> &nbsp;&nbsp;&nbsp;&nbsp; 优惠码: <font color="red">nuddle123</font> &nbsp;&nbsp;&nbsp;&nbsp;<a href="/img/laoxue.png" target="_blank">查看优惠码使用方法</a><br>
 <br>
