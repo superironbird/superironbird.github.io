@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/04/inotify-rsync/">
+                inotify + rsync '小剂量'实时同步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-04</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>00x1 利用 intify 做实时同步 [ 适合文件并发较少文件较小的备份场景,并发范围在200-300个小文件,延迟基本是很小的,如果超过这个量就比较吃力了 ]:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NFS共享目录 + <span class="function"><span class="title">inotify</span>   -&gt;</span> inotify会一直监控NFS共享目录变化,只要所监控的目录一有变化,会自动推到备份服务器</div></pre></td></tr></table></figure></p>
+<p>00x2 环境准备:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">一台已经完全配置好的rsync服务器</div><div class="line">然后再在已经事先部署好的NFS服务器上配置好rsync客户端,并先尝试手工往rsync服务端推,没问题以后再开始在NFS服务器上装inotify</div></pre></td></tr></table></figure></p>
+<p>00x3 在指定的所有rsync客户端上编译安装inotiy:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ls -l /proc/sys/fs/inotify/ 	首先,查看当前内核是否支持,如果出现以下三个文件则表示支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://jaist.dl.sourceforge.net/project/inotify-tools/inotify-tools/3.13/inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> inotify-tools-3.13</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/inotify-tools-3.13 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/inotify-tools-3.13/ /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/inotify-tools-3.13/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> bin/</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/04/inotify-rsync/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/06/19/https-mitmf/">
                 https 中间人劫持全过程
             </a>
@@ -410,36 +443,6 @@
             
                 <span class="category">
                     <a href="/categories/network-pentset/">network pentset</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/07/dc-pentest/">
-                常规单域内网渗透流程小结 [ 域内网 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-07</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dc-pentset/">dc pentset</a>
                 </span>
             
         </div>

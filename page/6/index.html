@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/25/msf-socks4a/">
+                通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/scoks4a/">scoks4a</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br></p>
+<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得用别的socks代理工具太麻烦,不用担心,在msf中同样也为我们提供好了用于socks代理的模块[socks4a],虽然它只是基于scoks4的,但对于我们实际渗透来讲,关系并不大<br><br><br>1,首先,假设我们已经获取了目标系统的meterpreter会话,然后,我们发现在目标机器上存在内网段,这时,我们想继续对目标内网进行渗透,然后就有了下面的一些内容<br><img src="/img/ipconfig meter.jpg" alt=""><br><br>
+        </div>
+        <a href="/2016/09/25/msf-socks4a/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/24/ipc-reverse-shell/">
                 win内网中利用ipc弹shell 小记
             </a>
@@ -428,41 +460,6 @@
 <p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个数据加密都要靠这个</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/14/regerog-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 reGeorg ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-14</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<h5 id="reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐"><a href="#reGeorg-基于py-实际渗透过程中用的相对较多-稳定性一般-不过-使用还是非常方便的-推荐" class="headerlink" title="reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:"></a>reGeorg[基于py,实际渗透过程中用的相对较多,稳定性一般,不过,使用还是非常方便的,推荐]:</h5><p><br><br>1,和前面都一样,先把代理(webshell)上传到目标的网站目录中再说,记得顺手改下webshell的时间戳,尝试访问该shell,返回正常后,即可本地执行绑定操作,如下<br><img src="/img/regeorg_weshell.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python regerogsocksproxy.py -u "http://目标域名/tunnel.aspx" -p 绑定的本地端口</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/regeorg_weshell_proxy.png" alt=""><br></p>
-<p>2,连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><br><img src="/img/regeorg_weshell_res.png" alt=""><br></p>
-<p>3,实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>
-
-        </div>
     
 
 </div>

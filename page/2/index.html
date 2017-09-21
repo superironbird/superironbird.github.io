@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/27/nginx-lbd/">
+                基于 nginx 的负载均衡实现初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/lbd/">lbd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 基本环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.121</span>  <span class="selector-tag">nginx</span> 负载均衡器</div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>   后端 <span class="selector-tag">lnmp01</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   后端 <span class="selector-tag">lnmp02</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span>   客户端,用来进行访问测试</div></pre></td></tr></table></figure></p>
+<p>0x02 常用调度算法简介:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rr   	 [ 轮询 ]     适合性能相近,业务相同</div><div class="line">wrr  	 [ 权重轮询 ] 性能差距较大,业务相同</div><div class="line">ip_hash  [<span class="built_in"> ip </span>hash ] 只要客户端ip不变,在一段时间内就只访问固定的后端web服务器</div></pre></td></tr></table></figure></p>
+<p>0x03 nginx 中可用来实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际的调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/24/PSR-screen/">
                 利用win自带的 PSR 实现免杀截屏
             </a>
@@ -423,39 +456,6 @@
 <p>00x2 rsync 一款同时支持本地及远程的开源备份工具,不管推还是拉,在此之前都会自动和之前的文件进行比对,只要有文件属性或者内容发生改变就重新备份,否则不会有任何动作<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="section">远程拷贝[加密拷贝]: 相当于scp工具</span></div><div class="line"><span class="comment"># scp /root/rsync_bak.sh  root@192.168.3.81:/tmp</span></div><div class="line"></div><div class="line"><span class="section">本地拷贝: 相当于cp命令</span></div><div class="line"><span class="comment"># cp -R /etc/ /webbak/</span></div><div class="line"></div><div class="line"><span class="section">支持删除: 相当于rm</span></div><div class="line"><span class="comment"># rm -fr /webbak/etc/</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/05/rsync-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/04/inotify-rsync/">
-                inotify + rsync '小剂量'实时同步
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-04</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 利用 intify 做实时同步 [ 适合文件并发较少文件较小的备份场景,并发范围在200-300个小文件,延迟基本是很小的,如果超过这个量就比较吃力了 ]:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NFS共享目录 + <span class="function"><span class="title">inotify</span>   -&gt;</span> inotify会一直监控NFS共享目录变化,只要所监控的目录一有变化,会自动推到备份服务器</div></pre></td></tr></table></figure></p>
-<p>00x2 环境准备:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">一台已经完全配置好的rsync服务器</div><div class="line">然后再在已经事先部署好的NFS服务器上配置好rsync客户端,并先尝试手工往rsync服务端推,没问题以后再开始在NFS服务器上装inotify</div></pre></td></tr></table></figure></p>
-<p>00x3 在指定的所有rsync客户端上编译安装inotiy:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ls -l /proc/sys/fs/inotify/ 	首先,查看当前内核是否支持,如果出现以下三个文件则表示支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://jaist.dl.sourceforge.net/project/inotify-tools/inotify-tools/3.13/inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> inotify-tools-3.13</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/inotify-tools-3.13 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/inotify-tools-3.13/ /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/inotify-tools-3.13/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> bin/</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/04/inotify-rsync/" class="read-more">Read More</a>
     
 
 </div>

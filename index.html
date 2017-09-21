@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/09/18/naxsiwaf/">
+                定制轻量高效的WAF Naxsi [一]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-09-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 关于naxsi<br>&nbsp;&nbsp;&nbsp;&nbsp;同为开源waf,但跟Modsecurity的不同是,它对nginx的兼容性非常好,不依赖拦截规则库[需要经常更新,且容易被绕过,比较被动],安装定制都非常简单方便,占用的系统资源相对较少,对实际业务的适用性更强[方便的白名单设置],有一定的学习能力,暂时只能拦截从get或者post过来的数据</p>
+<p>0x02 环境准备,依然是拿之前配置好的lnmp环境来做演示,把之前的配置文件先备份下,等会儿好直接拿过来用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp | grep <span class="string">"80"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> pkill nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf ./</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp /usr/<span class="built_in">local</span>/nginx/conf/extra/bwapp.conf  ./</span></div><div class="line"><span class="meta">#</span><span class="bash"> rm -rf /usr/<span class="built_in">local</span>/nginx*</span></div></pre></td></tr></table></figure></p>
+<p>0x03 下载naxsi,重新编译安装nginx,主要是把naxsi模块加载进去,这里直接用的最新版的nginx稳定版本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/nbs-system/naxsi.git</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://nginx.org/download/nginx-1.12.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install pcre pcre-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf nginx-1.12.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> nginx-1.12.1</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/nginx-1.12.1 --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --with-file-aio --with-http_dav_module --add-module=../naxsi/naxsi_src/</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/nginx-1.12.1/ /usr/<span class="built_in">local</span>/nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv nginx.conf nginx.conf.bak &amp;&amp; egrep -v <span class="string">"^$|#"</span> nginx.conf.bak &gt;&gt; nginx.conf</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/09/18/naxsiwaf/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/09/08/pentestaction/">
                 自己总结的常规入侵流程脑图
             </a>
@@ -308,6 +341,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/31/https-learn/">
+                深入理解 https 通信过程
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/https/">https</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 对对称加密的通俗理解:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信双方都使用同一个秘钥</div></pre></td></tr></table></figure></p>
+<p>0x02 对非对称加密算法的通俗理解[RSA]:<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div></pre></td></tr></table></figure></p>
+<p>0x03 非对称加密速度慢问题的解决办法:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来作为双方通信的秘钥</div></pre></td></tr></table></figure></p>
+<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信的公钥,换成自己的公钥,同样会导致数据被窃取</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/31/waf-for-modsecurity/">
                 ModSecurity 生产级WAF部署优化 [一]
             </a>
@@ -378,40 +445,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/https-learn/">
-                深入理解 https 通信过程
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/https/">https</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 对对称加密的通俗理解:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信双方都使用同一个秘钥</div></pre></td></tr></table></figure></p>
-<p>0x02 对非对称加密算法的通俗理解[RSA]:<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div></pre></td></tr></table></figure></p>
-<p>0x03 非对称加密速度慢问题的解决办法:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来作为双方通信的秘钥</div></pre></td></tr></table></figure></p>
-<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信的公钥,换成自己的公钥,同样会导致数据被窃取</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/07/31/bypasswaf-on-database/">
                 bypasswaf for mysql [数据库层面之特殊字符篇]
             </a>
@@ -434,39 +467,6 @@
             <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/27/nginx-lbd/">
-                基于 nginx 的负载均衡实现初步
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-27</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/lbd/">lbd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 基本环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.121</span>  <span class="selector-tag">nginx</span> 负载均衡器</div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>   后端 <span class="selector-tag">lnmp01</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   后端 <span class="selector-tag">lnmp02</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span>   客户端,用来进行访问测试</div></pre></td></tr></table></figure></p>
-<p>0x02 常用调度算法简介:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rr   	 [ 轮询 ]     适合性能相近,业务相同</div><div class="line">wrr  	 [ 权重轮询 ] 性能差距较大,业务相同</div><div class="line">ip_hash  [<span class="built_in"> ip </span>hash ] 只要客户端ip不变,在一段时间内就只访问固定的后端web服务器</div></pre></td></tr></table></figure></p>
-<p>0x03 nginx 中可用来实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际的调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
     
 
 </div>
