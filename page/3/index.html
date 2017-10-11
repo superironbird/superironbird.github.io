@@ -510,8 +510,8 @@
 
     
         <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;在实际渗透过程中,我们有时可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却写不进去,可以肯定的是,我们对所指定的目标网站目录是绝对有写权限的且mysql的root用户并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你<br><br><br><img src="/img/show variables waf.png" alt=""><br><br>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透过程中,我们很可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却怎么写不进去,可以肯定的前提是,我们对目标的网站目录绝对是有写权限的且mysql的root用户本身并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你</p>
+<p><img src="/img/show variables waf.png" alt=""><br><br>
         </div>
         <a href="/2017/03/24/mysql-log-write-webshell/" class="read-more">Read More</a>
     
