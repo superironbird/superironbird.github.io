@@ -443,7 +443,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2017/07/31/https-learn/">
-                深入理解 https 通信过程
+                深入理解 https 通信加密过程
             </a>
         </h1>
         <div class="post-info">
@@ -461,10 +461,10 @@
 
     
         <div class="content">
-            <p><br><br>0x01 对对称加密的通俗理解:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信双方都使用同一个秘钥</div></pre></td></tr></table></figure></p>
-<p>0x02 对非对称加密算法的通俗理解[RSA]:<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div></pre></td></tr></table></figure></p>
-<p>0x03 非对称加密速度慢问题的解决办法:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来作为双方通信的秘钥</div></pre></td></tr></table></figure></p>
-<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信的公钥,换成自己的公钥,同样会导致数据被窃取</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 对<code>对称加密</code>的通俗理解<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信的双方都使用同一个秘钥进行加解密</div></pre></td></tr></table></figure></p>
+<p>0x02 对非对称加密算法的通俗理解 [ <code>RSA</code> ]<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div><div class="line">其实这个很容易理解,因为通信双方的手里都有一套自己的密钥对,通信之前双方会先把自己的公钥都先发给对方</div><div class="line">然后对方再拿着这个公钥来加密数据响应给对方,等到到了对方那里,对方再用自己的私钥进行解密,就这么简单</div></pre></td></tr></table></figure></p>
+<p>0x03 非对称加密所造成的速度慢的问题解决办法<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来互相通信</div></pre></td></tr></table></figure></p>
+<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设,此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信互发的公钥,换成自己的公钥,这样中间人就可以轻松解密通信双方所发送的所有数据</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
     
