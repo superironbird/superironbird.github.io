@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="使用 rainbowcrack 快速破解 ntlm"/>
+        <meta property="og:title" content="利用 rainbowcrack 快速破解 ntlm"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>使用 rainbowcrack 快速破解 ntlm - klion&#39;s blog</title>
+    <title>利用 rainbowcrack 快速破解 ntlm - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/05/15/RainbowCrack/">
-                使用 rainbowcrack 快速破解 ntlm
+                利用 rainbowcrack 快速破解 ntlm
             </a>
         </h1>
         <div class="post-info">
@@ -159,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
+        <p><br><br>0x01 RainbowCrack简介<br>&nbsp;&nbsp;&nbsp;&nbsp;今天就来介绍另一款相对比较实用的NTLM hash破解工具,其本质是基于事先生成好的对应各种散列类型的彩虹表,支持GPU[amd/英伟达]加速,通常,就我个人来讲,主要都是用它来跑NTLM的,想比之下,确实要比之前所介绍的两款hash破解工具弱很多,虽然没那么智能,但它使用非简单,极易上手,平台支持也相对比较好,此次暂以win平台为例进行简单演示<br><br><br>0x02 关于 RainbowCrack 套件的基本使用流程,如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">创建彩虹表[<span class="function"><span class="title">rtgen</span>] -&gt;</span> 对彩虹表进行排序[<span class="function"><span class="title">rtsort</span>] -&gt;</span> 开始真正的hash破解过程[rcrack]</div></pre></td></tr></table></figure></p>
 <p><br></p>
 <p>0x03 开始创建彩虹表<br>&nbsp;&nbsp;&nbsp;&nbsp;简单来说,彩虹表内部其实就是由所有可能组合的明文和其所对应的hash组成,类似nosql中的键值对形式[难道是因为这样效率就会很高吗,其实具体的数据结构自己也并不是非常清楚,还是那句话,实际渗透中能上就好],其实说白点还是基于字典,只不过这个字典是经过优化的,rtgen具体参数作用如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rtgen.exe hash_algorithm charset plaintext_len_min plaintext_len_max table_index chain_len chain_num part_index</span></div></pre></td></tr></table></figure></p>
 <a id="more"></a>
@@ -172,7 +172,7 @@
 <p><img src="/img/rtgen ntlm.png" alt=""><br><br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rtgen sha1 numeric <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">3800</span> <span class="number">33554432</span> <span class="number">0</span>	创建<span class="number">1</span>到<span class="number">4</span>位的由纯数字组成的 sha1 hash 彩虹表</div></pre></td></tr></table></figure></p>
 <p><img src="/img/rtgen sha1.png" alt=""><br><br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rtgen lm numeric <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">3800</span> <span class="number">33554432</span> <span class="number">0</span>	创建<span class="number">1</span>到<span class="number">4</span>位的由纯数字组成的 lm hash 彩虹表</div></pre></td></tr></table></figure></p>
 <p><img src="/img/rtgen lm.png" alt=""><br></p>
-<p>可以看到,在生成彩虹表的过程中,cpu基本一直是保持百分百,不过,这也相对正常<br><img src="/img/rtgen status.png" alt=""><br></p>
+<p>可以看到,在生成彩虹表的过程中,cpu基本一直是保持百分百,吃的比较狠,不过,这也相对正常<br><img src="/img/rtgen status.png" alt=""><br></p>
 <p>0x04 彩虹表在创建成功以后,需要立即对其进行排序,如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">rtsort</span><span class="selector-class">.exe</span> <span class="selector-tag">md5_numeric</span><span class="selector-id">#1-4_5_3800x33554432_0</span><span class="selector-class">.rt</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/rtsort.png" alt=""><br></p>
 <p>0x05 上述准备工作完成后,就可以开始我们的hash破解过程了,如下是rcrack的简单使用帮助<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">h hash                破解单条hash</span></div><div class="line">-<span class="ruby">l hash_list_file      从指定的文件中读取hash</span></div><div class="line">-<span class="ruby">f pwdump_file         导入pwdump获取的lm hash</span></div><div class="line">-<span class="ruby">n pwdump_file         导入pwdump获取的ntlm hash</span></div></pre></td></tr></table></figure></p>
