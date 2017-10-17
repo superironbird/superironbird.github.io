@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/10/16/win-event-powershell/">
+                win入侵日志处理之powershell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-10-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/active-directory-pentest/">active directory pentest</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言:<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">很久之前,我们说过如何利用win自带的wevtutil工具来处理入侵日志</div><div class="line">但那有个很致命的缺点,就是删除的时候是一下全给干掉了,这显然不是我们想要的</div><div class="line">今天我们就再来介绍另外一种相对<span class="string">[只是相对比较好,个人认为也并不是特别好,但值得改进]</span>比较好的处理方式</div><div class="line">也正是我之前说的利用powershell来帮我们搞,具体如下</div></pre></td></tr></table></figure></p>
+<p>0x02 首先,我们有必要先来简单了解下windows的svchost进程是干什么的<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">通俗来讲,svchost主要是用来实现服务进程数据共享,以此来减少系统资源消耗的这么一个东西,下面挂靠的程序可能有很多</div><div class="line">说白点,其内部其实是作为线程[<span class="string">核心点就在这儿</span>]来运行的,关于更详细的简介,可直接参考[<span class="string">维基百科</span>](<span class="link">https://en.wikipedia.org/wiki/Svchost.exe</span>)上对其的说明</div></pre></td></tr></table></figure></p>
+<p>0x03 如果实在想自己实现该功能的话,大体思路如下:<br><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">找目标系统中W<span class="keyword">in</span>事件日志服务的进程名,一般都是在svchost下</div><div class="line">并从该进程中获取所对应的W<span class="keyword">in</span> 事件日志服务线程ID</div><div class="line">想办法杀掉这些id所对应的线程,以达到让目标系统日志服务无法正常工作的目的,这样系统就无法再搜集日志了</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/10/16/win-event-powershell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/10/11/bypasswaf-for-webshell/">
                 全方位构造免杀 webshell 小结[一]
             </a>
@@ -442,8 +475,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/https-learn/">
-                深入理解 https 通信加密过程
+            <a href="/2017/07/31/bypasswaf-on-database/">
+                bypasswaf for mysql [数据库层面之特殊字符篇]
             </a>
         </h1>
         <div class="post-info">
@@ -453,7 +486,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/https/">https</a>
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
                 </span>
             
         </div>
@@ -461,47 +494,9 @@
 
     
         <div class="content">
-            <p><br><br>0x01 对<code>对称加密</code>的通俗理解<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信的双方都使用同一个秘钥进行加解密</div></pre></td></tr></table></figure></p>
-<p>0x02 对非对称加密算法的通俗理解 [ <code>RSA</code> ]<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div><div class="line">其实这个很容易理解,因为通信双方的手里都有一套自己的密钥对,通信之前双方会先把自己的公钥都先发给对方</div><div class="line">然后对方再拿着这个公钥来加密数据响应给对方,等到到了对方那里,对方再用自己的私钥进行解密,就这么简单</div></pre></td></tr></table></figure></p>
-<p>0x03 非对称加密所造成的速度慢的问题解决办法<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来互相通信</div></pre></td></tr></table></figure></p>
-<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设,此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信互发的公钥,换成自己的公钥,这样中间人就可以轻松解密通信双方所发送的所有数据</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/31/socat-meterpreter/">
-                如何利用 socat 更方便地穿透目标内网
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/socat/">socat</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
-<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
-<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
+        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
     
 
 </div>
@@ -546,8 +541,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/bypasswaf-on-database/">
-                bypasswaf for mysql [数据库层面之特殊字符篇]
+            <a href="/2017/07/31/socat-meterpreter/">
+                如何利用 socat 更方便地穿透目标内网
             </a>
         </h1>
         <div class="post-info">
@@ -557,7 +552,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                    <a href="/categories/socat/">socat</a>
                 </span>
             
         </div>
@@ -565,9 +560,47 @@
 
     
         <div class="content">
-            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
+<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
+        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/07/31/https-learn/">
+                深入理解 https 通信加密过程
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/https/">https</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 对<code>对称加密</code>的通俗理解<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信的双方都使用同一个秘钥进行加解密</div></pre></td></tr></table></figure></p>
+<p>0x02 对非对称加密算法的通俗理解 [ <code>RSA</code> ]<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div><div class="line">其实这个很容易理解,因为通信双方的手里都有一套自己的密钥对,通信之前双方会先把自己的公钥都先发给对方</div><div class="line">然后对方再拿着这个公钥来加密数据响应给对方,等到到了对方那里,对方再用自己的私钥进行解密,就这么简单</div></pre></td></tr></table></figure></p>
+<p>0x03 非对称加密所造成的速度慢的问题解决办法<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来互相通信</div></pre></td></tr></table></figure></p>
+<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设,此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信互发的公钥,换成自己的公钥,这样中间人就可以轻松解密通信双方所发送的所有数据</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
     
 
 </div>
@@ -601,39 +634,6 @@
 <p>0x03 nginx 中可用来实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际的调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/24/PSR-screen/">
-                利用win自带的 PSR 实现免杀截屏
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/PSR/">PSR</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 PSR 即win自带的”问题步骤记录器”,也就是说它只会捕捉活动窗口,并不是我们想象的各种远控中的那种截屏功能,win + R 输入 “psr” 即可开启<br><img src="/img/win_screen_self.png" alt=""><br></p>
-<p>0x02 当然,实际渗透中,肯定是不能让对方有任何察觉的,所以图形界面的不要,悄悄的干活,我们可以直接在管理员权限的cmdshell下搞,其实,你完全也可以在PS的shell下操作,至于这个shell怎么搞到,随你,注意,虽然是在命令行中,进程列表中还是会被发现,不过,如果你自己会hook,也是可以让它消失的<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\&gt;psr <span class="string">/start</span> <span class="string">/gui</span> 0 <span class="string">/output</span> <span class="string">"d:\capturescreen.zip"</span></div><div class="line">C:\&gt;psr <span class="string">/stop</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/win_screen_self_start.png" alt=""><br><br>
-        </div>
-        <a href="/2017/07/24/PSR-screen/" class="read-more">Read More</a>
     
 
 </div>
