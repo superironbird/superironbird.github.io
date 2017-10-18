@@ -471,7 +471,7 @@
 <p>0x02 什么是C段<br>&nbsp;&nbsp;&nbsp;&nbsp;和旁站差不多的是,旁站是通过同一台服器上的其它网站跨到目标站的目录里,而C段,则是通过目标所在C段的其他任意一台机器,想办法跨到我们的目标机器上,至于怎么跨,嗅探,社工,web……随你便,反正最终目的能跨过去即可,实战可能还会有个问题就是,你搞下的一台目标C段机器在内网,也就是说它根本没有公网ip[靠路由映射进去的],像如果是这种情况,这台机器对你就没什么价值了,另外,如果是虚拟机,这种方式可能也不太好使,因为光提权就比较困难,这只是其中一个问题,很多其它的问题,我们暂时先不说,后续碰到再详细说,这里先理解一下基础概念即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C段: 和目标机器ip处在同一个C段的其它机器,即都在同一个交换机下</div></pre></td></tr></table></figure></p>
 <p>0x03 关于旁站/C段工具的基本编写原理<br>&nbsp;&nbsp;&nbsp;&nbsp;现在市面上这类的工具也是多如牛毛,但各有优劣(可能是接口质量的差别吧),但大多数都是用bing的接口,把查询到的结果数据中的旁站链接提取出来,C段和旁站唯一不一样的地方,就是C段是把整个段的ip上的旁站都轮询一遍,不过在此之前你需要先申请一下bing的搜索api,其实我自己都是选择性的用,因为不太准,手工直接在bing里面翻翻可能就有了,因为工具本身有时可能会漏掉很多有价值的参考信息,反正我们的目的就是随便找个能进去的站即可,怎么找,随意,你自己觉得怎么快就怎么来,渗透在乎更多的是结果和效率,过程几乎都不会太在意</p>
 <p>0x04 好了,这部分内容确实比较简单,工具也没太多技术含量,单纯只是为了给大家理解一些基本概念而已,就不多说了</p>
-<p>其实,还有非常多的一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来,大家可自行去谷歌上搜搜,确实挺多的,不过大部分似乎并不太好用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.sameip.org/</span></div></pre></td></tr></table></figure></p>
+<p>其实,还有非常多的一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来,大家可自行去谷歌上搜搜,确实挺多的,不过大部分似乎并不太好用,另外,大家如果有任何问题或者建议,也可直接私信我,其实,我一直都在<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.sameip.org/</span></div></pre></td></tr></table></figure></p>
 
         </div>
     
