@@ -427,7 +427,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 为什么要从子域入手<br>&nbsp;&nbsp;&nbsp;&nbsp;如果我们的目标网络规模比较大,直接从目标主域入手显然是很不理智的,因为像这种规模的目标一般主域都是重点防护区域,与其浪费那个时间,不如先从目标的某个子域进去,然后再想办法迂回接近到我们的真正目标,这样无疑是个比较好的选择,此时就不难理解那句话了,安全本就是一个全面立体的概念,单单只是边界几个点的安全,还是远远不够的</p>
+            <p><br><br>0x01 为什么要从子域入手<br>&nbsp;&nbsp;&nbsp;&nbsp;如果我们的目标网络规模比较大,直接从目标主域入手显然是很不理智的,因为像这种规模的目标一般主域都是重点防护区域,与其浪费那个时间,不如先从目标的某个子域进去,然后再想办法迂回接近我们的真正目标,这样无疑是个比较好的选择,此时就不难理解那句话了,安全本就是一个全面立体的概念,单单只是边界几个点的安全,还是远远不够的</p>
 <p>0x02 那么,现在问题来了,怎么尽可能多的搜集目标高价值子域呢</p>
 <p>0x03 利用dig 检查目标ns服务器是否允许传送<br>&nbsp;&nbsp;&nbsp;&nbsp;出于习惯性反应,首先你应该去查下目标的ns服务器是否允许区域传送,如果允许,直接把目标的整个子域备份过来即可,后面将要说的所有步骤就可以直接全省了,关于dig和nslookup的使用非常简单,请自行看其命令帮助或谷歌,实际测试中,个人还是更推荐用dig[毕竟是从权威dns查到的]</p>
 <p>查出目标所有的ns记录,然后挨个尝试目标ns服务器是否允许传送[务必是目标自己的ns服务器,第三方的不算]<br>虽然说,可能性不太大,但运气好也不一定呢,总之,没尝试之前没尝试之前谁也不知道<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk ns</span></div><div class="line">vax.cityu.edu.hk.</div><div class="line">cpccspc.cityu.edu.hk.</div><div class="line">cpccux<span class="number">0</span>.cityu.edu.hk.</div></pre></td></tr></table></figure></p>
