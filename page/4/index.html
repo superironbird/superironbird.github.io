@@ -204,7 +204,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2016/10/05/nishang/">
-                powershell 渗透框架 [nishang篇]
+                powershell 渗透框架[ nishang ]
             </a>
         </h1>
         <div class="post-info">
@@ -222,9 +222,8 @@
 
     
         <div class="content">
-            <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只针对win7以后的系统,此之前的系统是没有引入powershell的,至于powershell是什么,这里就不废话了,大家自行谷歌,在使用各种powrshell脚本的过程中,系统权限自然也是越高越好,权限大一些效果可能会更佳,至于为什么会选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,方便定制……这里就不啰嗦了,说破天,我们最终的目的也是希望能在实际渗透中把它用起来,不然,价值何在呢<br><br></p>
-<p>1,今天先来聊聊第一款powershell工具[其实把它称为powershell渗透框架似乎更合适些],nishang[想必早已家喻户晓],关于nishang中的每个ps脚本的选项用法,在代码的最前面都已有详细说明,请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps的shell,你也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本需要在脚本的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只能针对win7以后的系统使用,此之前的win系统是没有引入powershell的,powershell是什么这里就不废话了,大家请自行谷歌,在使用各种powrshell脚本过程中,系统权限自然也是越高越好,权限越大你能在系统中操作的范围就越广,至于为什么要选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,容易定制,轻量,远程加载执行,对目标系统的影响极小……好处众多,这里就不多啰嗦了,说破天,我们最终的目的还是希望能在实际渗透中把它用起来,不然,实际价值何在呢</p>
+<p>0x02 关于nishang<br>&nbsp;&nbsp;&nbsp;&nbsp;今天我们就先来看看第一款powershell渗透框架<code>其实,个人觉得把它称为powershell渗透框架似乎更合适些</code>,<code>nishang</code> [想必现在早已家喻户晓],关于nishang中的各个ps脚本的选项用法,在其脚本代码的最前面都有详细说明,使用前请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以实际用的时候后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps shell,也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本只能在指定的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/10/05/nishang/" class="read-more">Read More</a>
     
