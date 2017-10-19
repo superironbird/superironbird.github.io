@@ -818,7 +818,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2014/12/22/email-collector/">
-                web渗透第一步之信息搜集  [ 搜集目标邮箱 ]
+                web渗透第一步之信息搜集 [快速抓取目标高质邮箱]
             </a>
         </h1>
         <div class="post-info">
@@ -836,13 +836,11 @@
 
     
         <div class="content">
-            <p><br><br>00x1 theharvester 主要用来从各种搜索引擎上抓取目标的邮箱,子域以及ip反查(虚拟主机),可自行更换其代码中的各种搜索api<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">theharvester</span> <span class="selector-tag">-d</span> <span class="selector-tag">polyu</span><span class="selector-class">.edu</span><span class="selector-class">.hk</span> <span class="selector-tag">-l</span> 1000 <span class="selector-tag">-b</span> <span class="selector-tag">all</span> &gt;&gt; <span class="selector-tag">res</span><span class="selector-class">.txt</span>   <span class="selector-tag">-f</span> 选项貌似不太好使,只能重定向了</div></pre></td></tr></table></figure></p>
-<p><img src="/img/theharvester email.png" alt=""><br></p>
-<p>00x2 Maltego 一款老牌的纯图形化信息搜集工具,里面也提供了邮箱搜集功能,把结果导出为csv即可,使用非常简单,就不多啰嗦了,当然,作为一款老牌的专业信息搜集工具,它现在所支持的功能远远不止于此,后续有时间我们再单独细说<br><img src="/img/ltego email.png" alt=""><br></p>
-<p>00x3 在msf中同样也提供了一个比较粗糙的邮件搜集模块[search_email_collector][搜集范围确实很有限,暂时只能从谷歌(可能还不太好使),雅虎,bing上去爬]<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">msf &gt; use auxiliary/gather/search_email_collector </div><div class="line">msf auxiliary(search_email_collector) &gt; show options </div><div class="line">Module options (auxiliary/gather/search_email_collector):</div><div class="line">   Name           Current Setting  Required  Description</div><div class="line">   ----           ---------------  --------  -----------</div><div class="line">   DOMAIN                          <span class="literal">yes</span>       The domain name <span class="keyword">to</span> locate email addresses <span class="keyword">for</span></div><div class="line">   OUTFILE                         <span class="literal">no</span>        A filename <span class="keyword">to</span> store the generated email list</div><div class="line">   SEARCH_BING    <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Bing as a backend search engine</div><div class="line">   SEARCH_GOOGLE  <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Google as a backend search engine</div><div class="line">   SEARCH_YAHOO   <span class="literal">true</span>             <span class="literal">yes</span>       <span class="builtin-name">Enable</span> Yahoo! as a backend search engine</div><div class="line"></div><div class="line">msf auxiliary(search_email_collector) &gt; <span class="builtin-name">set</span> domain polyu.edu.hk</div><div class="line">msf auxiliary(search_email_collector) &gt; run</div></pre></td></tr></table></figure></p>
-<p><img src="/img/msf collector email.png" alt=""><br></p>
-
+            <p><br><br>0x01 前期简单探测<br>&nbsp;&nbsp;&nbsp;&nbsp;首先,确定目标自己的邮件服务器的真实位置,一上来先别急着搜邮箱,先看看邮件服务器自身有没有什么错误配置,比如,没有禁用VRFY或者EXPN命令导致的用户信息泄露,如果有,我们就可以直接通过这个把目标的邮件用户名都爆出来,如下,或者也可以尝试下弱口令之类的看能不能碰到一些,如果有,这就是最一手的发信邮箱<br><img src="/img/vrfy_config_error.png" alt=""><br><img src="/img/smtp_user_enum.png" alt=""></p>
+<p>0x02 搜集目标的各类webmail入口<br>&nbsp;&nbsp;&nbsp;&nbsp;找目标的各种webmail入口,不一定有,这也是为了后面万一要撞到了密码还可以直接丢过来试试,另外,如果发现目标用的是某种开源web邮件程序,也可以尝试找找对应版本的exp,虽然不一定能成功,但好歹也是条路</p>
+<p>0x03 提取whois邮箱<br>&nbsp;&nbsp;&nbsp;&nbsp;从域名的whois中获取目标域名的注册人,管理员,技术的邮箱,拿到这些邮箱之后,先尝试到各种公开搜索引擎及社交站点上去好好搜搜,说不定能抓到一些旧密码,最后,再到自己的社工库里去撞撞,也说不定真的就运气好呢<br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tucowsdomains.com" target="_blank" rel="external">https://www.tucowsdomains.com</a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.domainz.net.nz/whois/" target="_blank" rel="external">https://www.domainz.net.nz/whois/</a><br>
         </div>
+        <a href="/2014/12/22/email-collector/" class="read-more">Read More</a>
     
 
 </div>
