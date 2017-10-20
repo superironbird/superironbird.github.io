@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="在目标机器上快速编译安装py2.7"/>
+        <meta property="og:title" content="快速编译安装配置 py2.7 &amp; jdk 1.7"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>在目标机器上快速编译安装py2.7 - klion&#39;s blog</title>
+    <title>快速编译安装配置 py2.7 &amp; jdk 1.7 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2016/09/26/install-py27-on-centos/">
-                在目标机器上快速编译安装py2.7
+                快速编译安装配置 py2.7 & jdk 1.7
             </a>
         </h1>
         <div class="post-info">
@@ -159,12 +159,13 @@
         
 
         <!-- Post Content -->
-        <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认2.6.6,有些脚本很难跑起来),因为win下的工具已经非常丰富了,这里就不说了<br><br><br>1,编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
+        <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认python版本是2.6.6的,现在有些脚本已经很难跑起来),至于win,其平台下的工具已经非常丰富了,这里就不说了</p>
+<p>0x02 编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar -xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># # cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p>2,在安装pip之前,我们需要先编译安装好setuptools:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -xf setuptools-21.0.0.tar.gz </span></div><div class="line"><span class="comment"># cd setuptools-21.0.0</span></div><div class="line"><span class="comment"># python setup.py  install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
-<p>3,开始编译安装pip:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -xf pip-8.1.1.tar.gz </span></div><div class="line"><span class="comment"># cd pip-8.1.1</span></div><div class="line"><span class="comment"># python setup.py install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
-<p>4,简单测试下pip是否可用,可以随便装个库,然后用下里面的方法试试:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pip2.7 -h</span></div><div class="line"><span class="comment"># pip2.7 install requests</span></div></pre></td></tr></table></figure></p>
+<p>0x03 在安装pip之前,我们需要先编译安装好setuptools:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -xf setuptools-21.0.0.tar.gz </span></div><div class="line"><span class="comment"># cd setuptools-21.0.0</span></div><div class="line"><span class="comment"># python setup.py  install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
+<p>0x04 开始编译安装pip:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -xf pip-8.1.1.tar.gz </span></div><div class="line"><span class="comment"># cd pip-8.1.1</span></div><div class="line"><span class="comment"># python setup.py install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
+<p>0x05 简单测试下pip是否可用,随便装个库,看看好不好使:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pip2.7 -h</span></div><div class="line"><span class="comment"># pip2.7 install requests</span></div></pre></td></tr></table></figure></p>
+<p>0x06 说完python,我们再来简单说下怎么在linux中快速配置jdk 1.7.x,非常简单,过程如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar xf jdk-7u45-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.7.0_45/ /usr/local/</span></div><div class="line"><span class="comment"># ln -s /usr/local/jdk1.7.0_45/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk/</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">  export JAVA_HOME=<span class="regexp">/usr/local</span><span class="regexp">/jdk/</span> </div><div class="line">  export PATH=$JAVA_HOME/<span class="symbol">bin:</span>$JAVA_HOME/jre/<span class="symbol">bin:</span>$PATH </div><div class="line">  export CLASSPATH=.$CLASSPATH<span class="symbol">:</span>$JAVA_HOME/<span class="symbol">lib:</span>$JAVA_HOME/jre/<span class="symbol">lib:</span>$JAVA_HOME/lib/tools.jar</div></pre></td></tr></table></figure></p>
 
     </div>
 
