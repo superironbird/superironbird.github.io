@@ -159,19 +159,17 @@
         
 
         <!-- Post Content -->
-        <p><br></p>
-<h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>strace本身其实是一个非常好用的系统调用跟踪工具,运维们可以通过它快速锁定问题的根源,但,恰巧我们也可以通过这种方式来跟踪任何进程数据,比如ssh,su,sudo,这里以跟踪密码为例,大家可以自行脑洞更多其它用法,关于strace自身的选项作用,请man:</p>
+        <p><br><br>0x01 前言<br>strace本身其实是一个非常好用的系统调用跟踪工具,运维们可以通过它快速锁定问题的根源,但,恰巧我们也可以通过这种方式来跟踪任何进程数据,比如ssh,su,sudo,这里以跟踪密码为例,大家可以自行脑洞更多其它用法,关于strace自身的选项作用,请man:</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install strace 如果目标机器没有装strace,那你就自己顺手给他装一个,不过像这类的调试工具,一般都会作为常用工具而被预装</span></div><div class="line"><span class="comment"># vi ~/.bashrc 注意,这里是当前用户的环境变量配置文件,也就是说它只能对当前用户有效,不过你也可以加到全局配置中 '/etc/bashrc'</span></div></pre></td></tr></table></figure>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p><img src="/img/ssh rcode.png" alt=""><br></p>
+<p><img src="/img/ssh rcode.png" alt=""></p>
 <p>除了ssh,你也可以尝试跟踪su,sudo,不过,先暂时不要加,实际测试中还有些问题,待解决后再做说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> su=<span class="string">"strace -o /tmp/.su-`date '+%d%h%m%s'`.log su"</span></div><div class="line"><span class="keyword">alias</span> sudo=<span class="string">"strace -o /tmp/.sudo-`date '+%d%h%m%s'`.log sudo"</span></div><div class="line"><span class="comment"># source ~/.bashrc</span></div></pre></td></tr></table></figure></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ssh root@192.168.3.41 -p 22</span></div></pre></td></tr></table></figure>
-<p><img src="/img/ssh  ssh.png" alt=""><br></p>
+<p><img src="/img/ssh  ssh.png" alt=""></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat .sshpwd-17May051494975433.log  | egrep "(read\(4).*\)"</span></div></pre></td></tr></table></figure>
-<p><img src="/img/ssh  ssh res.png" alt=""><br><br><img src="/img/ssh  ssh res pass.png" alt=""><br></p>
-<p><br></p>
-<h5 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;一点小tip,顺手记录下,用来扩展机器确实蛮不错的,如果大家想深入研究,可以好好了解下strace工具自身的详细使用<br></p>
+<p><img src="/img/ssh  ssh res.png" alt=""><br><img src="/img/ssh  ssh res pass.png" alt=""></p>
+<p><br><br>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;一点小tip,顺手记录下,用来扩展机器确实蛮不错的,如果大家想深入研究,可以好好了解下strace工具自身的详细使用说明<br></p>
 
     </div>
 
