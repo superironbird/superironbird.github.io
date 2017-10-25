@@ -224,7 +224,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts 一款基于ssl加密的http隧道工具,相对来说还算比较稳定,就个人实际使用来讲起码比regerog都稳定一些,且全程通信数据加密,可一定程度上对抗取证检测,就单这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark耐心的走一遍,就明白了,尽量用事实说话嘛 </p>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts 一款基于ssl加密的http隧道工具,相对来说还算比较稳定,就个人实际使用来讲起码比regerog都要稳定一些,且全程通信数据加密,能一定程度上对抗取证检测,就单这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark耐心的跑一遍,就一目了然了,尽量用事实说话嘛 </p>
 <p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个数据加密都要靠这个</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
@@ -623,7 +623,7 @@
 
     
         <div class="content">
-            <p><br><br>可使用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,实时记录修改的密码,只要目标机器不重启一般都不会失效,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要用它来把我们事先准备好的 dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的味道],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[默认是在c:\windows\temp\passwords.txt文件],可以尝试直接把记录到的账号发到远程的指定邮箱中也是可以的[有人已提供改进过的dll],自己去谷歌一下,应该可以找到,本地测试效果如下:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
+            <p><br><br>可利用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,且能实时记录修改的密码,只要目标机器不重启一般都不会失效,具体方法很简单,首先,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要是用它来把我们事先准备好的 HookPasswordChange.dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的意思],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[默认是在c:\windows\temp\passwords.txt文件],你也可以尝试直接把记录到的账号发送到远程指定的邮箱中[有人已提供改进过的dll],自己去谷歌找找,应该可以找到,下面是在本地测试的实际效果:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/hook dll injection.png" alt=""><br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""><br></p>
 
         </div>
