@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="完整导出域内用户hash小记 [利用powershell离线提取域内所有账户hash]"/>
+        <meta property="og:title" content="完整导出域内用户hash小记 [powershell离线提取域内所有账户hash]"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>完整导出域内用户hash小记 [利用powershell离线提取域内所有账户hash] - klion&#39;s blog</title>
+    <title>完整导出域内用户hash小记 [powershell离线提取域内所有账户hash] - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2016/08/15/powershell-domainhash/">
-                完整导出域内用户hash小记 [利用powershell离线提取域内所有账户hash]
+                完整导出域内用户hash小记 [powershell离线提取域内所有账户hash]
             </a>
         </h1>
         <div class="post-info">
@@ -159,8 +159,8 @@
         
 
         <!-- Post Content -->
-        <p><br></p>
-<h4 id="DSInternals-PowerShell"><a href="#DSInternals-PowerShell" class="headerlink" title="DSInternals PowerShell"></a>DSInternals PowerShell</h4><p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
+        <p><br><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">利用 DSInternals PowerShell</div></pre></td></tr></table></figure></p>
+<p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
 <p>离线导出环境要求:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Windows PowerShell <span class="number">3</span>+</div><div class="line">.NET Framework <span class="number">4.5</span>+</div></pre></td></tr></table></figure></p>
 <p>支持的系统:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Windows Server <span class="number">2012</span> R2</div><div class="line">Windows Server <span class="number">2008</span> R2</div><div class="line">Windows <span class="number">10</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">8.1</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">7</span> <span class="number">64</span>-bit</div></pre></td></tr></table></figure></p>
 <p>先看下当前系统的powershell版本:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps &gt; Get-Host <span class="params">| Select-Object Version</span></div></pre></td></tr></table></figure></p>
@@ -168,11 +168,11 @@
 <p><img src="/img/powershell domainhash version.png" alt=""><br></p>
 <p>准备好ntds.dit和SYSTEM.hiv文件:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ntds.dit [可以利用shadowcopy.bat快速获取]</div><div class="line">system.hiv [reg即可获取]</div><div class="line">reg save hklm\system system.hive</div></pre></td></tr></table></figure></p>
 <p>安装,导入DSInternals模块:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd DSInternals</div><div class="line">powershell</div><div class="line">Import-Module .\DSInternals</div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash ntds system.png" alt=""><br></p>
+<p><img src="/img/powershell domainhash ntds system.png" alt=""></p>
 <p>直接导出域内所有用户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -All -DBPath <span class="string">"C:\ntds.dit"</span> -BootKey $key <span class="params">| Out-File hash.txt</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash hashres.png" alt=""><br></p>
+<p><img src="/img/powershell domainhash hashres.png" alt=""></p>
 <p>也可只获取指定账户的详细信息<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -DistinguishedName <span class="string">'CN=krbtgt,CN=Users,DC=klionsec,DC=org'</span>  -DBPath <span class="string">'C:\ntds.dit'</span> -BootKey $key</div></pre></td></tr></table></figure></p>
-<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br><br><br></p>
+<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br></p>
 
     </div>
 

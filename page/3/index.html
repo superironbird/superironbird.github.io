@@ -483,8 +483,9 @@
 
     
         <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎对所有渗透者来讲,初衷或者最终目的无非就是想对目标实施长期监控,但,具体怎么监控呢[好吧,那又是个非常大的话题,个人能力现在实在有限],无非就是下些各种各样的资料回来[当然,这可能是所有监控里面最朴实无华的一种],今天,我们单就这一点来做些简要说明,事先声明,可以写脚本[有时候确实不太灵活],但大多数脚本的核心可能还是靠这些东西,废话就先到这儿吧,希望下面的内容能帮到你,写的不好,管用就行</p>
-<p>在linux机器下的快速打包方式[下面这些工具一般在目标机器上都会自带]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">利用 <span class="string">'tar'</span>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]</div><div class="line"></div><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎对所有渗透者来讲,初衷或者最终目的无非就是想对目标实施长期监控,但,具体怎么监控呢[好吧,那又是个非常大的话题,个人能力现在实在有限],无非就是下些各种各样的资料回来[当然,这可能是所有监控里面最朴实无华的一种],今天,我们单就这一点来做些简要说明,事先声明,可以写脚本[有时候确实不太灵活],但大多数脚本的核心可能还是靠这些东西,废话就先到这儿吧,希望下面的内容能帮到你,写的不好,管用就行</p>
+<p>0x02 在linux机器下的快速打包方式[下面这些工具一般在目标机器上都会自带]:</p>
+<p>利用 <code>tar</code>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/24/tar-file/" class="read-more">Read More</a>
     
