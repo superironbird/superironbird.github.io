@@ -511,8 +511,8 @@
 
     
         <div class="content">
-            <p><br><br>0x01 前言<br>strace本身其实是一个非常好用的系统调用跟踪工具,运维们可以通过它快速锁定问题的根源,但,恰巧我们也可以通过这种方式来跟踪任何进程数据,比如ssh,su,sudo,这里以跟踪密码为例,大家可以自行脑洞更多其它用法,关于strace自身的选项作用,请man:</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install strace 如果目标机器没有装strace,那你就自己顺手给他装一个,不过像这类的调试工具,一般都会作为常用工具而被预装</span></div><div class="line"><span class="comment"># vi ~/.bashrc 注意,这里是当前用户的环境变量配置文件,也就是说它只能对当前用户有效,不过你也可以加到全局配置中 '/etc/bashrc'</span></div></pre></td></tr></table></figure>
+            <p><br><br>0x01 前言<br>strace 本身其实是一个非常好用的系统调用跟踪工具,运维们可以通过它快速锁定问题的根源,但,恰巧我们也可以通过这种方式来跟踪任何进程数据,比如ssh,su,sudo,这里以跟踪密码为例,大家可以自行脑洞更多其它用法,关于strace自身的选项作用,请<code>man strace</code>:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install epel-release -y   利用epel源来装,直接yum可能yum不到</span></div><div class="line"><span class="comment"># yum install strace -y		如果目标机器没有装strace,那你就自己顺手给他装一个,不过像这类的调试工具,一般都会作为常用工具而被预装</span></div><div class="line"><span class="comment"># vi ~/.bashrc 			注意,这里是当前用户的环境变量配置文件,也就是说它只能对当前用户有效,不过你也可以加到全局配置中 '/etc/bashrc'</span></div></pre></td></tr></table></figure>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2016/09/22/strace/" class="read-more">Read More</a>
