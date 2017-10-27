@@ -139,8 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/bypasswaf-on-database/">
-                bypasswaf for mysql [数据库层面之特殊字符篇]
+            <a href="/2017/08/01/ELK-LOG/">
+                利用 ELK 深度定制实时入侵日志分析平台初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-08-01</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ELK/">ELK</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 首先,快速安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">     <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
+<p>0x02 再来熟悉一些必要的关于elasticsearch的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
+<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/07/31/socat-meterpreter/">
+                如何利用 socat 更方便地穿透目标内网
             </a>
         </h1>
         <div class="post-info">
@@ -150,7 +183,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                    <a href="/categories/socat/">socat</a>
                 </span>
             
         </div>
@@ -158,9 +191,13 @@
 
     
         <div class="content">
-            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
+<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
+        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
     
 
 </div>
@@ -205,8 +242,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/socat-meterpreter/">
-                如何利用 socat 更方便地穿透目标内网
+            <a href="/2017/07/31/bypasswaf-on-database/">
+                bypasswaf for mysql [数据库层面之特殊字符篇]
             </a>
         </h1>
         <div class="post-info">
@@ -216,7 +253,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/socat/">socat</a>
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
                 </span>
             
         </div>
@@ -224,13 +261,9 @@
 
     
         <div class="content">
-            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
-<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
-<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
+        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
     
 
 </div>
@@ -591,39 +624,6 @@
 <p>00x2 rsync 一款同时支持本地及远程的开源备份工具,不管推还是拉,在此之前都会自动和之前的文件进行比对,只要有文件属性或者内容发生改变就重新备份,否则不会有任何动作<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="section">远程拷贝[加密拷贝]: 相当于scp工具</span></div><div class="line"><span class="comment"># scp /root/rsync_bak.sh  root@192.168.3.81:/tmp</span></div><div class="line"></div><div class="line"><span class="section">本地拷贝: 相当于cp命令</span></div><div class="line"><span class="comment"># cp -R /etc/ /webbak/</span></div><div class="line"></div><div class="line"><span class="section">支持删除: 相当于rm</span></div><div class="line"><span class="comment"># rm -fr /webbak/etc/</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/05/rsync-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/04/inotify-rsync/">
-                inotify + rsync '小剂量'实时同步
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-04</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>00x1 利用 intify 做实时同步 [ 适合文件并发较少文件较小的备份场景,并发范围在200-300个小文件,延迟基本是很小的,如果超过这个量就比较吃力了 ]:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NFS共享目录 + <span class="function"><span class="title">inotify</span>   -&gt;</span> inotify会一直监控NFS共享目录变化,只要所监控的目录一有变化,会自动推到备份服务器</div></pre></td></tr></table></figure></p>
-<p>00x2 环境准备:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">一台已经完全配置好的rsync服务器</div><div class="line">然后再在已经事先部署好的NFS服务器上配置好rsync客户端,并先尝试手工往rsync服务端推,没问题以后再开始在NFS服务器上装inotify</div></pre></td></tr></table></figure></p>
-<p>00x3 在指定的所有rsync客户端上编译安装inotiy:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ls -l /proc/sys/fs/inotify/ 	首先,查看当前内核是否支持,如果出现以下三个文件则表示支持</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://jaist.dl.sourceforge.net/project/inotify-tools/inotify-tools/3.13/inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> inotify-tools-3.13</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/inotify-tools-3.13 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/inotify-tools-3.13/ /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/inotify-tools-3.13/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> bin/</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/04/inotify-rsync/" class="read-more">Read More</a>
     
 
 </div>

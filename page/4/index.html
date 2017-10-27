@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/24/kali-config/">
+                kali 安装后的简要配置指南
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/kali-config/">kali config</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,最近刚好看到kali有更新,想想自己用的系统似乎也很久没更新过了,这里就顺手记录了下关于部署渗透系统的一些心得,留给有需要的朋友做些简单参考,首先,到kali的官网去下载最新版的kali镜像或者镜像虚拟机,这里我就直接用它已经配好的虚拟机来做演示说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-amd64.<span class="number">7</span>z</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-i686.<span class="number">7</span>z</div></pre></td></tr></table></figure></p>
+<p>2,镜像下载好以后,解压镜像文件,然后到VMware中选择并打开该虚拟机,进入系统,编辑source.list文件,修改为官方的apt源,强烈建议这里用官网的源,尽量不要用任何第三方源,务必谨记<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/apt/sources.list</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb <span class="symbol">http:</span>/<span class="regexp">/http.kali.org/kali</span> kali-rolling main non-free contrib</div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/04/24/kali-config/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/22/dirty/">
                 linux 溢出提权小记
             </a>
@@ -579,38 +612,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2016/09/22/strace/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/21/ssh-portforward/">
-                通向彼岸 之内网代理转发 [ ssh正反向转发及socks代理篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-21</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ssh-portforwd/">ssh portforwd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>ssh端口转发[可以连续转发多个端口,这里暂以转单个端口为例]</p>
-<p>ssh 命令选项作用简介[更多选项详情,请自行man ssh,那里面确实说的非常详细]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">-C  压缩数据传输,加快传输速度</div><div class="line">-f  后台登录用户名密码</div><div class="line">-n  后台运行</div><div class="line">-q  安静模式,不要显示警告等信息</div><div class="line">-l  指定登录名</div><div class="line">-N  不执行shell通,主要用在转发中</div><div class="line">-g  允许远程主机连接到本地转发的端口     </div><div class="line">-L  本地端口转发</div><div class="line">-R  远程端口转发</div><div class="line">-D  socks代理</div><div class="line">-T  禁止分配伪终端</div><div class="line">-p  指定远程ssh 端口</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/21/ssh-portforward/" class="read-more">Read More</a>
     
 
 </div>
