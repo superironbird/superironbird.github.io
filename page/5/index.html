@@ -717,7 +717,7 @@
 <p>爆破svn [实际中多次测试均未跑出来]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hydra -L user.txt -P pass.txt -f -v -t 20 svn://192.168.3.13</span></div></pre></td></tr></table></figure></p>
 <p>爆破ldap2/3(同样跑不出来):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hydra -L user.txt -P pass.txt -f -v -t 20 ldap2://192.168.3.161</span></div></pre></td></tr></table></figure></p>
 <p>爆破redis:<br><br><br></p>
-<p>hydra 使用小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;就个人使用来讲,hydra精度真的很一般 [尤其是在爆破各类邮件服务时,比如,pop3,smtp[这个还好点儿] ,imap,时好时坏,极不稳定,原因暂未找],速度也极为一般,单单就稳定性来讲,不是很靠谱,不过这里仅供参考,建议大家还是根据自己的实际情况来,一面之词,不足为信,大家可以自己实际使用为准<br><br><br></p>
+<p>hydra 使用小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;支持的服务比较多,这里就不一一演示了,大家可根据实际情况针对性的用,就个人使用来讲,hydra精度真的很一般 [尤其是在爆破各类邮件服务时,比如,pop3,smtp[这个还好点儿] ,imap,时好时坏,极不稳定,原因暂未找],速度也极为一般,单单就稳定性来讲,不是很靠谱,不过这里仅供参考,建议大家还是根据自己的实际情况来,一面之词,不足为信,大家可以自己实际使用为准<br><br><br></p>
 <p>0x05 使用 medusa </p>
 <p>偶尔会断,原因暂未查,不过,如果是实际爆破,相对来讲,个人还是比较推荐这个,尤其当拿下的目标机器是linux时,虽然,它支持的服务可能并没有hydra那么多,但个人还是比较喜欢它 [稳定,精度较高],毕竟是帮忙搞了不少事情,不幸的是,它没有win版,作者说它自己用Cygwin始终都没编译成功,如果你编译成功了,请立马告诉他,他也许还会请你喝杯啤酒啥的,嘿嘿……</p>
 <p>支持爆破的服务模块,在kali中的默认路径如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/lib/medusa/modules</div></pre></td></tr></table></figure></p>
