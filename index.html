@@ -158,8 +158,7 @@
 
     
         <div class="content">
-            <p>几乎支持市面上大部分常用工具,另外,脚本自身基于py,跨平台性相对较好,免杀效果也不错,不过,实战中务必要在一个高权限[最好root或system]下运行,否则你很可能什么都抓不到,自己实战中用过几次,并不是特别靠谱,有些行为很容易被杀软捕捉到,自己如果不会免杀,就很头疼了,更多详情请参考其github</p>
-<p><a href="https://github.com/AlessandroZ/LaZagne" target="_blank" rel="external">https://github.com/AlessandroZ/LaZagne</a></p>
+            <p>几乎支持市面上大部分常用工具,另外,脚本自身基于py,跨平台性相对较好,免杀效果也还不错,不过,实战中务必要在一个较高权限[最好是提权后的root或system]下运行,否则你很可能什么都抓不到,实战中用过几次,主要是想用它来搜集内网机器上的各种密码,但,并不是特别靠谱,有些行为还是很容易被杀软捕捉到,自己如果不会免杀,就很头疼了,更多详情大家可自行参考其github, <a href="https://github.com/AlessandroZ/LaZagne" target="_blank" rel="external">https://github.com/AlessandroZ/LaZagne</a> 话说回来,作为学习样本还是很不错的</p>
 <p><img src="/img/softwares.png" alt=""><br>
         </div>
         <a href="/2017/10/26/LaZagne/" class="read-more">Read More</a>
@@ -191,8 +190,8 @@
 
     
         <div class="content">
-            <p>利用 NetRipper 抓取内存中的https明文密码,优点,可以在一个相对较低的系统权限下截获加密的明文,工具已经出了有些年头了,好在作者维护一直比较勤奋,才活到了现在,它支持截获像putty,winscp,mssql,chrome,firefox,outlook中的明文密码,同时它也提供了很多类型的版本,如,命令行下的exe,msf模块,ps脚本,实战中更推荐大家直接用powershell,更多详情请自行参考其github</p>
-<p><a href="https://github.com/NytroRST/NetRipper" target="_blank" rel="external">https://github.com/NytroRST/NetRipper</a></p>
+            <p>0x01 利用 NetRipper 抓取内存中的https明文密码</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;优点,可以在一个相对较低的系统权限下截获加密的明文,工具已经出了有些年头了,好在作者维护一直比较勤奋,才活到了现在,它支持截获像putty,winscp,mssql,chrome,firefox,outlook中的明文密码,同时也提供了很多类型的版本,如,win cmd下的exe,msf模块,ps脚本,实战中更推荐大家直接用powershell,更多详情请自行参考其github <a href="https://github.com/NytroRST/NetRipper" target="_blank" rel="external">https://github.com/NytroRST/NetRipper</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell -<span class="built_in">exec</span> bypass</span></div><div class="line"><span class="meta">PS&gt;</span><span class="bash"> Import-Module .\Invoke-NetRipper.ps1</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/10/26/NetRipper/" class="read-more">Read More</a>
@@ -255,7 +254,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 关于ettercap<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ettercap</span> 确实已经非常老了,也确实是那个时代的经典,而且差不多三四年这个项目也都没再更新过了</div><div class="line">对于一些防护并不是特别好的内网,依然非常实用,千万不要觉得工具老就没有它的应用场地,那样你就真的错了,如果真是这样,就不会有这么多的深度二次开发了</div><div class="line">大家可能也发现了,像这类的工具我基本都是在模拟真实的生产环境上编译安装的</div><div class="line">具体原因大家想必都很清楚,像这类基于二层的arp嗅探是没法直接在远程做的,毕竟不是直接处在目标的vpn内网中</div><div class="line">socks代理再牛逼,它也只是个基于端口的四层代理,并不是vpn,所以,是没法直接在本地嗅远程的arp的,至于GRE隧道,咱们抽空再另说</div><div class="line">话不多讲,直奔今天的主题,ettercap基础使用</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 关于ettercap<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ettercap</span> 确实已经非常老了,也确实是那个时代的经典,而且差不多三四年这个项目也都没再更新过了</div><div class="line">对于一些防护并不是特别好的内网,依然非常实用,千万不要觉得工具老就没有它的应用场地,那样你就真的错了,如果真是这样,就不会有这么多的二次深度开发了</div><div class="line">大家可能也发现了,像这类的工具我基本都是在模拟真实的生产机器环境上编译安装的</div><div class="line">具体原因大家想必都很清楚,像这类基于二层的arp嗅探是没法直接在远程做的,毕竟不是直接处在目标的vpn内网中</div><div class="line">socks代理再牛逼,它也只是个基于端口的四层代理,并不是vpn,所以,是没法直接在本地嗅远程的arp的,至于GRE隧道,咱们抽空再另说</div><div class="line">话不多讲,直奔今天的主题,ettercap基础使用,注意,此次仅仅是基础使用</div></pre></td></tr></table></figure></p>
 <p>0x02 开启本地的路由转发:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span></div><div class="line"><span class="meta">#</span><span class="bash"> cat /proc/sys/net/ipv4/ip_forward</span></div></pre></td></tr></table></figure></p>
 <p>0x03 基础演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS</span> <span class="selector-tag">release</span> 6<span class="selector-class">.9</span> (<span class="selector-tag">Final</span>)  <span class="selector-tag">x86-64</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.4</span>  接口名称: <span class="selector-tag">eth2</span>  <span class="selector-tag">ettercap</span>所在机器</div><div class="line"><span class="selector-tag">win2008r2</span> 			   <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span> </div><div class="line"><span class="selector-tag">win7cn</span>				   <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.8</span></div></pre></td></tr></table></figure></p>
         </div>
@@ -321,9 +320,9 @@
 
     
         <div class="content">
-            <p><br><br>0x01 嗅探之前,我们有必要先来大致回顾下arp和rarp的基本通信流程,假设现在交换机中的mac地址表中暂时还没有任何对应关系<code>A机器想和B机器进行通信</code><br><figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">arp  地址解析协议,即通过ip找对应的<span class="keyword">mac</span>:</div><div class="line">首先,A会发arp请求[广播],向同一交换机下的所有其它机器询问,谁有B的这个ip</div><div class="line">当B收到这条消息时,就会再用arp响应给A,说,我有这个ip,我的<span class="keyword">mac</span>是多少多少</div><div class="line">当完成第一次正常通信之后就会在交换机的<span class="keyword">mac</span>地址表中记录下这层指向对应关系</div><div class="line">后续就直接按照<span class="keyword">mac</span>地址表中已有的指向来通信,而不再用广播询问,这就是一次极为常规的arp通信过程</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 嗅探之前,我们有必要先来大致回顾下arp和rarp的基本通信流程,假设现在交换机中的mac地址表中暂时还没有任何对应关系<code>A机器想和B机器进行通信</code><br><figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">arp  地址解析协议,即通过ip找对应的<span class="keyword">mac</span>:</div><div class="line">首先,A会先发arp请求[广播],向同一交换机下的所有其它机器询问,谁有B的这个ip</div><div class="line">当B收到这条消息时,就会再用arp响应给A,说,我有这个ip,我的<span class="keyword">mac</span>是多少...</div><div class="line">当完成第一次正常通信之后就会在交换机的<span class="keyword">mac</span>地址表中记录下这层指向对应关系</div><div class="line">后续就直接按照<span class="keyword">mac</span>地址表中已有的指向来通信,而不再用广播询问,这就是一次极为常规的arp通信过程</div></pre></td></tr></table></figure></p>
 <figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">rarp</span>  反向地址解析协议,即通过mac找对应的<span class="built_in">ip</span>:</div><div class="line">理解完arp以后,我们再来看rarp,同样是先发请求,这个请求简单来讲也是一个广播,不过,在此广播中声明了自己的mac</div><div class="line">并请求任何收到此请求的rarp服务器分配一个<span class="built_in">ip</span>,当同网段的rarp服务器收到此请求后会检查自己的rarp列表找到该mac对应的<span class="built_in">ip</span></div><div class="line">如果此mac的<span class="built_in">ip</span>被找到,就直接响应对方使用,如果没找到,最后就会提示初始化失败</div></pre></td></tr></table></figure>
-<p>0x02 关于arp欺骗最核心的细节<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">假设同一交换机下有三台机器,分别为 A , <span class="keyword">B </span>, C,正常情况下<span class="keyword">B和C的通信数据,A是不可能看到的</span></div><div class="line">但在ARP缓存表机制中存在一个缺陷,就是当请求主机收到ARP应答包后,不会去验证自己是否向对方主机发送过ARP请求</div><div class="line">就直接就把这个应答包中的<span class="built_in">IP</span>与MAC地址的对应关系更新到自己本地的ARP缓存表中,这时就直接导致原有<span class="built_in">IP</span>的对应关系被恶意替换</div><div class="line">通俗点儿理解,也就是说,我强制刷新了对方的arp缓存对应关系,把原来<span class="built_in">ip</span>的指向现在换成了我自己的地址</div><div class="line">导致现在<span class="keyword">B和C的通信都要先经过A,那么,我们在A上自然就可以顺利的看到C和B之间的所有明文通信数据,即实现了所谓的监听</span></div></pre></td></tr></table></figure></p>
+<p>0x02 关于arp欺骗最核心的细节<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">假设同一交换机下有三台机器,分别为 A , <span class="keyword">B </span>, C,正常情况下<span class="keyword">B和C的通信数据,A是不可能看到的</span></div><div class="line">但在ARP缓存表机制中存在一个缺陷,就是当请求主机收到ARP应答包后,不会去验证自己曾经是否向对方主机发送过ARP请求</div><div class="line">就直接就把这个应答包中的<span class="built_in">IP</span>与MAC地址的对应关系更新到自己本地的ARP缓存表中,这时就直接导致原有<span class="built_in">IP</span>的对应关系被恶意替换</div><div class="line">通俗点儿理解,也就是说,我强制刷新了对方的arp缓存对应关系,把原来<span class="built_in">ip</span>的指向现在换成了我自己的地址</div><div class="line">导致现在<span class="keyword">B和C的通信都要先经过A,那么,我们在A上自然就可以顺利的看到C和B之间的所有明文通信数据,即实现了所谓的监听</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/23/dsniff/" class="read-more">Read More</a>
     
@@ -336,7 +335,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2017/10/23/inetd-backdoor/">
-                基于 inetd 的后门简要分析及利用
+                基于 inetd 后门的简要分析及利用
             </a>
         </h1>
         <div class="post-info">
@@ -354,7 +353,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求[就是一个socket]的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,也就是说,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题也恰巧就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash">[比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求 [就是一个socket] 的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,其实非常简单,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题恰巧也就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash"> [比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>型后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/23/inetd-backdoor/" class="read-more">Read More</a>
     
