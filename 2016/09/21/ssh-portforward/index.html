@@ -186,7 +186,7 @@
 <p><img src="/img/ssh_forward_socks.png" alt=""></p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">做好上面的转发之后,再回到win7en_bak这台机器上,利用putty通过动态端口的方式连到lnmp01</div><div class="line">意思就是通过lnmp01将MidLAMP机器的<span class="number">1080</span>端口和win7en_bak的<span class="number">1235</span>端口进行绑定,即建立socks</div><div class="line">这样当访问win7en_bak的<span class="number">1235</span>端口就相当于访问MidLAMP所在的整个目标内网段</div><div class="line">至于各种socks客户端代理工具,我想这里就不多说了,个人比较喜欢Proxifier,大家随意,sockscap,proxychains都行,最终效果如下</div></pre></td></tr></table></figure>
 <p><img src="/img/ssh_forward_socks_putty.png" alt=""><br><img src="/img/ssh_forward_socks_putty_res.png" alt=""><br><img src="/img/ssh_forward_socks_putty_local_port.png" alt=""><br><img src="/img/ssh_forward_socks_putty_res_connect.png" alt=""><br><img src="/img/ssh_forward_socks_putty_res_connect_res.png" alt=""><br><img src="/img/ssh_forward_socks_putty_res_connect_firefix.png" alt=""></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;大家也看到了整个代理过程,真正理解了以后其实非常简单,利用ssh不管是做转发还是socks代理,唯一的好处就是通信数据全程加密,一定程度上课有效对抗各类ids,ips和取证,缺点可能就是速度可能会稍慢,不过也不是特别慢,对于渗透linux内网,这样做无疑是极好的</p>
+<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;大家也看到了整个代理过程,真正理解了以后其实非常简单,利用ssh不管是做转发还是socks代理,唯一的好处就是通信数据全程加密,一定程度上课有效对抗各类ids,ips和取证,缺点可能就是速度可能会稍慢,不过也不是特别慢,对于渗透linux内网,这样做无疑是极好的,其实,以此衍生出的用法还有非常多,以后抽空再跟大家一一介绍</p>
 
     </div>
 
