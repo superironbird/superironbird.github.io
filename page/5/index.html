@@ -351,7 +351,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上[转发],再通过转到的这个本地端口去连远程机器的某个端口[管道],而不是像netsh只是单纯的把端口转过去,简易的通信流程如下</p>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上[转发],再通过转到的这个本地端口去连远程机器的某个端口[管道],而不是像netsh只是单纯的把端口转过去,简易通信流程如下</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">外部端口访问 <span class="tag">&lt;<span class="name">-</span>&gt;</span> 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) <span class="tag">&lt;<span class="name">-</span>&gt;</span> 通过本地的另一个端口和远程机器的某个端口通信</div></pre></td></tr></table></figure>
 <p>工具选项如下,非常简单,看选项说明基本就懂了:<br><img src="/img/fpipe help.png" alt=""></p>
 <p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
@@ -486,8 +486,8 @@
 
     
         <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts 一款基于ssl加密的http隧道工具,相对来说还算比较稳定,就个人实际使用来讲起码比regerog都要稳定一些,且全程通信数据加密,能一定程度上对抗取证检测,就单这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark自己耐心跑一遍,就一目了然了,尽量用事实说话嘛 </p>
-<p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个数据加密都要靠这个</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts,一款基于ssl加密的http隧道工具,相对来讲还算稳定,就个人实际使用来说起码比regerog都要稳定一些,且全程通信数据加密,能一定程度上对抗取证检测,单就这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark自己耐心跑一遍,就一目了然了,尽量用事实说话嘛 </p>
+<p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个通信数据加密基本都要靠这个库来实现</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
     
