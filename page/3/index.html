@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/08/nosql-redis/">
+                服务安全 [ redis安全 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-08</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/redis/">redis</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 redis 实际应用价值,其实跟memcached的功用本质上差不太多,只是redis可持久存储,数据类型支持也比较丰富,能更好的应对更复杂的业务:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">性能强悍</div><div class="line">并发超十万</div><div class="line">数据类型丰富</div><div class="line">支持主从复制</div><div class="line">支持持久化存储</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>0x02 安装配置 redis:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget http://download.redis.io/releases/redis-4.0.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf redis-4.0.1.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> redis-4.0.1</span></div><div class="line"><span class="meta">#</span><span class="bash"> make MALLOC=jemalloc</span></div><div class="line"><span class="meta">#</span><span class="bash"> make PREFIX=/usr/<span class="built_in">local</span>/redis-4.0.1 install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/redis-4.0.1/ /usr/<span class="built_in">local</span>/redis</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/redis/bin/:<span class="variable">$PATH</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"export PATH=/usr/local/redis/bin/:<span class="variable">$PATH</span>"</span> &gt;&gt; /etc/profile</span></div><div class="line"><span class="meta">#</span><span class="bash"> redis-server -h</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/08/nosql-redis/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/07/ssh-key-mac/">
                 基于最原始的 ssh key 分发机实现
             </a>
@@ -587,38 +619,6 @@
 <p>系统安装完以后还需要进行一些必要的准备工作,首先,全面更新系统<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> apt-get update &amp;&amp; apt-get upgrade -y </span></div><div class="line"><span class="meta">#</span><span class="bash"> shutdown -r now	像这样的大规模更新完成后,务必立即重启系统</span></div><div class="line"><span class="meta">#</span><span class="bash"> apt-get install linux-headers-`uname -r` -y	为了防止下面编译过程中出错,这里我就提前把对应的内核头文件都装上了</span></div><div class="line"><span class="meta">#</span><span class="bash"> shutdown -r now</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/30/GPU-HASH-CRACK/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/26/use-john/">
-                快速破解各种散列hash [ john入门篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/john/">john</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x00 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;john[又名JTR] 本身是用来专门破解linux系统用户hash的,但现在已经不再那么局限了,它同样也提供了非常多的散列类型,虽然,跟hashcat在某些方面确实还差了一个量级,但它也有自己很独到的地方,多用你就知道了,废话不多说,咱们开始吧</p>
-<p>0x01 尝试在Ubuntu16.04.2 LTS上编译安装john 1.8[当然啦,也有已经编译好对应的win版下的,不过实际破解还是更推荐用linux],像类似的hash破解工具,不用多说,单独找个显卡或者CPU性能好点的机器是必须的,要不,意义何在呢,编译安装的过程就非常简单了,如下[如果嫌手敲的累,自己放脚本里跑跑就好了]<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget http://www.openwall.com/john/j/john-1.8.0.tar.xz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xvfJ john-1.8.0.tar.xz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> john-1.8.0/src</span></div><div class="line"><span class="meta">#</span><span class="bash"> make 选择对应的系统平台进行编译</span></div><div class="line"><span class="meta">#</span><span class="bash"> make clean linux-x86-64</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> ../run/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./john --<span class="built_in">test</span> 测试当前系统的破解速度</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/26/use-john/" class="read-more">Read More</a>
     
 
 </div>

