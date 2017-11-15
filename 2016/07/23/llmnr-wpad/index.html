@@ -163,7 +163,7 @@
 <p>0x02 而基于LLMNR的中间人攻击,也就发生在上面流程的最后一步:</p>
 <p>假设现在有三台机器,A[正常的客户机],B[攻击者的机器],C[要访问的服务器],当A向C发起共享资源请求时,由于本地dns解析失败,正常情况下该请求会被交给LLMNR然后执行netbios查询,但不巧的是攻击者此时正在监听网络中的所有netbios查询请求,自然也就会捕捉到这条查询,当攻击者捕捉到该查询之后,它会告请求者也就是A,我[B]就是你要请求的那台服务器,接着A会把自己的账号密码提供给B认证,也就是说,此时B已经截获到了A的账号密码,一次简易的基于LLMNR中间人的攻击就这样被完成了,下面的流程图已经很好的说明了这一攻击过程<br><img src="/img/LLMNR.png" alt="LLMNR"></p>
 <p>此时,我们再利用responder 来获取目标的smb hash,虽然不是明文,但我们可以配合类似hashcat的hash破解工具尝试破解该hash,当然,如果你有自己的GPU矩阵就再好不过了,或许很快就可以拿到对应的明文<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># responder -I eth0</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/RESPONESNDERS_I.png" alt=""><br>在C上,也就是我们的服务器上线创建一个共享目录<br><img src="/img/RESPONES_FTP.png" alt=""></p>
+<p><img src="/img/RESPONESNDERS_I.png" alt=""><br>在C上,也就是我们的服务器上先创建一个共享目录<br><img src="/img/RESPONES_FTP.png" alt=""></p>
 <p>然后再回到A上通过smb进行访问<br><img src="/img/RESPONESNDERS_hash.png" alt=""></p>
 <p>此时,回到B上我们就轻松截获了A发来的登陆凭证<br><img src="/img/RESPONESNDERS_HSAHS_RE.png" alt=""><br><br></p>
 <p>0x03 说完netbios,我们再来说说WPAD,还是先大致了解下WPAD是个东西<br></p>
