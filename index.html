@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/10/dnstunnel/">
+                DNS隧道 之 端口转发 [ 一 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-10</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dnstunnel/">dnstunnel</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 本次实验环境大致如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">centos7_x64</span><span class="selector-attr">[heightlamp]</span>  公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span>        		        假设为入侵者自己的公网机器,即<span class="selector-tag">dns2tcp</span>客户端</div><div class="line"><span class="selector-tag">centos7_x64</span><span class="selector-attr">[heightlnmp]</span>	 公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.123</span>  假设为目标<span class="selector-tag">DMZ</span>中的机器,有防火墙,即<span class="selector-tag">dns2tcp</span>服务端</div><div class="line"><span class="selector-tag">win2012r2en</span>		 公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.123</span>         		  	假设为自己公网的<span class="selector-tag">dns</span>服务器</div><div class="line"><span class="selector-tag">centos6</span><span class="selector-class">.8_x64</span><span class="selector-attr">[Midlnmp]</span>	 内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.212</span>			        假设为目标内网中的一台<span class="selector-tag">linux</span>机器</div></pre></td></tr></table></figure></p>
+<p>0x02 我们要实现的最终目的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">正常情况下,我们本想通过heightlnmp机器来访问目标内网中Midlnmp的ssh,但苦于heightlamp和heightlamp之间的防火墙</div><div class="line">且防火墙只允许真正的dns流量通过,所以,现在我们想通过在自己的dns服务器上做转发来绕过它们之间的防火墙</div><div class="line">即在heightlamp和heightlnmp之间建立一层dns隧道,把要转发的端口数据都封装在dns流量里面进行穿透</div><div class="line">最后实现的效果就是,当我访问heightlamp的某个指定端口,就可以直接访问到目标内网中的Midlnmp的ssh</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/10/dnstunnel/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/06/bettercap/">
                 轻量高效的 MITMF [ bettercap ]
             </a>
@@ -590,39 +622,6 @@
 <p>0x03 如果实在想自己手工实现该功能的话,大体思路如下:<br><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">找目标系统中W<span class="keyword">in</span>事件日志服务的进程名,一般都是在svchost下</div><div class="line">并从该进程中获取所对应的W<span class="keyword">in</span> 事件日志服务线程ID</div><div class="line">想办法杀掉这些id所对应的线程,以达到让目标系统日志服务无法正常工作的目的,这样系统就无法再搜集日志了</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/16/win-event-powershell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/11/bypasswaf-for-webshell/">
-                全方位构造免杀 webshell 小结[一]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-11</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/webshell/">webshell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;本文几乎是涵盖了市面上所有已知的webshell免杀手段,自己也很清楚,有些东西一旦公布出去,基本就活不太久了,但技巧是死的,人是活的,基于前人的优秀经验基础上所衍生出来的更加刁钻诡异的思路才是最珍贵的,始终坚信,对抗是持续的,shell也是永远杀不完的…<br><br><br>0x01 基于各类常规命令和代码执行函数的花样变形<code>如,拆分重组,动态执行,以此来躲避静态特征检测</code>,不过像有些高危函数默认就会被运维们禁掉,甚至高版本的php默认已经不让执行系统命令[如,php7],万一再开了安全模式,就更费劲了</p>
-<p>php中一些常见的执行类型函数:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">system()</div><div class="line">exec()</div><div class="line">shell_exec()</div><div class="line">passthru()</div><div class="line">proc_open()</div><div class="line"><span class="string">``</span> 反引号执行系统命令</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/10/11/bypasswaf-for-webshell/" class="read-more">Read More</a>
     
 
 </div>
