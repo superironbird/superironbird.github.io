@@ -160,7 +160,8 @@
 
         <!-- Post Content -->
         <p><br><br>可利用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,且能实时记录修改的密码,只要目标机器不重启一般都不会失效,具体方法很简单,首先,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要是用它来把我们事先准备好的 HookPasswordChange.dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的意思],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[记录到的密码默认放在c:\windows\temp\passwords.txt文件中],你也可以尝试直接把记录到的账号发送到远程指定的邮箱中[有人已提供改进过的dll],自己去谷歌找找,应该可以找到,下面是在本地测试的实际效果:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/hook dll injection.png" alt=""><br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""></p>
+<p><img src="/img/hook dll injection.png" alt=""></p>
+<p>实际的效果如下<br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""></p>
 
     </div>
 
