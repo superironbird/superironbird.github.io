@@ -182,7 +182,7 @@
 <p><img src="/img/dnstunnel_new_login.png" alt=""></p>
 <p>在heightlamp上观察下经过的dns流量,一目了然<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tcpdump -i ens33 port 53</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/dnstunnel_new_login_final.png" alt="">    </p>
-<p><br><br>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;看到这里,想必大家现在也已领会的差不多了,在深刻理解了整个运作流程之后,其实利用dns隧道进行端口转发,还是非常简单的,确实也是个烂大街的把戏了,不过,碰到一些特别恶劣的环境,还是非常值得一试的,与其说是DNS隧道,不如说是udp隧道,相对更确切些,因为DNS的请求响应默认走的是udp的53端口,另外,有些朋友可能还有些误解,认为只要是53端口就一定跑的是dns服务,就像大家普遍认为的只要是80端口跑的就一定是web服务一样,其实不然,我们区分不同的服务,并非根据端口,而是根据不同服务所使用的协议报文格式来的,隧道的意思其实也就是按照指定的协议对数据进行重新封装,当然,除了端口转发,还有各种基于DNS隧道通信的远控,如,典型的Cobalt strike等…利用dns log进行sql注入,执行代码,可能大家也都比较熟练了,这里就不细说了</p>
+<p><br><br>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;看到这里,想必大家现在也已领会的差不多了,在深刻理解了整个运作流程之后,其实利用dns隧道进行端口转发,还是非常简单的,确实也是个烂大街的把戏了,不过,碰到一些特别恶劣的环境,还是非常值得一试的,与其说是DNS隧道,不如说是udp隧道,相对更确切些,因为DNS的请求响应默认走的是udp的53端口,另外,有些朋友可能还有些误解,认为只要是53端口就一定跑的是dns服务,就像大家普遍认为的只要是80端口跑的就一定是web服务一样,其实不然,我们区分不同的服务,并非根据端口,而是根据不同服务所使用的协议报文格式来决定的,隧道的意思其实也就是按照指定的协议对数据进行重新封装,当然,除了端口转发,还有各种基于DNS隧道通信的远控,如,典型的Cobalt strike等…利用dns log进行sql注入,执行代码,可能大家也都比较熟练了,这里就不细说了</p>
 
     </div>
 
