@@ -139,6 +139,37 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/10/06/empire-powershell/">
+                powershell 渗透框架 [empire]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-10-06</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/powershell/">powershell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;对于<code>empire</code>[说实话确实有些老了] 想必大家也都已经不再陌生,很多人说它是<code>神器</code>,嘿嘿……原谅我一直也没搞清楚<code>神器</code>的具体定义到底是什么[虽然,我知道这对于实际渗透并没任何卵用],也许在我有限的认知里,一直都以为只有能在千里之外轻松get到目标系统的system或者root权限的shell的<code>0day</code>才叫神器,如果动不动就把某个确实好用点儿的脚本或者工具就叫神器,未免有点儿草率,也显得不稳重,不是吗,自己有个比较野蛮的习惯,在用别人工具的时候,总是忍不住会观察,因为想尽可能理解它的内部实现[最好也是最直接的一手学习资料],<code>如果换成是我自己这代码会怎么写呢</code>,虽然是后知后觉,但拓展出来的思路足以让自己受益良多[站在别人的肩膀上可以走的更快,这是真的],虽然,自己并没有再把代码把它实现一遍,但对整个工具架构实现已经有了更清晰的理解和把握,到了实际用的时候自然就不一样了[更灵活点儿嘛],以后再看到类似的工具,可能一眼就能看透个百分之七八十,嘿嘿……纯粹是个人喜好哈,听过就好,废话过后,咱们说正题,今天主要是对empire中一些好用的powershell脚本做些简要的使用说明,当然啦,自己已经事先把empire中的powershell脚本选择性的提取了一下,因为我们的重点还是powershell,并非empire脚本本身,整个过程中也不会有任何涉及工具自身使用的东西,其实,empire使用真的非常简单,命令帮助已经写的非常详细了,看看帮助相信大家很快就能上手,不过整个工具最核心的东西还是这些ps脚本[对于一个职业渗透者来讲,您应该一开始就尽量朝着你所能理解的本质去,慢慢的,一旦养成这种习惯,同一个东西,你往往能看见别人看不见的一些小细节],因为这中间有很多脚本跟之前是重复的,所以就选择性的说一些,脚本使用都非常简单,就不再一一截图了,实在是好累啊,还是那句话,关键是大家能在实际渗透中用上,别的都是扯淡<br>
+        </div>
+        <a href="/2016/10/06/empire-powershell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/10/06/powersploit/">
                 powershell 渗透框架 [PowerSploit]
             </a>
@@ -589,38 +620,6 @@
 <p>0x03 有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,解决办法肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本[即webshell]的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/09/16/http-tunnel-question/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/15/abptts-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 abptts ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-15</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;abptts,一款基于ssl加密的http隧道工具,相对来讲还算稳定,就个人实际使用来说起码比regerog都要稳定一些,且全程通信数据加密,能一定程度上对抗取证检测,单就这一点来说,还是很赞的,不过,加不加密,它自己说的不算,还是老办法,拿wireshark自己耐心跑一遍,就一目了然了,尽量用事实说话嘛 </p>
-<p>0x02 首先,安装好工具所需的各种py依赖库:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pip install pycrypto    加密库,整个通信数据加密基本都要靠这个库来实现</span></div><div class="line"><span class="meta">#</span><span class="bash"> pip install httplib2</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/15/abptts-http-tunnel/" class="read-more">Read More</a>
     
 
 </div>
