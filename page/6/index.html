@@ -139,6 +139,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/16/http-tunnel-question/">
+                通向彼岸 之内网代理转发 [ http隧道篇 使用过程中容易出现的一些问题 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http-tunnel/">http tunnel</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>关于使用http隧道代理脚本时,容易出现的一些错误及解决办法</p>
+<p>0x01 如果是php程序,你可能需要先确保php.ini中的socket模块已正常开启并且可用,因为php中的socket函数要基于此模块,不过,reGeorg早已经提供了不再需要开启socket的代理脚本</p>
+<p>0x02 有时候你在绑定某些端口会遇到socket无法建立连接的问题,不妨尝试换一下端口,比如:53,8080,443,只要不跟目标系统中的现有端口冲突即可,尽量用一些穿透性比较好的端口</p>
+<p>0x03 有时还会遇到aspx 运行错误,看具体是什么错误,如果一眼解决不了,谷歌一下,解决办法肯定一大堆,比如:’Compilation Error’,可以尝试在代理脚本[即webshell]的当前所在目录,另外新建一个web.conf文件,一般也即可解决,文件具体内容如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;system.web&gt;</div><div class="line">  &lt;customErrors mode="Off"/&gt;</div><div class="line">  &lt;/system.web&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/16/http-tunnel-question/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/15/abptts-http-tunnel/">
                 通向彼岸 之内网代理转发 [ http隧道篇 abptts ]
             </a>
@@ -846,52 +880,6 @@
 <p>在所有后缀为asp,ini,txt,php,aspx……的文件中找到带有password字符串文件,查询的时间可能会比较长,菜刀可能又会超时,另外,这样这里所有的查找都以当前路径为基础的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.asp *.cgi  </span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.aspx </span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.php</span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.php *.xml</span></div></pre></td></tr></table></figure></p>
 <p>0x04 更多,待续……</p>
 <p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于域内信息搜集这里只是粗略零碎的提到了一些,确实还有很多很精悍的搜集技巧,都没提到,不过,那都是后话,比如,关于内网大致拓扑结构信息,端口服务信息….篇幅原因,压根也没提到,来日方长,我们还是循序渐进吧,’步子太大容易扯着蛋’,这次顶多先入个门,主要还是想借此说明,利用系统现有的工具在现有的权限条件下,我们到底能做些什么,务必要时刻谨记我们搜集信息的初衷(严禁盲目),你所搜到的每个信息,都应该有它存在的价值,也就是说后续我们到底可以拿它些什么,这非常无比的重要,举个简单例子,就拿搜集密码来说,首先我要知道哪些地方可能会存有密码,我们可能知道,各种数据库配置文件有数据库的连接密码(sa&amp;root),各种第三方工具的配置文件中可能也保存的也有密码hash(比如,filezilla之流),浏览器中说不定保存的也有密码各种网站密码(找找有没有是目标网站的,想办法登进去传shell也是可以的),如果你运气不错,搞到了vpn账号密码岂不快哉,等等……其实,在你权限和免杀都没问题的情况下,要搜集的密码还有很多,关于更多搜集密码,猜密码的东西,后续会单独梳理出来,说了这么多废话,最终目的也只是想说明,如果大家只是照本宣科的把命令行尸走肉的过一遍,可以很负责任的告诉大家,几乎是没有任何意义的,不是吗,这里都是一些基础的不能再基础的命令,使用也极其简单,能不能拿到有用的东西,关键还在人,对信息的敏感度一定要高,细心点就好了,再说一遍,’严禁盲目,严禁盲目,严禁盲目’,其实,我也一直在强调,工具是死的,人是活的,知道你想要做什么,比怎么做更重要,这里,仅供参考,有不对的地方,麻烦大家多批评指正,说实话,这样敲命令显的确实有点儿呆萌,你可以选择把它丢到脚本中,一键搞定,不过,容错可能要做好点,万一命令执行异常了(有可能错过重要信息),就不太好了,不过,我自己还是喜欢手工,要什么记录什么就好了,干嘛非要动不动搞一大堆没用的信息,看着都累,希望大家平时也是,务必要勤记录,这绝对是个好习惯,祝大家好运,也非常期待多跟大家一起交流,毕竟,个人的力量始终是有限的</p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/08/10/ntlm-kerberos/">
-                深刻理解windows安全认证机制 [ntlm & Kerberos]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-08-10</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/active-pentest/">active pentest</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>0x01 为什么要理解windows 安全认证机制:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">加深对后续各种漏洞利用的理解深度,还是那句话,要知其然,更要知其所以然,不废话,咱们直接开始</div></pre></td></tr></table></figure></p>
-<p>0x02 windows认证协议主要有以下两种:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">基于ntlm的认证方式,主要用在早期的windows工作组环境中,认证的过程也相对比较简单</div><div class="line">另一种是基于Kerberos的认证方式,主要用在域环境中,下面就这两种不同的认证方式做些简要的通信流程说明</div></pre></td></tr></table></figure></p>
-<p>0x03 关于ntlm认证流程简要说明,如下:<br><img src="/img/ntlm-auth.png" alt="&#39;&#39;"></p>
-<p>0x04 从图中我们可以清晰的看到,ntlm在域中的认证过程主要分为以下几步:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">第一步,首先在client输入username,password和domain,然后client会把password hash后的值先缓存到本地</div><div class="line">第二步,之后,client把username的明文发送给server(DC)</div><div class="line">第三步,DC会生成一个<span class="number">16</span>字节的随机数,即challenge(挑战码),再传回给client</div><div class="line">第四步,当client收到challenge以后,会先复制一份出来,然后和缓存中的密码hash再一同混合hash一次,混合后的值称为response,之后client再将challenge,response及username一并都传给server</div><div class="line">第五步,server端在收到client传过来的这三个值以后会把它们都转发给DC</div><div class="line">第六步,当DC接到过来的这三个值的以后,会根据username到域控的账号数据库(ntds.dit)里面找到该username对应的hash,然后把这个hash拿出来和传过来的challenge值再混合hash</div><div class="line">第七步,将(<span class="number">6</span>)中混合后的hash值跟传来的response进行比较,相同则认证成功,反之,则失败,当然,如果是本地登录,所有验证肯定也全部都直接在本地进行了</div></pre></td></tr></table></figure></p>
-<p>0x05 关于ntlm的一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;它是一种基于挑战（challenge）/响应（response）消息交互模式的认证过程,从整个认证过程来看,安全确实不怎么到位,也就是说入侵者只需要拿到一个系统管理员的hash,直接给dc认证就好了,反正账户名和域名都知道,早期的pass the hash (psexec)确实就是通过这种方式来进行的,如果本地管理员的账号密码相同,其实不用密码一样可以被认证,我们所要做的就是不断通过这种方式来尝试拓展内网的其他机器,直到控制整个域,但后来的kb2871997,似乎改变了一些现状,但也可能只是似乎</p>
-<p>0x06 关于kerberos的一些概述:<br>&nbsp;&nbsp;&nbsp;&nbsp;相对于ntlm而言,kerberos的认证方式就要复杂的多,因为它提供了一个集中式的认证方式,在整个认证过程中总共要涉及到三方:客户端,服务端和KDC [Key Distribution Center 密钥分发中心], 在Windows域环境中,KDC的角色由DC(Domain Controller[域控])来担任,Kerberos是一种基于<code>票据</code>的认证方式,票据(Ticket)是用来安全的在认证服务器和用户请求的服务之间传递用户的身份,同时也会传递一些附加信息,用来保证使用Ticket的用户必须是Ticket中指定的用户,Ticket一旦生成,在生存时间内可以被Client多次使用来申请同一个Server的服务(票据窃取问题)</p>
-<p>0x07 kerberos的大致工作流程:<br>&nbsp;&nbsp;&nbsp;&nbsp;说到这里,我们大概也能明白,域中的客户端要想访问同域中的某个服务器资源时,需要首先购买该服务端认可的票据,也就是说,客户端在访问服务器之前需要预先买好票,等待服务验票之后才能入场,但是这张票不能直接购买,还需要一张认购权证,也就是说客户端在买票之前需要预先获得一张认购权证,这张认购权证和进入服务器的入场券均有KDC发售,下面就以下图来做简要说明:<br><img src="/img/kerbos.png" alt="&#39;&#39;"><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>)首先,客户端(client)将域用户的密码hash一次并保存,然后,以此hash来作为客户端和KDC之间的长期共享密钥[kc](当然,在DC上也保存着同样的一条hash)</div><div class="line"><span class="number">2</span>)之后,客户端(client)开始利用(<span class="number">1</span>)中的域用户密码hash再把时间戳,clientid,TGS id等信息混合hash一次,然后向as(认证服务器 [Authentication Server])服务器进行请求</div><div class="line"><span class="number">3</span>)as接到该请求后,利用长期共享密钥(kc)进行解密,解密成功后,会返回给客户端两个票据</div><div class="line">  (<span class="number">1</span>)加密的K(c,tgs)(用于客户端后续向KDC发起请求),TGS Name/ID,时间戳等,该票据由Kc加密</div><div class="line">  (<span class="number">2</span>)票据授予票据(Ticket Granting Ticket,简称TGT),该票据是给TGS的,票据的内容包括K(c,tgs),Client身份信息,域名,时间戳等,该票据由TGS的秘钥加密,只有TGS能够解密</div><div class="line"><span class="number">4</span>)然后,客户端会利用长期共享密钥解密k(c,tgs),并利用该秘钥加密生成一个Authenticator,内容包括<span class="symbol">:lifetime</span>,时间戳,Client身份信息等,连同从AS获取的TGT一并发送给TGS</div><div class="line"><span class="number">5</span>)TGS利用自身的秘钥解密TGT,获取K(c,tgs),并用K(c,tgs)解密客户端发送的Authenticator,对Client进行认证,如果Client通过了认证,TGS随机生成一个Session Key K(c,s),并产生两个票据</div><div class="line">  (<span class="number">1</span>)服务票据(Ts)<span class="symbol">:</span>这是给服务器的服务票据,由Server秘钥Ks加密,内容包括：K(c,s),Client身份信息,Service ID,时间戳,lifetime等</div><div class="line">  (<span class="number">2</span>)客户端票据(Tc)：该票据由K(c,tgs)加密,内容包括：K(c,s),Server身份信息等</div><div class="line"><span class="number">6</span>)客户端收到tgs的回应后,利用K(c,tgs)解密Tc,获取K(c,s),Server身份信息等,并利用K(c,s)加密生成一个Authenticator发送给Server,内容包括<span class="symbol">:</span>时间戳,Client ID等信息,连同Ts一并发送给Server</div><div class="line"><span class="number">7</span>)Server端在收到Client的请求后,利用自身秘钥Ks解密Ts,得到K(c,s),再利用K(c,s)解密Authenticator,对Client进行认证,如果认证通过,则表示KDC已经允许了此次通信,此时Sever无需与KDC通信,因为Ks为KDC和Sever之间的长期共享秘钥,如果在有效时间内,则此次请求有效</div></pre></td></tr></table></figure>
-<p>0x08 关于kerberos利用方法:</p>
-<p>1) 黄金票据(Golden Ticket)<br>&nbsp;&nbsp;&nbsp;&nbsp;先假设这么一种情况,原先已拿到的域内所有的账户hash,包括krbtgt这个账户,由于有些原因导致域管权限丢失,但好在你还有一个普通域用户权限,碰巧管理员在域内加固时忘记重置krbtgt密码,基于此条件,我们还能利用该票据重新获得域管理员权限,利用krbtgt的HASH值可以伪造生成任意的TGT(mimikatz),能够绕过对任意用户的账号策略,让用户成为任意组的成员,可用于Kerberos认证的任何服务</p>
-<p>2) 白银票据(Silver Ticket)<br>&nbsp;&nbsp;&nbsp;&nbsp;通过观察Kerberos协议的认证过程不难发现,如果我们获取了Server秘钥Ks(服务器口令散列值),就可以跳过KDC的认证，直接伪造票据和目标Server通信</p>
-<p>0x09 关于黄金票据和白银票据的一些区别:<br>1)访问权限不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden <span class="symbol">Ticket:</span> 伪造TGT,可以获取任何Kerberos服务权限</div><div class="line">Silver <span class="symbol">Ticket:</span> 伪造TGS,只能访问指定的服务</div></pre></td></tr></table></figure></p>
-<p>2)加密方式不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Golden Ticket 由Kerberos的Hash加密</div><div class="line">Silver Ticket 由服务账号(通常为计算机账户)Hash加密</div></pre></td></tr></table></figure></p>
-<p>3)认证流程不同<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Golden Ticket 的利用过程需要访问域控,而Silver Ticket不需要</div></pre></td></tr></table></figure></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这些其实都是域内渗透最基础的知识,所以觉得大家还是非常有必要多花点儿时间,好好深刻体会一下,另外,微软给我们的建议是,尽量们不要直接使用NTLM,而使用negotiate,如果使用的是negotiate,windows则会先判断kerberos是否可用,如果可用就优先使用kerberos,否则才会使用NTLM,kerberos的安全性确实要比NTLM要高很多</p>
 
         </div>
     

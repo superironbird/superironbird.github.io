@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/27/nginx-lbd/">
+                基于 nginx 的负载均衡实现初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-27</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/lbd/">lbd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 基本环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.121</span>  <span class="selector-tag">nginx</span> 负载均衡器</div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>   后端 <span class="selector-tag">lnmp01</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   后端 <span class="selector-tag">lnmp02</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span>   客户端,用来进行访问测试</div></pre></td></tr></table></figure></p>
+<p>0x02 常用调度算法简介:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rr   	 [ 轮询 ]     适合性能相近,业务相同</div><div class="line">wrr  	 [ 权重轮询 ] 性能差距较大,业务相同</div><div class="line">ip_hash  [<span class="built_in"> ip </span>hash ] 只要客户端ip不变,在一段时间内就只访问固定的后端web服务器</div></pre></td></tr></table></figure></p>
+<p>0x03 nginx 中可用来实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream模块  	定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际的调用</div><div class="line">http_proxy模块	负责实际的转发行为</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/24/PSR-screen/">
                 利用win自带的 PSR 实现免杀截屏
             </a>
@@ -583,40 +616,6 @@
 <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;入侵日志处理作为后渗透环节的重要组成部分,可能很多朋友在实际渗透中,对它貌似都并不怎么上心[ 但这确实又很重要 ],利用win带的 wevtutil 日志管理工具[win 7以后自带,03之前的系统就不说了吧,大家都很熟悉了]可以很方便[‘不过,有点儿太方便了’]的帮我们处理一些敏感的系统安全类日志,既然要涉及到系统的安全审计,’管理员权限’ 自然是少不了的:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wevtutil el | more 			 	查看系统日志列表项</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"windows powershell"</span> 		清除powershell日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"security"</span> 	 		清除系统安全日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"system"</span>     			清除系统日志</span></div><div class="line"><span class="meta">#</span><span class="bash"> wevtutil cl <span class="string">"application"</span>  			清除应用程序日志</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/05/19/wevtutil/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/18/nmap-script/">
-                nmap 进阶使用 [ 脚本篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/nmap/">nmap</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言</p>
-<p>因为今天的重点并非nmap本身使用,这次主要还是想给大家介绍一些在实战中相对比较实用的nmap脚本,所以关于nmap自身的一些选项作用就不再多说了,详情可参考博客端口渗透相关文章,废话少说,我们直接开始,实际中我们可以先用下面的语句,大概扫一眼目标机器或目标C段都跑了什么服务,心里先有个谱,之后才好针对性的出牌嘛:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sV</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">--open</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-<p>当然,你也可以尝试先获取下目标机器各个服务更详细的banner信息,因为有些服务工具漏洞只能影响特定的版本,所以,提前知道一下还是非常有必要的:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-sT</span> <span class="selector-tag">-Pn</span> <span class="selector-tag">--open</span> <span class="selector-tag">-v</span> <span class="selector-tag">banner</span><span class="selector-class">.nse</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-<p>0x02 和ftp相关的一些漏洞检测脚本:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span>	检查目标<span class="selector-tag">ftp</span>是否允许匿名登录,光能登陆还不够,它还会自动检测目录是否可读写,如,批量<span class="selector-tag">ftp</span>抓鸡</div><div class="line"># <span class="selector-tag">nmap</span> <span class="selector-tag">-p</span> 21 <span class="selector-tag">--script</span> <span class="selector-tag">ftp-anon</span><span class="selector-class">.nse</span> <span class="selector-tag">-v</span> 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/05/18/nmap-script/" class="read-more">Read More</a>
     
 
 </div>

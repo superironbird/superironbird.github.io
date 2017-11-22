@@ -139,6 +139,57 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2014/12/18/inside-method/">
+                web渗透第一步之信息搜集  [ 找目标内网入口 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dirscan-tools/">dirscan tools</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 为什么要找内网入口:<br>&nbsp;&nbsp;&nbsp;&nbsp;我们渗透的最终目的大多数都是目标内网,有些核心敏感数据(比如,个人机上的一些数据),我们从边界机器是拿不到的,所以,只能深入内部,当然,这里所指的内部文件数据,并不仅限于数据库,邮件这类数据,可能由于各种各样的需求,我们还需要某些个人的数据或者组织的各种业务数据,技术的各种数据等等,一般情况下,渗透web的目的,很大程度上也是希望能从web边界直接进入到目标内部(内网),对于apt来讲,价值比较高的东西基本也全部在内部,不得不承认的是,有时候公开信息调研确实也能找到部分敏感信息,但那个含金量和时效性就远远不如内网中的了,至于如何深入到目标内部,很大程度上也取决于,我们能不能尽可能多的找到目标可能的内网入口</p>
+<p>0x02 第一种,通过vpn进入目标内网[一般都会提供一个web端的443端口表单验证]:<br>&nbsp;&nbsp;&nbsp;&nbsp;vpn,想必大家都已经非常熟悉了,在前面也已经详细说明过它的用途,除了能帮我们翻墙当跳板之外,对于一些大型目标组织或是跨国公司,他们大部分都会选择利用vpn的方式来协作办公,通过vpn在公网上开辟一条专有通道,以方便公司内部的各种业务处理,但有个前提,你要想进入这条通道,必须有正确的vpn账号密码和vpn服务器地址,登陆成功后,才能处在目标的内网中,重点也就在这里,怎么搞到目标的vpn账号密码呢,嘿嘿……方法比较多,例如,发信钓鱼,搜集目标泄露过的各种配置文件,社工撞库……</p>
+<p>0x03 利用各类邮件程序自身的漏洞尝试从web边界进入目标内网<br>&nbsp;&nbsp;&nbsp;&nbsp;下面就简单介绍一种常见的web邮件程序,[这里为什么一定要是邮件程序呢,不同于普通的web网站,普通的web服务器有时候即使拿到shell,但有可能机器并不在内网或者该机器上根本没有内网网卡,但邮件服务器一般都被会用来处理内部实际业务,从个人经验来看,web邮件程序的机器,绝大部分都在内网]:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;owa 微软自家的exchange服务,企业为了便于统一协作管理,一般都会直接把exchange服务部署在域内,邮箱名称和邮箱密码大部分也直接是域内的系统账号密码,可以直接拿来登陆域内系统,当然,vpn也是可以尝试的,关键还是看目标具体是怎么部署的了,至于,如何搞到目标的owa的账号密码,嘿嘿……后面再总结吧,包括命令行邮件导出成pst文件,如果目标部署的有exchange server 一般直接访问下/owa/auth即可看到,服务被部署好以后管理员没有特殊情况基本就不怎么会关注/owa/auth目录下的文件了,所以当你拿到权限后,在这儿放个webshell,还是很靠谱的,一般都是web的443端口,另外,对于owa本身几乎是没什么漏洞的</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa的一般入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/remote.bmtjfa.com.au/owa</span><span class="regexp">/auth/logon</span>.aspx机器在域内的情况</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.advancedptsm.com/owa</span><span class="regexp">/auth/logon</span>.aspx机器不在域内的情况</div><div class="line"></div><div class="line">如果没有删的话,可以访问下面的路径爆出服务器信息:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com/owa</span><span class="regexp">/auth/test</span>.aspx</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Mirapoint邮件系统:</div><div class="line">ShellShock漏洞,漏洞地址如下:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/search.cgi</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/madmin.cgi</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">KerioConnect 邮件系统:</div><div class="line">一般后台只能内网访问,入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com:4040/admin</span><span class="regexp">/login/</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra 邮件系统: </div><div class="line">本地包含,入口:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com:7071/zimbra</span>Admin/</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查看zimbra版本:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com/help</span><span class="regexp">/zh_CN/standard</span><span class="regexp">/version.htm</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Atmail 邮件系统: </div><div class="line">敏感信息泄露问题[数据库账号密码]:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/config</span><span class="regexp">/dbconfig.ini</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Lotus Domino <span class="symbol">Webmail:</span></div><div class="line">越权访问,<span class="symbol">inurl:</span>.nsf/WebHelp/!OpenPage</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TurboMail邮件系统: </div><div class="line">默认配置不当可进入任意邮箱,默认有四个root域账号,一个管理员,三个普通用户</div><div class="line">由于设置缺陷,导致普通用户可以查看任意用户的密码</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">U-<span class="symbol">mail:</span></div><div class="line">sql注入,可写shell</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">WinMail:</span></div><div class="line">非授权访问/权限绕过</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExtMail :</div><div class="line">老版本注入</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SquirrelMail</div></pre></td></tr></table></figure>
+<p>0x04 找目标的oa系统或者图书馆之类的网站以及各种边界网络设备的web管理端[一般像这些东西跟内网的联系比较大]:<br>&nbsp;&nbsp;&nbsp;&nbsp;oa本来就是为了方便员工远程办公,处理公司各种业务用的,但,这也给我们提供了通往目标内部的入口至于,为什么非要选则图书馆,目的很显然,既然是图书馆,你肯定会想到内部的什么图书管理系统,实际经验也证明,大多数图书馆的站,都会处在内网中找各种网络设备的web管理端,主要是想登进去以后,看看有没有可以上传shell的地方,也许可以利用得到</p>
+<p>0x05 在你能力足够的情况下,直接搞路由也是可以的[比如,cisco,端口镜像,抓包分析,说实话自己对路由并不是非常擅长]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">路由作为一种边界设备,搞它的意义就不用再多说了吧</div></pre></td></tr></table></figure></p>
+<p>0x06 暴露在边界的目标打印机,智能点儿的打印机都会自带一些web服务[通常是java]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打印机,就更不用说了,典型的内部设备,一般是先找到配置管理界面,部署war包</div></pre></td></tr></table></figure></p>
+<p>0x07 如果实在外部搞不定,条件允许的情况下,尝试实地渗透也是可以的,比如,通过无线进入目标内部<br>&nbsp;&nbsp;&nbsp;&nbsp;这也算是一种相对比较高效的渗透方式,老外非常干这个,但前提是,你可能需要很多次的蹲点,才能确认目标,实地渗透对你的心里素质要求可能会更高一些,另外,现场的环境和有限的时间也多多少少会影响到你<br><br></p>
+<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;时间原因,暂时就想到这些,都是一些平时的经验加上一点自己的想法,其实,就整个信息搜集来讲,对你的社工能力其实是个不小的考验,我自己在这方面确实是弱项,后续会慢慢加强<br><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2014/12/17/info-getshell/">
                 信息搜集阶段可快速getshell的一些方式
             </a>
@@ -873,37 +924,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/01/11/proctice/">
-                各类漏洞演练平台汇总
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-01-11</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/other/">other</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><img src="/img/Practice.png" alt="&quot;各类漏洞演练平台汇总&quot;"><br></p>
-
-        </div>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -916,7 +936,7 @@
                 <a class="" href="/page/8/">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </a>
-                <a class="disabled" href="/">
+                <a class="" href="/page/10/">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
