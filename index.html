@@ -204,6 +204,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/13/ntfs-streams/">
+                文件隐藏 之 NTFS 交换数据流
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ntfs-stream/">ntfs stream</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 NTFS 交换数据流<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">NTFS</span> 交换数据流属于NTFS文件系统独有的特性,在NTFS文件系统下,每个文件都可以存在多个数据流</div><div class="line">也就是说,除了主文件流之外还可以有很多非主文件流寄宿在主文件流中,它使用资源派生来维持与文件相关的信息</div><div class="line">虽然,我们无法看到数据流文件,但是它却真实存在于系统中,更具体的大家可自行参考百科</div></pre></td></tr></table></figure></p>
+<p>0x02 实际创建一个数据交换流文件,创建一个数据交换流文件的方法很简单<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令格式 <span class="string">"宿主文件:准备与宿主文件相关联的数据流文件"</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/13/ntfs-streams/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/10/dnstunnel/">
                 DNS隧道 之 端口转发 [ 一 ]
             </a>
@@ -590,37 +622,6 @@
 <p>0x02 关于arp欺骗最核心的细节<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">假设同一交换机下有三台机器,分别为 A , <span class="keyword">B </span>, C,正常情况下<span class="keyword">B和C的通信数据,A是不可能看到的</span></div><div class="line">但在ARP缓存表机制中存在一个缺陷,就是当请求主机收到ARP应答包后,不会去验证自己曾经是否向对方主机发送过ARP请求</div><div class="line">就直接就把这个应答包中的<span class="built_in">IP</span>与MAC地址的对应关系更新到自己本地的ARP缓存表中,这时就直接导致原有<span class="built_in">IP</span>的对应关系被恶意替换</div><div class="line">通俗点儿理解,也就是说,我强制刷新了对方的arp缓存对应关系,把原来<span class="built_in">ip</span>的指向现在换成了我自己的地址</div><div class="line">导致现在<span class="keyword">B和C的通信都要先经过A,那么,我们在A上自然就可以顺利的看到C和B之间的所有明文通信数据,即实现了所谓的监听</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/23/dsniff/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/23/inetd-backdoor/">
-                基于 inetd 后门的简要分析及利用
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/inetd/">inetd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求 [就是一个socket] 的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,其实非常简单,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题恰巧也就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash"> [比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>型后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/10/23/inetd-backdoor/" class="read-more">Read More</a>
     
 
 </div>
