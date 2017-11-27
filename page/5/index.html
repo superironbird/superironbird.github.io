@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/03/24/mysql-log-write-webshell/">
+                利用mysql的general log 写shell[突破into outfile]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-03-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell/">webshell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透过程中,我们很可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却怎么写不进去,可以肯定的前提是,我们对目标的网站目录绝对是有写权限的且mysql的root用户本身并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你</p>
+<p><img src="/img/show variables waf.png" alt=""><br><br>
+        </div>
+        <a href="/2017/03/24/mysql-log-write-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/03/08/msfvenom-advanced/">
                 msfvenom 进阶 [暂未完...]
             </a>
@@ -582,40 +614,6 @@
 <p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
         </div>
         <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/19/iptables-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 iptables ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/iptabbles/">iptabbles</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</p>
-<p>0x02 环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) 		<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) 	<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn) 			<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>0x03 最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的指定服务</div></pre></td></tr></table></figure></p>
-<p>0x04 具体过程如下,首先,编辑边界linux机器的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
     
 
 </div>

