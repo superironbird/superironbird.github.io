@@ -368,7 +368,7 @@
     <div class="post-header index">
         <h1 class="title">
             <a href="/2017/07/07/ssh-key-mac/">
-                Ssh key 分发安全
+                基于 Ssh Key 的分发安全
             </a>
         </h1>
         <div class="post-info">
@@ -386,7 +386,7 @@
 
     
         <div class="content">
-            <p><br><br>0x01 基于最原始的 SSH key ,实现的批量ssh管理 <code>只适合较小规模集群场景,通常在100台机器以内</code>,要实现的最终效果,如下:<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">可以批量分发文件,进行常规配置管理</div><div class="line">可以批量执行<span class="keyword">shell</span><span class="bash">命令,进行日常维护操作</span></div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 利用最原始的 SSH key ,实现的批量ssh管理 <code>只适合较小规模集群场景,通常在100台机器以内</code>,要实现的最终效果,如下:<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">可以批量分发文件,进行常规配置管理</div><div class="line">可以批量执行<span class="keyword">shell</span><span class="bash">命令,进行日常维护操作</span></div></pre></td></tr></table></figure></p>
 <p>演示环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">SshKeyMaster</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.11</span>	<span class="selector-tag">CentOS6</span><span class="selector-class">.8</span> <span class="selector-tag">x86_64</span> 分发机</div><div class="line"><span class="selector-tag">SshKeySlave5</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.13</span>	<span class="selector-tag">CentOS5</span><span class="selector-class">.5</span> <span class="selector-tag">i386</span>   分发客户机</div><div class="line"><span class="selector-tag">SshKeySlave7</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.12</span>	<span class="selector-tag">CentOS7</span>	  <span class="selector-tag">x86_64</span> 分发客户机</div></pre></td></tr></table></figure></p>
 <p>0x02 基于SSH key 的批量ssh管理,具体实现过程:</p>
 <p>以下是在这方面已经相对比较成熟的工具框架,后续会再专门针对每一种进行单独说明:<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">saltstack</span></span>,ansible,puppet...</div></pre></td></tr></table></figure></p>
