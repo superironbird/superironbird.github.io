@@ -139,6 +139,50 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/08/15/powershell-domainhash/">
+                完整导出域内用户hash小记 [powershell离线提取域内所有账户hash]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">利用 DSInternals PowerShell</div></pre></td></tr></table></figure></p>
+<p>本地测试环境:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">win <span class="number">2012</span>r2</div></pre></td></tr></table></figure></p>
+<p>离线导出环境要求:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Windows PowerShell <span class="number">3</span>+</div><div class="line">.NET Framework <span class="number">4.5</span>+</div></pre></td></tr></table></figure></p>
+<p>支持的系统:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Windows Server <span class="number">2012</span> R2</div><div class="line">Windows Server <span class="number">2008</span> R2</div><div class="line">Windows <span class="number">10</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">8.1</span> <span class="number">64</span>-bit</div><div class="line">Windows <span class="number">7</span> <span class="number">64</span>-bit</div></pre></td></tr></table></figure></p>
+<p>先看下当前系统的powershell版本:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps &gt; Get-Host <span class="params">| Select-Object Version</span></div></pre></td></tr></table></figure></p>
+<p>放开pwoershell脚本执行限制:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash version.png" alt=""><br></p>
+<p>准备好ntds.dit和SYSTEM.hiv文件:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ntds.dit [可以利用shadowcopy.bat快速获取]</div><div class="line">system.hiv [reg即可获取]</div><div class="line">reg save hklm\system system.hive</div></pre></td></tr></table></figure></p>
+<p>安装,导入DSInternals模块:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd DSInternals</div><div class="line">powershell</div><div class="line">Import-Module .\DSInternals</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash ntds system.png" alt=""></p>
+<p>直接导出域内所有用户hash<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -All -DBPath <span class="string">"C:\ntds.dit"</span> -BootKey $key <span class="params">| Out-File hash.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash hashres.png" alt=""></p>
+<p>也可只获取指定账户的详细信息<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$key = Get-BootKey -SystemHivePath <span class="string">"C:\system.hive"</span></div><div class="line">Get-ADDBAccount -DistinguishedName <span class="string">'CN=krbtgt,CN=Users,DC=klionsec,DC=org'</span>  -DBPath <span class="string">'C:\ntds.dit'</span> -BootKey $key</div></pre></td></tr></table></figure></p>
+<p><img src="/img/powershell domainhash krbrgethash.png" alt=""><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/08/14/shadow-copy-hash/">
                 完整导出域内用户hash小记 [vshadow + ShadowCopy + QuarksPwDump]
             </a>
@@ -854,40 +898,6 @@
 <p>要最终完成的架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/06/24/Midlamp/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/06/23/Midlnmp/">
-                php5.5.38 + mysql-5.5.32 + nginx-1.12.1 + centOS6.8_x64
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-06-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br></p>
-<p>一、首先,部署nginx</p>
-<p>0x01 依旧接着我们之前准备好的系统继续,首先,将所有准备安装的源码包上传至服务器,软件包列表如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">libiconv-1</span><span class="selector-class">.14</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32-linux2</span><span class="selector-class">.6-x86_64</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">nginx-1</span><span class="selector-class">.12</span><span class="selector-class">.1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.5</span><span class="selector-class">.38</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
-<p>此次要实现的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php5</span><span class="selector-class">.5</span><span class="selector-class">.38</span> + <span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32</span> + <span class="selector-tag">nginx-1</span><span class="selector-class">.12</span><span class="selector-class">.1</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/06/23/Midlnmp/" class="read-more">Read More</a>
     
 
 </div>

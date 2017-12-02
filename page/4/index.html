@@ -139,6 +139,42 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/04/inotify-rsync/">
+                inotify + rsync 快速实现 '小剂量' 实时同步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-04</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/env/">env</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 利用 intify 做实时同步,实现如下<code>适合文件并发较少文件较小的备份场景中,一般并发范围在200-300个小文件,延迟基本是很小的,如果超过这个量就比较吃力了</code>:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">要备份的目录 + <span class="function"><span class="title">inotify</span>  -&gt;</span>  inotify会一直监控该目录的变化,只要所监控的目录一有变化,就把新生成的文件或者目录自动推到备份服务器上</div></pre></td></tr></table></figure></p>
+<p>0x02 准备好环境:<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">RsyncServer</span>   一台已经事先配置好的Rsync服务器</div><div class="line">RsyncClient26 再准备一台已经事先配置好的Rsync客户端,因为等会儿就在这台机器上安装inotify,也就是说,只要监控到客户端一有数据更新,就自动往服务端推</div></pre></td></tr></table></figure></p>
+<p>0x03 开始在rsync客户端上编译安装 inotiy:<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ls -l <span class="regexp">/proc/</span>sys<span class="regexp">/fs/i</span>notify<span class="regexp">/ 	首先,查看当前内核是否支持,如果出现以下三个文件则表示支持</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/inotify kernel.png" alt=""></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://jaist.dl.sourceforge.net/project/inotify-tools/inotify-tools/3.13/inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf inotify-tools-3.13.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> inotify-tools-3.13</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/inotify-tools-3.13 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $?</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/inotify-tools-3.13/ /usr/<span class="built_in">local</span>/inotify</span></div><div class="line"><span class="meta">#</span><span class="bash"> ls -l /usr/<span class="built_in">local</span>/inotify/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/inotify-tools-3.13/bin/</span></div></pre></td></tr></table></figure>
+<p><img src="/img/inotify execute.png" alt=""></p>
+        </div>
+        <a href="/2017/07/04/inotify-rsync/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/06/19/https-mitmf/">
                 https 中间人劫持全过程
             </a>
@@ -582,39 +618,6 @@
             <p><br><br>0x01 环境简介<br>&nbsp;&nbsp;&nbsp;&nbsp;关于 SquirrelMail 就不用多说了吧[一套开源php 邮件程序][说实话,用这套程序的目标还是蛮多的,尼玛,不说了,都是泪……],在重现漏洞利用之前,我们需要先把邮件服务器简单搭起来,这里以centos 6.8 x86 为例 [为了避免安装过程出问题,iptables和selinux已事先全部关闭],大致的配置过程如下,下面是具体测试环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">kali</span> 2017: 执行<span class="selector-tag">SquirrelMail_RCE_exploit</span><span class="selector-class">.sh</span>  利用脚本</div><div class="line"><span class="selector-tag">centos</span> 6<span class="selector-class">.8</span> <span class="selector-tag">x86</span>:  完全模拟真实的生产环境,<span class="selector-tag">lamp</span>全程源码包编译配置<span class="selector-attr">[后期会把各种配置细节更新上来]</span></div><div class="line"><span class="selector-tag">SquirrelMail</span>版本 1<span class="selector-class">.4</span><span class="selector-class">.20</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/24/SquirrelMail-RCE/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/24/kali-config/">
-                kali 实战渗透环境配置指南
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/kali-config/">kali config</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 最近刚好看到kali有更新,想想自己用的系统似乎很久也没更新过了,这里就顺手记录了一些关于部署渗透系统的注意事项,留给有需要的朋友做些简单参考,首先,到kali的官网去下载最新版的kali iso镜像或者虚拟机文件,这里我就直接用它已经配好的虚拟机来做演示说明,也建议大家直接用它官方提供好的虚拟机,以后你就会明白的,只是不想大家在系统上浪费太多时间<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-amd64.<span class="number">7</span>z</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/images.offensive-security.com/virtual</span>-images/Kali-Linux-<span class="number">2017.1</span>-vm-i686.<span class="number">7</span>z</div></pre></td></tr></table></figure></p>
-<p>0x02 虚拟机下载好以后,解压虚拟机文件,然后到VMware中选择并打开该虚拟机,root的默认密码是toor,进入系统后,编辑source.list文件,修改为官方提供的apt源,强烈建议这里只用官网提供的apt源,尽量不要用任何第三方源,如果被挂马,盖不负责,^_^ 务必谨记<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/apt/sources.list</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb <span class="symbol">http:</span>/<span class="regexp">/http.kali.org/kali</span> kali-rolling main non-free contrib</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/04/24/kali-config/" class="read-more">Read More</a>
     
 
 </div>
