@@ -139,6 +139,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/26/apache-sec/">
+                如何将你的 apache 控制的'密不透风'
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/apachesec/">apachesec</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 在装之前先仔细检查下当前系统有没有装apache,如果有,先把apache服务停掉,然后卸载apache,等会儿用源码重新编译安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rpm -qa httpd</span></div><div class="line"><span class="meta">#</span><span class="bash"> rpm -e --nodeps * 强制卸载apache</span></div></pre></td></tr></table></figure></p>
+<p>演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6</span><span class="selector-class">.8</span> <span class="selector-tag">x86_64</span>   最小化,带基础库安装 <span class="selector-tag">eth0</span> : 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.45</span> <span class="selector-tag">eth1</span> : 192<span class="selector-class">.168</span><span class="selector-class">.4</span><span class="selector-class">.16</span> <span class="selector-tag">eth2</span> : 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.16</span></div><div class="line"><span class="selector-tag">httpd-2</span><span class="selector-class">.2</span><span class="selector-class">.34</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure></p>
+<p>0x02 下载apache源码包,这里暂时选择2.2.x系列的最新版,不建议再用比这个还老的版本了,漏洞比较多<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget http://apache.website-solution.net/httpd/httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf httpd-2.2.34.tar.gz &amp;&amp; <span class="built_in">cd</span> httpd-2.2.34</span></div></pre></td></tr></table></figure></p>
+<p>0x03 直接在源码中去<code>改掉apache的详细版本信息</code>,跟部署nginx一样,尽可能地扰乱入侵者的判断,这里就把它模拟成IIS 7.5,实际系统应为win server 2008r2<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># vi <span class="meta-keyword">include</span>/ap_release.h</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/26/apache-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/23/phpsec/">
                 娇弱的 PHP [ php-fpm.conf & php.ini 安全优化实践 ]
             </a>
@@ -595,39 +629,6 @@
 <p><img src="/img/softwares.png" alt=""><br>
         </div>
         <a href="/2017/10/26/LaZagne/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/26/NetRipper/">
-                截获内存中的各类https明文密码
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/NetRipper/">NetRipper</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 利用 NetRipper 抓取内存中的https明文密码</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;优点,可以在一个相对较低的系统权限下截获加密的明文,工具已经出了有些年头了,好在作者维护一直比较勤奋,才活到了现在,它支持截获像putty,winscp,mssql,chrome,firefox,outlook中的明文密码,同时也提供了很多类型的版本,如,win cmd下的exe,msf模块,ps脚本,实战中更推荐大家直接用powershell,更多详情请自行参考其github <a href="https://github.com/NytroRST/NetRipper" target="_blank" rel="external">https://github.com/NytroRST/NetRipper</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell -<span class="built_in">exec</span> bypass</span></div><div class="line"><span class="meta">PS&gt;</span><span class="bash"> Import-Module .\Invoke-NetRipper.ps1</span></div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/10/26/NetRipper/" class="read-more">Read More</a>
     
 
 </div>
