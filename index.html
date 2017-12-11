@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/09/vsftp-secfig/">
+                简述 FTP 的入侵与防御 [ vsftpd ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-09</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/vsftp/">vsftp</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 首先,我们来简单思考下,面对一台ftp,你到底能做些什么<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">挖<span class="number">0</span><span class="built_in">day</span>,抱歉,并不在今天的讨论范畴 ^_^</div><div class="line">允许匿名可写,直接上传webshell,一般极小的个人站才有可能</div><div class="line">允许匿名下载,造成的敏感文件信息泄露</div><div class="line">爆破,亦可造成敏感配置泄露</div><div class="line">嗅探,搜集各种明文账号密码,撞目标的其它入口,或以此进行进一步的内网渗透</div><div class="line">提权,linux平台下基本不可能</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>0x02 相对主流的一些ftp工具<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">vsftpd</span></span> proftpd filezilla ...</div></pre></td></tr></table></figure></p>
+<p>0x03 深入理解ftp的主动与被动工作模式</p>
+<p><code>命令连接</code><br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在客户端向ftp服务端发起连接请求时,客户端会随机选择本地的某个tcp端口与ftp服务端的<span class="number">21</span>端口进行连接</div><div class="line">这中间会进行一系列的身份验证过程,待验证通过后,客户端与ftp服务端即会成功建立 `命令连接`</div><div class="line">所谓的 `命令传输连接` 也就是说,仅仅只会用这个连接来传输命令本身</div></pre></td></tr></table></figure></p>
+<p><code>主动模式</code><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">在 `命令连接` 建立成功后,客户端可能还需要进行一系列的数据传输动作,如,上传,下载文件...</div><div class="line">此时,客户端会先在本地另启一个端口监听等待连接,并利用先前与ftp客户端建立好的`命令连接`通道,告诉ftp服务端客户端所监听的端口</div><div class="line">而后,ftp服务端会利用自身的<span class="number">20</span>端口和刚才ftp客户端所告知的端口进行数据连接,随后就开始利用此连接来进行各类数据传输</div><div class="line">注意,此时`数据连接`在建立的过程中,是ftp服务端的<span class="number">20</span>端口主动连接FTP客户端的随机端口的,也就是我们所说的`主动模式`</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/09/vsftp-secfig/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/26/apache-sec/">
                 如何将你的 apache 把控的'密不透风'
             </a>
@@ -597,42 +632,6 @@
 <p>0x04 在两端机器上安装好teamviewer,务必记得安装时,选择’高级’安装,把’vpn功能’都勾选上,主要就是用这个功能<br>
         </div>
         <a href="/2017/10/28/teamviewer-vpn/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/27/mysql-master-slave/">
-                MySQL 主从复制 完全上手指南
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-27</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/MySQL-主从复制/">MySQL 主从复制</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 在说mysql主从复制之前,我们先来大致了解一些关于不同级别的同步方案</p>
-<p><code>基于文件级别的同步</code></p>
-<p>非实时同步<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp/sftp/ftp/samba/rsync/<span class="class"><span class="keyword">union</span>....</span></div></pre></td></tr></table></figure></p>
-<p>实时同步<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NFS/inotify/sersync/lsyncd....</div></pre></td></tr></table></figure></p>
-<p><code>基于文件系统级别的同步</code><br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">drbd</span></span>...</div></pre></td></tr></table></figure></p>
-<p><code>基于数据库级别的同步</code>,对于数据库而言基本都属于实时同步,但实时并不一定意味着就是同步操作,也可能是用异步的方式在操作<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql   replication 虽然异步的,但实现的效果基本上是实时的</div><div class="line"><span class="keyword">oracle</span></div><div class="line">redis</div><div class="line">mongodb</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/10/27/mysql-master-slave/" class="read-more">Read More</a>
     
 
 </div>
