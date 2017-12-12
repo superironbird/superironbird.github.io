@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2014/12/13/bypasscdn/">
+                web渗透第一步之信息搜集 [ 透过cdn找目标真实ip ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2014-12-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bypasscdn/">bypasscdn</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 在了解cdn之前,有必要先来科普下什么是 ‘负载均衡’ 以及’正/反向’ 代理,既然选择了做渗透,这些最基本的基础不熟悉肯定是不行的</p>
+<p>正向代理 [ ForwardProxy ]:<br>&nbsp;&nbsp;&nbsp;&nbsp;大家默认所说的代理其实都是指正向代理,不管是正向还是反向,理解数据的流向很重要,要理解这种比较抽象的东西最好的方式就是画图,比如下图就是一个正向代理的简易工作流程图,要表达的意思,已经很清晰了,就是说当客户端要去请求远程server上的资源时,并非直接通过本地路由网关到达远程server,而是先经过代理服务器,由代理服务器去帮我们请求,之后远程服务器会把请求的结果返回给代理服务器再由代理服务器返回给客户端,这么一个过程就叫正向代理,其实你还可以理解的更简单粗暴一点,它有点儿类似我们常说的 ‘翻墙’,正常情况我自己是不能直接上谷歌的,但我找了一个能上谷歌的代理,然后我们请求谷歌的时候可以让代理服务器去帮我们请求,最后,再通过代理服务器把响应的数据返回到我本地,就这么一个过程,包括我们常用的vpn其实也有点儿类似的功能(当然,这里只是粗略的类似,但vpn本质[隧道]上是什么,在前面已经有说明),不过现在正向代理可能用的比较少了,以前用代理服务器只是为了提高访问速度[因为缓存的原因],可以节省带宽,也可以在代理服务器上做些访问控制……</p>
+        </div>
+        <a href="/2014/12/13/bypasscdn/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2014/12/12/subdomain-info-serarch/">
                 web渗透第一步之信息搜集[子域,旁站,C段,AS号...]
             </a>

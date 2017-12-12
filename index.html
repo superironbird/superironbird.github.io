@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/10/svn-config-sec/">
+                让 svn 不再拖你的后腿 [ subversion ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-10</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/svn/">svn</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 svn<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">同属C/S架构,对于svn服务端来讲,任何一个文件,在任何时刻的变化,都会被svn详细记录,并自动备份修改之前的结果,方便后续回滚</div><div class="line">其实,底层也是靠一个独立的`文件系统 FSFS`在维护,更多内部工作细节,大家可以直接去参考百科说明,废话不多讲,我们真奔主题...</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>演示环境,注,此处为独立部署svn服务器,并非配合web服务一起使用<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6</span><span class="selector-class">.9_x86_64</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.59</span></div><div class="line"><span class="selector-tag">win7cn</span>		 <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.70</span></div></pre></td></tr></table></figure></p>
+<p>0x02 作为一名入侵者,<code>svn</code>能给你带来什么宝藏<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">可能最容易拿到的就是数据库的连接账号密码,前提是目标数据库允许外连,这样你才能更优雅的脱裤或者上传webshell</div><div class="line">一些邮箱账号密码,如果目标有自己的vpn或者owa之类的入口还是很值得尝试的</div><div class="line">直接的后端代码,除了能局部审下代码之外,在注释里面也许还能看到一些关于开发人员的敏感信息</div><div class="line">其它的各种敏感配置信息,非常多,这里就不一一细说了</div><div class="line">注意,有些信息,确实不能让我们一刀毙敌,但高效的渗透往往是对各类敏感信息的相互配合及深度利用,这非常重要</div><div class="line">...</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/10/svn-config-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/09/vsftp-secfig/">
                 简述 FTP 入侵与防御 [ vsftpd ]
             </a>
@@ -598,40 +631,6 @@
 <figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lnmp01想访问win2008R2cn的3389,由于win2008R2cn开了防火墙且做了ip限制,没法直接从lnmp01上进行访问</div><div class="line">虽然win2008R2cn开启了防火墙,但好在MidLAMP能ping通win2008R2cn,即没有阻断它们之间的icmp通信</div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/10/31/icmp-tunnel/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/28/teamviewer-vpn/">
-                内网渗透之 teamviewer隧道
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-28</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/teamviewer/">teamviewer</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 关于teamviewer<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一款优秀的远控工具,通信数据全程加密,用户量也非常庞大,想必大家早都用烂了,这里就不多废话了,咱们直奔主题...</div></pre></td></tr></table></figure></p>
-<p>0x02 此次实验环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win2008R2cn</span>  <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.134</span> 假设为目标内网中的一台已控<span class="selector-tag">win</span>服务器,已装好<span class="selector-tag">teamviewer</span>且为启动状态,<span class="selector-tag">vpn</span>功能也已打开</div><div class="line"><span class="selector-tag">win7en</span> 	     <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.17</span>   假设为自己本地内网中的一台普通<span class="selector-tag">win</span>机器,已装好<span class="selector-tag">teamviewer</span>且为启动状态,<span class="selector-tag">vpn</span>功能也已打开</div></pre></td></tr></table></figure></p>
-<p>0x03 想实现的最终目的<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">通过teamviewer自带的vpn功能,对目标内网进行渗透</div><div class="line">想在目标win2008R2cn和本地win7en之间通过teamviewer搭建一条专有通道,方便对目标内网进一步渗透</div><div class="line">即通过teamviewer 实现简易的 '双内网'通信</div></pre></td></tr></table></figure></p>
-<p>0x04 在两端机器上安装好teamviewer,务必记得安装时,选择’高级’安装,把’vpn功能’都勾选上,主要就是用这个功能<br>
-        </div>
-        <a href="/2017/10/28/teamviewer-vpn/" class="read-more">Read More</a>
     
 
 </div>

