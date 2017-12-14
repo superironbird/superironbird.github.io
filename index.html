@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/12/samba-sec/">
+                跨平台快速文件共享 Samba
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-12</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/Samba/">Samba</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于smaba<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">主要用于实现不同系统平台间的文件共享,配置非常简单,轻量,适合用在常规办公内网中</div><div class="line">linux <span class="tag">&lt;<span class="name">==</span>&gt;</span> windows <span class="tag">&lt;<span class="name">==</span>&gt;</span> unix</div></pre></td></tr></table></figure></p>
+<p>演示环境:<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CentOS6<span class="meta">.9</span> x86_64	<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.3</span><span class="meta">.55</span> samba服务器</div><div class="line">CentOS6<span class="meta">.9</span> x86_64	<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.3</span><span class="meta">.57</span> 用来模拟smb客户端进行访问</div></pre></td></tr></table></figure></p>
+<p>0x02 linux下samba服务器所监听的端口<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">137/udp,138/udp nmb 进程提供netbios解析,以满足基于 CIFS 协议的共享访问环境</div><div class="line">138/tcp,445/tcp<span class="built_in"> smb </span>进程主要为客户端提供文件共享,打印机服务以及用户权限验证</div></pre></td></tr></table></figure></p>
+<p>0x03 samba客户端工具基本使用 <code>smbclient</code>,其实有些类似于ftp客户端工具,也是一种交互式的访问</p>
+<p><code>在linux下使用smbclient访问windows中的共享目录</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> smbclient -L 192.168.3.23 -U administrator</span></div><div class="line"><span class="meta">#</span><span class="bash"> smbclient //192.168.3.23/linux_dir -U dcadmin</span></div><div class="line"><span class="meta">#</span><span class="bash"> mount -t cifs //192.168.3.23/linux_dir /mnt/windows/ -o username=dcadmin</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/12/samba-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/11/Dns-tips/">
                 DNS 深度理解 [ 一 ]
             </a>
@@ -596,39 +631,6 @@
 <p>查看当前机器中所有的网络连接:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> net start				查看本机运行的所有服务</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano				查看本机所有的tcp,udp端口连接及其对应的pid</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -anob				查看本机所有的tcp,udp端口连接,pid及其对应的发起程序</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"ESTABLISHED"</span>	查看当前正处于连接状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"LISTENING"</span>	查看当前正处于监听状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"TIME_WAIT"</span></span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/05/win-cmd/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/02/termite/">
-                灵活击穿目标多级内网纵深 [ termite ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-02</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/termite/">termite</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 关于termite <code>[ Earthworm的升级版 ]</code>,程序地址, <a href="http://rootkiter.com/Termite/" target="_blank" rel="external">http://rootkiter.com/Termite/</a><br><figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款极度小巧灵活的跳板机,有别于传统socks代理,它对于复杂内网环境下的渗透适用性更强,操作也极为简便</div><div class="line">废话不多说,大家可自行在实战中多多体会,工具本身其实并无好坏,大部分还在乎用工具的人,退一万步来讲,即使工具再好,也顶不住别人用的烂 ^<span class="keyword">_</span>^</div><div class="line">在此也非常感谢 rootkiter 的无私贡献,真心希望圈子能多一些这样少说话多做事的人 ^<span class="keyword">_</span>^</div></pre></td></tr></table></figure></p>
-<p>0x02 程序分为两部分,<code>admin[为控制端]</code>和<code>agent[为代理端节点]</code>,admin和agent所有选项用途均一致<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">l 指定本地socks端口,等待远程连</span></div><div class="line">-<span class="ruby">c 指定远程socks机器ip</span></div><div class="line">-<span class="ruby">p 指定远程socks机器端口</span></div></pre></td></tr></table></figure></p>
-<p>0x03 此次模拟环境如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	  	假设为我们自己的<span class="selector-tag">vps</span> 	其公网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line"><span class="selector-tag">MidLAMP</span>	  	目标内网的<span class="selector-tag">linux</span>机器 	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.192</span> </div><div class="line"><span class="selector-tag">win2008r2cn</span>	目标内网的<span class="selector-tag">win</span>机器 	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.134</span></div><div class="line"><span class="selector-tag">win7cn</span>		入侵者本地内网机器	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.168</span> <span class="selector-attr">[因为这里用虚拟机模拟的,所以内网段和目标一样]</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/02/termite/" class="read-more">Read More</a>
     
 
 </div>
