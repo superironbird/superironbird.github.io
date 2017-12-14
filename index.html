@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/11/Dns-tips/">
+                DNS 深度理解 [ 一 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-11</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/DNS-深度理解/">DNS 深度理解</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 首先,我们先来简单回顾下<code>DNS的基本解析流程</code>, 比较简单,如下<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">&gt; 以客户端访问 www.rootkit.org 域名为例</span></div><div class="line">  -<span class="ruby">&gt; 首先,操作系统会先去检查自己的host文件,如果从中没找到对应关系,会再到系统dns缓存中查,如果缓存中有,就直接返回该域名所对应的ip</span></div><div class="line">    -<span class="ruby">&gt; 如果缓存中没有,则会向我们事先设置好的dns服务器 [ 一般有两个, 主 <span class="params">| 备 ] 去请求,即所谓的`递归查询` ,dns服务器首先会到自身解析数据库中去查</span></span></div><div class="line">      -<span class="ruby"><span class="params">&gt; 如果dns服务器在自己的解析库中也没找到,它就会自动帮我们向根发送询问请求</span></span></div><div class="line">	-<span class="ruby"><span class="params">&gt; 此时,根看到要请求的是org的后缀,就会把org所在的ns服务器告诉我们的dns</span></span></div><div class="line">	  -<span class="ruby"><span class="params">&gt; 然后,dns服务就会去请求org所在的ns服务器</span></span></div><div class="line">	    -<span class="ruby"><span class="params">&gt; 当请求到达org ns服务器时,org一看域名是在rootkit这个域下的,就会把rootkit所在的ns服务器再告诉我们的dns服务器</span></span></div><div class="line">	       -<span class="ruby"><span class="params">&gt; 再然后,我们的dns服务器就会去请求rootkit这个域的ns服务器</span></span></div><div class="line">		 -<span class="ruby"><span class="params">&gt; rootkit这个域的ns服务器一看是要访问www就直接找到了www对应的A记录的ip,并把它丢给我们的dns,上面逐个询问的过程,即 `迭代查询`</span></span></div><div class="line">		   -<span class="ruby"><span class="params">&gt; 最后,我们的dns再把最终解析到这个ip丢给我们的客户端,然后客户端就直接去访问了,如下,访问google.com时的简易流程图</span></span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/dns101.jpg" alt=""><br>演示环境,此处暂以一主一从为例进行演示<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DnsMaster<span class="built_in">	ip </span>: 192.168.3.60	主<span class="built_in"> DNS</span></div><div class="line">DnsSlave<span class="built_in">	ip </span>: 192.168.3.61	从 DNS</div></pre></td></tr></table></figure></p>
+<p>0x02 几种常见的 DNS 功用类型<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主dns,主要负责实际的正反向域名解析</div><div class="line">从dns,主要从其它的主dns或者从dns中同步解析数据库,`即区域传送`,一般是通过序列号递增来判断主dns是否有更新</div><div class="line">缓存DNS服务器...</div><div class="line">转发器...</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/11/Dns-tips/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/10/svn-config-sec/">
                 不要再让 `泄露` 拖你的后腿 [ subversion篇 ]
             </a>
@@ -598,39 +631,6 @@
 <p>0x03 此次模拟环境如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	  	假设为我们自己的<span class="selector-tag">vps</span> 	其公网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line"><span class="selector-tag">MidLAMP</span>	  	目标内网的<span class="selector-tag">linux</span>机器 	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.192</span> </div><div class="line"><span class="selector-tag">win2008r2cn</span>	目标内网的<span class="selector-tag">win</span>机器 	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.134</span></div><div class="line"><span class="selector-tag">win7cn</span>		入侵者本地内网机器	其内网<span class="selector-tag">ip</span>为: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.168</span> <span class="selector-attr">[因为这里用虚拟机模拟的,所以内网段和目标一样]</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/02/termite/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/31/icmp-tunnel/">
-                利用icmp隧道 轻松穿透 tcp/udp四层 封锁
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/icmp/">icmp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>关于icmp 隧道使用场景简单说明:<br><figure class="highlight llvm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">两台机器间,除了允许相互ping [ 即<span class="keyword">icmp</span>通信 ],其他的tcp/udp端口一律不允许,此时我们就可考虑利用<span class="keyword">icmp</span>隧道进行穿透</div></pre></td></tr></table></figure></p>
-<p>0x01 此次用于演示的环境大致如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>  	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span> 	入侵者机器		</div><div class="line"><span class="selector-tag">MidLAMP</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.19</span>	为目标<span class="selector-tag">linux</span>机器,即<span class="selector-tag">icmp</span>跳板机	</div><div class="line"><span class="selector-tag">win2008R2cn</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>	为目标<span class="selector-tag">windows</span>机器,开启了3389</div><div class="line"><span class="selector-tag">win7en</span> 		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.17</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lnmp01想访问win2008R2cn的3389,由于win2008R2cn开了防火墙且做了ip限制,没法直接从lnmp01上进行访问</div><div class="line">虽然win2008R2cn开启了防火墙,但好在MidLAMP能ping通win2008R2cn,即没有阻断它们之间的icmp通信</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/10/31/icmp-tunnel/" class="read-more">Read More</a>
     
 
 </div>

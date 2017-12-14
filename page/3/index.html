@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/09/20/mysql-mul-server/">
+                一分钟部署 MySql 多实例
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-09-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/mysql多实例/">mysql多实例</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 到底什么是<code>MySql多实例</code><br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">说的通俗些,就是通过读取不同的<span class="keyword">my</span>.cnf配置,同时启动多个mysqld进程,共用系统资源</div><div class="line">这也就意味着,当其中一个实例并发较高或者慢查询较多的情况下,其它实例的性能也会因此受到很大的影响</div><div class="line">这种情况通常用于机器性能较好且单实例mysql无法充分利用系统资源的情况下</div></pre></td></tr></table></figure></p>
+<p>0x02 此处,我们选择自己手工编译安装<code>mysql-5.5.55</code>,根据大家自己实际的机器性能,速度可能会稍慢些,请耐心等待</p>
+<p>演示环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS</span> 6<span class="selector-class">.8</span> <span class="selector-tag">x86_64</span>     最小化,带基础环境库安装</div><div class="line"><span class="selector-tag">eth0</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.51</span></div><div class="line"><span class="selector-tag">eth1</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.4</span><span class="selector-class">.19</span></div><div class="line"><span class="selector-tag">eth2</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.19</span></div></pre></td></tr></table></figure></p>
+<p>安装mysql所需的各种依赖库并创建mysql的服务用户<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install ncurses-devel libaio-devel cmake bison -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> useradd mysql -s /sbin/nologin -M</span></div></pre></td></tr></table></figure></p>
+<p>下载并编译 mysql-5.5.55<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wget http://mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.55.tar.gz</span></div><div class="line"><span class="comment"># tar xf mysql-5.5.55.tar.gz</span></div><div class="line"><span class="comment"># cd mysql-5.5.55</span></div><div class="line"><span class="comment"># cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql-5.5.55 \</span></div><div class="line"><span class="attr">-DMYSQL_DATADIR</span>=/usr/local/mysql-<span class="number">5.5</span>.<span class="number">55</span>/data \</div><div class="line"><span class="attr">-DMYSQL_UNIX_ADDR</span>=/usr/local/mysql-<span class="number">5.5</span>.<span class="number">55</span>/tmp/mysql.sock \</div><div class="line"><span class="attr">-DDEFAULT_CHARSET</span>=utf8 \</div><div class="line"><span class="attr">-DDEFAULT_COLLATION</span>=utf8_general_ci \</div><div class="line"><span class="attr">-DEXTRA_CHARSETS</span>=all \</div><div class="line"><span class="attr">-DENABLED_LOCAL_INFILE</span>=<span class="literal">ON</span> \</div><div class="line"><span class="attr">-DWITH_INNOBASE_STORAGE_ENGINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_FEDERATED_STORAGE_ENGINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_BLACKHOLE_STORAGE_ENGINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITHOUT_EXAMPLE_STORAGE_ENGINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITHOUT_PARTITION_STORAGE_ENGINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_FAST_MUTEXES</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_ZLIB</span>=bundled \</div><div class="line"><span class="attr">-DENABLED_LOCAL_INFILE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_READLINE</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_EMBEDDED_SERVER</span>=<span class="number">1</span> \</div><div class="line"><span class="attr">-DWITH_DEBUG</span>=<span class="number">0</span></div><div class="line"></div><div class="line"><span class="comment"># make &amp;&amp; make install</span></div><div class="line"><span class="comment"># ln -s /usr/local/mysql-5.5.55/ /usr/local/mysql</span></div><div class="line"><span class="comment"># ll /usr/local/mysql/</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/09/20/mysql-mul-server/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/09/18/naxsiwaf/">
                 定制轻量高效的WAF Naxsi [一]
             </a>
@@ -344,8 +379,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/bypasswaf-on-database/">
-                bypasswaf for mysql [数据库层面之特殊字符篇]
+            <a href="/2017/07/31/https-learn/">
+                深入理解 https 通信加密过程
             </a>
         </h1>
         <div class="post-info">
@@ -355,7 +390,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                    <a href="/categories/https/">https</a>
                 </span>
             
         </div>
@@ -363,44 +398,12 @@
 
     
         <div class="content">
-            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 对<code>对称加密</code>的通俗理解<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信的双方都使用同一个秘钥进行加解密</div></pre></td></tr></table></figure></p>
+<p>0x02 对非对称加密算法的通俗理解 [ <code>RSA</code> ]<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div><div class="line">其实这个很容易理解,因为通信双方的手里都有一套自己的密钥对,通信之前双方会先把自己的公钥都先发给对方</div><div class="line">然后对方再拿着这个公钥来加密数据响应给对方,等到到了对方那里,对方再用自己的私钥进行解密,就这么简单</div></pre></td></tr></table></figure></p>
+<p>0x03 非对称加密所造成的速度慢的问题解决办法<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来互相通信</div></pre></td></tr></table></figure></p>
+<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设,此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信互发的公钥,换成自己的公钥,这样中间人就可以轻松解密通信双方所发送的所有数据</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/31/socat-meterpreter/">
-                如何利用 socat 更方便地穿透目标内网
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/socat/">socat</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
-<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
-<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
+        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
     
 
 </div>
@@ -445,8 +448,8 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/https-learn/">
-                深入理解 https 通信加密过程
+            <a href="/2017/07/31/socat-meterpreter/">
+                如何利用 socat 更方便地穿透目标内网
             </a>
         </h1>
         <div class="post-info">
@@ -456,7 +459,7 @@
             
             
                 <span class="category">
-                    <a href="/categories/https/">https</a>
+                    <a href="/categories/socat/">socat</a>
                 </span>
             
         </div>
@@ -464,12 +467,44 @@
 
     
         <div class="content">
-            <p><br><br>0x01 对<code>对称加密</code>的通俗理解<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">即通信的双方都使用同一个秘钥进行加解密</div></pre></td></tr></table></figure></p>
-<p>0x02 对非对称加密算法的通俗理解 [ <code>RSA</code> ]<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">私钥 + 公钥</span>=<span class="string"> 密钥对</span></div><div class="line">即用私钥加密的数据,只有对应的公钥才能解密,用公钥加密的数据,只有对应的私钥才能解密</div><div class="line">其实这个很容易理解,因为通信双方的手里都有一套自己的密钥对,通信之前双方会先把自己的公钥都先发给对方</div><div class="line">然后对方再拿着这个公钥来加密数据响应给对方,等到到了对方那里,对方再用自己的私钥进行解密,就这么简单</div></pre></td></tr></table></figure></p>
-<p>0x03 非对称加密所造成的速度慢的问题解决办法<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(1)</span> 先生成一个对称加密算法的密钥,用RSA的方式先安全的发给对方  </div><div class="line"><span class="comment">(2)</span> 随后就不再用RSA了,只用这个对称加密的密钥来互相通信</div></pre></td></tr></table></figure></p>
-<p>0x04 不过,以上方式存在明显的中间人问题:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">假设,此时在客户端和服务器之间存在一个中间人,这个中间人只需要把原本双方通信互发的公钥,换成自己的公钥,这样中间人就可以轻松解密通信双方所发送的所有数据</div></pre></td></tr></table></figure></p>
+            <p><br><br>0x01 此次环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">lnmp01</span>	假设为目标<span class="selector-tag">DMZ</span>段机器,等会儿会作为<span class="selector-tag">proxy</span>端</div><div class="line">假设其公网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.30</span></div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win7</span>  假设为目标内网机器</div><div class="line">假设其内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.144</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">本地机器</div><div class="line">假设本地内网<span class="selector-tag">ip</span>为 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.15</span></div></pre></td></tr></table></figure>
+<p>0x02 需要注意的一些前提条件<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本地机器能ping通lnmp01,lnmp01和目标内网中的win7能互通</div></pre></td></tr></table></figure></p>
+<p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
         </div>
-        <a href="/2017/07/31/https-learn/" class="read-more">Read More</a>
+        <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/07/31/bypasswaf-on-database/">
+                bypasswaf for mysql [数据库层面之特殊字符篇]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bypasswaf/">bypasswaf</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
     
 
 </div>
@@ -603,37 +638,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pkill nginx</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -tulnp | grep <span class="string">"80"</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> cp /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf /root/</span></div><div class="line"><span class="meta">#</span><span class="bash"> cp /usr/<span class="built_in">local</span>/nginx/conf/extra/bwapp.conf /root/</span></div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/07/09/nginx-waf/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/08/readme-Framework/">
-                关于各类环境部署简要说明
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-08</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/env/">env</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">为了更加贴近实战的学习,所有相关的部署配置,均是按照实际生产标准来的,力求做到真实,也是为了方便大家更靠谱的学习...</div><div class="line">作为一个对技术深度有追求的渗透者,你极度有必要熟知其中涉及到安全问题的每一个配置参数选项的具体作用,每一次权限映射背后所带来的实际利用价值...</div><div class="line">大家可能也看到了,在实际部署过程中,基本都特别标明了详细的版本号,比如,php5<span class="number">.2</span>,php5<span class="number">.3</span>及php5<span class="number">.5</span>,因为有些漏洞特性只能针对特定的版本才会有用,所以不得不费点儿劲....</div><div class="line">就整个部署过程来讲,其实也是一个非常好的学习进步的机会,你完全可以通过这种实际部署更深的去理解某些漏洞产生的根因,而不用再人云亦云[用事实说话],说白点儿,这就是在潜移默化的积累,积累的多了,自然就触类旁通,根本不用什么高大上的东西</div><div class="line">你要做的只是把前人的优秀经验彻彻底底的真正变成你自己的知识储备,然后在此基础上灵活变通改进,足矣,虽然短时间会比别人走的慢点,但你会收获的更多,甚至看到很多别人看不见的东西,很显然,这种方式对于<span class="string">'天才'</span>或者<span class="string">'神童'</span>,是完全不适用的,但那毕竟只是极小的一部分人</div><div class="line">脚踏实地,一步步的来,不要总觉得这也不重要[觉得这也很low],那也不重要[ 那也很low],然后你就以这种态度持续了很多年,而等再回头看那些曾经一直默默踏踏实实坚持到现在的人,已经把你甩的很远了,再想追上,难于上青天...</div><div class="line">还是那句话,<span class="string">"运维会的那一套,你要比他还精通,你才有可能搞定他,开发会的那一套,你要比他还娴熟,才有可能挖到更有价值的洞...."</span>,我跟大家起点都一样,也一直在为此而不懈努力着</div><div class="line">不为任何人,就为了你自己,学习吧,哪怕每天进步一点点,起码你不会因为一天碌碌无为而感到空虚....</div><div class="line">人生苦短,能做点自己喜欢的事情应该珍惜,个人一直坚信<span class="string">"唯一不变的,就是一直在变"</span>,安于现状,不思进取,自以为是,乃致命毒药....</div><div class="line">......</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/08/readme-Framework/" class="read-more">Read More</a>
     
 
 </div>
