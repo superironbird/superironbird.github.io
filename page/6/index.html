@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/10/05/nishang/">
+                powershell 渗透框架[ nishang ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-10-05</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/powershell/">powershell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只能针对win7以后的系统使用,此之前的win系统是没有引入powershell的,powershell是什么这里就不废话了,大家请自行谷歌,在使用各种powrshell脚本过程中,系统权限自然也是越高越好,权限越大你能在系统中操作的范围就越广,至于为什么要选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,容易定制,轻量,远程加载执行,对目标系统的影响极小……好处众多,这里就不多啰嗦了,说破天,我们最终的目的还是希望能在实际渗透中把它用起来,不然,实际价值何在呢</p>
+<p>0x02 关于nishang<br>&nbsp;&nbsp;&nbsp;&nbsp;今天我们就先来看看第一款powershell渗透框架<code>其实,个人觉得把它称为powershell渗透框架似乎更合适些</code>,<code>nishang</code> [想必现在早已家喻户晓],关于nishang中的各个ps脚本的选项用法,在其脚本代码的最前面都有详细说明,使用前请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以实际用的时候后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps shell,也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本只能在指定的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2016/10/05/nishang/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/10/05/hidden-webshell/">
                 放心地种下你的webshell 之 webshell隐藏小记
             </a>
@@ -590,44 +622,6 @@
 <p><img src="/img/regeorg_weshell_proxy.png" alt=""></p>
 <p>0x02 连接绑定好的本地端口,推荐用proxifier或者sockscap,然后往里面添加一些自己常用的内网渗透工具,就可以对目标进行正常的内网渗透了<br><img src="/img/regeorg_weshell_proxifier.png" alt=""><br><img src="/img/regeorg_weshell_res.png" alt=""></p>
 <p>0x03 实际渗透中,个人还是比较推荐用这个,比较稳定,使用也比较简单,不过,还是有些令人不太愉快的地方,待后期解决了,再单独拿出来说<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/13/tunna-http-tunnel/">
-                通向彼岸 之内网代理转发 [ http隧道篇 Tunna ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/http-tunnel/">http tunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>Tunna [实际渗透中,不太推荐,不稳定,经常断,阻塞,基于py编写]</p>
-<p>0x01 依然是先把代理端[webshell]上传到目标的网站目录中,并尝试访问该webshell,返回正常后,即可在本地执行下面的语句:<br><img src="/img/tunna_client.png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[3389] -v </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -a 内网机器的ip -r 内网机器的指定端口 -v  </span></div><div class="line"><span class="comment"># python proxy.py -u "http://目标域名/conn.aspx" -l 要绑定的本地端口 -r 远程机器上的指定端口[22] -s[转发ssh服务需要加上此选项] -v</span></div></pre></td></tr></table></figure>
-<p><img src="/img/tunna_server.png" alt=""></p>
-<p>0x02 先连接刚才绑定到的本地端口,在尝试用mstsc,putty等工具进行连接<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mstsc <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span> 绑定的本地端口</div></pre></td></tr></table></figure></p>
-<p><img src="/img/tunna_server_res.png" alt=""></p>
-<p>0x03 比较的不稳定,尤其是php脚本,已经不太兼容php5.3以后的版本了,而且还要开启某些模块(socket)支持,利用条件确实有点儿苛刻</p>
-<p>0x04 另外,tunna已经有相应的msf模块,也可以选择直接把它加到msf中使用<br><br></p>
 
         </div>
     

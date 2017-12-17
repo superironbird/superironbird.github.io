@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/16/tomcat-sec/">
+                Tomcat 安全部署实战指南
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-16</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/Tomcat-安全部署实战指南/">Tomcat 安全部署实战指南</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于Tomcat,更多详情大家可直接参考百科说明<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>//<span class="built_in">zh</span>.wikipedia<span class="meta">.org</span>/wiki/Apache_Tomcat</div></pre></td></tr></table></figure></p>
+<p>此次演示环境:<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CentOS7 x86_64 	<span class="built_in">ip</span>: <span class="number">192.168</span><span class="meta">.3</span><span class="meta">.64</span></div><div class="line">Apache Tomcat/<span class="number">8.5</span><span class="meta">.24</span> 	建议大家用稳定的相对比较新的版本</div></pre></td></tr></table></figure></p>
+<p>0x02 首先,在正式部署Tomcat之前,需要先来准备好jdk环境,因为毕竟底层还是在靠java来处理,所以必须要得先有java的运行环境才行,其实,在实际生产环境中,也可以单独使用<code>jre</code>,不过个人觉得这和安全的关系并不大,试想,如果你手里已经拿到了一个可以运行java的环境了,我在本地用对应版本的jdk编译好了再丢上运行也是一样,防不住啥,太泛泛<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> tar xf jdk-8u151-linux-x64.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv jdk1.8.0_151/ /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/jdk1.8.0_151/ /usr/<span class="built_in">local</span>/jdk</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf apache-tomcat-8.5.24.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv apache-tomcat-8.5.24 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/apache-tomcat-8.5.24/ /usr/<span class="built_in">local</span>/tomcat</span></div><div class="line"><span class="meta">#</span><span class="bash"> ll /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi /etc/profile</span></div><div class="line">  export JAVA_HOME=/usr/local/jdk/ </div><div class="line">  export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH </div><div class="line">  export CLASSPATH=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">  export TOMCAT_HOME=/usr/local/tomcat</div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></div><div class="line"><span class="meta">#</span><span class="bash"> java -version</span></div><div class="line"><span class="meta">#</span><span class="bash"> javac</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/16/tomcat-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/12/samba-sec/">
                 跨平台快速文件共享 Samba
             </a>
@@ -596,41 +629,6 @@
 <p>0x03 首先,安装好bettercap,如果你系统的ruby版本小于1.9记得务必先升级一下,更多详情请参考其官方说明,如下<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:brightbox</span>/<span class="keyword">ruby</span>-ng</div><div class="line"># apt-<span class="built_in">get</span> <span class="keyword">update</span></div><div class="line"># apt-<span class="built_in">get</span> install ruby2.<span class="number">3</span> ruby2.<span class="number">3</span>-dev</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/06/bettercap/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/05/win-cmd/">
-                基础命令使用 [ win篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-05</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/win-cmd/">win cmd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 基础命令使用:</p>
-<p>演示环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win2008R2cn</span>     <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>    假设为入侵者机器</div><div class="line"><span class="selector-tag">win2012R2cn</span>     <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.122</span>   假设为目标机器</div></pre></td></tr></table></figure></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> whoami /all			  查当前用户在目标系统中的具体权限,这可能会成为你一上来的习惯性动作 ^_^</span></div><div class="line"><span class="meta">#</span><span class="bash"> query user			  查当前机器中正在线的用户,注意管理员此时在不在</span></div><div class="line"><span class="meta">#</span><span class="bash"> hostname			  查当前机器的机器名,知道当前机器是干啥的</span></div><div class="line"><span class="meta">#</span><span class="bash"> net user 			  查当前机器中所有的用户名,开始搜集准备用户名字典</span></div><div class="line"><span class="meta">#</span><span class="bash"> net localgroup		  查当前机器中所有的组名,了解不同组的职能,如,IT,HR,ADMIN,FILE...</span></div><div class="line"><span class="meta">#</span><span class="bash"> net localgroup <span class="string">"Administrators"</span> 查指定组中的成员列表</span></div></pre></td></tr></table></figure>
-<p>查看本机ip配置:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> ipconfig /all		查看本机ip配置,观察本机是否在域内,内网段有几个,网关在哪里</span></div><div class="line"><span class="meta">#</span><span class="bash"> ipconfig /displaydns	查看本地DNS缓存</span></div></pre></td></tr></table></figure></p>
-<p>查看当前机器中所有的网络连接:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> net start				查看本机运行的所有服务</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano				查看本机所有的tcp,udp端口连接及其对应的pid</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -anob				查看本机所有的tcp,udp端口连接,pid及其对应的发起程序</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"ESTABLISHED"</span>	查看当前正处于连接状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"LISTENING"</span>	查看当前正处于监听状态的端口及ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> netstat -ano | findstr <span class="string">"TIME_WAIT"</span></span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/05/win-cmd/" class="read-more">Read More</a>
     
 
 </div>
