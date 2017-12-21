@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/06/bettercap/">
+                轻量高效的 MITMF [ bettercap ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-06</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/bettercap/">bettercap</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于bettercap:<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款相对还不错的中间人工具,出来也有些年头了,不过貌似维护的不是特别勤快</div><div class="line">从名字就不难看出,作者似乎是有意在向我们说明,这是一款比ettercap更好的中间人工具,<span class="string">'b'</span> <span class="keyword">is</span> better ^_^</div><div class="line">此外,工具本身基于<span class="keyword">ruby</span>,官方要求的 <span class="keyword">ruby</span>版本为 &gt;= <span class="number">1.9</span></div></pre></td></tr></table></figure></p>
+<p>0x02 基本介绍:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ubuntu</span> 16<span class="selector-class">.04</span><span class="selector-class">.3</span> <span class="selector-tag">LTS</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.12</span>    入侵者机器</div><div class="line"><span class="selector-tag">win2008r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>    模拟正常服务器,事先已准备好各种服务</div><div class="line"><span class="selector-tag">win2008cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.131</span>   模拟正常服务器,事先已准备好各种服务</div><div class="line"><span class="selector-tag">win2012r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.122</span>   模拟正常服务器,事先已准备好各种服务</div></pre></td></tr></table></figure></p>
+<p>0x03 首先,安装好bettercap,如果你系统的ruby版本小于1.9记得务必先升级一下,更多详情请参考其官方说明,如下<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:brightbox</span>/<span class="keyword">ruby</span>-ng</div><div class="line"># apt-<span class="built_in">get</span> <span class="keyword">update</span></div><div class="line"># apt-<span class="built_in">get</span> install ruby2.<span class="number">3</span> ruby2.<span class="number">3</span>-dev</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/06/bettercap/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/05/win-cmd/">
                 基础命令使用 [ win篇 ]
             </a>
@@ -593,39 +626,6 @@
 <p>0x03 如果实在想自己手工实现该功能的话,大体思路如下:<br><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">找目标系统中W<span class="keyword">in</span>事件日志服务的进程名,一般都是在svchost下</div><div class="line">并从该进程中获取所对应的W<span class="keyword">in</span> 事件日志服务线程ID</div><div class="line">想办法杀掉这些id所对应的线程,以达到让目标系统日志服务无法正常工作的目的,这样系统就无法再搜集日志了</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/16/win-event-powershell/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/11/bypasswaf-for-webshell/">
-                全方位构造免杀 webshell 小结[一]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-11</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/webshell/">webshell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;本文几乎涵盖了市面上所有已知的webshell免杀手段,自己也很清楚,有些东西一旦公布出去,基本就活不太久了,但好在技巧是死的,人是活的,基于前人的优秀经验基础上所衍生出来的更加刁钻诡异的思路才是最珍贵的,始终坚信,对抗是持续的,shell也是永远杀不完的…<br><br><br>0x01 首先就是基于各类最常规的命令和代码执行函数的花样变形<code>如,拆分重组,动态执行,以此来躲避静态特征检测</code>,不过像有些高危函数默认就会被运维们禁掉,甚至高版本的php默认已经不让执行系统命令[如,php7],万一再开了安全模式,就更费劲了</p>
-<p>php中一些常见的执行类型函数:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">system()</div><div class="line">exec()</div><div class="line">shell_exec()</div><div class="line">passthru()</div><div class="line">proc_open()</div><div class="line"><span class="string">``</span> 反引号执行系统命令</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;?php $_POST[<span class="string">'fun'</span>]($_REQUEST[<span class="string">'req'</span>]);?&gt;</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/10/11/bypasswaf-for-webshell/" class="read-more">Read More</a>
     
 
 </div>

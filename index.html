@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/20/ldap-sec/">
+                初探 LDAP 安全 [ 一 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-20</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/LDAP安全/">LDAP安全</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 ldap 的一些简单科普<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">`ldap` 基于tcp/ip的轻量级目录访问协议,属于X.<span class="number">500</span>目录协议族的一个简化版本</div><div class="line">你可以暂时把它粗暴的理解成 `一种特殊类型的数据库`,这种数据库文件后缀通常为 ldif</div><div class="line">实际生产环境中,主要还是用它来做各种查询比较多,既是查询,也就意味着肯定会有大量的读操作</div><div class="line">虽然,ldap也支持一些简单的更新功能,即写,但一般基本都不会用,因为它在写方面的效率并不高</div><div class="line">如果真的是写比较多,直接用各种关系型数据库代替就好了,实在没必要用ldap,毕竟,术业有专攻</div><div class="line">另外,ldap 跨平台,功能简洁,易管理,配置,读性能也不错,亦可分布式部署`不知道是不是可以把它的分布式理解成理解成windows域的目录树,目录林概念`,</div><div class="line">用的最多的可能就是进行`集中身份验证`,最后,我们还需要知道的是,默认情况下,ldap的数据都是直接以明文发送的,好在它支持ssl</div></pre></td></tr></table></figure></p>
+<p>0x02 如下则是一些常用的其它目录服务工具<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">X</span><span class="selector-class">.500</span> 		过于庞大臃肿</div><div class="line"><span class="selector-tag">ldap</span>  		轻量且配置简单</div><div class="line"><span class="selector-tag">windows</span>活动目录  有平台限制</div><div class="line"><span class="selector-tag">NIS</span>		个人基本没接触过</div></pre></td></tr></table></figure></p>
+<p>0x03 了解ldap内部数据的大致存储方式<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">和常规关系型数据库不同的是,ldap并非按照常规的库,表,字段方式来存储数据</div><div class="line">而是按照一种特殊的倒树状结构层级来组织管理数据,此处的树指的就是目录信息树,即`DIT`</div><div class="line">所谓的目录信息树其实相当于专门用来进行读操作的数据库</div><div class="line">在DIT内部则由N个条目`entry`所组成,就相当于我们常规数据库表中的每条具体的记录</div><div class="line">而条目的内容则是由具有唯一标识名`DN`的属性[Attribute]和及属性对应的值[value]所组成的这么一个集合</div><div class="line">条目为ldap中最基础的操作单位,通常对ldap的增删改查都是以条目为基本单元进行的</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/20/ldap-sec/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/16/tomcat-sec/">
                 Tomcat 安全部署实战指南
             </a>
@@ -596,39 +629,6 @@
 <p>0x02 我们要实现的最终目的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">正常情况下,我们本想通过heightlnmp机器来访问目标内网中Midlnmp的ssh,但苦于heightlamp和heightlamp之间的防火墙</div><div class="line">且防火墙只允许真正的dns流量通过,所以,我们现在想通过在自己公网的dns服务器上做转发来绕过它们之间的防火墙</div><div class="line">即在heightlamp和heightlnmp之间建立一层dns隧道,把要转发的端口数据都封装在dns流量里面进行穿透</div><div class="line">最后实现的效果就是,当我访问heightlamp的某个指定端口,就可以直接访问到目标内网中的Midlnmp的ssh</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/10/dnstunnel/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/06/bettercap/">
-                轻量高效的 MITMF [ bettercap ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-06</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/bettercap/">bettercap</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 关于bettercap:<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">一款相对还不错的中间人工具,出来也有些年头了,不过貌似维护的不是特别勤快</div><div class="line">从名字就不难看出,作者似乎是有意在向我们说明,这是一款比ettercap更好的中间人工具,<span class="string">'b'</span> <span class="keyword">is</span> better ^_^</div><div class="line">此外,工具本身基于<span class="keyword">ruby</span>,官方要求的 <span class="keyword">ruby</span>版本为 &gt;= <span class="number">1.9</span></div></pre></td></tr></table></figure></p>
-<p>0x02 基本介绍:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ubuntu</span> 16<span class="selector-class">.04</span><span class="selector-class">.3</span> <span class="selector-tag">LTS</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.12</span>    入侵者机器</div><div class="line"><span class="selector-tag">win2008r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>    模拟正常服务器,事先已准备好各种服务</div><div class="line"><span class="selector-tag">win2008cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.131</span>   模拟正常服务器,事先已准备好各种服务</div><div class="line"><span class="selector-tag">win2012r2cn</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.122</span>   模拟正常服务器,事先已准备好各种服务</div></pre></td></tr></table></figure></p>
-<p>0x03 首先,安装好bettercap,如果你系统的ruby版本小于1.9记得务必先升级一下,更多详情请参考其官方说明,如下<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:brightbox</span>/<span class="keyword">ruby</span>-ng</div><div class="line"># apt-<span class="built_in">get</span> <span class="keyword">update</span></div><div class="line"># apt-<span class="built_in">get</span> install ruby2.<span class="number">3</span> ruby2.<span class="number">3</span>-dev</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/06/bettercap/" class="read-more">Read More</a>
     
 
 </div>
