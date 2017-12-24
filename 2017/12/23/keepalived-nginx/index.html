@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="利用 keepalived + nginx 实现初步高可用"/>
+        <meta property="og:title" content="keepalived + nginx 实现初步高可用"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>利用 keepalived + nginx 实现初步高可用 - klion&#39;s blog</title>
+    <title>keepalived + nginx 实现初步高可用 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/12/23/keepalived-nginx/">
-                利用 keepalived + nginx 实现初步高可用
+                keepalived + nginx 实现初步高可用
             </a>
         </h1>
         <div class="post-info">
@@ -172,7 +172,7 @@
 <p><img src="/img/keepalived start status.gif" alt=""></p>
 <p>下面则是模拟keepalived配合nginx 实现web高可用的效果,当MASTER机器不幸down掉时,BACKUP几乎会瞬间接管,以此来保证web服务的持续可用,如下</p>
 <p><img src="/img/keepalived nginx.gif" alt=""></p>
-<p>注意,keepalived默认只对系统级别的宕机才会主动接管,对于各类常规服务它是不会自动接管的,解决办法很简单,写个教本,把它俩关系上就好了,此处的所有脚本仅做demo参考,有兴趣请自行加强,如下<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># vi keepalived_nginx_check.sh</span></div><div class="line"><span class="meta"># chmod +x keepalived_nginx_check.sh</span></div><div class="line">  <span class="meta">#!/bin/bash</span></div><div class="line">  <span class="keyword">while</span> <span class="literal">true</span></div><div class="line">  <span class="keyword">do</span></div><div class="line">  NginxPid=`ps -C nginx --no-header |wc -l`</div><div class="line">  <span class="keyword">if</span>  [ $NginxPid -eq <span class="number">2</span> ]</div><div class="line">    <span class="keyword">then</span>	<span class="meta"># 检查worker数</span></div><div class="line">	/etc/init.d/keepalived stop &amp;&gt;/dev/<span class="literal">null</span> <span class="meta"># 如果发现worker对不上,就自动让另一台backup去接管</span></div><div class="line">  fi</div><div class="line">  <span class="built_in">sleep</span> <span class="number">1</span>	<span class="meta"># 可以时间隔短点,不然,down半天了,那边还没反应</span></div><div class="line">  done</div><div class="line"></div><div class="line"><span class="meta"># ./keepalived_nginx_check.sh &amp;</span></div><div class="line"><span class="meta"># ps -ef | grep <span class="string">"keepalived_nginx_check"</span></span></div></pre></td></tr></table></figure></p>
+<p>注意,keepalived默认只对系统级别的宕机才会主动接管,对于各类常规服务它是不会自动接管的,解决办法很简单,写个脚本,手动把它俩关联上就好了,此处的所有脚本仅做demo参考,有兴趣请自行加强,如下<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># vi keepalived_nginx_check.sh</span></div><div class="line"><span class="meta"># chmod +x keepalived_nginx_check.sh</span></div><div class="line">  <span class="meta">#!/bin/bash</span></div><div class="line">  <span class="keyword">while</span> <span class="literal">true</span></div><div class="line">  <span class="keyword">do</span></div><div class="line">  NginxPid=`ps -C nginx --no-header |wc -l`</div><div class="line">  <span class="keyword">if</span>  [ $NginxPid -eq <span class="number">2</span> ]</div><div class="line">    <span class="keyword">then</span>	<span class="meta"># 检查worker数</span></div><div class="line">	/etc/init.d/keepalived stop &amp;&gt;/dev/<span class="literal">null</span> <span class="meta"># 如果发现worker对不上,就自动让另一台backup去接管</span></div><div class="line">  fi</div><div class="line">  <span class="built_in">sleep</span> <span class="number">1</span>	<span class="meta"># 可以时间隔短点,不然,down半天了,那边还没反应</span></div><div class="line">  done</div><div class="line"></div><div class="line"><span class="meta"># ./keepalived_nginx_check.sh &amp;</span></div><div class="line"><span class="meta"># ps -ef | grep <span class="string">"keepalived_nginx_check"</span></span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/keepalived nginx status.gif" alt=""></p>
 <p>0x08 高可用的裂脑问题,所谓的裂脑,即只要backup收不到master发过来的状态信息就以为master挂掉了,但实际上master并没有挂,只是由于一些别的原因导致master和backup之间没法正常的通信,而backup却直接粗暴的理解成master挂掉了,随后就直接就接管资源,这也就导致了裂脑问题的发生,下面是一个检测裂脑的小脚本,原理比较简单,<code>如果我发现master能ping通,但backup本地又有虚拟ip存在,则说明裂脑了</code>,直接在backup节点上后台运行该脚本即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># check keepalived status</span></div><div class="line"><span class="keyword">while</span> <span class="literal">true</span></div><div class="line"><span class="keyword">do</span></div><div class="line">    addr=`ip addr | grep <span class="string">"192.168.3.2/24"</span> | wc -l`</div><div class="line">    ping -c 5 -W 3 192.168.3.75 &amp;&gt;/dev/null</div><div class="line">    <span class="keyword">if</span> [ $? -eq 0 -a  <span class="variable">$addr</span>  -eq 1 ] ;<span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"ha is brain."</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"ha is ok"</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    sleep 2</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/keepalived brain.gif" alt=""></p>

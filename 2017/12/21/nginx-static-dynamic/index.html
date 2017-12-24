@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="利用nginx反向代理实现的动静分离"/>
+        <meta property="og:title" content="利用 `nginx反向代理` 实现的动静分离"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>利用nginx反向代理实现的动静分离 - klion&#39;s blog</title>
+    <title>利用 `nginx反向代理` 实现的动静分离 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/12/21/nginx-static-dynamic/">
-                利用nginx反向代理实现的动静分离
+                利用 `nginx反向代理` 实现的动静分离
             </a>
         </h1>
         <div class="post-info">
@@ -159,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p>0x01 关于动静分离<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主要用于一些较大型的站点架构,这样做一定程度上可以有效减轻后端节点压力</div><div class="line">也就是说,有时候你在前端<span class="built_in">url</span>中看到的一个目录,其后端对应的很可能就是一个集群</div><div class="line">另外,这样会使网站更加静态化,利于缓存,能显著提高网站的访问速度</div><div class="line">最后,可实现前后端的有效解耦,但,无疑会加大开发繁琐程度,前后端只能通过各种接口进行通信</div></pre></td></tr></table></figure></p>
+        <p>0x01 关于动静分离<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主要用于一些较大型的站点架构,这样做一定程度上可以有效减轻后端节点压力</div><div class="line">也就是说,有时候你在前端<span class="built_in">url</span>中看到的一个目录,其后端对应的很可能就是一个集群</div><div class="line">另外,这样会使网站更加静态化,利于缓存,能显著提高网站的访问速度</div><div class="line">最后,可实现前后端的有效解耦,但这样无疑会加大开发的繁琐程度,前后端只能通过各种接口进行通信</div></pre></td></tr></table></figure></p>
 <p>0x02 此次演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">NginxHttp</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.49</span>	对应域名: <span class="selector-tag">reverse</span><span class="selector-class">.org</span>		<span class="selector-tag">nginx</span>反向代理服务器</div><div class="line"><span class="selector-tag">OldLamp</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.45</span>	对应域名: <span class="selector-tag">www</span><span class="selector-class">.bwapp</span><span class="selector-class">.cc</span>		动态服务器</div><div class="line"><span class="selector-tag">OldLnmp</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span>	对应域名: <span class="selector-tag">test</span><span class="selector-class">.bwapp</span><span class="selector-class">.org</span> 	静态服务器</div></pre></td></tr></table></figure></p>
 <p>0x03 统一所有机器的host解析,因为等会儿要直接用域名的方式往后抛,如下<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># vi /etc/hosts</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.42</span>	test.bwapp.org bwapp.org</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.45</span>	bwapp.cc www.bwapp.cc</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.75</span>  lvs.org</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.49</span>	reverse.org</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
