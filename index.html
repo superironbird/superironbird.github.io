@@ -139,6 +139,72 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/23/keepalived-nginx/">
+                利用 keepalived + nginx 实现初步高可用
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-23</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/keepalived高可用/">keepalived高可用</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 keepalived<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">早期是专为LVS设计的,主要用来监控LVS集群中各个节点状态</div><div class="line">内部基于VRRP协议实现,即`虚拟路由冗余协议`,从名字不难看出,协议本身是用于保证实现路由节点高可用的</div></pre></td></tr></table></figure></p>
+<p>0x02 所谓的 VRRP 协议<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">简单来讲,即将N台提供相同功能的路由器组成一个路由器组,在这个组里有一个master和多个<span class="keyword">backup</span></div><div class="line">一般情况下<span class="keyword">master</span>是由选举算法产生的,另外需要注意的是,只有在 <span class="keyword">master</span> 上才有一个用于对外提供服务的虚拟ip</div><div class="line">其它的<span class="keyword">backup</span>都是没有的,当<span class="keyword">master</span>在对外提供服务时,其它的<span class="keyword">backup</span>又在干什么呢</div><div class="line">很简单,当<span class="keyword">master</span>在对外提供服务时,它同时也在不停的向所有的<span class="keyword">backup</span>发送VRRP状态信息 <span class="string">`说白点儿就是心跳包`</span></div><div class="line">告诉所有<span class="keyword">backup</span>们,说,<span class="string">'我还没累死,你们先歇着,等我挂了,你们再上'</span>,然后,所有的<span class="keyword">backup</span>就会一直在那儿闲着接受这样的状态信息</div><div class="line">当某一时刻,<span class="keyword">backup</span>突然没再接到这样的状态回应时,就说明<span class="keyword">master</span>已经光荣牺牲了</div><div class="line">所有的<span class="keyword">backup</span>会再重新用选举算法,把优先级最高的<span class="keyword">backup</span>升级为<span class="keyword">master</span>继续对外提供服务,以此保证了服务的持续可用性</div></pre></td></tr></table></figure></p>
+<p>0x03 借助 keepalived 在web上的高可用实现<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">首先,在所有需要进行高可用的web节点机器上部署好keepalived,并在节点中设置一个master,其它的则全部设为<span class="keyword">backup</span></div><div class="line">一旦<span class="keyword">backup</span>接收不到来自<span class="keyword">master</span>的心跳数据,即认为<span class="keyword">master</span>已挂掉,<span class="keyword">backup</span>随即就会接管<span class="keyword">master</span>的所有资源数据</div><div class="line">当<span class="keyword">master</span>状态恢复时,<span class="keyword">backup</span>会把所有的资源数据再移交给<span class="keyword">master</span>处理,此,即为最简单的web高可用实现</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/23/keepalived-nginx/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/12/21/nginx-static-dynamic/">
+                利用nginx反向代理实现的动静分离
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-21</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/动静分离/">动静分离</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于动静分离<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">主要用于一些较大型的站点架构,这样做一定程度上可以有效减轻后端节点压力</div><div class="line">也就是说,有时候你在前端<span class="built_in">url</span>中看到的一个目录,其后端对应的很可能就是一个集群</div><div class="line">另外,这样会使网站更加静态化,利于缓存,能显著提高网站的访问速度</div><div class="line">最后,可实现前后端的有效解耦,但,无疑会加大开发繁琐程度,前后端只能通过各种接口进行通信</div></pre></td></tr></table></figure></p>
+<p>0x02 此次演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">NginxHttp</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.49</span>	对应域名: <span class="selector-tag">reverse</span><span class="selector-class">.org</span>		<span class="selector-tag">nginx</span>反向代理服务器</div><div class="line"><span class="selector-tag">OldLamp</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.45</span>	对应域名: <span class="selector-tag">www</span><span class="selector-class">.bwapp</span><span class="selector-class">.cc</span>		动态服务器</div><div class="line"><span class="selector-tag">OldLnmp</span>		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span>	对应域名: <span class="selector-tag">test</span><span class="selector-class">.bwapp</span><span class="selector-class">.org</span> 	静态服务器</div></pre></td></tr></table></figure></p>
+<p>0x03 统一所有机器的host解析,因为等会儿要直接用域名的方式往后抛,如下<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># vi /etc/hosts</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.42</span>	test.bwapp.org bwapp.org</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.45</span>	bwapp.cc www.bwapp.cc</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.75</span>  lvs.org</div><div class="line">  <span class="number">192.168</span><span class="number">.3</span><span class="number">.49</span>	reverse.org</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/21/nginx-static-dynamic/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/20/ldap-sec/">
                 初探 LDAP 安全 [ 一 ]
             </a>
@@ -564,71 +630,6 @@
 <p>0x02 编译安装 hping3:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install libpcap-devel tcl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget http://www.hping.org/hping3-20051105.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf hping3-20051105.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> hping3-20051105</span></div><div class="line"><span class="meta">#</span><span class="bash"> vi bytesex.h</span></div><div class="line">  || defined(__x86_64__) \	为了防止后续编译出错,需要在第一个判断下添加此句,如下图所示,添加64位系统平台</div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/include/pcap-bpf.h /usr/include/net/bpf.h</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure &amp;&amp; make &amp;&amp; make strip &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/15/hping3/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/13/ntfs-streams/">
-                文件隐藏 之 NTFS 交换数据流
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-13</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ntfs-stream/">ntfs stream</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 关于 NTFS 交换数据流<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NTFS 交换数据流属于NTFS文件系统独有的特性,在NTFS文件系统下,每个文件都可以存在多个数据流</div><div class="line">也就是说,除了主文件流之外,还可以有很多非主文件流寄宿在主文件流中,内部使用资源派生来维持与文件相关的信息</div><div class="line">虽然,我们无法看到数据流文件,但是它却真实存在于系统中,更多更细致的解释,大家可自行参考百科或ntfs官方文档...</div></pre></td></tr></table></figure></p>
-<p>0x02 如何实际创建一个数据交换流文件,其实方法很简单,如下<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令格式 <span class="string">"宿主文件:准备与宿主文件相关联的数据流文件"</span></div></pre></td></tr></table></figure></p>
-<p>0x03 演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">win2008r2cn</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.23</span>	</div><div class="line"><span class="selector-tag">kali</span> 		<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.38</span>	等会儿弹<span class="selector-tag">meterpreter</span>用</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/13/ntfs-streams/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/10/dnstunnel/">
-                DNS隧道 之 端口转发 [ 一 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-10</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dnstunnel/">dnstunnel</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 本次实验环境大致如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">centos7_x64</span><span class="selector-attr">[heightlamp]</span>  公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span>        		        假设为入侵者自己的公网机器,即<span class="selector-tag">dns2tcp</span>客户端</div><div class="line"><span class="selector-tag">centos7_x64</span><span class="selector-attr">[heightlnmp]</span>	 公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.41</span>   内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.123</span>   假设为目标<span class="selector-tag">DMZ</span>中的机器,有防火墙,即<span class="selector-tag">dns2tcp</span>服务端</div><div class="line"><span class="selector-tag">win2012r2en</span>		 公网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.123</span>         		  	假设为入侵者自己公网的<span class="selector-tag">dns</span>服务器</div><div class="line"><span class="selector-tag">centos6</span><span class="selector-class">.8_x64</span><span class="selector-attr">[Midlnmp]</span>	 内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.212</span>			        假设为目标内网中的一台<span class="selector-tag">linux</span>机器</div></pre></td></tr></table></figure></p>
-<p>0x02 我们要实现的最终目的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">正常情况下,我们本想通过heightlnmp机器来访问目标内网中Midlnmp的ssh,但苦于heightlamp和heightlamp之间的防火墙</div><div class="line">且防火墙只允许真正的dns流量通过,所以,我们现在想通过在自己公网的dns服务器上做转发来绕过它们之间的防火墙</div><div class="line">即在heightlamp和heightlnmp之间建立一层dns隧道,把要转发的端口数据都封装在dns流量里面进行穿透</div><div class="line">最后实现的效果就是,当我访问heightlamp的某个指定端口,就可以直接访问到目标内网中的Midlnmp的ssh</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/10/dnstunnel/" class="read-more">Read More</a>
     
 
 </div>

