@@ -20,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="关于对Cobalt Strike DNS隧道的理解与实战"/>
+        <meta property="og:title" content="对 Cobalt Strike DNS隧道的理解与实战"/>
     
 
     <!--Open Graph Description-->
@@ -44,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>关于对Cobalt Strike DNS隧道的理解与实战 - klion&#39;s blog</title>
+    <title>对 Cobalt Strike DNS隧道的理解与实战 - klion&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -137,7 +137,7 @@
     <div class="post-header">
         <h1 class="title">
             <a href="/2017/12/28/cobalt-strike-dns/">
-                关于对Cobalt Strike DNS隧道的理解与实战
+                对 Cobalt Strike DNS隧道的理解与实战
             </a>
         </h1>
         <div class="post-info">
@@ -160,8 +160,8 @@
 
         <!-- Post Content -->
         <p>0x01 先稍微理解下基于<code>dns beacon的大致通信过程</code>,其实,非常非常简单,前提是你对dns的解析过程早已经烂透于心,不熟悉的朋友可以先去参考前段时间写的 <a href="https://klionsec.github.io/2017/12/11/Dns-tips/">[DNS 深度理解 一] </a>,把基础打扎实了,再回过头来理解这些东西就易如反掌了<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">&gt; beacon shell会向指定的域名发起正常的dns查询</span></div><div class="line">  -<span class="ruby">&gt; 中间依然是经过一些列的常规dns迭代及递归查询,大致过程就是一直从根开始找,直到找到我们自己的ns服务器,最后再定位到团队服务器ip,仅此而已</span></div><div class="line">    -<span class="ruby">&gt; 也就是说,第一次通信可能会慢点,后续就会稍微快些,不过说实话,dns再快也快不到哪里去,毕竟,我们要的是足够的隐蔽,而不一味追求速度,不然就容易露点</span></div></pre></td></tr></table></figure></p>
-<p>0x02 废话说完,我们就开始来尝试在实战中应用,首先,你要先买台<code>vps</code>,亚马逊或者<code>vultr</code>都挺不错的,自己也一直在用,之后装好系统,推荐用<code>ubuntu</code>,此处演示用的是<code>ubuntu 16.04.2</code>,具体的系统安装方法直接一路点点点就好了,全程傻瓜化,大概等个六七分钟,系统初始化完成就可以用ssh连上去了</p>
-<p><img src="/img/vps demo.png" alt=""><br><a id="more"></a><br>0x03 成功连到vps上以后,接着就开始配置jdk,关于jdk的版本选择需要稍微注意下,<code>jdk版本和cobalt strike务必要保持兼容</code>,因为演示的用的是cobalt strike3.8,所以此处就用的jdk1.8,如下,则是jdk在Ubuntu中的具体配置过程<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">wget <span class="symbol">http:</span>/<span class="regexp">/enos.itcollege.ee/</span>~jpoial/allalaadimised/jdk8/jdk-<span class="number">8</span>u152-linux-x64.tar.gz</div><div class="line">tar xf jdk-<span class="number">8</span>u152-linux-x64.tar.gz</div><div class="line">mv jdk1.<span class="number">8.0_152</span>/ <span class="regexp">/usr/local</span><span class="regexp">/</span></div><div class="line">ln -s /usr<span class="regexp">/local/jdk</span>1.<span class="number">8.0_152</span>/ <span class="regexp">/usr/local</span><span class="regexp">/jdk</span></div><div class="line"># vi /etc<span class="regexp">/profile</span></div><div class="line">  export JAVA_HOME=/usr<span class="regexp">/local/jdk</span><span class="regexp">/ </span></div><div class="line">  export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/<span class="symbol">bin:</span>$PATH </div><div class="line">  export CLASSPATH=.$<span class="symbol">CLASSPATH:</span>$JAVA_HOME/<span class="class"><span class="keyword">lib</span>:$<span class="title">JAVA_HOME</span>/<span class="title">jre</span>/<span class="title">lib</span>:$<span class="title">JAVA_HOME</span>/<span class="title">lib</span>/<span class="title">tools</span>.<span class="title">jar</span></span></div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div></pre></td></tr></table></figure></p>
+<p>0x02 废话说完,我们就开始来尝试在实战中应用,首先,你要先买台<code>vps</code>,亚马逊或者<code>vultr</code>都挺不错的,自己也一直在用,之后装好系统,推荐用<code>ubuntu</code>,此处演示用的是<code>ubuntu 16.04.2</code>,具体的系统安装方法直接一路点点点就好了,全程傻瓜化,大概等个六七分钟,系统初始化完成就可以用ssh连上去了<br><a id="more"></a><br><img src="/img/vps demo.png" alt=""></p>
+<p>0x03 成功连到vps上以后,接着就开始配置jdk,关于jdk的版本选择需要稍微注意下,<code>jdk版本和cobalt strike务必要保持兼容</code>,因为演示的用的是cobalt strike3.8,所以此处就用的jdk1.8,如下,则是jdk在Ubuntu中的具体配置过程<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">wget <span class="symbol">http:</span>/<span class="regexp">/enos.itcollege.ee/</span>~jpoial/allalaadimised/jdk8/jdk-<span class="number">8</span>u152-linux-x64.tar.gz</div><div class="line">tar xf jdk-<span class="number">8</span>u152-linux-x64.tar.gz</div><div class="line">mv jdk1.<span class="number">8.0_152</span>/ <span class="regexp">/usr/local</span><span class="regexp">/</span></div><div class="line">ln -s /usr<span class="regexp">/local/jdk</span>1.<span class="number">8.0_152</span>/ <span class="regexp">/usr/local</span><span class="regexp">/jdk</span></div><div class="line"># vi /etc<span class="regexp">/profile</span></div><div class="line">  export JAVA_HOME=/usr<span class="regexp">/local/jdk</span><span class="regexp">/ </span></div><div class="line">  export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/<span class="symbol">bin:</span>$PATH </div><div class="line">  export CLASSPATH=.$<span class="symbol">CLASSPATH:</span>$JAVA_HOME/<span class="class"><span class="keyword">lib</span>:$<span class="title">JAVA_HOME</span>/<span class="title">jre</span>/<span class="title">lib</span>:$<span class="title">JAVA_HOME</span>/<span class="title">lib</span>/<span class="title">tools</span>.<span class="title">jar</span></span></div><div class="line"><span class="comment"># source /etc/profile</span></div><div class="line"><span class="comment"># java -version</span></div></pre></td></tr></table></figure></p>
 <p><img src="/img/vps demo jdk.png" alt=""></p>
 <p>0x04 搞定vps,再接下来就要去准备域名了,推荐直奔 <code>godaddy</code>,别问我为什么,以后你就会明白的,注册域名时需要注意,别用太扎眼的域名,如,<code>hack,sec,fuck,rootkit,backdoor 之类</code>,别人一眼就看出来了,可以选择注册一些非常常规的,如 <code>shop,book,之类……</code>相对还容易蒙混过关,域名搞定以后,就可以来配置解析了,如下,<code>首先,你要创建一条A记录,A记录务必要指向我们自己团队服务器的ip,而后再创建几条ns记录,此处创建了三个ns记录,实际中还可以更多些,然后再把所有ns记录的A记录指向刚刚创建的A记录,也就是说,让解析可以准确的找到我们的团队服务器位置</code>,此处是最核心的一步,务必要好好理解</p>
 <p><img src="/img/DNS tunnel.png" alt=""></p>
