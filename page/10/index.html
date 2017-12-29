@@ -139,6 +139,46 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2015/04/15/auto-crack-wifi/">
+                利用wifite脚本全自动获取握手包
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2015-04-15</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/wpa-wpa2-crack/">wpa/wpa2 crack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 wifite 脚本仓库地址 [ Kali NetHunter 中可能用的居多 ]:<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/derv82/</span>wifite</div></pre></td></tr></table></figure></p>
+<p>0x02 关于使用wifite脚本的好处<br>&nbsp;&nbsp;&nbsp;&nbsp;你可以不用再像aircrack那样繁琐的手工输入各种命令,而是把一切都交给代码变成一种完全傻瓜式的交互操作,其实,本质上还是在调用的各种外部工具[aircrack]来帮其实现,脚本基于py,关于更多更详细运作细节,请自行看代码,今天的目的主要是教大家怎么快速把它用起来,非常简单,简单到你基本不用懂任何技术就可以随意破解别人的无线密码:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wifite -h    查看wifite的所有帮助选项</span></div></pre></td></tr></table></figure></p>
+<p>下面是破解<code>wpa/wpa2</code>相关的一些选项<br><img src="/img/wpa2.png" alt="破解wpa/wpa2的相关帮助"><br>破解古老的<code>wep(基本已淘汰,反正我是没见过)</code>相关选项<br><img src="/img/wep.png" alt="破解wep的相关帮助"><br>关于<code>wps(一种新的认证协议,并非直接使用密码验证而是用pin码,更多内容,请自行谷歌)</code>的一些相关破解选项<br><img src="/img/pin.png" alt="破解wps的相关帮助"><br><br></p>
+<p>0x03 关于wifite脚本的具体使用过程,如下,插入事先准备好的无线网卡[同样,务必是aircrack所支持的无线网卡芯片才可以],执行下面的命令:<br><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#</span> <span class="comment">wifite</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">wpa</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">mac</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">wpadt</span> <span class="comment">20</span> <span class="literal">-</span><span class="comment">aircrack</span>  <span class="comment">这里暂以破解wpa2为例</span><span class="string">,</span><span class="comment">关于wep和wps的破解请自行尝试</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/wifite.png" alt="运行wifite脚本"></p>
+<p><code>ctrl+c</code> 即可停止扫描,选择你要破解的无线,几个栏目的意思分别是<br><code>无线编号,无线工作信道,加密类型,信号强弱(值越高信号越强),目标是否启用wps,有无客户端在线(s表示同时有多个客户端在线)</code><br><img src="/img/wfcrack.png" alt="选择要攻击的无线热点"></p>
+<p>这里还是用我们自己的wifi来进行测试,选择1,至于之后的事情你就不用管了,它会自动帮你获取握手包文件并保存在当前路径下的hs目录中,如下:<br><img src="/img/crc.png" alt="自动获取握手包"><br><img src="/img/hs.png" alt="握手包位置"></p>
+<p>0x04 具体的hash破解过程<br>&nbsp;&nbsp;&nbsp;&nbsp;最后,还是跟之前一样,直接处理下丢给hashcat或者aircrack都行,因为这里只是为了测试,所以就直接丢到aircrack中跑了,另外,有个需要注意的地方,如果你还是像之前那样直接用wpaclean处理,然后再丢给hashcat,破解速度会瞬间下降将近两万倍,其实,我也没搞懂这到底是为啥(懒得看代码,也没那个必要),所以,我个人还是推荐直接手工用aircrack相对比较靠谱,毕竟,越自动化的东西,往往对现实环境的适应力就越差,问题也就越多,不靠谱都是很正常的<br><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># <span class="selector-tag">aircrack-ng</span> <span class="selector-tag">--bssid</span> <span class="selector-tag">DC</span><span class="selector-pseudo">:EE</span><span class="selector-pseudo">:06</span><span class="selector-pseudo">:96</span><span class="selector-pseudo">:B7</span><span class="selector-pseudo">:B8</span>  <span class="selector-tag">-w</span> ../<span class="selector-tag">pass</span><span class="selector-class">.txt</span> <span class="selector-tag">klionsec_DC-EE-06-96-B7-B8</span><span class="selector-class">.cap</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/ha.png" alt="握手包位置"><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;不可否认的是,脚本一定程度上确实很方便,但它同时显的很呆笨,里面的每个操作并非都是最适合我们的,对于渗透来讲,我们需要知道的往往是更细节的东西,自动化脚本对于还处在学习阶段的我们,并没什么实际的好处,因为它会严重阻碍你自己思考的习惯,总之,个人此脚本并不建议在实战中使用,除了破解时间的问题,实际测试的时候还有一些其它的小问题,还是那句话,建议直接手工aircrack,也许会更灵活点,不过,在kali nethunter中的表现还是不错的</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2015/04/14/aircrack-hascat/">
                 aircrack & hashcat 非字典高速破解目标无线密码
             </a>
@@ -1178,56 +1218,6 @@
 <p>12) 看下pptp服务器所在的ip,然后开始到客户端系统中配置vpn,进行连接测试,这里以win7作为客户端系统,看到vpn已正常连接,在客户端系统中也会多一个ip,其实就是vpn内网ip地址池里设置好的ip段,之后再在win7上ping下vpn服务器的内网ip,看看能不能通,能通基本就没什么问题了<br><img src="/img/client connect.png" alt=""><br><img src="/img/internetal connect.png" alt=""><br><img src="/img/pptp server ip connect.png" alt=""><br><img src="/img/connect succed.png" alt=""><br><img src="/img/connect status.png" alt=""><br><img src="/img/tracert.png" alt=""></p>
 <p>13) 这时,我们在服务器端已经看到有一个vpn客户端在线,pptp的默认端口是1723<br><img src="/img/pptp connect sockest.png" alt=""></p>
 <p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;至此,在windows 2008上的pptp vpn配置基本就全部完成了,可以看到,整个过程并没什么实际的技术含量,在这儿也就不多做说明了,当然vpn对我们的作用也并非仅限于于此,后面在实际的渗透过程中,还有更详细的说明,虽然这次是在2008上配置的,但和在2003,2012上配置pptp几乎没什么区别,基本流程都差不多,最多可能安装的地方不太一样,希望大家能举一反三,多尝试,熟了就好了<br><br></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/08/ubuntu-pptp/">
-                web渗透第一步之信息搜集[ubuntu 14.04LTS 快速安装配置pptp]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-08</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/vpn-config/">vpn config</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 一点安装配置前的准备工作:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">先最小化安装好ubuntu server <span class="number">14.04</span> LTS,除了ssh,尽量不要再勾选其它的系统服务,顺手做些简单的系统安全优化,尽量保证跳板系统的纯净</div></pre></td></tr></table></figure></p>
-<p>0x02 关于vpn的具体用途,在前面已有详细说明,此处不再赘述,下面只会专门说明如何在linux(暂以ubuntu14.04为例)中快速搭建配置pptp<br>1)首先,到Ubuntu中安装好pptp服务端<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install pptpd -y</span></div><div class="line"><span class="comment"># apt-get update</span></div><div class="line"><span class="comment"># echo $?</span></div></pre></td></tr></table></figure></p>
-<p>2)服务端安装完成后,我们就可以开始配置pptpd了,先看下本机ip[<code>实际中应该是你自己vps的公网ip</code>],因为等会儿要把这个写到pptp主配置文件中<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ifconfig -a</span></div></pre></td></tr></table></figure></p>
-<p>3)编辑pptpd 主配置文件,设置好本机ip和vpn 的内网iP地址池(分配vpn的内网ip要用)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/pptpd.conf</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">localip <span class="number">192.168</span>.<span class="number">3.185</span>        本机ip,实际用的vps,那这里就写vps的公网ip</div><div class="line">remoteip <span class="number">172.16</span>.<span class="number">110.1</span>-<span class="number">20</span>     设置vpn的内网ip地址池</div></pre></td></tr></table></figure>
-<p>4)编辑pptpd的dns配置文件,设置好用于解析的dns服务器ip,推荐用谷歌的8.8.8.8<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/ppp/pptpd-options</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ms-dns <span class="number">8.8</span>.<span class="number">8.8</span></div><div class="line">ms-dns <span class="number">114.114</span>.<span class="number">114.114</span></div></pre></td></tr></table></figure>
-<p>5) 添加系统用户,没错,在linux中pptp也直接用的是系统用户,作为我们的vpn登录账户[不过,大多数可能都是nologin的]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># useradd xlion -s /usr/sbin/nologin</span></div><div class="line"><span class="comment"># passwd  xlion</span></div></pre></td></tr></table></figure></p>
-<p>6) 把该账号密码添加到对应的pptp配置文件中,格式: username  pptpd password *,如下:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/ppp/chap-secrets</span></div><div class="line">xlion  pptpd admin *</div></pre></td></tr></table></figure></p>
-<p>7) 重启pptpd服务,先看下服务到底有没有起来,不用急着连<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># /etc/init.d/pptpd restart</span></div><div class="line"><span class="comment"># netstat -tulnp | grep "1723"</span></div></pre></td></tr></table></figure></p>
-<p>8) 编辑sysctl.conf 文件,开启系统的路由转发功能,如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vi /etc/sysctl.conf  </span></div><div class="line">net.ipv4.ip_forward=<span class="number">1</span> 将ip_forward 值改为 <span class="number">1</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># sysctl -p  重新读取sysctl配置</span></div></pre></td></tr></table></figure>
-<p>9) 如果你已经安装并且开启了iptables,可以顺手把下面的规则加进去,否则,你可能会发现,vpn确实能正常连上,但死活上不了外网,其实原因很简单,你需要在vpn的这个内网段上做下nat,具体如下,这里的ip段是vpn的内网ip段,网卡接口是外网卡接口,意思就是在这个网卡上启用nat<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install iptables</span></div><div class="line"><span class="comment"># iptables -t nat -A POSTROUTING -s 172.16.110.0/24 -o  eth0 -j MASQUERADE</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">设置下mtu,正常情况下<span class="number">1200</span>即可,防止包过大,可以不用设置</div><div class="line"><span class="comment"># iptables -A FORWARD -s 172.16.110.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200  </span></div><div class="line"><span class="comment"># iptables-save &gt; /etc/iptables-rules   </span></div><div class="line"><span class="comment"># /etc/init.d/pptpd restart</span></div></pre></td></tr></table></figure>
-<p>10) 让pptpd 服务随系统自启动<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update-rc.d pptpd enable</span></div></pre></td></tr></table></figure></p>
-<p>11) 开始配置客户端,进行连接测试,有时候,你可能会遇到这样的情况,虽然pptp客户端是连接成功了,但无法正常上网,ping的结果显示超时,绝大多数原因都是防火墙在搞鬼,你可以利用下面的命令直接把防火墙关掉,或者允许1723端口能正常进出应该就没问题了,至此,在ubuntu 14.04 LTS中搭建配置pptpd基本就算完成了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ufw status</span></div><div class="line"><span class="comment"># ufw disable  		停止防火墙并删除自启动</span></div><div class="line"><span class="comment"># ufw allow 1723    	允许外部的1723端口访问</span></div><div class="line"><span class="comment"># ufw delete allow 1723	禁止外部访问本机的1723端口</span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/pptp server ubuntu.png" alt=""><br><img src="/img/ubuntu pptpd res.png" alt=""><br><img src="/img/ubuntu pptpd res ping .png" alt=""><br><img src="/img/ubuntu pptpd tracert.png" alt=""><br></p>
-<p>12) 是不是觉得手敲命令太枯燥了呢,把它写成shell脚本吧,其实非常简单,稍微把命令堆砌调整一下即可,稍后会把自己的脚本都提供给大家,可根据自己的实际需求再稍微改下<br><br></p>
-<p>一些小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;通观全文并没什么实际的技术含量,安装配置和win下基本也没有太大差别,只不过一个是靠图形界面,另一个是靠改配置文件来完成的,完全是看个人习惯,可能我自己比较习惯linux,所以更喜欢在linux中配置pptp,如果你觉得windows比较方便,那你就直接在windows上配置就好了,前提是要严格遵循前面所提到的一些关于系统的各种安全策略配置,不同的系统平台策略设置可能不太一样,后面会有专门的篇幅来讲解linux系统的安全部署,这里只要暂时能满足把服务先跑起来能用上即可,关于安全部署方面的东西,后面再详细说,因为你vpn宿主系统的安全也会直接关系到你自己的安全,大家可能在这上面还要多花点儿心思才是,也不早了,睡觉,安……！</p>
-<p><br></p>
 
         </div>
     

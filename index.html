@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/12/28/cobalt-strike-dns/">
+                关于对Cobalt Strike DNS隧道的理解与实战
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-28</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/DNS隧道/">DNS隧道</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 先稍微理解下基于<code>dns beacon的大致通信过程</code>,其实,非常非常简单,前提是你对dns的解析过程早已经烂透于心,不熟悉的朋友可以先去参考前段时间写的 <a href="https://klionsec.github.io/2017/12/11/Dns-tips/">[DNS 深度理解 一] </a>,把基础打扎实了,再回过头来理解这些东西就易如反掌了<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">&gt; beacon shell会向指定的域名发起正常的dns查询</span></div><div class="line">  -<span class="ruby">&gt; 中间依然是经过一些列的常规dns迭代及递归查询,大致过程就是一直从根开始找,直到找到我们自己的ns服务器,最后再定位到团队服务器ip,仅此而已</span></div><div class="line">    -<span class="ruby">&gt; 也就是说,第一次通信可能会慢点,后续就会稍微快些,不过说实话,dns再快也快不到哪里去,毕竟,我们要的是足够的隐蔽,而不一味追求速度,不然就容易露点</span></div></pre></td></tr></table></figure></p>
+<p>0x02 废话说完,我们就开始来尝试在实战中应用,首先,你要先买台<code>vps</code>,亚马逊或者<code>vultr</code>都挺不错的,自己也一直在用,之后装好系统,推荐用<code>ubuntu</code>,此处演示用的是<code>ubuntu 16.04.2</code>,具体的系统安装方法直接一路点点点就好了,全程傻瓜化,大概等个六七分钟,系统初始化完成就可以用ssh连上去了</p>
+<p><img src="/img/vps demo.png" alt=""><br>
+        </div>
+        <a href="/2017/12/28/cobalt-strike-dns/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/12/26/powershell-pic-execute/">
                 通过图片免杀执行远程powershell代码
             </a>
@@ -172,37 +205,6 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/12/25/modify-hacked/">
-                用shell对指定站点进行简单的实时入侵预警
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-12-25</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/webhack/">webhack</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Real-time monitoring of Web Directory script</span></div><div class="line"></div><div class="line">web_dir=<span class="string">"/usr/local/nginx/html/bwapp/bWAPP/"</span></div><div class="line">oldnum=`wc -l web_history_db.log | awk -F <span class="string">" "</span> <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">newnum=`find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | wc -l`</div><div class="line">md5num=`md5sum -c web_history_db.log | grep -i FAILED | wc -l`</div><div class="line"></div><div class="line"><span class="comment"># 先对指定的站点目录创建指纹库</span></div><div class="line">[ ! -f web_history_db.log  ] &amp;&amp; &#123;</div><div class="line">    find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | xargs md5sum &gt; ./web_history_db.log</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 和新文件对比指纹,如果发现不对,就马上发信通知,并带上被改动的文件路径一起</span></div><div class="line">[ <span class="variable">$md5num</span> -ne 0 ] &amp;&amp; &#123;</div><div class="line">    md5sum -c web_history_db.log | grep -i <span class="string">"FAILED"</span> | awk -F <span class="string">":"</span> <span class="string">'&#123;print $1&#125;'</span> &gt; web_mod_`date +%Y-%m-%d-%H-%M-%S`.web.log</div><div class="line">    log_file=`ls -l *.web.log | head -n 1 | awk -F <span class="string">" "</span> <span class="string">'&#123;print $9&#125;'</span>`</div><div class="line">    mail -s <span class="string">"Your website may be hacked, Please check it as soon as possible"</span> klion@protonmail.com &lt; <span class="variable">$log_file</span>;sleep 5</div><div class="line">    rm -fr <span class="variable">$log_file</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 对比文件个数,发现不对,同样是立马发信,因为有可能要同时监控很多个站点目录,所以就顺便把具体的站点路径也带上了</span></div><div class="line">[ <span class="variable">$oldnum</span> -ne <span class="variable">$newnum</span>  ] &amp;&amp; &#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"website directory is <span class="variable">$web_dir</span>"</span> | mail -s <span class="string">"web directory have new file created "</span> klion@protonmail.com ;sleep 5</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-        </div>
-        <a href="/2017/12/25/modify-hacked/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
             <a href="/2017/12/25/modify-webshell/">
                 实时精准侦测站点目录中的各类 webshell
             </a>
@@ -225,6 +227,37 @@
             <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Delete webshell auto </span></div><div class="line"></div><div class="line">webshell_log=<span class="string">"/var/log/webshell.log"</span></div><div class="line">upload_shell=<span class="string">"/var/log/modify.tmp"</span></div><div class="line"></div><div class="line"><span class="comment"># 只要检测到一有新事件发生就立马打包上传检测</span></div><div class="line">[ -s <span class="variable">$webshell_log</span> ] &amp;&amp;&#123;</div><div class="line">    awk -F <span class="string">" "</span> <span class="string">'&#123;print $3&#125;'</span> <span class="variable">$webshell_log</span> |grep -E <span class="string">".php$"</span>| sort -u &gt; <span class="variable">$upload_shell</span></div><div class="line">    cat <span class="variable">$upload_shell</span> |xargs zip ./maybeshell.zip</div><div class="line">    <span class="built_in">echo</span> `curl https://scanner.baidu.com/enqueue -F archive=@maybeshell.zip` | mail -s <span class="string">"webshell detect url api"</span> klion@protonmail.com </div><div class="line">    sleep 5</div><div class="line">    &gt; <span class="variable">$webshell_log</span> &amp;&amp; &gt; <span class="variable">$upload_shell</span> &amp;&amp; rm -fr ./maybeshell.zip</div><div class="line">&#125;</div></pre></td></tr></table></figure>
         </div>
         <a href="/2017/12/25/modify-webshell/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/12/25/modify-hacked/">
+                用shell对指定站点进行简单的实时入侵预警
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-25</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/webhack/">webhack</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># author by klion</span></div><div class="line"><span class="comment"># 2017.12.25</span></div><div class="line"><span class="comment"># Real-time monitoring of Web Directory script</span></div><div class="line"></div><div class="line">web_dir=<span class="string">"/usr/local/nginx/html/bwapp/bWAPP/"</span></div><div class="line">oldnum=`wc -l web_history_db.log | awk -F <span class="string">" "</span> <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">newnum=`find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | wc -l`</div><div class="line">md5num=`md5sum -c web_history_db.log | grep -i FAILED | wc -l`</div><div class="line"></div><div class="line"><span class="comment"># 先对指定的站点目录创建指纹库</span></div><div class="line">[ ! -f web_history_db.log  ] &amp;&amp; &#123;</div><div class="line">    find <span class="variable">$web_dir</span> -<span class="built_in">type</span> f | xargs md5sum &gt; ./web_history_db.log</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 和新文件对比指纹,如果发现不对,就马上发信通知,并带上被改动的文件路径一起</span></div><div class="line">[ <span class="variable">$md5num</span> -ne 0 ] &amp;&amp; &#123;</div><div class="line">    md5sum -c web_history_db.log | grep -i <span class="string">"FAILED"</span> | awk -F <span class="string">":"</span> <span class="string">'&#123;print $1&#125;'</span> &gt; web_mod_`date +%Y-%m-%d-%H-%M-%S`.web.log</div><div class="line">    log_file=`ls -l *.web.log | head -n 1 | awk -F <span class="string">" "</span> <span class="string">'&#123;print $9&#125;'</span>`</div><div class="line">    mail -s <span class="string">"Your website may be hacked, Please check it as soon as possible"</span> klion@protonmail.com &lt; <span class="variable">$log_file</span>;sleep 5</div><div class="line">    rm -fr <span class="variable">$log_file</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># 对比文件个数,发现不对,同样是立马发信,因为有可能要同时监控很多个站点目录,所以就顺便把具体的站点路径也带上了</span></div><div class="line">[ <span class="variable">$oldnum</span> -ne <span class="variable">$newnum</span>  ] &amp;&amp; &#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"website directory is <span class="variable">$web_dir</span>"</span> | mail -s <span class="string">"web directory have new file created "</span> klion@protonmail.com ;sleep 5</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/12/25/modify-hacked/" class="read-more">Read More</a>
     
 
 </div>
@@ -593,40 +626,6 @@
 <p>务必以一个伪用户身份来运行mysql服务,防止别人利用mysql进行提权,后面还会再细说,另外,web服务和数据库服务严禁用同一个系统用户,这样做主要是为了防止入侵者直接通过sql语句往网站目录中写webshell<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> useradd -s /sbin/nologin -M mysql</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/22/mysqlconfigsec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/20/nginx-sec/">
-                从 0 开始构建一个 "固若金汤" 的nginx
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-20</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/nginxsec/">nginxsec</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 关于 nginx<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">配置灵活,简单,运行时占用系统资源较少,功能模块繁多,可扩展性极强,基于 <span class="keyword">C</span> ,整个工具大小<span class="number">1</span>M左右</div><div class="line">支持高并发,仅限于全部为纯静态文件的情况下,因为最终还要取决于后端 [ 脚本和数据库 ] 的实际处理速度</div><div class="line">默认 nginx 会自动选择最佳的网络<span class="keyword">I</span>/<span class="keyword">O</span>模型,和nginx不同的是,apache默认就会使用select模型,效率较低</div><div class="line">上面这些话的意思也就是说,你的<span class="keyword">C</span>要牛逼到一定的程度,不然,想做深度二次开发基本是扯淡,真心挺佩服毛子的</div><div class="line">更多说明,请直接参考官方文档...</div></pre></td></tr></table></figure></p>
-<p>0x02 正确理解 linux 对文件,目录,<code>[ 读 写 执行 ]</code> 权限的真正含义,这东西不能靠干说,因为根本理解不扎实,大家可以自己在系统中创建两个普通用户,不停地切换目录文件权限,以深入仔细体会,后面网站目录权限设置要用到这些基础,如果连这些都搞不清,想灵活应用就难了,耐心点,等透彻理解之后,你就会发现真TM简单 </p>
-<p>目录 <code>读[r / 4]</code> <code>写[w / 2]</code> <code>执行[x / 1]</code><br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">读:   <span class="keyword">ls</span> , dir <span class="string">...</span> 			表示可查看该目录下的文件列表</div><div class="line">写:   rm , mv, cp, mkdir ,touch <span class="string">...</span>	表示可在该目录下创建,删除,修改文件或者子目录,不过在这之前,一定要先有执行权限,不然进都进不去,又怎么写呢</div><div class="line">执行: <span class="keyword">cd</span>  <span class="string">...</span>				表示可进入该目录</div></pre></td></tr></table></figure></p>
-<p>文件 <code>读[r / 4]</code> <code>写[w / 2]</code> <code>执行[x / 1]</code><br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">读:	cat , tac , more , less ,head , tail <span class="string">...</span> 表示可查看该文件中的内容</div><div class="line">写:	vi , nano , <span class="keyword">echo</span> <span class="string">...</span>			 只表示可对文件中的 内容 进行增删改,删除文件还要取决于当前用户对该文件所在目录是否有写权限</div><div class="line">执行:	可执行文件,shell脚本<span class="string">...</span>			 在linux中任何文件都可以有执行权限,但只有可执行文件和脚本才能真正执行</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/20/nginx-sec/" class="read-more">Read More</a>
     
 
 </div>
