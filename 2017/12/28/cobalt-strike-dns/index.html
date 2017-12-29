@@ -171,7 +171,7 @@
 <p><img src="/img/DNS tunnel payload.png" alt=""></p>
 <p>此处是用于解析上述A记录的ns服务器域名,把我们之前创建的那三个ns域名全部加进去,用逗号隔开即可</p>
 <p><img src="/img/DNS tunnel payload ns.png" alt=""></p>
-<p>创建payload,丢到目标机器上执行,稍微等一下,即可看到目标成功上线,如下</p>
+<p>最后,再基于此<code>listener</code>创建payload,丢到目标机器上执行,稍微等一下,即可看到目标成功上线,如下</p>
 <p><img src="/img/DNS tunnel payload exe res online.png" alt=""></p>
 <p>此时,再回到目标机器上看看都发生了什么,首先,是目标机器不停发送针对我们域名的dns请求,因为它最终要定位到团队服务器把封装在里面的数据传给它</p>
 <p><img src="/img/DNS tunnel payload wirehsark.png" alt=""></p>
