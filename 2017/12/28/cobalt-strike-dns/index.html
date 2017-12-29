@@ -175,7 +175,7 @@
 <p><img src="/img/DNS tunnel payload exe res online.png" alt=""></p>
 <p>此时,再回到目标机器上看看都发生了什么,首先,是目标机器不停发送针对我们域名的dns请求,因为它最终要定位到团队服务器把封装在里面的数据传给它</p>
 <p><img src="/img/DNS tunnel payload wirehsark.png" alt=""></p>
-<p>再来看进程端口,我们发现只有进程,似乎没端口,<code>其实并不是每端口,而是在睡眠我们暂时看不见而已</code></p>
+<p>再来看进程端口,我们发现只有进程,似乎没端口,<code>其实并不是没端口,而是在睡眠,我们暂时看不见而已</code></p>
 <p><img src="/img/DNS tunnel payload exe res.png" alt=""></p>
 <p><br><br>后话:<br>&nbsp;&nbsp;&nbsp;&nbsp;俗称 <code>域名上线</code>,只不过底层用的是dns协议,而非http,https,或者udp…使用dns的好处,想必就不用再多说了,大家应该早都熟透了,域名相对于ip有更强的隐蔽性,而且它相对比较固定,只要没被发现,解析到的ip是可以随便换的,也就是说,不用担心你的权限再因为这样的原因掉了,这样也给了我们更多的灵活性,另外,cobalt strike也非常轻量,在目标机器上几乎是感觉不到的,在你自己团队没有很强的RAT能力时,Cobalt Strike将会是个非常不错的替代品,因为一些原因,没法说的很仔细,大家如果有问题,可以随时在公众号中私信交流 ^_^</p>
 
