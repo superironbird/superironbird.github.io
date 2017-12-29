@@ -165,7 +165,7 @@
 <p><img src="/img/vps demo jdk.png" alt=""></p>
 <p>0x04 搞定vps,再接下来就要去准备域名了,推荐直奔 <code>godaddy</code>,别问我为什么,以后你就会明白的,注册域名时需要注意,别用太扎眼的域名,如,<code>hack,sec,fuck,rootkit,backdoor 之类</code>,别人一眼就看出来了,可以选择注册一些非常常规的,如 <code>shop,book,之类……</code>相对还容易蒙混过关,域名搞定以后,就可以来配置解析了,如下,<code>首先,你要创建一条A记录,A记录务必要指向我们自己团队服务器的ip,而后再创建几条ns记录,此处创建了三个ns记录,实际中还可以更多些,然后再把所有ns记录的A记录指向刚刚创建的A记录,也就是说,让解析可以准确的找到我们的团队服务器位置</code>,此处是最核心的一步,务必要好好理解</p>
 <p><img src="/img/DNS tunnel.png" alt=""></p>
-<p>0x05 域名解析配置完成后,我们就来简单测试下,看看我们的ns最后是不是被解析到了之前指定的A记录上,如果解析不到,也就意味着你的payload回连时就定位不到团队服务器,后果就是无法正常上线,此处务必成功,再往后继续,否则都是徒劳</p>
+<p>0x05 域名解析配置完成后,我们就用 <code>dig +trace 域名</code>来简单跟踪下域名解析过程,看看我们的ns最后是不是被解析到了之前指定的A记录上,如果解析不到,也就意味着你的payload回连时就定位不到团队服务器,后果就是无法正常上线,此处务必成功,再往后继续,否则都是徒劳</p>
 <p><img src="/img/DNS beacon ns dig.png" alt=""></p>
 <p>0x06 一切准备就绪,在本地用cobalt strike客户端连到我们的团队服务器上,创建监听器和payload,注意,这里的<code>payload要选择beacon_dns,host要用A记录的域名,端口随意</code>,最好用一些穿透性比较强的端口</p>
 <p><img src="/img/DNS tunnel payload.png" alt=""></p>
