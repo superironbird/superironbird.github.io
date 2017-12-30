@@ -159,7 +159,7 @@
         
 
         <!-- Post Content -->
-        <p>0x01 关于 beacon 强大的派生功能<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">简单理解,所谓的`派生`,即仅仅通过一个beacon shell就可以再孵化出n个shell,而shell和shell之间相当于是以一种级联的形式存在的</div><div class="line">而团队服务器则位于这些节点的根节点位置,连接这些节点的则是`beacon隧道`自己,此功能可有效提高一个渗透团队成员间的协同作战能力,共享渗透资源</div><div class="line">当然,这也势必在后期会形成一个非常复杂的渗透网络,不过这也正好方便大家同时多点切入,说白点儿,其实就类似于一个大型的分布式入侵系统</div><div class="line">而这一切的根本保证就是我们在公网中的各个团队服务器节点,只要团队服务器节点不挂,权限就不太容易丢,除非活不干净被人主动发现了</div><div class="line">因为其内部涉及到的细节还非常深,也不是一两句话能说清楚的,作为使用者来讲,我们只需要理解大致的工作流程即可</div><div class="line">如果你自己真的有非常强的 RAT &amp; 逆向 &amp; 协议分析 能力,可以再继续深入研究,始终认为,cobalt strike 是一个非常值得深入学习的优秀样本</div><div class="line">如果真正把它搞通透了,基础协议,这一块对你来讲,基本就不再有盲区,废话不多讲,我们还是在实战中多体会吧...</div></pre></td></tr></table></figure></p>
+        <p>0x01 关于 beacon 强大的派生功能<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">简单理解,所谓的`派生`,即仅仅通过一个beacon shell就可以再孵化出n个shell,shell与shell之间相当于以一种级联的形式存在的</div><div class="line">而团队服务器则位于这些节点的根节点位置,连接这些节点的则是`beacon隧道`自己,此功能可有效提高一个渗透团队成员间的协同作战能力,快速共享渗透资源</div><div class="line">当然,这也势必会在后期形成一个非常复杂的`渗透网络`,不过这也正好方便大家同时多点切入,说白点儿,其实就类似于一个大型的分布式入侵系统</div><div class="line">而这一切的根本保证就是我们在公网中的各个团队服务器节点,只要团队服务器节点不挂,权限就不太容易丢,除非活不干净,被人主动发现了</div><div class="line">因为其内部涉及到的细节还非常深,也绝不是一两句话就能说清楚的,但作为使用者,我们只需理解其大致的工作流程即可</div><div class="line">如果你自己真的有非常强的 RAT &amp; 逆向 &amp; 协议分析 能力,可以再继续深入研究,始终认为,cobalt strike 确实是一个非常值得深入学习的优秀样本</div><div class="line">如果能真正把它搞通透了,基础协议这一块对你来讲,基本就不再有盲区,废话不多说,我们还是在实战中多多体会吧...</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p>0x02 此处,暂以已获取一个管理员权限的beacon shell开始,<code>假如你同事跟你说,他需要你那个目标的shell,但又不想直接连到你的团队服务器上,最简便的方式就是,让他直接在他本地起一个团队服务器创建个监听器,然后你再用你的cobalt strike客户端连到他的团队服务器上,最后,把他要那个目标的shell派生到他指定的那个监听器上即可</code>,也就说,我们要实现的最终效果就是,直接把公网某团队服务器的beacon shell派生到本地团队服务器的指定监听器上,理解基本思路后,我们就开始着手干</p>
 <p>这是公网团队服务器里弹回的一个正常的beacon shell,注意,我们后续的所有派生操作都会基于此shell</p>
@@ -174,7 +174,7 @@
 <p>0x03 cobalt strike 功能虽然强悍,但可用于内网渗透的模块确实不太多,此时,如果你希望用熟悉的meterpreter来继续渗透内网的话,也非常简单,依然是用cobalt strike的派生功能,只需要先在msf上创建好监听,之后再回到公网团队服务器的cobalt strike上创建一个外部监听器,注意,它俩使用的协议要务必相同,然后继续右键<code>spawn</code>,选中外部监听器,稍等一下,你就会发现meterpreter被正常弹回</p>
 <p>先在msf上创建好监听器</p>
 <p><img src="/img/spawn meterpreter.png" alt=""></p>
-<p>没问题之后,再回到公网团队服务器上创建一个外部监听器,注意,这里使用最普通的tcp,两边<code>[msf监听器和cobalt strike的外部监听器]</code>的协议务必要保持一致</p>
+<p>没问题之后,再回到公网团队服务器上创建一个<code>外部监听器</code>,注意,这里使用最普通的tcp,两边<code>[msf监听器和cobalt strike的外部监听器]</code>协议务必要保持一致</p>
 <p><img src="/img/spawn meterpreter foreign.png" alt=""></p>
 <p><img src="/img/spawn meterpreter foreign choose.png" alt=""></p>
 <p>选中<code>spawn</code>,接下来就会看到熟悉的meterpreter</p>
