@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/10/26/NetRipper/">
+                截获内存中的各类https明文密码
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-10-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/NetRipper/">NetRipper</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 利用 NetRipper 抓取内存中的https明文密码</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;优点,可以在一个相对较低的系统权限下截获加密的明文,工具已经出了有些年头了,好在作者维护一直比较勤奋,才活到了现在,它支持截获像putty,winscp,mssql,chrome,firefox,outlook中的明文密码,同时也提供了很多类型的版本,如,win cmd下的exe,msf模块,ps脚本,实战中更推荐大家直接用powershell,更多详情请自行参考其github <a href="https://github.com/NytroRST/NetRipper" target="_blank" rel="external">https://github.com/NytroRST/NetRipper</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell -<span class="built_in">exec</span> bypass</span></div><div class="line"><span class="meta">PS&gt;</span><span class="bash"> Import-Module .\Invoke-NetRipper.ps1</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2017/10/26/NetRipper/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/10/25/privilege-local/">
                 win & linux 本地提权脑图
             </a>
@@ -596,40 +629,6 @@
 <p>在win7上打开Proxifier根据上面监听的端口建立正常的socks代理即可<br>
         </div>
         <a href="/2017/08/05/ew-tunnel/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/08/02/navicat-dump/">
-                利用 Navicat 自带的http隧道进行脱裤
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-08-02</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/dump/">dump</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 基本环境说明:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">目标边界机器<span class="selector-tag">lnmp01</span>的域名及内网<span class="selector-tag">ip</span>: <span class="selector-tag">www</span><span class="selector-class">.rootkit</span><span class="selector-class">.org</span> 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.167</span></div><div class="line">目标内网中数据库<span class="selector-attr">[暂以mysql为例]</span>服务器<span class="selector-attr">[win7]</span>的内网<span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.32</span><span class="selector-class">.168</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">很明显,l<span class="symbol">nmp01</span>和wi<span class="symbol">n7</span>在目标内网是可以互通的</div></pre></td></tr></table></figure>
-<p>0x02 实际脱裤可能会面临的一些困境:<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">想脱数据,但目标数据库不允许root用户外连,可能的原因多种多样,一般只grant到指定的ip才能连</div><div class="line">目标站库分离[再正常不过],数据库在内网的某台机器上</div><div class="line">即使没分离,当前的数据库用户又不允许外联,另外,由于当前数据库用户权限不够,也没法自己开启外联</div><div class="line">即使是root,不知道什么乱七八糟的原因,没法grant允许root外连...</div><div class="line">边界防火墙阻断外部ip对内部数据库端口[假设为<span class="number">3306</span>]的访问等等....</div><div class="line">还在为脱裤烦恼吗,嘿嘿……navicat也许可以帮到你</div></pre></td></tr></table></figure></p>
-<p>0x03 我们最终要实现的效果:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">通过l<span class="symbol">nmp01</span>这台机器,脱取内网wi<span class="symbol">n7</span>机器上的所有数据</div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/08/02/navicat-dump/" class="read-more">Read More</a>
     
 
 </div>

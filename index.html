@@ -139,18 +139,18 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2017/12/28/cobalt-strike-spawn/">
-                灵活使用 cobalt strike 的 `spawn` 功能
+            <a href="/2017/12/31/after-roding/">
+                关于接下来的路
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2017-12-28</span>
+                <span class="date">2017-12-31</span>
             
             
             
                 <span class="category">
-                    <a href="/categories/spawn/">spawn</a>
+                    <a href="/categories/接下来的路/">接下来的路</a>
                 </span>
             
         </div>
@@ -158,9 +158,12 @@
 
     
         <div class="content">
-            <p>0x01 关于 beacon 强大的派生功能<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">简单理解,所谓的`派生`,即仅仅通过一个beacon shell就可以再孵化出n个shell,shell与shell之间相当于以一种级联的形式存在的</div><div class="line">而团队服务器则位于这些节点的根节点位置,连接这些节点的则是`beacon隧道`自己,此功能可有效提高一个渗透团队成员间的协同作战能力,快速共享渗透资源</div><div class="line">当然,这也势必会在后期形成一个非常复杂的`渗透网络`,不过这也正好方便大家同时多点切入,说白点儿,其实就类似于一个大型的分布式入侵系统</div><div class="line">而这一切的根本保证就是我们在公网中的各个团队服务器节点,只要团队服务器节点不挂,权限就不太容易丢,除非活不干净,被人主动发现了</div><div class="line">因为其内部涉及到的细节还非常深,也绝不是一两句话就能说清楚的,但作为使用者,我们只需理解其大致的工作流程即可</div><div class="line">如果你自己真的有非常强的 RAT &amp; 逆向 &amp; 协议分析 能力,可以再继续深入研究,始终认为,cobalt strike 确实是一个非常值得深入学习的优秀样本</div><div class="line">如果能真正把它搞通透了,基础协议这一块对你来讲,基本就不再有盲区,废话不多说,我们还是在实战中多多体会吧...</div></pre></td></tr></table></figure></p>
+            <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">首先,在这里先跟兄弟们道个歉,可能从今天开始,我就要独自完成一整套稍微系统的内网渗透教程</div><div class="line">并准备整理出书,所以,博客的更新不得不先暂停一段时间,说实话,这也是思考很久之后的结果</div></pre></td></tr></table></figure>
+<p>主要是考虑到以下原因<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一、因为博客的内容过于松散杂乱,并不适合系统学习</div></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">二、随着文章量越来越大,加上自己的不断成长总是不知不觉会发现之前文章中的很多不完美的地方</div><div class="line">   但苦于个人精力有限并不是每个地方都能看到,所以现在才想全部重新系统的开始,对大家来讲,这无疑是件好事,当然,质量肯定会比之前那些要好很多很多</div></pre></td></tr></table></figure>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">三、另外,也是想通过这种方式来时刻督促着自己学习和巩固,因为这对自己本身就是一种比较大的挑战</div><div class="line">   `你自己会` 和 `你能把别人清清楚楚的讲会` 是完全两个不同的级别,有些朋友可能深有体会</div></pre></td></tr></table></figure>
         </div>
-        <a href="/2017/12/28/cobalt-strike-spawn/" class="read-more">Read More</a>
+        <a href="/2017/12/31/after-roding/" class="read-more">Read More</a>
     
 
 </div>
@@ -193,6 +196,37 @@
 <p>0x02 废话说完,我们就开始来尝试在实战中应用,首先,你要先买台<code>vps</code>,亚马逊或者<code>vultr</code>都挺不错的,自己也一直在用,之后装好系统,推荐用<code>ubuntu</code>,此处演示用的是<code>ubuntu 16.04.2</code>,具体的系统安装方法直接一路点点点就好了,全程傻瓜化,大概等个六七分钟,待系统初始化完成就可以用ssh连上去了<br>
         </div>
         <a href="/2017/12/28/cobalt-strike-dns/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2017/12/28/cobalt-strike-spawn/">
+                灵活使用 cobalt strike 的 `spawn` 功能
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-12-28</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/spawn/">spawn</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 关于 beacon 强大的派生功能<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">简单理解,所谓的`派生`,即仅仅通过一个beacon shell就可以再孵化出n个shell,shell与shell之间相当于以一种级联的形式存在的</div><div class="line">而团队服务器则位于这些节点的根节点位置,连接这些节点的则是`beacon隧道`自己,此功能可有效提高一个渗透团队成员间的协同作战能力,快速共享渗透资源</div><div class="line">当然,这也势必会在后期形成一个非常复杂的`渗透网络`,不过这也正好方便大家同时多点切入,说白点儿,其实就类似于一个大型的分布式入侵系统</div><div class="line">而这一切的根本保证就是我们在公网中的各个团队服务器节点,只要团队服务器节点不挂,权限就不太容易丢,除非活不干净,被人主动发现了</div><div class="line">因为其内部涉及到的细节还非常深,也绝不是一两句话就能说清楚的,但作为使用者,我们只需理解其大致的工作流程即可</div><div class="line">如果你自己真的有非常强的 RAT &amp; 逆向 &amp; 协议分析 能力,可以再继续深入研究,始终认为,cobalt strike 确实是一个非常值得深入学习的优秀样本</div><div class="line">如果能真正把它搞通透了,基础协议这一块对你来讲,基本就不再有盲区,废话不多说,我们还是在实战中多多体会吧...</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/12/28/cobalt-strike-spawn/" class="read-more">Read More</a>
     
 
 </div>
@@ -588,39 +622,6 @@
 <p>0x03 直接到源码中去<code>改掉apache的详细版本信息</code>,跟部署nginx一样,尽可能地扰乱入侵者的判断,这里就把它模拟成IIS 7.5,实际系统应为win server 2008r2<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># vi <span class="meta-keyword">include</span>/ap_release.h</span></div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/11/26/apache-sec/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/11/23/phpsec/">
-                php-fpm.conf & php.ini 安全优化实践
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-11-23</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/phpsec/">phpsec</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>0x01 关于 php<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">其历史相对已经比较久远了,这里也就不废话了,属弱类型中一种解释型语言</div><div class="line">除了web开发以及写些简单的exp,暂未发现其它牛逼用途,暂以中小型web站点开发为主</div><div class="line">另外,低版本的php自身漏洞就比较多,建议,从现在开始就在新项目中使用php <span class="number">5.6</span><span class="selector-class">.x</span> 往后的版本</div><div class="line">好在官方维护的一直比较勤奋,主次版本都迭代的比较快,最新版已经到<span class="number">7.2</span>.<span class="number">0</span></div><div class="line">哼哼……是,<span class="string">'最好的语言'</span>... :)</div></pre></td></tr></table></figure></p>
-<p>0x02 此次演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6</span><span class="selector-class">.8</span> <span class="selector-tag">x86_64</span>   最小化,带基础库安装 	<span class="selector-tag">eth0</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span> <span class="selector-tag">eth1</span>: 192<span class="selector-class">.168</span><span class="selector-class">.4</span><span class="selector-class">.14</span>  <span class="selector-tag">eth2</span>: 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.14</span></div><div class="line"><span class="selector-tag">php-5</span><span class="selector-class">.6</span><span class="selector-class">.32</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span>  官方提供的源码包</div></pre></td></tr></table></figure></p>
-<p>0x03 下载 <code>php-5.6.32.tar.gz</code>,并安装好php所需的各种依赖库<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> yum install epel-release -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install -y zlib-devel libxml2-devel freetype-devel </span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install -y libjpeg-devel  libpng-devel gd-devel curl-devel libxslt-devel</span></div><div class="line"><span class="meta">#</span><span class="bash"> yum install openssl openssl-devel libmcrypt libmcrypt-devel mcrypt mhash mhash-devel -y</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf libiconv-1.15.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> libiconv-1.15</span></div><div class="line"><span class="meta">#</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv-1.15 &amp;&amp; make &amp;&amp; make install</span></div><div class="line"><span class="meta">#</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/libiconv-1.15/ /usr/<span class="built_in">local</span>/libiconv</span></div><div class="line"><span class="meta">#</span><span class="bash"> ll /usr/<span class="built_in">local</span>/libiconv/</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/11/23/phpsec/" class="read-more">Read More</a>
     
 
 </div>

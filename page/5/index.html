@@ -139,6 +139,39 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/07/07/nosql-memcached/">
+                针对 Memcached 的攻防基础
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-07-07</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/memcached/">memcached</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 一些常见的 <code>Nosql 数据库</code><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">memcached 基于纯内存缓存,也就是说,服务只要一重启所有数据就会丢失,但它操作简单,易于上手,相对高效</div><div class="line">redis     既可以基于内存缓存亦可基于硬盘持久存储,另外,它所支持的数据类型相对较多,功能也较完善</div><div class="line">MongDB </div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>此次演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6_x86_64</span> <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.65</span></div><div class="line"><span class="selector-tag">OldLnmp</span>        <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.42</span></div><div class="line"><span class="selector-tag">Ubuntu16</span><span class="selector-class">.04</span><span class="selector-class">.3</span>  <span class="selector-tag">ip</span>: 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.12</span></div></pre></td></tr></table></figure></p>
+<p>0x02 Memcached 缓存实际中简单的应用场景<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">基于纯内存缓存,速度快,同样,也是基于 <span class="keyword">C</span>客户端 / S服务端 的工作模式,而libevent其实就是一个支持epoll/kqueue异步<span class="keyword">I</span>/<span class="keyword">O</span>模型的接口</div><div class="line">Memcached 在实际生产中主要是用来存放用户经常要访问到的一些高频关键字,加快数据库命中,减轻后端数据库压力,提高数据响应速度...</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/07/07/nosql-memcached/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/07/05/rsync-sec/">
                 服务安全 [ rsync ]
             </a>
@@ -590,37 +623,6 @@
 <p>利用 <code>tar</code>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/04/24/tar-file/" class="read-more">Read More</a>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/04/24/SquirrelMail-RCE/">
-                SquirrelMail < 1.4.23 RCE [CVE-2017-7692]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-04-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/SquirrelMail-Rce/">SquirrelMail Rce</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 环境简介<br>&nbsp;&nbsp;&nbsp;&nbsp;关于 SquirrelMail 就不用多说了吧[一套开源php 邮件程序][说实话,用这套程序的目标还是蛮多的,尼玛,不说了,都是泪……],在重现漏洞利用之前,我们需要先把邮件服务器简单搭起来,这里以centos 6.8 x86 为例 [为了避免安装过程出问题,iptables和selinux已事先全部关闭],大致的配置过程如下,下面是具体测试环境:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">kali</span> 2017: 执行<span class="selector-tag">SquirrelMail_RCE_exploit</span><span class="selector-class">.sh</span>  利用脚本</div><div class="line"><span class="selector-tag">centos</span> 6<span class="selector-class">.8</span> <span class="selector-tag">x86</span>:  完全模拟真实的生产环境,<span class="selector-tag">lamp</span>全程源码包编译配置<span class="selector-attr">[后期会把各种配置细节更新上来]</span></div><div class="line"><span class="selector-tag">SquirrelMail</span>版本 1<span class="selector-class">.4</span><span class="selector-class">.20</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2017/04/24/SquirrelMail-RCE/" class="read-more">Read More</a>
     
 
 </div>

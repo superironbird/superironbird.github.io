@@ -139,6 +139,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/09/23/time-tasks/">
+                win计划任务小记 [ at schtasks ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-09-23</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/schtasks/">schtasks</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 关于win系统计划任务的一些简单使用,03以前的系统中可使用 at 来执行各种系统计划任务<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at 14:23 /every:18,19,21,24,28 c:\shell.exe  创建本地计划任务,每月的这几号的这个点执行指定的可执行程序</span></div><div class="line"><span class="comment"># at /delete /y 	删除本地所有的计划任务</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># at \\192.168.3.23 14:23 /every:18,19,21,24,28 c:\shell.exe 在远程机器上创建计划任务</span></div><div class="line"><span class="comment"># at \\192.168.3.23 /delete /y 删除远程机器上的所有的计划任务</span></div></pre></td></tr></table></figure>
+        </div>
+        <a href="/2016/09/23/time-tasks/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/09/22/strace/">
                 利用strace来跟踪 ssh 登陆密码
             </a>
@@ -750,39 +782,6 @@
 <p><img src="/img/burpsuite_brute.png" alt="powershell brute force"></p>
 <p>0x15 基于perl的各种爆破小脚本,非常适合linux平台,抽空会补充上来:<br><br></p>
 <p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;不得不说,这类的爆破攻击,势必要在目标的系统里面留下大量的登陆日志,而且得别人让你爆才行,实际测试可知,先不说专业的ids,如果目标部署了mcafee企业套装,只要勾选了”爆破攻击”规则,这些工具基本就废了一大半,但,不一定就不好用,在你山穷水尽,走投无路之时,任何手段都是可以被尝试的,另外,个人还是更推荐用一些单文件[对于一款渗透工具来讲,其依赖自然是越少越好,体积越小越好,对系统影响越轻越好,也许你会发现,各种py工具表面貌似很强大,但仔细深究,基本全都是在用别人的库不停的重复造轮子……嘿嘿,不说了,怕挨打]的小脚本[上面这些工具需要安装的东西确实有点儿多],如果有,拿来改吧改吧用即可,实在没有,想办法自己写也行,尽管这种招数确实很低级,但你可以把它做的不低级 [比如,你可以把大量的功夫下在字典上],而且很高效,成败归根结底在人,如果你手里实在没有像样的0day,那就别硬装那个逼,虚心慢慢搞就是了,反正我们的最终目标是拿到目标系统的最高权限,至于中间用什么手段没人会在意,说的天花乱坠,但最终还是没有搞进去,等于说了一堆废话,务必时刻清楚,我们不是在做学术讨论,任何攻击研究,如果没法很好的用于实战,都是空架子,但当你真正搞进去了,哪怕你是用自己猜密码绝技进去的,你一样可以把它说的非常高深,这就是现实,没办法,有时候百分之九十九等于0,有时候百分之一等于100,在你没搞到完整权限之前,多做少说,方成大器,最后关于如何做字典的注意事项[程序算法始终有限],会在后续的相关文章中,仔细说明,比较多,话说回来,可能百分之九十九的人,都会觉得爆破是很low的,嘿嘿……其实,我想说,如果你前期的信息搜集非常到位,爆破往往是最快,最直接,也是最致命的,顺便提醒大家一下,<code>小心蜜罐</code></p>
-
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/08/16/Hook-PasswordChangeNotify/">
-                维持域管权限的一些简单办法[ Hook PasswordChangeNotify ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-08-16</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/getdomain/">getdomain</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>可利用 <code>Hook PasswordChangeNotify</code> 的方式,无需重启系统,且能实时记录修改的密码,只要目标机器不重启一般都不会失效,具体方法很简单,首先,准备好 <code>HookPasswordChange.dll</code> 和 <code>Invoke-ReflectivePEInjection.ps1</code> [主要是用它来把我们事先准备好的 HookPasswordChange.dll 注入到 <code>lsass</code> 进程中,这里有点类似劫持的意思],实际渗透中,并不一定非要把它记录在目标系统的本地文件中[记录到的密码默认放在c:\windows\temp\passwords.txt文件中],你也可以尝试直接把记录到的账号发送到远程指定的邮箱中[有人已提供改进过的dll],自己去谷歌找找,应该可以找到,下面是在本地测试的实际效果:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> powershell –<span class="built_in">exec</span> bypass –Command <span class="string">"&amp; &#123;Import-Module 'C:\Invoke-ReflectivePEInjection.ps1';Invoke-ReflectivePEInjection -PEPath C:\HookPasswordChange.dll –procname lsass&#125;"</span></span></div></pre></td></tr></table></figure></p>
-<p><img src="/img/hook dll injection.png" alt=""></p>
-<p>实际的效果如下<br><img src="/img/hook dll injection record pass.png" alt=""><br><img src="/img/hook dll injection record pass fish.png" alt=""><br><img src="/img/hook dll injection record pass res.png" alt=""></p>
 
         </div>
     
