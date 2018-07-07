@@ -157,6 +157,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/11/26/apache-sec/">
+                如何将你的 apache 把控的'密不透风'
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-11-26</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/apachesec/">apachesec</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>0x01 为防止配置或端口冲突,在装之前,你需要先仔细检查当前系统有没有装apache,如果有<code>先把apache服务停掉,然后卸载apache</code>,等会儿用源码重新编译安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> rpm -qa httpd</span></div><div class="line"><span class="meta">#</span><span class="bash"> rpm -e --nodeps * 强制卸载apache</span></div></pre></td></tr></table></figure></p>
+<p>演示环境<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">CentOS6</span><span class="selector-class">.8</span> <span class="selector-tag">x86_64</span>    最小化,带基础库安装 <span class="selector-tag">eth0</span> : 192<span class="selector-class">.168</span><span class="selector-class">.3</span><span class="selector-class">.45</span> <span class="selector-tag">eth1</span> : 192<span class="selector-class">.168</span><span class="selector-class">.4</span><span class="selector-class">.16</span> <span class="selector-tag">eth2</span> : 192<span class="selector-class">.168</span><span class="selector-class">.5</span><span class="selector-class">.16</span></div><div class="line"><span class="selector-tag">httpd-2</span><span class="selector-class">.2</span><span class="selector-class">.34</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span> <span class="selector-tag">apache</span>官方提供的源码包</div></pre></td></tr></table></figure></p>
+<p>0x02 下载apache源码包,这里暂时选择2.2.x系列的最新版,不建议再用比这个还老的版本了,漏洞比较多<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> wget http://apache.website-solution.net/httpd/httpd-2.2.34.tar.gz</span></div><div class="line"><span class="meta">#</span><span class="bash"> tar xf httpd-2.2.34.tar.gz &amp;&amp; <span class="built_in">cd</span> httpd-2.2.34</span></div></pre></td></tr></table></figure></p>
+<p>0x03 直接到源码中去<code>改掉apache的详细版本信息</code>,跟部署nginx一样,尽可能地扰乱入侵者的判断,这里就把它模拟成IIS 7.5,实际系统应为win server 2008r2<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># vi <span class="meta-keyword">include</span>/ap_release.h</span></div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/11/26/apache-sec/" class="read-more">Read More</a>
+    
+
+</div>
+
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/11/23/phpsec/">
                 php-fpm.conf & php.ini 安全优化实践
             </a>
@@ -630,39 +665,6 @@
 <p><code>基于数据库级别的同步</code>,对于数据库而言基本都属于实时同步,但实时并不一定意味着就是同步操作,也可能是用异步的方式在操作<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql   replication 虽然异步的,但实现的效果基本上是实时的</div><div class="line"><span class="keyword">oracle</span></div><div class="line">redis</div><div class="line">mongodb</div></pre></td></tr></table></figure></p>
         </div>
         <a href="/2017/10/27/mysql-master-slave/" class="read-more">Read More</a>
-    
-
-</div>
-
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2017/10/26/LaZagne/">
-                一键抓取目标机器上的所有明文密码
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2017-10-26</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/LaZagne/">LaZagne</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>几乎支持市面上大部分常用工具,另外,脚本自身基于py,跨平台性相对较好,免杀效果也还不错,不过,实战中务必要在一个较高权限[最好是提权后的root或system]下运行,否则你很可能什么都抓不到,实战中用过几次,主要是想用它来搜集内网机器上的各种密码,但,并不是特别靠谱,有些行为还是很容易被杀软捕捉到,自己如果不会免杀,就很头疼了,更多详情大家可自行参考其github, <a href="https://github.com/AlessandroZ/LaZagne" target="_blank" rel="external">https://github.com/AlessandroZ/LaZagne</a> 话说回来,作为学习样本还是很不错的</p>
-<p><img src="/img/softwares.png" alt=""><br>
-        </div>
-        <a href="/2017/10/26/LaZagne/" class="read-more">Read More</a>
     
 
 </div>

